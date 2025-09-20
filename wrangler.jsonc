@@ -2,6 +2,9 @@
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "openhouse26",
   "compatibility_date": "2025-09-20",
+  "assets": {
+    "directory": "./dist"
+  },
   "kv_namespaces": [
     {
       "binding": "openhouse26_kv",
@@ -14,5 +17,5 @@
       "database_name": "openhouse26-db",
       "database_id": "7a588335-be38-4c7b-a308-84789adbe96f"
     }
-  ],
+  ]
 }
