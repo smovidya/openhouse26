@@ -5,7 +5,9 @@
 
   async function getRandomValue() {
     console.log("Fetching random value...");
-    const { data, error } = await actions.random();
+    const { data, error } = await actions.random({
+      seed: 1,
+    });
     alert(error ? `Error: ${error.message}` : data.number);
   }
 </script>
