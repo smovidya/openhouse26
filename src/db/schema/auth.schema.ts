@@ -15,6 +15,11 @@ export const users = sqliteTable("users", {
     .defaultNow()
     .$onUpdate(() => /* @__PURE__ */ new Date())
     .notNull(),
+  role: text("role"),
+  banned: integer("banned", { mode: "boolean" }).default(false),
+  banReason: text("ban_reason"),
+  banExpires: integer("ban_expires", { mode: "timestamp" }),
+  isAnonymous: integer("is_anonymous", { mode: "boolean" }),
 });
 
 export const sessions = sqliteTable("sessions", {
@@ -40,6 +45,7 @@ export const sessions = sqliteTable("sessions", {
   colo: text("colo"),
   latitude: text("latitude"),
   longitude: text("longitude"),
+  impersonatedBy: text("impersonated_by"),
 });
 
 export const accounts = sqliteTable("accounts", {

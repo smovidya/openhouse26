@@ -8,15 +8,21 @@
     "preview": "astro preview",
     "astro": "astro",
     "cf-types": "wrangler types",
-    "auth:generate": "bun @better-auth/cli@latest generate --output ./src/db/schema/auth.schema.ts --config ./src/auth/index.ts -y"
+    "db:generate": "bun drizzle-kit generate",
+    "auth:generate": "bun x @better-auth/cli@latest generate --output ./src/db/schema/auth.schema.ts --config ./src/auth/index.ts -y"
   },
   "dependencies": {
     "@astrojs/cloudflare": "^12.6.8",
+    "@astrojs/svelte": "^7.1.1",
     "astro": "^5.13.9",
     "better-auth": "^1.3.13",
-    "better-auth-cloudflare": "^0.2.4"
+    "better-auth-cloudflare": "^0.2.4",
+    "drizzle-orm": "^0.44.5",
+    "svelte": "^5.39.3",
+    "typescript": "^5.9.2"
   },
   "devDependencies": {
-    "@better-auth/cli": "^1.3.13"
+    "@better-auth/cli": "^1.3.13",
+    "drizzle-kit": "^0.31.4"
   }
 }

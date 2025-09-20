@@ -7,6 +7,8 @@ import { withCloudflare } from "better-auth-cloudflare";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { drizzle } from "drizzle-orm/d1";
 import { schema } from "../db/schema";
+import { admin, anonymous, oAuthProxy, oneTap } from "better-auth/plugins";
+import { passkey } from "better-auth/plugins/passkey";
 
 // Single auth configuration that handles both CLI and runtime scenarios
 function createAuth(env?: Env, cf?: IncomingRequestCfProperties) {
@@ -57,6 +59,23 @@ function createAuth(env?: Env, cf?: IncomingRequestCfProperties) {
         },
         rateLimit: {
           enabled: true,
+        },
+        plugins: [
+          admin(),
+          anonymous({
+            emailDomainName: "anon.vidyachula.org",
+          }),
+          oneTap(),
+          oAuthProxy(),
+        ],
+        socialProviders: {
+          google: {
+            prompt: "select_account",
+            clientId: env?.GOOGLE_CLIENT_ID,
+            clientSecret: env?.GOOGLE_CLIENT_SECRET,
+            redirectURI:
+              "https://scichulaopenhouse.com/api/auth/callback/github",
+          },
         },
       }
     ),

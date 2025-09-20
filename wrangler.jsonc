@@ -2,6 +2,9 @@
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "openhouse26",
   "compatibility_date": "2025-09-20",
+  "compatibility_flags": [
+    "nodejs_compat"
+  ],
   "assets": {
     "directory": "./dist"
   },
@@ -15,7 +18,8 @@
     {
       "binding": "openhouse26_db",
       "database_name": "openhouse26-db",
-      "database_id": "7a588335-be38-4c7b-a308-84789adbe96f"
+      "database_id": "7a588335-be38-4c7b-a308-84789adbe96f",
+      "migrations_dir": "drizzle"
     }
   ]
 }
