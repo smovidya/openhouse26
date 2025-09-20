@@ -1,0 +1,17 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "openhouse26",
+  "kv_namespaces": [
+    {
+      "binding": "openhouse26_kv",
+      "id": "d775ae807097463ebf0d7d08161a625e"
+    }
+  ],
+  "d1_databases": [
+    {
+      "binding": "openhouse26_db",
+      "database_name": "openhouse26-db",
+      "database_id": "7a588335-be38-4c7b-a308-84789adbe96f"
+    }
+  ],
+}
