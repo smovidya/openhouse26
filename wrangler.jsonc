@@ -1,6 +1,7 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "openhouse26",
+  "compatibility_date": "2025-09-20",
   "kv_namespaces": [
     {
       "binding": "openhouse26_kv",
