@@ -6,11 +6,13 @@ export const onRequest = defineMiddleware(async (context, next) => {
     context.locals.runtime.env,
     context.locals.runtime.cf
   );
+
   const isAuthed = await auth.api.getSession({
     headers: context.request.headers,
   });
 
   context.locals.auth = auth;
+
   if (isAuthed) {
     context.locals.user = isAuthed.user;
     context.locals.session = isAuthed.session;

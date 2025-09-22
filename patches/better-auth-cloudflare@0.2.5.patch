@@ -1,0 +1,23 @@
+diff --git a/dist/index.js b/dist/index.js
+index 0ec68cc85fa8898951bc80742573bee10f5096cb..c9d7831321dc996aecfa748ff133c2209a2ef65e 100644
+--- a/dist/index.js
++++ b/dist/index.js
+@@ -1,12 +1,12 @@
+ import {} from "better-auth";
+ import { drizzleAdapter } from "better-auth/adapters/drizzle";
+ import { createAuthEndpoint, getSessionFromCtx } from "better-auth/api";
+-import { schema } from "./schema";
+-import { createR2Storage, createR2Endpoints } from "./r2";
+-export * from "./client";
+-export * from "./schema";
+-export * from "./types";
+-export * from "./r2";
++import { schema } from "./schema.js";
++import { createR2Storage, createR2Endpoints } from "./r2.js";
++export * from "./client.js";
++export * from "./schema.js";
++export * from "./types.js";
++export * from "./r2.js";
+ /**
+  * Cloudflare integration for Better Auth
+  *
