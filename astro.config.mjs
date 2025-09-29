@@ -11,7 +11,7 @@ export default defineConfig({
     },
     sessionKVBindingName: "openhouse26_kv",
     workerEntryPoint: {
-      path: "./src/worker/index.ts",
+      path: "./src/workers/index.ts",
       // namedExports: []
     },
   }),
