@@ -7,6 +7,6 @@ export default defineConfig({
   schema: "./src/db/schema",
   dialect: "sqlite",
   dbCredentials: {
-    url: 'file:./local.db'
+    url: getLocalD1DB(),
   },
 });
