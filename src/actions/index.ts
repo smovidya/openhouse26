@@ -6,8 +6,8 @@ export const server = {
     input: z.object({
       seed: z.number().optional(),
     }),
-    handler(input, context) {
-      const seed = input.seed ? parseInt(input.seed) : undefined;
+    handler(input, _context) {
+      const seed = input.seed ? input.seed : undefined;
       return { number: Math.random() + (seed || 0) };
     },
   }),
