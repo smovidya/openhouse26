@@ -8,7 +8,15 @@ import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { drizzle } from "drizzle-orm/d1";
 import { schema } from "../db/schema";
 import { admin, anonymous, oAuthProxy, oneTap } from "better-auth/plugins";
-import { passkey } from "better-auth/plugins/passkey";
+import {
+  admin as adminRole,
+  ac,
+  majorBoothStaff,
+  registarStaff,
+  rewardStaff,
+  workshopStaff,
+  participant,
+} from "./permissions";
 
 // Single auth configuration that handles both CLI and runtime scenarios
 function createAuth(env?: Env, cf?: IncomingRequestCfProperties) {
@@ -64,7 +72,17 @@ function createAuth(env?: Env, cf?: IncomingRequestCfProperties) {
           enabled: true,
         },
         plugins: [
-          admin(),
+          admin({
+            ac,
+            roles: {
+              admin: adminRole,
+              majorBoothStaff,
+              registarStaff,
+              rewardStaff,
+              workshopStaff,
+              participant,
+            },
+          }),
           anonymous({
             emailDomainName: "anon.vidyachula.org",
           }),
