@@ -77,7 +77,7 @@ function createAuth(env?: Env, cf?: IncomingRequestCfProperties) {
             clientId: env?.GOOGLE_CLIENT_ID,
             clientSecret: env?.GOOGLE_CLIENT_SECRET,
             redirectURI:
-              "https://scichulaopenhouse.com/api/auth/callback/github",
+              "https://openhouse26.smovidya-chula.workers.dev/api/auth/callback/github",
           },
         },
       }
