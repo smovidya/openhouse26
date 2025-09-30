@@ -32,6 +32,7 @@ function createAuth(env?: Env, cf?: IncomingRequestCfProperties) {
               },
             }
           : undefined,
+        // @ts-ignore
         kv: env?.openhouse26_kv,
         // Optional: Enable R2 file storage
         // r2: {
@@ -54,6 +55,8 @@ function createAuth(env?: Env, cf?: IncomingRequestCfProperties) {
         // },
       },
       {
+        secret: env?.BETTER_AUTH_SECRET,
+        baseURL: env?.BETTER_AUTH_URL,
         emailAndPassword: {
           enabled: true,
         },
