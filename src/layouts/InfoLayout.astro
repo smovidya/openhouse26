@@ -8,7 +8,7 @@ const { frontmatter } = Astro.props;
 ---
 
 <Base title={frontmatter.title} description={frontmatter.description}>
-  <header class="text-xl px-5 mt-5">
+  <header class="prose font-bold text-xl px-5 mt-5 mx-auto flex items-center">
     <img src={project.logo} alt="Logo" class="inline h-10 mr-3 mb-1" />
     {project.name}
   </header>
