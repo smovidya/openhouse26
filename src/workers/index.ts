@@ -14,6 +14,7 @@ export function createExports(manifest: SSRManifest) {
   return {
     default: {
       async fetch(request, env, ctx) {
+        console.log(request);
         return handle(manifest, app, request, env, ctx);
       },
       // async queue(batch, _env) {

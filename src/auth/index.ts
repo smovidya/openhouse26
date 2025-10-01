@@ -63,6 +63,9 @@ function createAuth(env?: Env, cf?: IncomingRequestCfProperties) {
         // },
       },
       {
+        logger: {
+          level: "debug", // =-= แม่นหยัง
+        },
         secret: env?.BETTER_AUTH_SECRET,
         baseURL: env?.BETTER_AUTH_URL,
         emailAndPassword: {
