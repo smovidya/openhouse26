@@ -1,0 +1,50 @@
+/* cloud-soft-bold */
+@font-face {
+  font-family: "Cloud Soft";
+  font-style: bold;
+  font-weight: 700;
+  font-stretch: 100%;
+  src: local("Cloud Soft Bold"), local("CloudSoft-Bold"), url(/fonts/cloud-soft-bold.woff2) format("woff2");
+  font-display: swap;
+}
+
+/* 
+cloud-soft-light
+@font-face {
+  font-family: "Cloud Soft";
+  font-style: normal;
+  font-weight: 300;
+  font-stretch: 100%;
+  src: local("Cloud Soft Light"), local("CloudSoft-Light"), url(/fonts/cloud-soft-light.woff2) format("woff2");
+  font-display: swap;
+} */
+
+/* futura-pt-book */
+@font-face {
+  font-family: "Futura PT";
+  font-style: normal;
+  font-weight: 400;
+  font-stretch: 100%;
+  src: local("Futura Cyrillic Book"), local("FuturaCyrillicBook"), url(/fonts/futura-pt-book.woff2) format("woff2");
+  font-display: swap;
+}
+
+/* genty-sans */
+@font-face {
+  font-family: "Genty";
+  font-style: normal;
+  font-weight: 400;
+  font-stretch: 100%;
+  src: local("Genty Sans"), local("GentySans-Regular"), url(/fonts/genty-sans.woff2) format("woff2");
+  font-display: swap;
+}
+
+/* mitr-light */
+@font-face {
+  font-family: "Mitr";
+  font-style: normal;
+  font-weight: 300;
+  font-stretch: 100%;
+  src: local("Mitr Light"), local("Mitr-Light"), url(/fonts/mitr-light.woff2) format("woff2");
+  font-display: swap;
+}
