@@ -10,6 +10,8 @@
     "astro": "astro",
     "cf-types": "wrangler types",
     "db:generate": "bun drizzle-kit generate",
+    "d1:migrate": "bun wrangler d1 migrations apply openhouse26_db --local",
+    "d1:migrate:remote": "bun wrangler d1 migrations apply openhouse26_db --remote",
     "auth:generate": "bun x @better-auth/cli@latest generate --output ./src/db/schema/auth.schema.ts --config ./src/auth/index.ts -y"
   },
   "dependencies": {
