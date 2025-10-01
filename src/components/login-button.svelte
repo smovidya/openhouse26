@@ -6,6 +6,7 @@
   onclick={async () => {
     await authClientSvelte.signIn.social({
       provider: "google",
+      callbackURL: "/",
     });
   }}
 >

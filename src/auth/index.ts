@@ -94,8 +94,8 @@ function createAuth(env?: Env, cf?: IncomingRequestCfProperties) {
             prompt: "select_account",
             clientId: env?.GOOGLE_CLIENT_ID,
             clientSecret: env?.GOOGLE_CLIENT_SECRET,
-            redirectURI:
-              "https://openhouse26.smovidya-chula.workers.dev/api/auth/callback/google",
+            // redirectURI:
+            //   "https://openhouse26.smovidya-chula.workers.dev/api/auth/callback/google",
           },
         },
       }
