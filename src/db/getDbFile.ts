@@ -9,7 +9,7 @@ export function getLocalD1DB() {
       .find((f) => f.endsWith(".sqlite"));
 
     if (!dbFile) {
-      console.log(`bruh run wrangler mi`)
+      console.log(`bruh run bun run d1:migrate`);
       throw new Error(`.sqlite file not found in ${basePath}`);
     }
 
