@@ -2,6 +2,7 @@
 import { defineConfig } from "astro/config";
 import cloudflare from "@astrojs/cloudflare";
 import svelte from "@astrojs/svelte";
+import tailwindcss from "@tailwindcss/vite";
 
 // https://astro.build/config
 export default defineConfig({
@@ -12,7 +13,7 @@ export default defineConfig({
     sessionKVBindingName: "openhouse26_kv",
     workerEntryPoint: {
       path: "src/workers/index.ts",
-      namedExports: []
+      namedExports: [],
     },
   }),
   integrations: [
@@ -20,4 +21,8 @@ export default defineConfig({
       extensions: [".svelte"],
     }),
   ],
+  vite: {
+    plugins: [tailwindcss()],
+  },
+  output: "server",
 });
