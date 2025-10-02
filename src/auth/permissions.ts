@@ -37,7 +37,7 @@ export const admin = ac.newRole({
   ...adminAc.statements,
 });
 
-export const participant = ac.newRole({
+export const user = ac.newRole({
   rewards: ["redeemMyReward"],
   ...userAc.statements,
 });
@@ -71,3 +71,14 @@ export const rewardStaff = ac.newRole({
     "redeemParticipantReward",
   ],
 });
+
+export const roles = {
+  admin,
+  user,
+  registarStaff,
+  majorBoothStaff,
+  workshopStaff,
+  rewardStaff,
+};
+
+export const roleList = Object.keys(roles) as (keyof typeof roles)[];

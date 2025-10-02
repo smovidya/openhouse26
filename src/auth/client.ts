@@ -12,10 +12,10 @@ import {
   registarStaff,
   rewardStaff,
   workshopStaff,
-  participant,
+  user,
 } from "./permissions";
 
-const plugins = [
+export const plugins = [
   adminClient({
     ac,
     roles: {
@@ -24,7 +24,7 @@ const plugins = [
       registarStaff,
       rewardStaff,
       workshopStaff,
-      participant,
+      user,
     },
   }),
   anonymousClient(),

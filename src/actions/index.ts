@@ -1,5 +1,6 @@
 import { defineAction } from "astro:actions";
 import { z } from "astro:schema";
+import mock from "./mock";
 
 export const server = {
   random: defineAction({

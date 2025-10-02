@@ -7,7 +7,7 @@ import { withCloudflare } from "better-auth-cloudflare";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { drizzle } from "drizzle-orm/d1";
 import { schema } from "../db/schema";
-import { admin, anonymous, oAuthProxy, oneTap } from "better-auth/plugins";
+import { admin, anonymous, oneTap } from "better-auth/plugins";
 import {
   admin as adminRole,
   ac,
@@ -15,7 +15,7 @@ import {
   registarStaff,
   rewardStaff,
   workshopStaff,
-  participant,
+  user,
 } from "./permissions";
 
 // Single auth configuration that handles both CLI and runtime scenarios
@@ -83,7 +83,7 @@ function createAuth(env?: Env, cf?: IncomingRequestCfProperties) {
               registarStaff,
               rewardStaff,
               workshopStaff,
-              participant,
+              user,
             },
           }),
           anonymous({
