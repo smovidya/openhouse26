@@ -39,10 +39,10 @@
 </script>
 
 <section>
-  <span> สาขาวิชาที่สนใจ </span>
-  <div class="grid grid-cols-[auto_1fr] gap-2">
+  <span class="text-white"> สาขาวิชาที่สนใจ </span>
+  <div class="grid grid-cols-[auto_1fr] mt-1 gap-2">
     <div
-      class="h-full aspect-square border border-neutral-300 rounded-md flex items-center justify-center"
+      class="h-full aspect-square border border-neutral-300 bg-white rounded-md flex items-center justify-center"
     >
       1
     </div>
@@ -57,7 +57,7 @@
       </select>
     </CutoutBox>
     <div
-      class="h-full aspect-square border border-neutral-300 rounded-md flex items-center justify-center"
+      class="h-full aspect-square border border-neutral-300 bg-white rounded-md flex items-center justify-center"
     >
       2
     </div>
@@ -73,7 +73,7 @@
       </select>
     </CutoutBox>
     <div
-      class="h-full aspect-square border border-neutral-300 rounded-md flex items-center justify-center"
+      class="h-full aspect-square border border-neutral-300 bg-white rounded-md flex items-center justify-center"
     >
       3
     </div>

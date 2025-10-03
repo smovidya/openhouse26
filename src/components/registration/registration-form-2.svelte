@@ -13,6 +13,7 @@
   import { provincesOptions } from "@src/data/provinces";
   import InterestedDepartments from "./interested-departments.svelte";
   import { departments } from "@src/data/departments";
+  import Logo from "@src/assets/logo.png";
 
   const howDidYouKnowUsOptions2 = [
     ...howDidYouKnowUsOptions,
@@ -67,11 +68,12 @@
   };
 </script>
 
-<main>
-  <h1 class="text-2xl">ลงทะเบียนเข้าร่วมงาน</h1>
-  <h2 class="mt-4 text-xl">ข้อมูลส่วนตัว</h2>
+<main class="font-serif">
+  <img src={Logo.src} alt="logo" class="size-24" />
+  <h1 class="text-3xl mt-8 font-sans text-white">ลงทะเบียนเข้าร่วมงาน</h1>
+  <h2 class="mt-4 text-xl text-white">ข้อมูลส่วนตัว</h2>
 
-  <form {onsubmit} class="mt-4 space-y-4">
+  <form {onsubmit} class="mt-4 space-y-4 text-sm">
     <section class="grid grid-cols-2 gap-x-3 gap-y-1">
       <form.Field
         name="firstname"
@@ -81,7 +83,7 @@
       >
         {#snippet children(field)}
           <label class="flex flex-col gap-1">
-            <span>ชื่อและคำนำหน้า</span>
+            <span class="text-white">ชื่อและคำนำหน้า</span>
             <CutoutBox class="p-0! rounded-lg!">
               <input
                 name={field.name}
@@ -110,7 +112,7 @@
       >
         {#snippet children(field)}
           <label class="flex flex-col gap-1">
-            <span>นามสกุล</span>
+            <span class="text-white">นามสกุล</span>
             <CutoutBox class="p-0! rounded-lg!">
               <input
                 name={field.name}
@@ -131,7 +133,7 @@
         {/snippet}
       </form.Field>
 
-      <p class="col-span-2">
+      <p class="col-span-2 text-orange-300">
         * ตรวจสอบให้ถูกต้องหากต้องการรับเกียรติบัตรการเข้าร่วม
       </p>
     </section>
@@ -144,7 +146,7 @@
     >
       {#snippet children(field)}
         <label class="flex flex-col gap-1">
-          <span>อายุ (ปี)</span>
+          <span class="text-white">อายุ (ปี)</span>
           <CutoutBox class="p-0! rounded-lg!">
             <input
               name={field.name}
@@ -169,7 +171,7 @@
     <form.Field name="specialNeeds">
       {#snippet children(field)}
         <label class="flex flex-col gap-1">
-          <span>ความต้องการพิเศษ (ถ้ามี)</span>
+          <span class="text-white">ความต้องการพิเศษ (ถ้ามี)</span>
           <CutoutBox class="p-0! rounded-lg!">
             <input
               name={field.name}
@@ -193,7 +195,7 @@
     >
       {#snippet children(field)}
         <label class="flex flex-col gap-1">
-          <span>จังหวัดที่พำนัก</span>
+          <span class="text-white">จังหวัดที่พำนัก</span>
           <CutoutBox class="p-0! rounded-lg!">
             <select
               name={field.name}
@@ -219,7 +221,7 @@
     <form.Field name="status">
       {#snippet children(field)}
         <label class="flex flex-col gap-1">
-          <span>สถานะ</span>
+          <span class="text-white">สถานะ</span>
           <CutoutBox class="p-0! rounded-lg!">
             <select
               name={field.name}
@@ -250,7 +252,7 @@
         >
           {#snippet children(field)}
             <label class="flex flex-col gap-1">
-              <span>สถานศึกษา</span>
+              <span class="text-white">สถานศึกษา</span>
               <CutoutBox class="p-0! rounded-lg!">
                 <input
                   name={field.name}
@@ -345,8 +347,8 @@
 
       <section>
         <label class="flex flex-col gap-1">
-          <span>นโยบายข้อมูลส่วนบุคคล</span>
-          <CutoutBox class="p-2! rounded-lg!">
+          <span class="text-white">นโยบายข้อมูลส่วนบุคคล</span>
+          <CutoutBox class="p-3! rounded-lg!">
             <p>
               何も無いんだ 何も無いんだ 何も無いんだ わたしって
               「間違った」その罰がさ 今もわたしを締め付ける さかなになって
@@ -363,17 +365,17 @@
     <Button
       color="yellow"
       type="submit"
-      class="mt-6 text-white"
+      class="mt-6 text-white py-3!"
       disabled={status.current === ""}
     >
-      <span class="flex flex-col items-center text-2xl">ลงทะเบียน</span>
+      <span class="flex flex-col items-center text-lg">ลงทะเบียน</span>
     </Button>
   </form>
 </main>
 
 {#snippet fieldError(message: string)}
   <!-- fuck this -->
-  <p class="text-red-500">
+  <p class="text-red-400">
     {message}
   </p>
 {/snippet}

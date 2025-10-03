@@ -37,16 +37,17 @@
   const get = (key: string) => () => selected.includes(key);
 </script>
 
-<section>
+<section class="text-white">
   <span>
     {title}
   </span>
-  <div class="grid grid-cols-1 sm:grid-cols-2 gap-1 mt-1">
+  <div class="grid grid-cols-1 sm:grid-cols-2 gap-1 mt-3">
     {#each options as { label, value }}
       <label>
         <input
           type="checkbox"
           name="{id}-value-{value}"
+          class="size-4 accent-neutral-400"
           bind:checked={get(value), set(value)}
         />
         <span class="ml-1">{label}</span>
