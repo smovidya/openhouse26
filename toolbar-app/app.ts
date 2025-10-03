@@ -98,7 +98,9 @@ async function drawUserInfo(canvas: HTMLElement, user: any) {
           },
         });
         if (!res.ok) return alert(await res.text());
-        alert("Role updated successfully. Please login again to see the effect.");
+        alert(
+          "Role updated successfully. Please login again to see the effect."
+        );
       } catch (err: any) {
         alert("Error updating role: " + err.message);
       }
@@ -110,13 +112,14 @@ async function drawUserInfo(canvas: HTMLElement, user: any) {
 const styles = `
   :root {
     font-size: 14px;
+    height: 100vh;
   }
   :host {
     display: block;
     padding: 1rem;
     font-family: system-ui, sans-serif;
     background-color: #f3f4f6;
-    position: relative;
+    position: fixed;
     bottom: 0;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     border-radius: 0.5rem;
@@ -125,6 +128,9 @@ const styles = `
     width: 50%;
     margin: 0 auto;
     overflow: auto;
+    height: 50vh;
+    left: 50%;
+    transform: translateX(-50%);
   }
 
   pre {
