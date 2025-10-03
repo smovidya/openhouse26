@@ -17,6 +17,5 @@
     clazz,
   )}
 >
-  {a}
   {@render children?.()}
 </div>
