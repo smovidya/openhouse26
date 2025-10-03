@@ -1,16 +1,23 @@
 import { createAuth } from "@src/auth";
 import { defineMiddleware } from "astro:middleware";
+import { drizzle } from "drizzle-orm/d1";
+import { schema } from "@src/db";
 
 export const onRequest = defineMiddleware(async (context, next) => {
   const auth = createAuth(
     context.locals.runtime.env,
     context.locals.runtime.cf
   );
+  const db = drizzle(context.locals.runtime.env.openhouse26_db, {
+    schema,
+    logger: import.meta.env.DB_QUERY_DEBUG === "true",
+  });
 
   const isAuthed = await auth.api.getSession({
     headers: context.request.headers,
   });
 
+  context.locals.db = db;
   context.locals.auth = auth;
 
   if (isAuthed) {
