@@ -1,0 +1,13 @@
+---
+import RegistrationForm from "@src/components/registration/registration-form.svelte";
+import Layout from "../layouts/Base.astro";
+
+---
+
+<Layout
+  title="หน้าหลัก"
+  description="งาน Open House คณะวิทยาศาสตร์ จุฬาลงกรณ์มหาวิทยาลัย 2566"
+  image="/og-image.png"
+>
+  <RegistrationForm client:load />
+</Layout>
