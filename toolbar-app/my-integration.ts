@@ -7,7 +7,7 @@ export default {
     "astro:config:setup": ({ addDevToolbarApp }) => {
       addDevToolbarApp({
         id: "better-auth-user-mock",
-        name: "Auth inspector",
+        name: "Auth Inspector",
         icon: "🕵️",
         entrypoint: fileURLToPath(new URL("./app.ts", import.meta.url)),
       });
