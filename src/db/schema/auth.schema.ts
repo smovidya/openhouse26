@@ -1,5 +1,6 @@
-import { sql } from "drizzle-orm";
+import { relations, sql } from "drizzle-orm";
 import { sqliteTable, text, integer } from "drizzle-orm/sqlite-core";
+import { participants } from "./participant.schema";
 
 export const users = sqliteTable("users", {
   id: text("id").primaryKey(),
@@ -22,6 +23,13 @@ export const users = sqliteTable("users", {
   banExpires: integer("ban_expires", { mode: "timestamp_ms" }),
   isAnonymous: integer("is_anonymous", { mode: "boolean" }),
 });
+
+export const usersRelations = relations(users, ({ one }) => ({
+  participantAccount: one(participants, {
+    fields: [users.id],
+    references: [participants.userId],
+  }),
+}));
 
 export const sessions = sqliteTable("sessions", {
   id: text("id").primaryKey(),
