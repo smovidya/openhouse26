@@ -8,13 +8,13 @@
      * Label for the button
      */
     children?: Snippet;
-    color: "yellow";
+    color?: "yellow";
   }
 
   const {
     children,
-    color,
-    class: clazz = "yellow",
+    color = "yellow",
+    class: clazz,
     ...props
   }: Props & HTMLAttributes<HTMLButtonElement> = $props();
 </script>
