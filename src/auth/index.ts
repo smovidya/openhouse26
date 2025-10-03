@@ -31,6 +31,7 @@ function createAuth(env?: Env, cf?: IncomingRequestCfProperties) {
         autoDetectIpAddress: true,
         geolocationTracking: true,
         cf: cf || {},
+        // @ts-ignore
         d1: env
           ? {
               db,
