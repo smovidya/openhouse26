@@ -1,0 +1,27 @@
+---
+import Base from "./Base.astro";
+
+interface Props {
+  title: string;
+  description: string;
+  image: string;
+}
+
+const { title, description, image } = Astro.props;
+---
+
+<Base title={title} description={description} image={image}>
+  <div
+    class="fixed overflow-hidden top-0 left-0 -z-10 flex items-center justify-center w-screen h-screen"
+  >
+    <div
+      class="aspect-square h-screen bg-[radial-gradient(ellipse_50.00%_50.00%_at_50.00%_50.00%,_#3A64AC_0%,_#305498_29%,_#2B4B8E_46%,_#274586_62%,_#1F3776_100%)]"
+    >
+    </div>
+  </div>
+  <main class="container relative min-h-screen max-w-3xl mx-auto px-4 py-8">
+    <div>
+      <slot />
+    </div>
+  </main>
+</Base>
