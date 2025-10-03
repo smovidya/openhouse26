@@ -1,8 +1,13 @@
 <script lang="ts">
-  import type { ParticipantStatus } from "@src/data/constants";
+  import {
+    howDidYouKnowUsOptions,
+    participantStatus,
+    type ParticipantStatus,
+  } from "@src/data/constants";
   import type { EventHandler } from "svelte/elements";
   import Button from "../common/button.svelte";
   import CutoutBox from "../common/cutout-box.svelte";
+  import Checkboxes from "./checkboxes.svelte";
 
   interface Props {
     class?: any;
@@ -16,11 +21,17 @@
     age: 0,
     specialNeeds: "",
     province: "",
-    howDidYouKnowUs: [],
+    howDidYouKnowUs: [] as string[],
+    howDidYouKnowUsOther: "",
+    reason: "",
     status: "" as ParticipantStatus | "",
-
-    interestedDepertments: [],
+    school: "",
+    interestedDepertments: [] as string[],
   });
+
+  const showDepartmentPicker = $derived(
+    formData.status != "ผู้ปกครอง" && formData.status != "อื่นๆ",
+  );
 
   const errors: Partial<Record<keyof typeof formData, string>> = $state({});
 
@@ -44,7 +55,6 @@
           <span>ชื่อและคำนำหน้า</span>
           <CutoutBox class="p-0! rounded-lg!">
             <input
-              id=""
               class="w-full p-2 rounded-lg outline-blue-500 outline-offset-2"
               placeholder="สมชาย"
             />
@@ -57,7 +67,6 @@
           <span>นามสกุล</span>
           <CutoutBox class="p-0! rounded-lg!">
             <input
-              id=""
               class="w-full p-2 rounded-lg outline-blue-500 outline-offset-2"
               placeholder="ใจดี"
             />
@@ -75,7 +84,6 @@
         <span>อายุ (ปี)</span>
         <CutoutBox class="p-0! rounded-lg!">
           <input
-            id=""
             class="w-full p-2 rounded-lg outline-blue-500 outline-offset-2"
             placeholder="45"
           />
@@ -88,7 +96,6 @@
         <span>ความต้องการพิเศษ (ถ้ามี)</span>
         <CutoutBox class="p-0! rounded-lg!">
           <input
-            id=""
             class="w-full p-2 rounded-lg outline-blue-500 outline-offset-2"
             placeholder="เช่น พิการทางการได้ยิน หรือ Wheelchair"
           />
@@ -101,7 +108,6 @@
         <span>จังหวัดที่พำนัก</span>
         <CutoutBox class="p-0! rounded-lg!">
           <input
-            id=""
             class="w-full p-2 rounded-lg outline-blue-500 outline-offset-2"
             placeholder="TODO: select"
           />
@@ -113,17 +119,49 @@
       <label class="flex flex-col gap-1">
         <span>สถานะ</span>
         <CutoutBox class="p-0! rounded-lg!">
-          <input
-            id=""
+          <select
+            bind:value={formData.status}
             class="w-full p-2 rounded-lg outline-blue-500 outline-offset-2"
-            placeholder="TODO: select"
-          />
+          >
+            <option value="" selected disabled hidden>เลือก</option>
+            {#each participantStatus as status}
+              <option value={status}>{status}</option>
+            {/each}
+          </select>
         </CutoutBox>
       </label>
     </section>
+
+    {#if formData.status !== ""}
+      {#if showDepartmentPicker}
+        <section>
+          <label class="flex flex-col gap-1">
+            <span>สถานศึกษา</span>
+            <CutoutBox class="p-0! rounded-lg!">
+              <input
+                class="w-full p-2 rounded-lg outline-blue-500 outline-offset-2"
+                placeholder="โรงเรียนเตรียมอุดมศึกษา"
+              />
+            </CutoutBox>
+          </label>
+        </section>
+      {/if}
+
+      <Checkboxes
+        title="ท่านทราบและติดตามข่าวสารเกี่ยวกับงานผ่านช่องทางใดบ้าง(เลือกหลายคำตอบ)"
+        options={howDidYouKnowUsOptions}
+        bind:selected={formData.howDidYouKnowUs}
+        bind:other={formData.howDidYouKnowUsOther}
+        showOther
+      />
+    {/if}
   </form>
 
-  <Button color="yellow" class="mt-6 text-white">
+  <Button
+    color="yellow"
+    class="mt-6 text-white"
+    disabled={formData.status === ""}
+  >
     <span class="flex flex-col items-center text-2xl">ลงทะเบียน</span>
   </Button>
 </main>

@@ -1,7 +1,7 @@
 <script lang="ts">
   import clsx from "clsx";
   import type { Snippet } from "svelte";
-  import type { HTMLAttributes } from "svelte/elements";
+  import type { HTMLButtonAttributes } from "svelte/elements";
 
   interface Props {
     /**
@@ -16,14 +16,16 @@
     children,
     color = "yellow",
     href,
+    disabled,
     class: clazz,
     ...props
-  }: Props & HTMLAttributes<HTMLButtonElement> = $props();
+  }: Props & HTMLButtonAttributes = $props();
 </script>
 
 {#if href}
   <a
     {href}
+    {disabled}
     class={clsx(
       "w-full text-center py-3 rounded-xl border border-[#fff4da64] shadow-lg shadow-black/30 cursor-pointer",
       color,
@@ -35,6 +37,7 @@
   </a>
 {:else}
   <button
+    {disabled}
     type="button"
     class={clsx(
       "w-full text-center py-3 rounded-xl border border-[#fff4da64] shadow-lg shadow-black/30 cursor-pointer",
@@ -58,8 +61,8 @@
       #ffb53d 100%
     );
 
-    &:hover,
-    &:active {
+    &:hover:not(:disabled),
+    &:active:not(:disabled) {
       background: linear-gradient(
         180deg,
         #ea9200 1.58%,
@@ -69,5 +72,11 @@
         #e99100 98.42%
       );
     }
+
+  }
+  
+  button:disabled {
+    filter: grayscale();
+    cursor: not-allowed;
   }
 </style>
