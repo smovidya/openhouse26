@@ -1,6 +1,7 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "openhouse26",
+  "account_id": "4ec83c42527307cc087ab2207efb4297",
   "compatibility_date": "2025-09-20",
   "compatibility_flags": [
     "nodejs_compat"
@@ -16,15 +17,21 @@
   "kv_namespaces": [
     {
       "binding": "openhouse26_kv",
-      "id": "d775ae807097463ebf0d7d08161a625e"
+      "id": "54eff58aa403471087e573a3e61fc320"
     }
   ],
   "d1_databases": [
     {
       "binding": "openhouse26_db",
       "database_name": "openhouse26-db",
-      "database_id": "7a588335-be38-4c7b-a308-84789adbe96f",
+      "database_id": "62624ef6-24a7-45e9-94d5-a955b19e7609",
       "migrations_dir": "drizzle"
     }
-  ]
+  ],
+  "routes": [
+    {
+      "pattern": "scichulaopenhouse.com",
+      "custom_domain": true
+    }
+  ],
 }
