@@ -15,6 +15,8 @@
 
   let { class: className }: Props = $props();
 
+  const form = createForm
+
   const formData = $state({
     firstname: "",
     lastname: "",
@@ -154,6 +156,22 @@
         bind:other={formData.howDidYouKnowUsOther}
         showOther
       />
+
+      <section>
+        <label class="flex flex-col gap-1">
+          <span>นโยบายข้อมูลส่วนบุคคล</span>
+          <CutoutBox class="p-2! rounded-lg!">
+            <p>
+              何も無いんだ 何も無いんだ 何も無いんだ わたしって
+              「間違った」その罰がさ 今もわたしを締め付ける さかなになって
+              くじらになって 月夜に浮かぶ星になって 夢を見るわたしを
+              どうか許してほしいの ずっと甘い幽々幽々と
+              べつに悩んでるとかそういうわけじゃないよ ただ ただ漠然と
+              なんていうか わたしってダメだなって ごめんね
+            </p>
+          </CutoutBox>
+        </label>
+      </section>
     {/if}
   </form>
 

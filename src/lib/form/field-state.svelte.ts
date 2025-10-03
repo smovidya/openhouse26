@@ -1,12 +1,18 @@
+import { untrack } from "svelte";
+import type { FieldConfig } from "./form-state.svelte";
+
 export class FormField<T> {
   #value?: T = $state();
   #hasValue: boolean = $state(false);
   #error?: string = $state();
   #showError = $state(false);
+  config: FieldConfig<T>;
 
-  constructor(value?: T) {
-    if (arguments.length !== 0) {
-      this.#value = value;
+  constructor(config: FieldConfig<T>) {
+    this.config = config;
+
+    if ("initialValue" in config) {
+      this.#value = config.initialValue;
       this.#hasValue = true;
     }
   }
@@ -34,10 +40,25 @@ export class FormField<T> {
 
   setError(e: string) {
     this.#error = e;
+    this.#showError = true;
   }
 
   get error() {
     return this.#error;
   }
 
+  hideError() {
+    this.#showError = false;
+  }
+
+  validate() {
+    return untrack(() => {
+      const error = this.config.validator(this.unsafeGet(), this.#hasValue);
+      if (error) {
+        this.setError(error);
+      }
+
+      return error;
+    });
+  }
 }

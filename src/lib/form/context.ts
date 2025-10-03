@@ -1,4 +1,5 @@
 import { getContext, setContext } from "svelte";
+import { FormField } from "./field-state.svelte";
 
 export function setFieldName(name: string) {
   setContext("lib:form:field-name", name);
@@ -16,3 +17,13 @@ export function setFormState(state) {
 export function getFormState() {
   return getContext("lib:form:form-state") as any;
 }
+
+
+export function setFieldState(state: FormField<any>) {
+  setContext("lib:form:field-state", state);
+}
+
+export function getFieldState<T = any>() {
+  return getContext("lib:form:field-state") as FormField<T>;
+}
+

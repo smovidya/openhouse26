@@ -60,7 +60,7 @@
           <input type="checkbox" name="{id}-hasother" bind:checked={useOther} />
           <span>อื่นๆ (โปรดระบุ)</span>
         </div>
-        <CutoutBox class="p-0! rounded-lg! mt-1">
+        <CutoutBox class="p-0! rounded-lg! mt-2">
           <input
             type="text"
             name="{id}-other"

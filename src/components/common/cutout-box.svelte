@@ -12,7 +12,7 @@
 
 <div
   class={clsx(
-    "border-neutral-500 border-1 rounded-xl bg-white p-4 shadow-inner shadow-black/30",
+    "border-neutral-400 border-1 rounded-xl bg-white p-4 shadow-inner shadow-black/20",
     clazz,
   )}
 >
