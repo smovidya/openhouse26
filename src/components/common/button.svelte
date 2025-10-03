@@ -8,28 +8,44 @@
      * Label for the button
      */
     children?: Snippet;
+    href?: string;
     color?: "yellow";
   }
 
   const {
     children,
     color = "yellow",
+    href,
     class: clazz,
     ...props
   }: Props & HTMLAttributes<HTMLButtonElement> = $props();
 </script>
 
-<button
-  type="button"
-  class={clsx(
-    "w-full py-3 rounded-xl border border-[#fff4da64] shadow-lg shadow-black/30 cursor-pointer",
-    color,
-    clazz
-  )}
-  {...props}
->
-  {@render children?.()}
-</button>
+{#if href}
+  <a
+    {href}
+    class={clsx(
+      "w-full text-center py-3 rounded-xl border border-[#fff4da64] shadow-lg shadow-black/30 cursor-pointer",
+      color,
+      clazz,
+    )}
+    {...props as any}
+  >
+    {@render children?.()}
+  </a>
+{:else}
+  <button
+    type="button"
+    class={clsx(
+      "w-full text-center py-3 rounded-xl border border-[#fff4da64] shadow-lg shadow-black/30 cursor-pointer",
+      color,
+      clazz,
+    )}
+    {...props}
+  >
+    {@render children?.()}
+  </button>
+{/if}
 
 <style>
   .yellow {
