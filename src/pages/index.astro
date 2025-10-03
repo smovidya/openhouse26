@@ -1,6 +1,7 @@
 ---
-import Layout from "../layouts/Base.astro";
-import LoginButton from "../components/login-button.svelte";
+import Layout from "../layouts/ContentLayout.astro";
+import { Image } from "astro:assets";
+import Logo from "@src/assets/logo.png";
 ---
 
 <Layout
@@ -8,5 +9,7 @@ import LoginButton from "../components/login-button.svelte";
   description="งาน Open House คณะวิทยาศาสตร์ จุฬาลงกรณ์มหาวิทยาลัย 2566"
   image="/og-image.png"
 >
-  <LoginButton client:load />
+  <div>
+    <Image src={Logo} alt="Logo" class="mx-auto my-8 w-48" loading="lazy" />
+  </div>
 </Layout>
