@@ -33,7 +33,6 @@
   ];
 
   interface Props {}
-
   let {}: Props = $props();
 
   const form = createForm(() => ({
@@ -158,7 +157,7 @@
     <form.Field
       name="age"
       validators={{
-        onChange: z.number().min(0, "ไม่เกิดที").max(200, "ไม่เชื่อ โม้"),
+        onChange: z.number("กรุณากรอกอายุ").min(0, "ไม่เกิดที").max(200, "ไม่เชื่อ โม้"),
       }}
     >
       {#snippet children(field)}
@@ -342,7 +341,7 @@
           {/snippet}
         </form.Field>
 
-        {#if showOther.current}
+        {#if showOther2.current}
           <form.Field name="whyJoinThisOther">
             {#snippet children(field)}
               <CutoutBox class="p-0! rounded-lg! -mt-2">
@@ -354,7 +353,7 @@
                   }
                   onblur={field.handleBlur}
                   class="w-full p-2 rounded-lg outline-blue-500 outline-offset-2"
-                  placeholder=""
+                  placeholder="ช่องทาง"
                 />
               </CutoutBox>
               <!-- {@render fieldError(field.state.meta.errors.map((it: any) => it?.message ?? "").join(", "))} -->
@@ -396,7 +395,7 @@
                 }
                 onblur={field.handleBlur}
                 class="w-full p-2 rounded-lg outline-blue-500 outline-offset-2"
-                placeholder=""
+                placeholder="ช่องทาง"
               />
             </CutoutBox>
             <!-- {@render fieldError(field.state.meta.errors.map((it: any) => it?.message ?? "").join(", "))} -->
