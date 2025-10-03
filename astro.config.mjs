@@ -16,6 +16,7 @@ export default defineConfig({
       path: "src/workers/index.ts",
       namedExports: [],
     },
+    imageService: "compile",
   }),
   integrations: [
     svelte({
