@@ -4,11 +4,10 @@
 
   interface Props {
     class?: ClassValue;
-    a: number;
     children?: Snippet;
   }
 
-  let { class: clazz, children, a }: Props = $props();
+  let { class: clazz, children }: Props = $props();
 </script>
 
 <div
