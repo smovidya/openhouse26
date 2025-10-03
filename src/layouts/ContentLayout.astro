@@ -24,4 +24,12 @@ const { title, description, image } = Astro.props;
       <slot />
     </div>
   </main>
+  <footer>
+    <div
+      class="container text-white/40 max-w-3xl mx-auto px-4 py-4 text-center text-sm"
+    >
+      <a href="/info/privacy-policy">นโยบายข้อมูลส่วนบุคคล</a> |{" "}
+      <a href="/info/terms-of-service">ข้อกำหนดการให้บริการ</a>
+    </div>
+  </footer>
 </Base>
