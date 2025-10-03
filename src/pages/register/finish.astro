@@ -1,0 +1,27 @@
+---
+import { Image } from "astro:assets";
+import Layout from "../../layouts/ContentLayout.astro";
+import Logo from "@src/assets/logo.png";
+import Button from "@src/components/common/button.svelte";
+
+---
+
+<Layout
+  title="ลงทะเบียนสำเร็จ"
+  description="งาน Open House คณะวิทยาศาสตร์ จุฬาลงกรณ์มหาวิทยาลัย 2566"
+  image="/og-image.png"
+>
+  <main class="flex flex-col items-center text-white text-center font-serif">
+    <Image src={Logo} alt="Logo" class="mx-auto mt-10 w-36" loading="eager" />
+    <h2 class="font-sans text-2xl mt-16">ลงทะเบียนเข้าร่วมงานสำเร็จ!</h2>
+
+    <p class="text-sm mt-4">
+      แสดงคิวอาร์โค้ดกับสตาฟในวันงานเพื่อเช็คอินเข้างานและทำกิจกรรมต่าง ๆ
+      ในวันที่ 18 - 19 ตุลาคม
+    </p>
+
+    <Button class="mt-16">
+      ไปยังหน้า MyID
+    </Button>
+  </main>
+</Layout>
