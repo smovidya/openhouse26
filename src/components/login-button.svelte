@@ -1,8 +1,11 @@
 <script>
   import { authClientSvelte } from "@src/auth/client";
+  import Button from "./common/button.svelte";
+
+  const { children } = $props();
 </script>
 
-<button
+<Button
   onclick={async () => {
     await authClientSvelte.signIn.social({
       provider: "google",
@@ -10,5 +13,5 @@
     });
   }}
 >
-  ลงทะเบียนเข้าร่วมกิจกรรม
-</button>
+  {@render children?.()}
+</Button>

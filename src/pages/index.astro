@@ -3,10 +3,22 @@ import Layout from "../layouts/ContentLayout.astro";
 import { Image } from "astro:assets";
 import Logo from "@src/assets/logo.png";
 
+import LoginButton from "@src/components/login-button.svelte";
 import Button from "@src/components/common/button.svelte";
 
 const user = Astro.locals.user;
 ---
+
+<script>
+  import { authClient } from "@src/auth/client";
+
+  async function signInWithGoogle() {
+    await authClient.signIn.social({
+      provider: "google",
+      callbackURL: "/my", // MyID page
+    });
+  }
+</script>
 
 <Layout
   title="หน้าหลัก"
@@ -31,10 +43,10 @@ const user = Astro.locals.user;
           <span>คุณล็อกอินแล้ว ดำเนินการต่อ</span>
         </Button>
       ) : (
-        <Button client:load>
+        <LoginButton client:load>
           <span class="flex flex-col items-center text-2xl">ลงทะเบียนเลย</span>
           <span> ล็อกอินด้วย Google </span>
-        </Button>
+        </LoginButton>
       )
     }
   </div>
