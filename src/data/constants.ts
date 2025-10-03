@@ -4,40 +4,39 @@ export const project = {
 };
 
 export const featureFlags = {
-  signup: true,
+  signup: new Date() > new Date("2025-10-04T17:59:59+07:00"),
   login: true,
-  workshopRegistration: new Date() < new Date("2025-10-06T09:00:00+07:00"),
+  workshopRegistration: new Date() > new Date("2025-10-06T09:00:00+07:00"),
 };
-
 
 export const howDidYouKnowUsOptions = [
   {
     value: "friend",
-    label: "เพื่อน/ผู้ปกครอง/คนรู้จัก"
+    label: "เพื่อน/ผู้ปกครอง/คนรู้จัก",
   },
   {
     value: "social-media-other",
-    label: "สื่อสังคมออนไลน์ (ที่ไม่ใช่ของงาน) เฟซบุ๊ก อินสตาแกรม ฯลฯ"
+    label: "สื่อสังคมออนไลน์ (ที่ไม่ใช่ของงาน) เฟซบุ๊ก อินสตาแกรม ฯลฯ",
   },
 
   {
     value: "social-media-official",
-    label: "สื่อสังคมออนไลน์ของงาน (IG: smovidya)"
+    label: "สื่อสังคมออนไลน์ของงาน (IG: smovidya)",
   },
 
   {
     value: "dekd",
-    label: "DekD"
+    label: "DekD",
   },
 
   {
     value: "camphub",
-    label: "CampHub"
+    label: "CampHub",
   },
 
   {
     value: "ads",
-    label: "ป้ายโฆษณา (ที่ต่าง ๆ)"
+    label: "ป้ายโฆษณา (ที่ต่าง ๆ)",
   },
 ];
 
@@ -54,4 +53,4 @@ export const participantStatus = [
   "อื่นๆ",
 ] as const;
 
-export type ParticipantStatus = typeof participantStatus[number];
+export type ParticipantStatus = (typeof participantStatus)[number];
