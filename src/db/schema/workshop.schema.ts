@@ -29,6 +29,7 @@ export const workshopTimeSlots = sqliteTable("workshop_time_slots", {
     .text("workshop_id")
     .notNull()
     .references(() => workshops.id),
+  roundNumber: t.int("round_number").notNull(),
   startTime: t.text("start_time").notNull(),
   endTime: t.text("end_time").notNull(),
   date: t.int("date", {
