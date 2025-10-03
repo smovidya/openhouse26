@@ -1,10 +1,11 @@
 ---
 import Layout from "../layouts/ContentLayout.astro";
 import { Image } from "astro:assets";
-import Logo from "@src/assets/logo.png";
 
 import LoginButton from "@src/components/login-button.svelte";
 import Button from "@src/components/common/button.svelte";
+
+import { featureFlags } from "@src/data/constants";
 
 const user = Astro.locals.user;
 ---
@@ -26,14 +27,19 @@ const user = Astro.locals.user;
   image="/og-image.png"
 >
   <div class="flex flex-col items-center">
-    <Image src={Logo} alt="Logo" class="mx-auto my-8 w-48" loading="lazy" />
+    <img src="/logo.png" alt="Logo" class="mx-auto my-8 w-48" loading="lazy" />
     <h1 class="text-4xl text-center">Science Chula Openhouse 2026</h1>
-    <p class="mt-4 text-center max-w-2xl p-5">
-      มาเถิดมาภารดาจุฬาฯ ทุกแหล่ง มาร่วมแรงร่วมรักและสามัคคี อาวุโสเทิดไว้
-      น้ำใจระเบียบเรานี้ พร้อมประเพณีเสริมให้มีแต่วัฒนา สีชมพู
-      เชิดชูไว้คู่แดนไทย แสนยิ่งใหญ่และเกรียงไกรในวิทยา น้องพี่เราล้วนยิ้มแย้ม
-      พักตร์แจ่มหฤหรรษา ยึดมั่นอุดมการณ์มาเพื่อผองประชาชาติไทยทั้งมวล
-    </p>
+    {
+      !featureFlags.signup && (
+        <div class="flex flex-col items-center mt-2 text-center">
+          <span> 18-19 พฤศจิกายน 2568 | จามจุรีสแควร์ </span>
+          <div class="my-5 text-2xl">
+            Coming Soon! เปิดลงทะเบียน 4 ตุลาคม 18:00 น. ที่นี่
+          </div>
+        </div>
+      )
+    }
+
     {
       user ? (
         <Button href="/my" client:load>
@@ -42,12 +48,12 @@ const user = Astro.locals.user;
           </span>
           <span>คุณล็อกอินแล้ว ดำเนินการต่อ</span>
         </Button>
-      ) : (
+      ) : featureFlags.signup ? (
         <LoginButton client:load>
           <span class="flex flex-col items-center text-2xl">ลงทะเบียนเลย</span>
           <span> ล็อกอินด้วย Google </span>
         </LoginButton>
-      )
+      ) : null
     }
   </div>
 </Layout>
