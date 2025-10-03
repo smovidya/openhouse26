@@ -2,6 +2,10 @@
 import Layout from "../layouts/ContentLayout.astro";
 import { Image } from "astro:assets";
 import Logo from "@src/assets/logo.png";
+
+import Button from "@src/components/button.svelte";
+
+const user = Astro.locals.user;
 ---
 
 <Layout
@@ -9,7 +13,29 @@ import Logo from "@src/assets/logo.png";
   description="งาน Open House คณะวิทยาศาสตร์ จุฬาลงกรณ์มหาวิทยาลัย 2566"
   image="/og-image.png"
 >
-  <div>
+  <div class="flex flex-col items-center">
     <Image src={Logo} alt="Logo" class="mx-auto my-8 w-48" loading="lazy" />
+    <h1 class="text-4xl text-center">Science Chula Openhouse 2026</h1>
+    <p class="mt-4 text-center max-w-2xl p-5">
+      มาเถิดมาภารดาจุฬาฯ ทุกแหล่ง มาร่วมแรงร่วมรักและสามัคคี อาวุโสเทิดไว้
+      น้ำใจระเบียบเรานี้ พร้อมประเพณีเสริมให้มีแต่วัฒนา สีชมพู
+      เชิดชูไว้คู่แดนไทย แสนยิ่งใหญ่และเกรียงไกรในวิทยา น้องพี่เราล้วนยิ้มแย้ม
+      พักตร์แจ่มหฤหรรษา ยึดมั่นอุดมการณ์มาเพื่อผองประชาชาติไทยทั้งมวล
+    </p>
+    {
+      user ? (
+        <Button href="/my" client:load>
+          <span class="flex flex-col items-center text-2xl">
+            ไปที่หน้า MyID
+          </span>
+          <span>คุณล็อกอินแล้ว ดำเนินการต่อ</span>
+        </Button>
+      ) : (
+        <Button client:load>
+          <span class="flex flex-col items-center text-2xl">ลงทะเบียนเลย</span>
+          <span> ล็อกอินด้วย Google </span>
+        </Button>
+      )
+    }
   </div>
 </Layout>
