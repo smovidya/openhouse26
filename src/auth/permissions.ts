@@ -80,5 +80,3 @@ export const roles = {
   workshopStaff,
   rewardStaff,
 };
-
-export const roleList = Object.keys(roles) as (keyof typeof roles)[];
