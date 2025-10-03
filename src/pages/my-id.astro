@@ -1,0 +1,78 @@
+---
+import { Image } from "astro:assets";
+import Layout from "../layouts/ContentLayout.astro";
+import MyIdHeader from "@src/assets/my-id-header.png";
+---
+
+<Layout
+  title="หน้าหลัก"
+  description="งาน Open House คณะวิทยาศาสตร์ จุฬาลงกรณ์มหาวิทยาลัย 2566"
+  image="/og-image.png"
+>
+  <div>
+    <!-- TODO: resize this -->
+    <Image src={MyIdHeader} alt="MyId" class="w-screen max-w-100 mx-auto" />
+  </div>
+
+  <main class="font-serif text-sm">
+    <section
+      class="bg-amber-400 rounded-xl w-78 shadow-lg shadow-black/40 mt-4 mx-auto"
+    >
+      <div>
+        <p class="leading-5 text-center px-2 pt-14 pb-1 text-amber-900/60">
+          สามารถกดค้างที่ QR เพื่อบันทึกลงในอุปกรณ์ได้
+        </p>
+      </div>
+      <div class="flex flex-col items-center p-10 pb-3 bg-slate-700">
+        <div class="aspect-square w-48 bg-slate-500 text-white">qrcode</div>
+        <h3 class="text-xl mt-2 font-medium">พัสกร ยืนยง</h3>
+        <h3 class="font-medium">ID: UI490</h3>
+      </div>
+      <div class="p-3">
+        <button
+          class="block text-center mx-auto py-2 rounded-lg w-48 bg-red-50"
+        >
+          แก้ไขข้อมูล
+        </button>
+      </div>
+    </section>
+  </main>
+
+  <section class="text-blue-200 font-serif text-sm mt-12">
+    <h2 class="text-xl text-white text-center font-sans">
+      เงื่อนไขการลงทะเบียนเวิร์กช็อป
+    </h2>
+    <ol class="list-decimal pl-4 mt-2">
+      <li>
+        ผู้เข้าร่วมสามารถเลือกได้สูงสุด 2 รอบ
+        <span class="text-amber-300">
+          *แต่ต้องเป็นคนละภาควิชา ห้ามลงภาควิชาเดิมซ้ำ*
+        </span>
+      </li>
+      <li>
+        ไม่สามารถลง Workshop ที่เวลาติดกันทันทีได้ ต้องเว้นอย่างน้อย 60 นาที
+      </li>
+      <li>
+        ผู้เข้าร่วมสามารถลงทะเบียนก่อนเริ่มกิจกรรม 15 นาที
+        และลงทะเบียนที่บูทของรอบนั้นโดยใช้ระยะเวลาลงทะเบียน 10 นาที <br />
+        <span class="font-bold text-blue-50">ตัวอย่าง</span> รอบ 9:00 น. ต้องลงทะเบียนระหว่าง
+        8:45 - 8.55 น. เท่านั้น
+      </li>
+    </ol>
+  </section>
+
+  <section class="mt-8 text-sm text-blue-300/85 font-serif">
+    <h2 class="text-2xl text-white">
+      My workshops
+    </h2>
+    <div class="flex justify-between text-md">
+      <span>
+        เวิร์กช็อปที่ลงทะเบียนแล้ว (2/3)
+      </span>
+      <a href="" class="underline underline-offset-2">ดูทั้งหมด →</a>
+    </div>
+
+  </section>
+</Layout>
+
+<style></style>
