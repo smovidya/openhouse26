@@ -13,11 +13,12 @@ function onlyDevelopment() {
 export default {
   setMyRole: defineAction({
     input: z.object({
-      role: z.enum(roleList),
+      role: z.string().refine((val) => roleList.includes(val as any), {
+        message: "Invalid role",
+      }),
     }),
-    handler: async (input, context) => {
+    handler: async (input, ctx) => {
       onlyDevelopment();
-      input.role == "";
     },
   }),
 };
