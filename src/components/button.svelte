@@ -14,7 +14,7 @@
   const {
     children,
     color,
-    class: clazz,
+    class: clazz = "yellow",
     ...props
   }: Props & HTMLAttributes<HTMLButtonElement> = $props();
 </script>
@@ -22,9 +22,9 @@
 <button
   type="button"
   class={clsx(
-    "w-full p-4 rounded-xl border border-[#fff4da64] shadow-lg shadow-black/30",
+    "w-full py-3 rounded-xl border border-[#fff4da64] shadow-lg shadow-black/30 cursor-pointer",
     color,
-    clazz,
+    clazz
   )}
   {...props}
 >
@@ -42,7 +42,8 @@
       #ffb53d 100%
     );
 
-    &:hover, &:active {
+    &:hover,
+    &:active {
       background: linear-gradient(
         180deg,
         #ea9200 1.58%,
