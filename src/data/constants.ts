@@ -54,3 +54,23 @@ export const participantStatus = [
 ] as const;
 
 export type ParticipantStatus = (typeof participantStatus)[number];
+
+
+export const whyJoinThisOptions = [
+  {
+    value: "come-with-student",
+    label: "มากับนักเรียน/นักศึกษา"
+  },
+  {
+    value: "look-around-university",
+    label: "ดูสถานที่และบรรยากาศในมหาวิทยาลัย"
+  },
+  {
+    value: "learn-about-curriculum",
+    label: "ศึกษาข้อมูลหลักสูตร"
+  },
+  {
+    value: "interested-in-further-study",
+    label: "สนใจศึกษาต่อ"
+  }
+];

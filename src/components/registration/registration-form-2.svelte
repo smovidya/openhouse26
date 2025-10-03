@@ -2,6 +2,7 @@
   import {
     howDidYouKnowUsOptions,
     participantStatus,
+    whyJoinThisOptions,
     type ParticipantStatus,
   } from "@src/data/constants";
   import { createForm } from "@tanstack/svelte-form";
@@ -23,6 +24,14 @@
     },
   ];
 
+  const whyJoinThisOptions2 = [
+    ...whyJoinThisOptions,
+    {
+      value: "other",
+      label: "อื่นๆ (โปรดระบุ)",
+    },
+  ];
+
   interface Props {}
 
   let {}: Props = $props();
@@ -36,6 +45,10 @@
       province: "0",
       howDidYouKnowUs: [] as string[],
       howDidYouKnowUsOther: "",
+
+      whyJoinThis: [] as string[],
+      whyJoinThisOther: "",
+
       reason: "",
       status: "" as ParticipantStatus | "",
       school: "",
@@ -59,6 +72,10 @@
   );
   const showOther = form.useStore((it) =>
     it.values.howDidYouKnowUs.includes("other"),
+  );
+
+  const showOther2 = form.useStore((it) =>
+    it.values.whyJoinThis.includes("other"),
   );
 
   const onsubmit: EventHandler<SubmitEvent, HTMLFormElement> = (event) => {
@@ -302,6 +319,48 @@
             {@render fieldError(field.state.meta.errors.join(", "))}
           {/snippet}
         </form.Field>
+      {:else}
+        <form.Field
+          name="whyJoinThis"
+          validators={{
+            onChange: z.string().array().min(1, "กรุณาเลือกอย่างน้อย 1 ข้อ"),
+          }}
+        >
+          {#snippet children(field)}
+            <Checkboxes
+              title="ท่านทราบและติดตามข่าวสารเกี่ยวกับงานผ่านช่องทางใดบ้าง(เลือกหลายคำตอบ)"
+              options={whyJoinThisOptions2}
+              bind:selected={
+                () => field.state.value, (value) => field.handleChange(value)
+              }
+            />
+            {@render fieldError(
+              field.state.meta.errors
+                .map((it: any) => it?.message ?? "")
+                .join(", "),
+            )}
+          {/snippet}
+        </form.Field>
+
+        {#if showOther.current}
+          <form.Field name="whyJoinThisOther">
+            {#snippet children(field)}
+              <CutoutBox class="p-0! rounded-lg! -mt-2">
+                <input
+                  name={field.name}
+                  bind:value={
+                    () => field.state.value,
+                    (value) => field.handleChange(value)
+                  }
+                  onblur={field.handleBlur}
+                  class="w-full p-2 rounded-lg outline-blue-500 outline-offset-2"
+                  placeholder=""
+                />
+              </CutoutBox>
+              <!-- {@render fieldError(field.state.meta.errors.map((it: any) => it?.message ?? "").join(", "))} -->
+            {/snippet}
+          </form.Field>
+        {/if}
       {/if}
 
       <form.Field
