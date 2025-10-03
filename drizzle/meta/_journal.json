@@ -15,6 +15,13 @@
       "when": 1759299549171,
       "tag": "0001_graceful_mikhail_rasputin",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1759513983017,
+      "tag": "0002_black_revanche",
+      "breakpoints": true
     }
   ]
 }
