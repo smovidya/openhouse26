@@ -5,8 +5,8 @@ import type {
 import { betterAuth } from "better-auth";
 import { withCloudflare } from "better-auth-cloudflare";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
-import { drizzle } from "drizzle-orm/d1";
-import { schema } from "../db/schema";
+import { drizzle, DrizzleD1Database } from "drizzle-orm/d1";
+import { schema } from "@src/db";
 import { admin, anonymous, oneTap } from "better-auth/plugins";
 import {
   admin as adminRole,
@@ -21,9 +21,9 @@ import {
 // Single auth configuration that handles both CLI and runtime scenarios
 function createAuth(env?: Env, cf?: IncomingRequestCfProperties) {
   // Use actual DB for runtime, empty object for CLI
-  const db = env
-    ? drizzle(env.openhouse26_db, { schema, logger: true })
-    : ({} as any);
+  const db = (
+    env ? drizzle(env.openhouse26_db, { schema, logger: true }) : ({} as any)
+  ) as DrizzleD1Database<typeof schema>;
 
   return betterAuth({
     ...withCloudflare(
@@ -88,9 +88,16 @@ function createAuth(env?: Env, cf?: IncomingRequestCfProperties) {
           }),
           anonymous({
             emailDomainName: "anon.vidyachula.org",
+            // async onLinkAccount({ anonymousUser, newUser }) {
+            //   await db.update(schema.users).set({
+            //   })
+            // },
           }),
           oneTap(),
         ],
+        disabledPaths: [
+          import.meta.env.DEV ? null : "/sign-in/anonymous",
+        ].filter(Boolean),
         socialProviders: {
           google: {
             prompt: "select_account",
