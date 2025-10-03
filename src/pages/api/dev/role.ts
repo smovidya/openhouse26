@@ -6,6 +6,9 @@ import { eq } from "drizzle-orm";
 export const prerender = false;
 
 export const POST: APIRoute = async (ctx) => {
+  if (!import.meta.env.DEV) {
+    return new Response("Not Found", { status: 404 });
+  }
   const validRoles = Object.keys(roles);
   const body = await ctx.request.json<{
     role: string | null | undefined;
