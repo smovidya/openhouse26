@@ -3,30 +3,37 @@ import * as t from "drizzle-orm/sqlite-core";
 import { id, timestamps } from "./helper";
 import { users } from "./auth.schema";
 import { relations } from "drizzle-orm";
+import { workshopRegistrations } from "./workshop.schema";
 
-export const participants = sqliteTable("participant", {
+export const participants = sqliteTable("participants", {
   ...id,
-  userId: t.text().notNull(),
-  givenName: t.text().notNull(),
-  familyName: t.text().notNull(),
-  ags: t.int().notNull(),
-  specialNeed: t.text().notNull(),
-  residentProvince: t.text().notNull(),
-  attendeeType: t.text().notNull(),
-  school: t.text(),
-  questions: t.text(), // Serialized JSON string for analytical questions
-  emergencyContactName: t.text(),
-  emergencyContactPhone: t.text(),
-  emergencyContactRelation: t.text(),
+  userId: t
+    .text("user_id")
+    .notNull()
+    .references(() => users.id),
+  givenName: t.text("given_name").notNull(),
+  familyName: t.text("family_name").notNull(),
+  ags: t.int("ags").notNull(),
+  specialNeed: t.text("special_need").notNull(),
+  residentProvince: t.text("resident_province").notNull(),
+  attendeeType: t.text("attendee_type").notNull(),
+  school: t.text("school"),
+  questions: t.text("questions"), // Serialized JSON string for analytical questions
+  emergencyContactName: t.text("emergency_contact_name"),
+  emergencyContactPhone: t.text("emergency_contact_phone"),
+  emergencyContactRelation: t.text("emergency_contact_relation"),
   ...timestamps,
 });
 
-export const participantToUserRelations = relations(
+export const participantsRelations = relations(
   participants,
-  ({ one }) => ({
+  ({ one, many }) => ({
     user: one(users, {
-      fields: [participants.id],
+      fields: [participants.userId],
       references: [users.id],
+    }),
+    workshopRegistrations: many(workshopRegistrations, {
+      relationName: "participant_workshop_registrations",
     }),
   })
 );

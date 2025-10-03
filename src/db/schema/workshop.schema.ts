@@ -4,47 +4,64 @@ import { id, timestamps } from "./helper";
 import { relations } from "drizzle-orm";
 import { participants } from "./participant.schema";
 
-export const workshops = sqliteTable("workshop", {
+export const workshops = sqliteTable("workshops", {
   ...id,
-  title: t.text().notNull(),
-  hostDepartment: t.text().notNull(),
-  hostDepartmentAbbr: t.text().notNull(),
-  description: t.text().notNull(),
-  image: t.text().notNull(),
-  capacity: t.int().notNull(),
+  title: t.text("title").notNull(),
+  hostDepartment: t.text("host_department").notNull(),
+  hostDepartmentAbbr: t.text("host_department_abbr").notNull(),
+  description: t.text("description").notNull(),
+  image: t.text("image").notNull(),
+  capacity: t.int("capacity").notNull(),
   ...timestamps,
 });
 
-export const workshopTimeSlots = sqliteTable("workshop_time_slot", {
+export const workshopRelations = relations(workshops, ({ one, many }) => ({
+  workshop: one(workshops, {
+    fields: [workshops.id],
+    references: [workshops.id],
+  }),
+  timeSlots: many(workshopTimeSlots),
+}));
+
+export const workshopTimeSlots = sqliteTable("workshop_time_slots", {
   ...id,
-  startTime: t.text().notNull(),
-  endTime: t.text().notNull(),
-  date: t.int({
+  workshopId: t
+    .text("workshop_id")
+    .notNull()
+    .references(() => workshops.id),
+  startTime: t.text("start_time").notNull(),
+  endTime: t.text("end_time").notNull(),
+  date: t.int("date", {
     mode: "timestamp",
   }),
 });
-
-export const workshopRelations = relations(workshops, ({ many }) => ({
-  timeSlots: many(workshopTimeSlots),
-}));
 
 export const workshopTimeSlotRelations = relations(
   workshopTimeSlots,
   ({ one, many }) => ({
     workshop: one(workshops, {
-      fields: [workshopTimeSlots.id],
+      fields: [workshopTimeSlots.workshopId],
       references: [workshops.id],
     }),
-    participants: many(participants),
+    registrations: many(workshopRegistrations),
   })
 );
 
 // Workshop Registration Table
-export const workshopRegistrations = sqliteTable("workshop_registration", {
+export const workshopRegistrations = sqliteTable("workshop_registrations", {
   ...id,
-  participantId: t.text().notNull(),
-  timeSlotId: t.text().notNull(),
-  registrationType: t.text().notNull(), // e.g., "pre-registration", "on-site"
+  participantId: t
+    .text("participant_id")
+    .notNull()
+    .references(() => participants.id),
+  timeSlotId: t
+    .text("time_slot_id")
+    .notNull()
+    .references(() => workshopTimeSlots.id),
+  registrationType: t.text("registration_type").notNull(), // e.g., "pre-registration", "on-site"
+  isParticipated: t
+    .integer("is_participated", { mode: "boolean" })
+    .default(false),
   ...timestamps,
 });
 
@@ -58,6 +75,7 @@ export const workshopRegistrationsRelations = relations(
     timeSlot: one(workshopTimeSlots, {
       fields: [workshopRegistrations.timeSlotId],
       references: [workshopTimeSlots.id],
+      relationName: "registration_time_slot",
     }),
   })
 );

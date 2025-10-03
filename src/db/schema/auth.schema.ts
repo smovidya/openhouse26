@@ -1,6 +1,7 @@
 import { relations, sql } from "drizzle-orm";
 import { sqliteTable, text, integer } from "drizzle-orm/sqlite-core";
 import { participants } from "./participant.schema";
+import { staffs } from "./staff.schema";
 
 export const users = sqliteTable("users", {
   id: text("id").primaryKey(),
@@ -28,6 +29,12 @@ export const usersRelations = relations(users, ({ one }) => ({
   participantAccount: one(participants, {
     fields: [users.id],
     references: [participants.userId],
+    relationName: "participant_account",
+  }),
+  staffAccount: one(staffs, {
+    fields: [users.id],
+    references: [staffs.userId],
+    relationName: "staff_account",
   }),
 }));
 
