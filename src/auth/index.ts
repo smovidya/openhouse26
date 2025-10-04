@@ -74,6 +74,7 @@ function createAuth(env?: Env, cf?: IncomingRequestCfProperties) {
         },
         rateLimit: {
           enabled: true,
+          window: 60
         },
         plugins: [
           admin({
