@@ -14,7 +14,7 @@ export function createExports(manifest: SSRManifest) {
   return {
     default: {
       async fetch(request, env, ctx) {
-        return handle(manifest, app, request, env, ctx);
+        return handle(manifest, app, request as any, env as any, ctx);
       },
     } satisfies ExportedHandler<Env>,
     MyDurableObject: MyDurableObject,
