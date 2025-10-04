@@ -2,7 +2,6 @@
 import Logo from "@src/assets/logo.png";
 import Button from "@src/components/common/button.svelte";
 import Layout from "../../layouts/ContentLayout.astro";
-
 ---
 
 <Layout
@@ -10,17 +9,17 @@ import Layout from "../../layouts/ContentLayout.astro";
   description="งาน Open House คณะวิทยาศาสตร์ จุฬาลงกรณ์มหาวิทยาลัย 2566"
   image="/og-image.png"
 >
-  <main class="flex flex-col items-center text-white text-center font-serif">
+  <main class="flex flex-col items-center text-white text-center">
     <img src={Logo.src} alt="Logo" class="mx-auto mt-10 w-36" />
-    <h2 class="font-sans text-2xl mt-16">ลงทะเบียนเข้าร่วมงานสำเร็จ!</h2>
+    <h2 class="font-serif font-bold text-2xl mt-16">
+      ลงทะเบียนเข้าร่วมงานสำเร็จ!
+    </h2>
 
-    <p class="text-sm mt-4 text-blue-200">
+    <p class="mt-4 text-blue-200">
       แสดงคิวอาร์โค้ดกับสตาฟในวันงานเพื่อเช็คอินเข้างานและทำกิจกรรมต่าง ๆ
       ในวันที่ 18 - 19 ตุลาคม
     </p>
 
-    <Button class="mt-16" href="/my-id">
-      ไปยังหน้า MyID
-    </Button>
+    <Button class="mt-16" href="/my-id"> ไปยังหน้า MyID </Button>
   </main>
 </Layout>
