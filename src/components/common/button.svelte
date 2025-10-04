@@ -27,9 +27,9 @@
     {href}
     {disabled}
     class={clsx(
-      "w-full text-center py-3 rounded-xl border border-[#fff4da64] shadow-lg shadow-black/30 cursor-pointer",
+      "w-full text-shadow-2xs text-center py-3 rounded-xl border border-[#fff4da64] shadow-xs shadow-black/30 cursor-pointer",
       color,
-      clazz,
+      clazz
     )}
     {...props as any}
   >
@@ -40,9 +40,9 @@
     {disabled}
     type="button"
     class={clsx(
-      "w-full text-center py-3 rounded-xl border border-[#fff4da64] shadow-lg shadow-black/30 cursor-pointer",
+      "w-full text-center py-3 rounded-xl border border-[#fff4da64] shadow-xs shadow-black/30 cursor-pointer",
       color,
-      clazz,
+      clazz
     )}
     {...props}
   >
@@ -72,9 +72,8 @@
         #e99100 98.42%
       );
     }
-
   }
-  
+
   button:disabled {
     filter: grayscale();
     cursor: not-allowed;
