@@ -109,6 +109,10 @@ function createAuth(env?: Env, cf?: IncomingRequestCfProperties) {
         },
       }
     ),
+    rateLimit: {
+      enabled: true,
+      ttl: 120
+    },
     // Only add database adapter for CLI schema generation
     ...(env
       ? {}
