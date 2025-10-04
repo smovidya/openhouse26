@@ -36,8 +36,8 @@
 </script>
 
 <section class={clsx("flex gap-6 justify-center", className)}>
-  <div class="flex flex-col gap-2">
-    <CutoutBox class="w-16 rounded-lg! h-15 p-0! flex items-center justify-center">
+  <div class="flex flex-col gap-2 flex-1 max-w-16">
+    <CutoutBox class="rounded-lg! h-15 p-0! flex items-center justify-center">
       <span class="text-black text-3xl font-bold font-serif">
         {diff.days}
       </span>
@@ -45,8 +45,8 @@
     <span class="text-sm"> วัน </span>
   </div>
 
-  <div class="flex flex-col gap-2">
-    <CutoutBox class="w-16 rounded-lg! h-15 p-0! flex items-center justify-center">
+  <div class="flex flex-col gap-2 flex-1 max-w-16">
+    <CutoutBox class="rounded-lg! h-15 p-0! flex items-center justify-center">
       <span class="text-black text-3xl font-bold font-serif">
         {diff.hours}
       </span>
@@ -54,8 +54,8 @@
     <span class="text-sm"> ชั่วโมง </span>
   </div>
 
-  <div class="flex flex-col gap-2">
-    <CutoutBox class="w-16 rounded-lg! h-15 p-0! flex items-center justify-center">
+  <div class="flex flex-col gap-2 flex-1 max-w-16">
+    <CutoutBox class="rounded-lg! h-15 p-0! flex items-center justify-center">
       <span class="text-black text-3xl font-bold font-serif">
         {diff.minutes}
       </span>
@@ -63,8 +63,8 @@
     <span class="text-sm"> นาที </span>
   </div>
 
-  <div class="flex flex-col gap-2">
-    <CutoutBox class="w-16 rounded-lg! h-15 p-0! flex items-center justify-center">
+  <div class="flex flex-col gap-2 flex-1 max-w-16">
+    <CutoutBox class="rounded-lg! h-15 p-0! flex items-center justify-center">
       <span class="text-black text-3xl font-bold font-serif">
         {diff.seconds}
       </span>
