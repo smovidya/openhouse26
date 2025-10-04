@@ -28,6 +28,10 @@
   const set = (index: number) => (value: string) => {
     // console.log({ value });
     // if (index < selectedIds.length) {
+    const existing = selectedIds.indexOf(value);
+    if (existing != -1) {
+      selectedIds[existing] = "none";
+    }
     selectedIds[index] = value;
     // } else {
     //   selectedIds.push(value);
