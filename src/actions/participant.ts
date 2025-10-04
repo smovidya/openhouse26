@@ -45,7 +45,6 @@ export const registerParticipant = defineAction({
       });
     }
 
-
     let isExisted;
 
     try {
