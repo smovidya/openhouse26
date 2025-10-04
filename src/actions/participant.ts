@@ -16,7 +16,7 @@ export const amIRegistered = defineAction({
     let isExisted = false;
 
     try {
-      isExisted = !(await participantModel.getParticipantByUserId(
+      isExisted = !!(await participantModel.getParticipantByUserId(
         ctx.locals.db,
         ctx.locals.user.id
       ));
