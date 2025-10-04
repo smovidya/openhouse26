@@ -1,7 +1,10 @@
 ---
+import NavBar from "../components/navbar.svelte";
 import Layout from "../layouts/Base.astro";
-import CutoutBox from "../components/common/cutout-box.svelte";
-import Button from "../components/common/button.svelte";
+
+if (!import.meta.env.DEV) {
+  Astro.redirect("/");
+}
 ---
 
 <Layout
@@ -9,10 +12,6 @@ import Button from "../components/common/button.svelte";
   description="งาน Open House คณะวิทยาศาสตร์ จุฬาลงกรณ์มหาวิทยาลัย 2566"
   image="/og-image.png"
 >
-  <div class="p-5 bg-black">
-    <CutoutBox />
-    <Button color="yellow">
-      asds
-    </Button>
-  </div>
+  <div class="h-4"></div>
+  <NavBar class="" />
 </Layout>
