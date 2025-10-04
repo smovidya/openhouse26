@@ -6,8 +6,12 @@ import LoginButton from "@src/components/login-button.svelte";
 import Button from "@src/components/common/button.svelte";
 
 import { featureFlags } from "@src/data/constants";
+import { actions } from "astro:actions";
 
 const user = Astro.locals.user;
+
+const { data } = await Astro.callAction(actions.amIRegistered, {});
+const isRegistered = data?.results ?? false;
 ---
 
 <script>
@@ -42,12 +46,21 @@ const user = Astro.locals.user;
 
     {
       user ? (
-        <Button href="/my-id" client:load>
-          <span class="flex flex-col items-center text-2xl">
-            ไปที่หน้า MyID
-          </span>
-          <span>คุณล็อกอินแล้ว ดำเนินการต่อ</span>
-        </Button>
+        isRegistered ? (
+          <Button href="/register" client:load>
+            <span class="flex flex-col items-center text-2xl">
+              ลงทะเบียนเข้าร่วม
+            </span>
+            <span>คุณล็อกอินแล้ว ดำเนินการต่อ</span>
+          </Button>
+        ) : (
+          <Button href="/my-id" client:load>
+            <span class="flex flex-col items-center text-2xl">
+              ไปที่หน้า MyID
+            </span>
+            <span>คุณล็อกอินแล้ว ดำเนินการต่อ</span>
+          </Button>
+        )
       ) : featureFlags.signup ? (
         <LoginButton client:load>
           <span class="flex flex-col items-center text-2xl">ลงทะเบียนเลย</span>
