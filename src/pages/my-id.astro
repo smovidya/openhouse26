@@ -16,10 +16,20 @@ import MyIdHeader from "@src/assets/my-id-header.png";
 
   <main class="font-serif text-sm">
     <section
-      class="bg-amber-400 rounded-xl max-w-78 shadow-lg shadow-black/40 mt-4 mx-auto"
+      class="bg-amber-400 rounded-xl max-w-78 shadow-lg shadow-black/40 mt-4 mx-auto flex flex-col"
     >
       <div>
-        <p class="leading-5 text-center px-2 pt-14 pb-1 text-amber-900/60">
+        <div class="relative flex flex-col items-center">
+          <div class="back-strap absolute bottom-7 ml-9"></div>
+          <div id="yellow-fill" class="absolute top-0 bg-amber-400 h-4 w-23"></div>
+          <div class="front-strap absolute bottom-7 mr-9"></div>
+
+          <div
+            class="z-2 mx-auto h-6 my-4 w-23 bg-blue-700 rounded-full shadow-inner shadow-black/50"
+          >
+          </div>
+        </div>
+        <p class="leading-5 text-center px-2 pb-1 text-amber-900/60">
           สามารถกดค้างที่ QR เพื่อบันทึกลงในอุปกรณ์ได้
         </p>
       </div>
@@ -62,17 +72,26 @@ import MyIdHeader from "@src/assets/my-id-header.png";
   </section>
 
   <section class="mt-8 text-sm text-blue-300/85 font-serif">
-    <h2 class="text-2xl text-white">
-      My workshops
-    </h2>
+    <h2 class="text-2xl text-white">My workshops</h2>
     <div class="flex justify-between text-md">
-      <span>
-        เวิร์กช็อปที่ลงทะเบียนแล้ว (2/3)
-      </span>
+      <span> เวิร์กช็อปที่ลงทะเบียนแล้ว (2/3) </span>
       <a href="" class="underline underline-offset-2">ดูทั้งหมด →</a>
     </div>
-
   </section>
 </Layout>
 
-<style></style>
+<style>
+  .front-strap {
+    width: 2.5rem;
+    height: 6rem;
+    transform: rotate(-22deg);
+    background-color: rgb(182, 222, 233);
+  }
+
+  .back-strap {
+    width: 2.5rem;
+    height: 6rem;
+    transform: rotate(22deg);
+    background-color: rgb(139, 171, 181);
+  }
+</style>
