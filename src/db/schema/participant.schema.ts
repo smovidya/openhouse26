@@ -32,8 +32,6 @@ export const participantsRelations = relations(
       fields: [participants.userId],
       references: [users.id],
     }),
-    workshopRegistrations: many(workshopRegistrations, {
-      relationName: "participant_workshop_registrations",
-    }),
+    workshopRegistrations: many(workshopRegistrations),
   })
 );

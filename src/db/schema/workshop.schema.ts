@@ -15,11 +15,7 @@ export const workshops = sqliteTable("workshops", {
   ...timestamps,
 });
 
-export const workshopRelations = relations(workshops, ({ one, many }) => ({
-  workshop: one(workshops, {
-    fields: [workshops.id],
-    references: [workshops.id],
-  }),
+export const workshopRelations = relations(workshops, ({ many }) => ({
   timeSlots: many(workshopTimeSlots),
 }));
 
@@ -76,7 +72,6 @@ export const workshopRegistrationsRelations = relations(
     timeSlot: one(workshopTimeSlots, {
       fields: [workshopRegistrations.timeSlotId],
       references: [workshopTimeSlots.id],
-      relationName: "registration_time_slot",
     }),
   })
 );
