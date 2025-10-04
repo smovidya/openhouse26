@@ -66,14 +66,14 @@
 
   const status = form.useStore((it) => it.values.status);
   const showDepartmentPicker = $derived(
-    status.current != "ผู้ปกครอง" && status.current != "อื่นๆ",
+    status.current != "ผู้ปกครอง" && status.current != "อื่นๆ"
   );
   const showOther = form.useStore((it) =>
-    it.values.howDidYouKnowUs.includes("other"),
+    it.values.howDidYouKnowUs.includes("other")
   );
 
   const showOther2 = form.useStore((it) =>
-    it.values.whyJoinThis.includes("other"),
+    it.values.whyJoinThis.includes("other")
   );
 
   const onsubmit: EventHandler<SubmitEvent, HTMLFormElement> = (event) => {
@@ -85,8 +85,10 @@
 
 <main>
   <img src={Logo.src} alt="logo" class="size-24" />
-  <h1 class="text-3xl mt-8 font-sans text-white">ลงทะเบียนเข้าร่วมงาน</h1>
-  <h2 class="mt-4 text-xl text-white">ข้อมูลส่วนตัว</h2>
+  <h1 class="text-3xl mt-8 font-serif text-white font-bold">
+    ลงทะเบียนเข้าร่วมงาน
+  </h1>
+  <h2 class="mt-4 text-xl text-white font-serif font-bold">ข้อมูลส่วนตัว</h2>
 
   <form {onsubmit} class="mt-4 space-y-4 text-sm">
     <section class="grid grid-cols-2 gap-x-3 gap-y-1">
@@ -113,7 +115,7 @@
             {@render fieldError(
               field.state.meta.errors
                 .map((it: any) => it?.message ?? "")
-                .join(", "),
+                .join(", ")
             )}
           </label>
         {/snippet}
@@ -142,7 +144,7 @@
             {@render fieldError(
               field.state.meta.errors
                 .map((it: any) => it?.message ?? "")
-                .join(", "),
+                .join(", ")
             )}
           </label>
         {/snippet}
@@ -156,7 +158,10 @@
     <form.Field
       name="age"
       validators={{
-        onChange: z.number("กรุณากรอกอายุ").min(0, "ไม่เกิดที").max(200, "ไม่เชื่อ โม้"),
+        onChange: z
+          .number("กรุณากรอกอายุ")
+          .min(0, "ไม่เกิดที")
+          .max(200, "ไม่เชื่อ โม้"),
       }}
     >
       {#snippet children(field)}
@@ -177,7 +182,7 @@
           {@render fieldError(
             field.state.meta.errors
               .map((it: any) => it?.message ?? "")
-              .join(", "),
+              .join(", ")
           )}
         </label>
       {/snippet}
@@ -283,7 +288,7 @@
               {@render fieldError(
                 field.state.meta.errors
                   .map((it: any) => it?.message ?? "")
-                  .join(", "),
+                  .join(", ")
               )}
             </label>
           {/snippet}
@@ -335,7 +340,7 @@
             {@render fieldError(
               field.state.meta.errors
                 .map((it: any) => it?.message ?? "")
-                .join(", "),
+                .join(", ")
             )}
           {/snippet}
         </form.Field>
@@ -378,7 +383,7 @@
           {@render fieldError(
             field.state.meta.errors
               .map((it: any) => it?.message ?? "")
-              .join(", "),
+              .join(", ")
           )}
         {/snippet}
       </form.Field>
