@@ -4,6 +4,8 @@ import QrId from "@src/components/qr-id.svelte";
 import { getParticipantByUserId } from "@src/db/model/participant";
 import { Image } from "astro:assets";
 import Layout from "../layouts/ContentLayout.astro";
+import { workshopRegistrationDate } from "@src/data/constants";
+import Countdown from "@src/components/countdown.svelte"
 
 const uid = Astro.locals.user?.id;
 if (!uid) {
@@ -17,6 +19,8 @@ if (!participant) {
 
 const id = participant.id;
 const name = participant.givenName;
+
+workshopRegistrationDate;
 ---
 
 <Layout
@@ -96,12 +100,17 @@ const name = participant.givenName;
     </ol>
   </section>
 
-  <section class="mt-8 text-sm text-blue-300/85 font-serif">
+  <!-- <section class="mt-8 text-sm text-blue-300/85 font-serif">
     <h2 class="text-2xl text-white">My workshops</h2>
     <div class="flex justify-between text-md">
       <span> เวิร์กช็อปที่ลงทะเบียนแล้ว (2/3) </span>
       <a href="" class="underline underline-offset-2">ดูทั้งหมด →</a>
     </div>
+  </section> -->
+
+  <section class="text-white mt-6 text-center text-md">
+    <h3>🔒 เริ่มลงทะเบียนเวิร์กช็อปได้ในวันที่ 6 ตุลาคม เวลา 09:00 น.</h3>
+    <!-- <Countdown client:load to={workshopRegistrationDate.getTime()} /> -->
   </section>
 </Layout>
 

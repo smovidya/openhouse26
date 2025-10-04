@@ -3,10 +3,13 @@ export const project = {
   logo: "/logo.png",
 };
 
+export const workshopRegistrationDate = new Date("2025-10-06T09:00:00+07:00");
 export const featureFlags = {
   signup: new Date() > new Date("2025-10-04T17:59:59+07:00"),
   login: true,
-  workshopRegistration: new Date() > new Date("2025-10-06T09:00:00+07:00"),
+  get workshopRegistration() {
+    return new Date() > workshopRegistrationDate;
+  },
 };
 
 export const howDidYouKnowUsOptions = [
