@@ -1,5 +1,6 @@
 import { defineAction } from "astro:actions";
 import { z } from "astro:schema";
+import * as participantActions from "./participant";
 
 export const server = {
   random: defineAction({
@@ -11,4 +12,5 @@ export const server = {
       return { number: Math.random() + (seed || 0) };
     },
   }),
+  ...participantActions,
 };
