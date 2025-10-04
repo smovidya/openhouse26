@@ -107,6 +107,8 @@
     event.stopPropagation();
     form.handleSubmit();
   };
+
+  let acceptPrivacyPolicy = $state(false);
 </script>
 
 <main>
@@ -450,11 +452,21 @@
       </section>
     {/if}
 
+    <label>
+      <input
+        type="checkbox"
+        class="size-4 accent-neutral-400"
+        name="accept-privacy-policy"
+        bind:checked={acceptPrivacyPolicy}
+      />
+      <span> ยอมรับนโยบายข้อมูลส่วนบุคคลและข้อกำหนด การใช้งานระบบ </span>
+    </label>
+
     <Button
       color="yellow"
       type="submit"
       class="mt-6 text-white py-3!"
-      disabled={status.current === ""}
+      disabled={status.current === "" || !acceptPrivacyPolicy}
     >
       <span class="flex flex-col items-center text-lg">ลงทะเบียน</span>
     </Button>
