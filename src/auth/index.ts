@@ -72,10 +72,10 @@ function createAuth(env?: Env, cf?: IncomingRequestCfProperties) {
         emailAndPassword: {
           enabled: true,
         },
-        rateLimit: {
-          enabled: true,
-          window: 120
-        },
+        // rateLimit: {
+        //   enabled: true,
+        //   window: 120
+        // },
         plugins: [
           admin({
             ac,
@@ -109,10 +109,10 @@ function createAuth(env?: Env, cf?: IncomingRequestCfProperties) {
         },
       }
     ),
-    rateLimit: {
-      enabled: true,
-      ttl: 120
-    },
+    // rateLimit: {
+    //   enabled: true,
+    //   ttl: 120
+    // },
     // Only add database adapter for CLI schema generation
     ...(env
       ? {}
