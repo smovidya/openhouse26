@@ -40,7 +40,7 @@ workshopRegistrationDate;
       class="w-screen object-cover relative z-3 max-w-full sm:max-w-100 mx-auto"
     />
     <section
-      class="bg-[#FBB84B] rounded-xl max-w-78 shadow-lg shadow-black/40 mt-7 mx-auto flex flex-col"
+      class="bg-[#FBB84B] rounded-xl max-w-78 shadow-md shadow-base-content/40 mt-7 mx-auto flex flex-col"
     >
       <div>
         <div class="relative flex flex-col items-center">
@@ -50,7 +50,7 @@ workshopRegistrationDate;
           <div class="front-strap absolute bottom-7 mr-9"></div>
 
           <div
-            class="z-2 mx-auto h-6 my-4 w-23 bg-[#324a89] rounded-full shadow-inner shadow-black/50"
+            class="z-2 mx-auto h-6 my-4 w-23 bg-[#3f60b4] rounded-full shadow-inner shadow-black/50"
           >
           </div>
         </div>
@@ -59,15 +59,19 @@ workshopRegistrationDate;
         </p>
       </div>
       <div
-        class="flex flex-col items-center p-10 pb-3 qr-bg shadow-lg shadow-black/20"
+        class="flex flex-col items-center p-10 pb-3 qr-bg shadow-sm shadow-black/20"
       >
         <div
-          class="aspect-square w-48 bg-[#3d4458] border border-slate-500 rounded-md shadow-inner shadow-black/40 text-white overflow-clip"
+          class="aspect-square w-48 bg-[#2b3247] border border-slate-500 rounded-md shadow-inner shadow-black/20 text-white overflow-clip"
         >
           <QrId client:only content={id ?? "not-loggedin"} />
         </div>
         <h3 class="text-xl mt-2 font-medium text-white">{name}</h3>
-        <h3 class="font-medium text-slate-400">ID: {id}</h3>
+        <h3
+          class="font-medium text-xs text-nowrap whitespace-nowrap text-slate-400"
+        >
+          ID: {id}
+        </h3>
       </div>
       <div class="p-6">
         <!-- <button
@@ -146,12 +150,11 @@ workshopRegistrationDate;
 
   .qr-bg {
     background: linear-gradient(
-      182deg,
-      #222a40 1.58%,
-      #394766 36.96%,
-      #566b9a 49.07%,
-      #394766 63.04%,
-      #222a40 98.42%
+      224deg,
+      #3c5baa -10.23%,
+      #3c5595 33.26%,
+      #3b5186 60.29%,
+      #15285b 104.36%
     );
   }
 
