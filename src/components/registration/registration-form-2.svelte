@@ -106,7 +106,7 @@
   let acceptPrivacyPolicy = $state(false);
 </script>
 
-<main>
+<article>
   <img src={Logo.src} alt="logo" class="size-24" />
   <h1 class="text-3xl mt-8 font-serif text-white font-bold">
     ลงทะเบียนเข้าร่วมงาน
@@ -429,22 +429,6 @@
           {/snippet}
         </form.Field>
       {/if}
-
-      <section>
-        <label class="flex flex-col gap-1">
-          <span class="text-white">นโยบายข้อมูลส่วนบุคคล</span>
-          <CutoutBox class="p-3! rounded-lg!">
-            <p>
-              何も無いんだ 何も無いんだ 何も無いんだ わたしって
-              「間違った」その罰がさ 今もわたしを締め付ける さかなになって
-              くじらになって 月夜に浮かぶ星になって 夢を見るわたしを
-              どうか許してほしいの ずっと甘い幽々幽々と
-              べつに悩んでるとかそういうわけじゃないよ ただ ただ漠然と
-              なんていうか わたしってダメだなって ごめんね
-            </p>
-          </CutoutBox>
-        </label>
-      </section>
     {/if}
 
     <label>
@@ -455,7 +439,11 @@
         bind:checked={acceptPrivacyPolicy}
       />
       <span class="text-white">
-        ยอมรับนโยบายข้อมูลส่วนบุคคลและข้อกำหนด การใช้งานระบบ
+        ยอมรับนโยบาย<a class="link" href="/info/privacy-policy"
+          >ข้อมูลส่วนบุคคล</a
+        >และ<a class="link" href="/info/terms-of-service"
+          >ข้อกำหนดการให้บริการ</a
+        >
       </span>
     </label>
 
@@ -468,7 +456,7 @@
       <span class="flex flex-col items-center text-lg">ลงทะเบียน</span>
     </Button>
   </form>
-</main>
+</article>
 
 {#snippet fieldError(message: string)}
   <!-- fuck this -->
