@@ -6,6 +6,7 @@ import {
   whyJoinThisOptions,
 } from "@src/data/constants";
 import { departments } from "@src/data/departments";
+import { provinces } from "@src/data/provinces";
 
 export const registerParticipant = defineAction({
   input: z
@@ -14,7 +15,17 @@ export const registerParticipant = defineAction({
       familyName: z.string().min(1),
       age: z.number().min(1).max(100),
       specialNeeds: z.string().optional(),
-      residentProvince: z.string().min(1),
+      residentProvince: z
+        .number()
+        .min(1)
+        .max(77)
+        .transform((val) => {
+          const code = provinces.find((it) => it.id === val)?.provinceNameTh;
+          if (!code) {
+            throw new Error("รหัสจังหวัดไม่ถูกต้อง");
+          }
+          return code;
+        }),
       attendeeType: z.string().min(1),
       school: z.string().optional(),
 
@@ -33,7 +44,7 @@ export const registerParticipant = defineAction({
       interestedDepartments: z
         .enum([...departments.map((it) => String(it.id)), "none"] as any)
         .array()
-        .length(3),
+        .min(1),
     })
     .transform((data) => {
       if (data.attendeeType === "ผู้ปกครอง" || data.attendeeType === "อื่นๆ") {
