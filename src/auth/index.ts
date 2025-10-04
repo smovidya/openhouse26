@@ -72,10 +72,10 @@ function createAuth(env?: Env, cf?: IncomingRequestCfProperties) {
         emailAndPassword: {
           enabled: true,
         },
-        rateLimit: {
-          enabled: true,
-          window: 60
-        },
+        // rateLimit: {
+        //   enabled: true,
+        //   window: 60
+        // },
         plugins: [
           admin({
             ac,

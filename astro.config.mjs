@@ -11,6 +11,7 @@ export default defineConfig({
     platformProxy: {
       enabled: true,
     },
+
     sessionKVBindingName: "openhouse26_kv",
     workerEntryPoint: {
       path: "src/workers/index.ts",
