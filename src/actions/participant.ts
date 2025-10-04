@@ -1,41 +1,50 @@
 import { z } from "astro/zod";
 import { ActionError, defineAction } from "astro:actions";
 import { authModel, participantModel } from "@src/db";
-import { howDidYouKnowUsOptions, whyJoinThisOptions } from "@src/data/constants";
+import {
+  howDidYouKnowUsOptions,
+  whyJoinThisOptions,
+} from "@src/data/constants";
 import { departments } from "@src/data/departments";
 
 export const registerParticipant = defineAction({
-  input: z.object({
-    givenName: z.string().min(1),
-    familyName: z.string().min(1),
-    ags: z.number().min(1).max(6),
-    specialNeed: z.string().optional(),
-    residentProvince: z.string().min(1),
-    attendeeType: z.string().min(1),
-    school: z.string().optional(),
-    questions: z.object({
-      howDidYouKnowUs: z.array(z.string()).min(1),
-      whyJoinThis: z.array(z.string()).min(1),
-      interestedDepartments: z.array(z.number()).min(1),
+  input: z
+    .object({
+      givenName: z.string().min(1),
+      familyName: z.string().min(1),
+      ags: z.number().min(1).max(6),
+      specialNeed: z.string().optional(),
+      residentProvince: z.string().min(1),
+      attendeeType: z.string().min(1),
+      school: z.string().optional(),
+
+      howDidYouKnowUs: z
+        .enum([...howDidYouKnowUsOptions.map((it) => it.value), "other"] as any)
+        .array()
+        .min(1),
+      howDidYouKnowUsOther: z.string(),
+
+      whyJoinThis: z
+        .enum([[...whyJoinThisOptions.map((it) => it.value), "other"]] as any)
+        .array()
+        .min(1),
+      whyJoinThisOther: z.string(),
+
+      interestedDepartments: z
+        .enum([departments.map((it) => String(it.id)), "none"] as any)
+        .array()
+        .length(3),
+    })
+    .transform((data) => {
+      if (data.attendeeType === "ผู้ปกครอง" || data.attendeeType === "อื่นๆ") {
+        return {
+          ...data,
+          interestedDepartments: ["none", "none", "none"],
+        };
+      }
+
+      return data;
     }),
-
-    howDidYouKnowUs: z.enum([...howDidYouKnowUsOptions.map(it => it.value), "other"] as any).array().min(1),
-    howDidYouKnowUsOther: z.string(),
-
-    whyJoinThis: z.enum([[...whyJoinThisOptions.map(it => it.value), "other"]] as any).array().min(1),
-    whyJoinThisOther: z.string(),
-
-    interestedDepertments: z.enum([departments.map(it => String(it.id)), "none"] as any).array().length(3)
-  }).transform(data => {
-    if (data.attendeeType === "ผู้ปกครอง" || data.attendeeType === "อื่นๆ") {
-      return {
-        ...data,
-        interestedDepertments: ["none", "none", "none"]
-      };
-    }
-    
-    return data;
-  }),
   async handler(input, context) {
     const { locals } = context;
     if (!locals.user) {
@@ -68,12 +77,10 @@ export const registerParticipant = defineAction({
     }
 
     let insertedParticipant;
-    const departmentTextList = input.questions.interestedDepartments.map(
-      (id) => {
-        const dept = departments.find((d) => d.id === id);
-        return dept ? dept.enShortName : "ไม่ทราบ";
-      }
-    );
+    const departmentTextList = input.interestedDepartments.map((id) => {
+      const dept = departments.find((d) => d.id === id);
+      return dept ? dept.thName : "ไม่ทราบ";
+    });
 
     try {
       insertedParticipant = await participantModel.insertParticipant(
@@ -87,7 +94,10 @@ export const registerParticipant = defineAction({
           attendeeType: input.attendeeType,
           school: input.school,
           questions: JSON.stringify({
-            ...input.questions,
+            howDidYouKnowUs: input.howDidYouKnowUs,
+            howDidYouKnowUsOther: input.howDidYouKnowUsOther,
+            whyJoinThis: input.whyJoinThis,
+            whyJoinThisOther: input.whyJoinThisOther,
             interestedDepartments: departmentTextList,
           }),
           userId: locals.user!.id,
