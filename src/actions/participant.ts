@@ -31,7 +31,7 @@ export const registerParticipant = defineAction({
       whyJoinThisOther: z.string(),
 
       interestedDepartments: z
-        .enum([departments.map((it) => String(it.id)), "none"] as any)
+        .enum([...departments.map((it) => String(it.id)), "none"] as any)
         .array()
         .length(3),
     })
