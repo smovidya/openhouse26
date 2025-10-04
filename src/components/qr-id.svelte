@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { toSVG } from "@bwip-js/generic";
+  import { toCanvas } from "@bwip-js/browser";
   import clsx from "clsx";
   interface Props {
     class?: any;
@@ -8,15 +8,31 @@
 
   let { class: className, content }: Props = $props();
 
-  let svg = $derived(
-    toSVG({
+  // let svg = $derived(
+  //   toSVG({
+  //     text: content,
+  //     bcid: "azteccode",
+  //     // bcid: "azteccodecompact",
+  //   }),
+  // );
+
+  let canvas = $state() as HTMLCanvasElement | undefined;
+
+  $effect(() => {
+    if (!canvas) {
+      return;
+    }
+
+    toCanvas(canvas, {
       text: content,
       bcid: "azteccode",
-      // bcid: "azteccodecompact",
-    }),
-  );
+      scale: 4,
+    });
+  });
 </script>
 
 <div class={clsx("bg-white", className)}>
-  {@html svg}
+  <canvas class="size-full" bind:this={canvas}>
+    <!-- {@html svg} -->
+  </canvas>
 </div>

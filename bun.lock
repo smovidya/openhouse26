@@ -7,6 +7,7 @@
         "@astrojs/check": "^0.9.4",
         "@astrojs/cloudflare": "^12.6.9",
         "@astrojs/svelte": "^7.2.0",
+        "@bwip-js/browser": "^4.7.0",
         "@bwip-js/generic": "^4.7.0",
         "@paralleldrive/cuid2": "^2.2.2",
         "@tailwindcss/vite": "^4.1.14",
@@ -139,6 +140,8 @@
     "@better-auth/utils": ["@better-auth/utils@0.3.0", "", {}, "sha512-W+Adw6ZA6mgvnSnhOki270rwJ42t4XzSK6YWGF//BbVXL6SwCLWfyzBc1lN2m/4RM28KubdBKQ4X5VMoLRNPQw=="],
 
     "@better-fetch/fetch": ["@better-fetch/fetch@1.1.18", "", {}, "sha512-rEFOE1MYIsBmoMJtQbl32PGHHXuG2hDxvEd7rUHE0vCBoFQVSDqaVs9hkZEtHCxRoY+CljXKFCOuJ8uxqw1LcA=="],
+
+    "@bwip-js/browser": ["@bwip-js/browser@4.7.0", "", {}, "sha512-gwPl8kaTRnxgr3DdSRqlCNTfOjWAZexh3ouazBin5iJagY4XCmYD8y5RBsLOVkoQ1ahWvTKdLlfmVwOz6N20qQ=="],
 
     "@bwip-js/generic": ["@bwip-js/generic@4.7.0", "", {}, "sha512-5mTVAa+J87UhMHfw3lF8cch6oVYLJ+utHSRkRh4DRN0wfolsnVwe6Ur1qp++2+GLzUprXUJE39bGFDQddwBsuw=="],
 

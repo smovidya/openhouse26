@@ -64,7 +64,7 @@ workshopRegistrationDate;
         <div
           class="aspect-square w-48 bg-[#3d4458] border border-slate-500 rounded-md shadow-inner shadow-black/40 text-white overflow-clip"
         >
-          <QrId client:load content={id ?? "not-loggedin"} />
+          <QrId client:only content={id ?? "not-loggedin"} />
         </div>
         <h3 class="text-xl mt-2 font-medium text-white">{name}</h3>
         <h3 class="font-medium text-slate-400">ID: {id}</h3>
