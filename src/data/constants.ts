@@ -41,36 +41,35 @@ export const howDidYouKnowUsOptions = [
 ];
 
 export const participantStatus = [
-  "ผู้ปกครอง",
-  "ก่อนประถมศึกษา",
-  "ประถมศึกษา",
   "มัธยมศึกษาตอนต้น",
   "มัธยมศึกษาตอนปลาย",
   "ปวช./ปวส.",
-  "ปริญญาตรี",
   "ปริญญาโท",
   "ปริญญาเอก",
+  "ผู้ปกครอง",
+  "ประถมศึกษา",
+  "ก่อนประถมศึกษา",
+  "ปริญญาตรี",
   "อื่นๆ",
 ] as const;
 
 export type ParticipantStatus = (typeof participantStatus)[number];
 
-
 export const whyJoinThisOptions = [
   {
     value: "come-with-student",
-    label: "มากับนักเรียน/นักศึกษา"
+    label: "มากับนักเรียน/นักศึกษา",
   },
   {
     value: "look-around-university",
-    label: "ดูสถานที่และบรรยากาศในมหาวิทยาลัย"
+    label: "ดูสถานที่และบรรยากาศในมหาวิทยาลัย",
   },
   {
     value: "learn-about-curriculum",
-    label: "ศึกษาข้อมูลหลักสูตร"
+    label: "ศึกษาข้อมูลหลักสูตร",
   },
   {
     value: "interested-in-further-study",
-    label: "สนใจศึกษาต่อ"
-  }
+    label: "สนใจศึกษาต่อ",
+  },
 ];
