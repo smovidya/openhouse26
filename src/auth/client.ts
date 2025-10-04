@@ -27,7 +27,7 @@ export const plugins = [
       user,
     },
   }),
-  anonymousClient(),
+  // anonymousClient(),
   oneTapClient({
     clientId:
       "492442244723-srs10ae9048lgbab1qfp0hldiel8lvuv.apps.googleusercontent.com",

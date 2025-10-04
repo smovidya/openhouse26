@@ -5,17 +5,6 @@ import Button from "@src/components/common/button.svelte";
 const user = Astro.locals.user;
 ---
 
-<script>
-  import { authClient } from "@src/auth/client";
-
-  async function signInWithGoogle() {
-    await authClient.signIn.social({
-      provider: "google",
-      callbackURL: "/my-id", // MyID page
-    });
-  }
-</script>
-
 <Layout
   title="หน้าหลัก"
   description="งาน Open House คณะวิทยาศาสตร์ จุฬาลงกรณ์มหาวิทยาลัย 2566"

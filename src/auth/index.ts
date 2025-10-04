@@ -88,18 +88,18 @@ function createAuth(env?: Env, cf?: IncomingRequestCfProperties) {
               user,
             },
           }),
-          anonymous({
-            emailDomainName: "anon.vidyachula.org",
-            // async onLinkAccount({ anonymousUser, newUser }) {
-            //   await db.update(schema.users).set({
-            //   })
-            // },
-          }),
+          // anonymous({
+          //   emailDomainName: "anon.vidyachula.org",
+          //   // async onLinkAccount({ anonymousUser, newUser }) {
+          //   //   await db.update(schema.users).set({
+          //   //   })
+          //   // },
+          // }),
           oneTap(),
         ],
-        disabledPaths: [
-          import.meta.env.DEV ? null : "/sign-in/anonymous",
-        ].filter(Boolean),
+        // disabledPaths: [
+        //   import.meta.env.DEV ? null : "/sign-in/anonymous",
+        // ].filter(Boolean),
         socialProviders: {
           google: {
             prompt: "select_account",
