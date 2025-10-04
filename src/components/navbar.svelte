@@ -13,7 +13,7 @@
 
 <nav
   class={clsx(
-    "w-full h-24 velvet relative shadow-lg shadow-black/30",
+    "w-full h-24 velvet relative shadow-md shadow-black/30",
     className
   )}
 >

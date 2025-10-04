@@ -1,0 +1,31 @@
+---
+import Layout from "@src/layouts/ContentLayout.astro";
+import CutoutBox from "@src/components/common/cutout-box.svelte";
+import { Content } from "@src/data/workshops-term.md";
+---
+
+<Layout
+  title="Workshops"
+  description="เวิร์กช็อปสำหรับน้อง ๆ ที่สนใจกิจกรรมของภาควิชาต่าง ๆ"
+  image="/og-image.png"
+  showNavBar={true}
+>
+  <article class="text-sm relative w-full overflow-x-clip text-white/90">
+    <h1 class="text-3xl">Workshops</h1>
+    <span>เวิร์กช็อปสำหรับน้อง ๆ ที่สนใจกิจกรรมของภาควิชาต่าง ๆ</span>
+
+    <section class="mt-6 flex flex-col gap-4">
+      <CutoutBox
+        class="p-4 bg-white/90 text-base-content overflow-y-auto max-h-44"
+      >
+        <h2 class="text-xl">เงื่อนไขในการเข้าร่วมเวิร์กช็อป</h2>
+        <span class="text-base-content/80"
+          >โปรดศึกษาก่อนเริ่มเลือกเวิร์กช็อปที่สนใจ</span
+        >
+        <div class="prose">
+          <Content />
+        </div>
+      </CutoutBox>
+    </section>
+  </article>
+</Layout>
