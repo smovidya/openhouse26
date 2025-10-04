@@ -2,7 +2,6 @@
 import MyIdHeader from "@src/assets/my-id-header.png";
 import QrId from "@src/components/qr-id.svelte";
 import { getParticipantByUserId } from "@src/db/model/participant";
-import { Image } from "astro:assets";
 import Layout from "../layouts/ContentLayout.astro";
 import { workshopRegistrationDate } from "@src/data/constants";
 import Countdown from "@src/components/countdown.svelte";
@@ -33,8 +32,8 @@ workshopRegistrationDate;
 
   <main class="text-sm relative">
     <!-- TODO: resize this -->
-    <Image
-      src={MyIdHeader}
+    <img
+      src={MyIdHeader.src}
       alt="MyId"
       class="w-screen relative z-3 max-w-100 mx-auto"
     />
@@ -113,9 +112,10 @@ workshopRegistrationDate;
     class="mt-6 relative text-center text-md p-2 bg-neutral-100 rounded-3xl metal-bg shadow-lg shadow-black/20"
   >
     <div class="absolute inset-2 translate-[0.3px] rounded-2xl metal-strip-2">
-
     </div>
-    <div class="relative p-4 z-2 pt-2 flex flex-col gap-2 rounded-2xl metal-strip">
+    <div
+      class="relative p-4 z-2 pt-2 flex flex-col gap-2 rounded-2xl metal-strip"
+    >
       <span class="text-2xl"> 🔒 </span>
       <h3>เริ่มลงทะเบียนเวิร์กช็อปได้ในวันที่ 6 ตุลาคม เวลา 09:00 น.</h3>
       <Countdown
