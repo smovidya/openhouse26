@@ -46,7 +46,7 @@ const isRegistered = data?.results ?? false;
 
     {
       user ? (
-        isRegistered ? (
+        !isRegistered ? (
           <Button href="/register" client:load>
             <span class="flex flex-col items-center text-2xl">
               ลงทะเบียนเข้าร่วม

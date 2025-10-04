@@ -5,7 +5,8 @@ import { getParticipantByUserId } from "@src/db/model/participant";
 import { Image } from "astro:assets";
 import Layout from "../layouts/ContentLayout.astro";
 import { workshopRegistrationDate } from "@src/data/constants";
-import Countdown from "@src/components/countdown.svelte"
+import Countdown from "@src/components/countdown.svelte";
+// import LockIcon from ""
 
 const uid = Astro.locals.user?.id;
 if (!uid) {
@@ -108,9 +109,21 @@ workshopRegistrationDate;
     </div>
   </section> -->
 
-  <section class="text-white mt-6 text-center text-md">
-    <h3>🔒 เริ่มลงทะเบียนเวิร์กช็อปได้ในวันที่ 6 ตุลาคม เวลา 09:00 น.</h3>
-    <!-- <Countdown client:load to={workshopRegistrationDate.getTime()} /> -->
+  <section
+    class="mt-6 relative text-center text-md p-2 bg-neutral-100 rounded-3xl steel-bg"
+  >
+    <div class="absolute inset-2 translate-[0.3px] rounded-2xl steel-strip-2">
+
+    </div>
+    <div class="relative p-4 z-2 pt-2 flex flex-col gap-2 rounded-2xl steel-strip">
+      <span class="text-2xl"> 🔒 </span>
+      <h3>เริ่มลงทะเบียนเวิร์กช็อปได้ในวันที่ 6 ตุลาคม เวลา 09:00 น.</h3>
+      <Countdown
+        client:load
+        to={workshopRegistrationDate.getTime()}
+        class="text-neutral-500 mt-2"
+      />
+    </div>
   </section>
 </Layout>
 
@@ -138,5 +151,29 @@ workshopRegistrationDate;
       #394766 63.04%,
       #222a40 98.42%
     );
+  }
+
+  .steel-bg {
+    background: linear-gradient(
+      180deg,
+      #d9d9d9 0%,
+      #d9d9d9 11.14%,
+      #b6b6b6 34.13%,
+      #d9d9d9 100%
+    );
+  }
+
+  .steel-strip {
+    border: 2px dashed #c8c8c8;
+    /* box-shadow:
+      0 0 4px 0 rgba(0, 0, 0, 0.25) inset,
+      0.25px 0.25px 0 0 rgba(255, 255, 255, 0.5); */
+  }
+
+  .steel-strip-2 {
+    border: 2px dashed #fefefe;
+    /* box-shadow:
+      0 0 4px 0 rgba(0, 0, 0, 0.25) inset,
+      0.25px 0.25px 0 0 rgba(255, 255, 255, 0.5); */
   }
 </style>
