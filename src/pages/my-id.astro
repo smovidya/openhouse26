@@ -14,7 +14,7 @@ if (!uid) {
 
 const participant = await getParticipantByUserId(Astro.locals.db, uid);
 if (!participant) {
-  return Astro.redirect("/");
+  return Astro.redirect("/register");
 }
 
 const id = participant.id;
