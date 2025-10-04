@@ -2,7 +2,6 @@ import { createAuthClient } from "better-auth/client";
 import { createAuthClient as createAuthClientSvelte } from "better-auth/svelte";
 import {
   adminClient,
-  anonymousClient,
   oneTapClient,
 } from "better-auth/client/plugins";
 import {
@@ -27,7 +26,6 @@ export const plugins = [
       user,
     },
   }),
-  // anonymousClient(),
   oneTapClient({
     clientId:
       "492442244723-srs10ae9048lgbab1qfp0hldiel8lvuv.apps.googleusercontent.com",

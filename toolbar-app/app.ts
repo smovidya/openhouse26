@@ -33,18 +33,8 @@ async function drawUserInfo(canvas: HTMLElement, user: any) {
   if (!user) {
     div.innerHTML = `
       <p>No user is currently logged in.</p>
-      <button id="login-btn">Login anonymously</button>
       <button id="login-google-btn">Login with Google</button>
     `;
-    const loginBtn = div.querySelector("#login-btn") as HTMLButtonElement;
-    loginBtn.onclick = async () => {
-      await authClient.signIn.anonymous();
-      div.remove();
-      const newDiv = document.createElement("div");
-      const newUser = await getCurrentUser(authClient);
-      await drawUserInfo(newDiv, newUser);
-      canvas.appendChild(newDiv);
-    };
     const loginGoogleBtn = div.querySelector(
       "#login-google-btn"
     ) as HTMLButtonElement;
