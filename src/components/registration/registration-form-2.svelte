@@ -62,7 +62,7 @@
     },
     onSubmit: async ({ value }) => {
       console.log({ value });
-      await actions.registerParticipant({
+      const { error } = await actions.registerParticipant({
         givenName: value.firstname,
         familyName: value.lastname,
         age: value.age,
@@ -82,6 +82,13 @@
         howDidYouKnowUsOther: value.howDidYouKnowUsOther,
         whyJoinThisOther: value.whyJoinThisOther,
       });
+
+      if (error) {
+        alert("เกิดข้อผิดพลาด: " + error.message);
+        return;
+      }
+
+      window.location.href = "/register/finish";
     },
   }));
 
