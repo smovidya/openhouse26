@@ -84,7 +84,7 @@
   };
 </script>
 
-<main class="font-serif">
+<main>
   <img src={Logo.src} alt="logo" class="size-24" />
   <h1 class="text-3xl mt-8 font-sans text-white">ลงทะเบียนเข้าร่วมงาน</h1>
   <h2 class="mt-4 text-xl text-white">ข้อมูลส่วนตัว</h2>
