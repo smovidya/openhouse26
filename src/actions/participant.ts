@@ -29,22 +29,13 @@ export const registerParticipant = defineAction({
       attendeeType: z.string().min(1),
       school: z.string().optional(),
 
-      howDidYouKnowUs: z
-        .enum([...howDidYouKnowUsOptions.map((it) => it.value), "other"] as any)
-        .array()
-        .min(1),
-      howDidYouKnowUsOther: z.string(),
+      howDidYouKnowUs: z.string().array(),
+      howDidYouKnowUsOther: z.string().optional(),
 
-      whyJoinThis: z
-        .enum([[...whyJoinThisOptions.map((it) => it.value), "other"]] as any)
-        .array()
-        .min(1),
-      whyJoinThisOther: z.string(),
+      whyJoinThis: z.string().array(),
+      whyJoinThisOther: z.string().optional(),
 
-      interestedDepartments: z
-        .enum([...departments.map((it) => String(it.id)), "none"] as any)
-        .array()
-        .min(1),
+      interestedDepartments: z.number().array().max(3),
     })
     .transform((data) => {
       if (data.attendeeType === "ผู้ปกครอง" || data.attendeeType === "อื่นๆ") {
