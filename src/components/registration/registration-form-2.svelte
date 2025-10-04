@@ -42,7 +42,7 @@
       lastname: "",
       age: 15,
       specialNeeds: "",
-      province: "0",
+      province: 0,
       howDidYouKnowUs: [] as string[],
       howDidYouKnowUsOther: "",
 
@@ -61,6 +61,7 @@
       console.log(props);
     },
     onSubmit: async ({ value }) => {
+      console.log({value})
       await actions.registerParticipant({
         givenName: value.firstname,
         familyName: value.lastname,
@@ -234,7 +235,7 @@
     <form.Field
       name="province"
       validators={{
-        onChange: (it) => (it.value === "0" ? "กรุณาเลือกจังหวัด" : undefined),
+        onChange: (it) => (it.value === 0 ? "กรุณาเลือกจังหวัด" : undefined),
       }}
     >
       {#snippet children(field)}
@@ -353,7 +354,7 @@
         >
           {#snippet children(field)}
             <Checkboxes
-              title="ท่านทราบและติดตามข่าวสารเกี่ยวกับงานผ่านช่องทางใดบ้าง(เลือกหลายคำตอบ)"
+              title="เหตุผลในการเข้าร่วมงานในครั้งนี้ (เลือกหลายคำตอบ)"
               options={whyJoinThisOptions2}
               bind:selected={
                 () => field.state.value, (value) => field.handleChange(value)
@@ -379,7 +380,7 @@
                   }
                   onblur={field.handleBlur}
                   class="w-full p-2 rounded-lg outline-blue-500 outline-offset-2"
-                  placeholder="ช่องทาง"
+                  placeholder="ต้องการเข้าร่วมงานเพื่อ..."
                 />
               </CutoutBox>
               <!-- {@render fieldError(field.state.meta.errors.map((it: any) => it?.message ?? "").join(", "))} -->
@@ -396,7 +397,7 @@
       >
         {#snippet children(field)}
           <Checkboxes
-            title="ท่านทราบและติดตามข่าวสารเกี่ยวกับงานผ่านช่องทางใดบ้าง(เลือกหลายคำตอบ)"
+            title="ท่านทราบและติดตามข่าวสารเกี่ยวกับงานผ่านช่องทางใดบ้าง (เลือกหลายคำตอบ)"
             options={howDidYouKnowUsOptions2}
             bind:selected={
               () => field.state.value, (value) => field.handleChange(value)
@@ -449,7 +450,7 @@
     <label>
       <input
         type="checkbox"
-        class="size-4 accent-neutral-400"
+        class="checkbox bg-base-100 checked:bg-base-200"
         name="accept-privacy-policy"
         bind:checked={acceptPrivacyPolicy}
       />
