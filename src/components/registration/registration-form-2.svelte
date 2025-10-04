@@ -16,6 +16,7 @@
   import { departments } from "@src/data/departments";
   import Logo from "@src/assets/logo.png";
   import { actions } from "astro:actions";
+  import WarningDiamond from "carbon-icons-svelte/lib/WarningDiamond.svelte";
 
   const howDidYouKnowUsOptions2 = [
     ...howDidYouKnowUsOptions,
@@ -113,9 +114,9 @@
   let acceptPrivacyPolicy = $state(false);
 </script>
 
-<article>
+<article class="oph-soft-white">
   <img src={Logo.src} alt="logo" class="size-24" />
-  <h1 class="text-3xl mt-8 font-serif text-white font-bold">
+  <h1 class="text-3xl oph-soft-white mt-8 font-serif text-white font-bold">
     ลงทะเบียนเข้าร่วมงาน
   </h1>
   <h2 class="mt-4 text-xl text-white font-serif font-bold">ข้อมูลส่วนตัว</h2>
@@ -180,7 +181,7 @@
         {/snippet}
       </form.Field>
 
-      <p class="col-span-2 text-orange-300">
+      <p class="col-span-2 text-orange-100">
         * ตรวจสอบให้ถูกต้องหากต้องการรับเกียรติบัตรการเข้าร่วม
       </p>
     </section>
@@ -455,7 +456,7 @@
     <Button
       color="yellow"
       type="submit"
-      class="mt-6 text-white py-3!"
+      class="mt-6 text-white py-3 shadow-xs! shadow-black/10 w-full"
       disabled={status.current === "" || !acceptPrivacyPolicy}
     >
       <span class="flex flex-col items-center text-lg">ลงทะเบียน</span>
@@ -464,8 +465,10 @@
 </article>
 
 {#snippet fieldError(message: string)}
-  <!-- fuck this -->
-  <p class="text-red-400">
-    {message}
-  </p>
+  {#if message}
+    <span class="text-error-content bg-error/50 rounded-md p-1 label">
+      <WarningDiamond size={16} />
+      {message}
+    </span>
+  {/if}
 {/snippet}
