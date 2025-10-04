@@ -36,6 +36,13 @@
       "when": 1759526217022,
       "tag": "0004_easy_synch",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "6",
+      "when": 1759553981015,
+      "tag": "0005_special_wendigo",
+      "breakpoints": true
     }
   ]
 }
