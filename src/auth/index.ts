@@ -21,7 +21,6 @@ import {
 // Single auth configuration that handles both CLI and runtime scenarios
 function createAuth(env?: Env, cf?: IncomingRequestCfProperties) {
   // Use actual DB for runtime, empty object for CLI
-  console.log("AuthClient:", env);
   const db = (
     env ? drizzle(env.openhouse26_db, { schema, logger: true }) : ({} as any)
   ) as DrizzleD1Database<typeof schema>;
@@ -73,10 +72,10 @@ function createAuth(env?: Env, cf?: IncomingRequestCfProperties) {
         emailAndPassword: {
           enabled: true,
         },
-        // rateLimit: {
-        //   enabled: true,
-        //   window: 60
-        // },
+        rateLimit: {
+          enabled: true,
+          window: 120
+        },
         plugins: [
           admin({
             ac,
