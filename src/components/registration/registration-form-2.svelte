@@ -48,7 +48,6 @@
       whyJoinThis: [] as string[],
       whyJoinThisOther: "",
 
-      reason: "",
       status: "" as ParticipantStatus | "",
       school: "",
       interestedDepertments: [
