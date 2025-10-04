@@ -23,16 +23,18 @@ export const users = sqliteTable("users", {
   banReason: text("ban_reason"),
   banExpires: integer("ban_expires", { mode: "timestamp_ms" }),
   isAnonymous: integer("is_anonymous", { mode: "boolean" }),
+  participantAccountId: text("participant_account_id"),
+  staffAccountId: text("staff_account_id"),
 });
 
 export const usersRelations = relations(users, ({ one }) => ({
   participantAccount: one(participants, {
-    fields: [users.id],
+    fields: [users.participantAccountId],
     references: [participants.userId],
     relationName: "participant_account",
   }),
   staffAccount: one(staffs, {
-    fields: [users.id],
+    fields: [users.staffAccountId],
     references: [staffs.userId],
     relationName: "staff_account",
   }),

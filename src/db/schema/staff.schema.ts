@@ -18,5 +18,8 @@ export const staffs = sqliteTable("staffs", {
 });
 
 export const staffRelations = relations(staffs, ({ one }) => ({
-  user: one(users),
+  user: one(users, {
+    fields: [staffs.userId],
+    references: [users.id],
+  }),
 }));
