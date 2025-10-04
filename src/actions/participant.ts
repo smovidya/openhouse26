@@ -12,8 +12,8 @@ export const registerParticipant = defineAction({
     .object({
       givenName: z.string().min(1),
       familyName: z.string().min(1),
-      ags: z.number().min(1).max(6),
-      specialNeed: z.string().optional(),
+      age: z.number().min(1).max(100),
+      specialNeeds: z.string().optional(),
       residentProvince: z.string().min(1),
       attendeeType: z.string().min(1),
       school: z.string().optional(),
@@ -88,8 +88,8 @@ export const registerParticipant = defineAction({
         {
           givenName: input.givenName,
           familyName: input.familyName,
-          ags: input.ags,
-          specialNeed: input.specialNeed ?? "-",
+          age: input.age,
+          specialNeeds: input.specialNeeds ?? "-",
           residentProvince: input.residentProvince,
           attendeeType: input.attendeeType,
           school: input.school,

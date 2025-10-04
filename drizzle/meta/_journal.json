@@ -43,6 +43,20 @@
       "when": 1759553981015,
       "tag": "0005_special_wendigo",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "6",
+      "when": 1759559488800,
+      "tag": "0006_dark_umar",
+      "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "6",
+      "when": 1759559539321,
+      "tag": "0007_superb_psylocke",
+      "breakpoints": true
     }
   ]
 }

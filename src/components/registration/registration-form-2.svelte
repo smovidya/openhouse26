@@ -64,28 +64,22 @@
       await actions.registerParticipant({
         givenName: value.firstname,
         familyName: value.lastname,
-        ags: value.age,
-        specialNeed: value.specialNeeds,
+        age: value.age,
+        specialNeeds: value.specialNeeds,
         attendeeType: value.status,
         residentProvince: value.province,
         school: value.school,
-        questions: {
-          howDidYouKnowUs: value.howDidYouKnowUs.includes("other")
-            ? [
-                ...value.howDidYouKnowUs.filter((it) => it !== "other"),
-                value.howDidYouKnowUsOther,
-              ]
-            : value.howDidYouKnowUs,
-          whyJoinThis: value.whyJoinThis.includes("other")
-            ? [
-                ...value.whyJoinThis.filter((it) => it !== "other"),
-                value.whyJoinThisOther,
-              ]
-            : value.whyJoinThis,
-          interestedDepartments: value.interestedDepartments
-            .filter((it) => it !== "none")
-            .map((it) => Number(it)),
-        },
+        howDidYouKnowUs: value.howDidYouKnowUs.includes("other")
+          ? [...value.howDidYouKnowUs.filter((it) => it !== "other")]
+          : value.howDidYouKnowUs,
+        whyJoinThis: value.whyJoinThis.includes("other")
+          ? [...value.whyJoinThis.filter((it) => it !== "other")]
+          : value.whyJoinThis,
+        interestedDepartments: value.interestedDepartments
+          .filter((it) => it !== "none")
+          .map((it) => Number(it)),
+        howDidYouKnowUsOther: value.howDidYouKnowUsOther,
+        whyJoinThisOther: value.whyJoinThisOther,
       });
     },
   }));

@@ -1,0 +1,1 @@
+ALTER TABLE `participants` RENAME COLUMN "special_need" TO "special_needs";
