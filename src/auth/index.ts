@@ -44,9 +44,14 @@ function createAuth(env?: Env, cf?: IncomingRequestCfProperties) {
         // @ts-ignore
         kv: (
           env?.openhouse26_kv ? {
-            ...env?.openhouse26_kv,
+            delete: async (key: string) => {
+              return env?.openhouse26_kv.delete(key);
+            },
+            get: async (key: string) => {
+              return env?.openhouse26_kv.get(key);
+            },
             put(key, value, options) {
-              env.openhouse26_kv.put(key, value as any, {
+              return env.openhouse26_kv.put(key, value as any, {
                 ...options,
                 expirationTtl: Math.max(options?.expirationTtl ?? 120, 120)
               });
