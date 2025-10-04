@@ -1,7 +1,17 @@
 ---
 import RegistrationForm from "@src/components/registration/registration-form-2.svelte";
 import Layout from "../../layouts/ContentLayout.astro";
+import { actions } from "astro:actions";
 
+if (!Astro.locals.user) {
+  return Astro.redirect("/");
+}
+
+const { data } = await Astro.callAction(actions.amIRegistered, {});
+
+if (data?.results) {
+  return Astro.redirect("/my-id");
+}
 ---
 
 <Layout

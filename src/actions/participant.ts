@@ -1,12 +1,36 @@
 import { z } from "astro/zod";
 import { ActionError, defineAction } from "astro:actions";
 import { authModel, participantModel } from "@src/db";
-import {
-  howDidYouKnowUsOptions,
-  whyJoinThisOptions,
-} from "@src/data/constants";
 import { departments } from "@src/data/departments";
 import { provinces } from "@src/data/provinces";
+
+export const amIRegistered = defineAction({
+  async handler(_input, ctx) {
+    if (!ctx.locals.user) {
+      throw new ActionError({
+        code: "UNAUTHORIZED",
+        message: "คุณต้องเข้าสู่ระบบก่อนลงทะเบียน",
+      });
+    }
+
+    let isExisted = false;
+
+    try {
+      isExisted = !(await participantModel.getParticipantByUserId(
+        ctx.locals.db,
+        ctx.locals.user.id
+      ));
+    } catch (e) {
+      console.error("Error checking existing participant:", e);
+      throw new ActionError({
+        code: "INTERNAL_SERVER_ERROR",
+        message: "เกิดข้อผิดพลาดในการตรวจสอบข้อมูลผู้เข้าร่วม",
+      });
+    }
+
+    return { results: isExisted };
+  },
+});
 
 export const registerParticipant = defineAction({
   input: z

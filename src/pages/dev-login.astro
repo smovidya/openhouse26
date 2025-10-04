@@ -1,0 +1,59 @@
+---
+import Layout from "../layouts/ContentLayout.astro";
+import { Image } from "astro:assets";
+
+import LoginButton from "@src/components/login-button.svelte";
+import Button from "@src/components/common/button.svelte";
+
+import { featureFlags } from "@src/data/constants";
+
+const user = Astro.locals.user;
+---
+
+<script>
+  import { authClient } from "@src/auth/client";
+
+  async function signInWithGoogle() {
+    await authClient.signIn.social({
+      provider: "google",
+      callbackURL: "/my", // MyID page
+    });
+  }
+</script>
+
+<Layout
+  title="หน้าหลัก"
+  description="งาน Open House คณะวิทยาศาสตร์ จุฬาลงกรณ์มหาวิทยาลัย 2566"
+  image="/og-image.png"
+>
+  <div class="flex flex-col items-center text-white">
+    <img src="/logo.png" alt="Logo" class="mx-auto my-8 w-48" loading="lazy" />
+    <h1 class="text-4xl text-center">Science Chula Openhouse 2026</h1>
+    {
+      !true && (
+        <div class="flex flex-col items-center mt-2 text-center">
+          <span> 18-19 พฤศจิกายน 2568 | จามจุรีสแควร์ </span>
+          <div class="my-5 text-2xl">
+            Coming&nbsp;Soon! เปิดลงทะเบียน 4&nbsp;ตุลาคม 18:00&nbsp;น. ที่นี่
+          </div>
+        </div>
+      )
+    }
+
+    {
+      user ? (
+        <Button href="/my-id" client:load>
+          <span class="flex flex-col items-center text-2xl">
+            ไปที่หน้า MyID
+          </span>
+          <span>คุณล็อกอินแล้ว ดำเนินการต่อ</span>
+        </Button>
+      ) : true ? (
+        <LoginButton client:load>
+          <span class="flex flex-col items-center text-2xl">ลงทะเบียนเลย</span>
+          <span> ล็อกอินด้วย Google </span>
+        </LoginButton>
+      ) : null
+    }
+  </div>
+</Layout>
