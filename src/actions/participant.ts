@@ -13,7 +13,11 @@ export const registerParticipant = defineAction({
     residentProvince: z.string().min(1),
     attendeeType: z.string().min(1),
     school: z.string().optional(),
-    questions: z.string().optional(),
+    questions: z.object({
+      howDidYouKnowUs: z.array(z.string()).min(1),
+      whyJoinThis: z.array(z.string()).min(1),
+      interestedDepartments: z.array(z.number()).min(1),
+    }),
 
     howDidYouKnowUs: z.enum([...howDidYouKnowUsOptions.map(it => it.value), "other"] as any).array().min(1),
     howDidYouKnowUsOther: z.string(),
@@ -65,6 +69,12 @@ export const registerParticipant = defineAction({
     }
 
     let insertedParticipant;
+    const departmentTextList = input.questions.interestedDepartments.map(
+      (id) => {
+        const dept = departments.find((d) => d.id === id);
+        return dept ? dept.enShortName : "ไม่ทราบ";
+      }
+    );
 
     try {
       insertedParticipant = await participantModel.insertParticipant(
@@ -77,7 +87,10 @@ export const registerParticipant = defineAction({
           residentProvince: input.residentProvince,
           attendeeType: input.attendeeType,
           school: input.school,
-          questions: input.questions,
+          questions: JSON.stringify({
+            ...input.questions,
+            interestedDepartments: departmentTextList,
+          }),
           userId: locals.user!.id,
         }
       );
