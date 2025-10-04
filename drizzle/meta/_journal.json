@@ -57,6 +57,13 @@
       "when": 1759559539321,
       "tag": "0007_superb_psylocke",
       "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "6",
+      "when": 1759561784658,
+      "tag": "0008_great_garia",
+      "breakpoints": true
     }
   ]
 }

@@ -22,7 +22,6 @@ export const participants = sqliteTable("participants", {
   emergencyContactName: t.text("emergency_contact_name"),
   emergencyContactPhone: t.text("emergency_contact_phone"),
   emergencyContactRelation: t.text("emergency_contact_relation"),
-  qrId: t.text("qr_id"),
   ...timestamps,
 });
 

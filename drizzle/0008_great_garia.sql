@@ -1,0 +1,1 @@
+ALTER TABLE `participants` DROP COLUMN `qr_id`;
