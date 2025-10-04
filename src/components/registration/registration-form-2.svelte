@@ -15,6 +15,7 @@
   import InterestedDepartments from "./interested-departments.svelte";
   import { departments } from "@src/data/departments";
   import Logo from "@src/assets/logo.png";
+  import { actions } from "astro:actions";
 
   const howDidYouKnowUsOptions2 = [
     ...howDidYouKnowUsOptions,
@@ -39,7 +40,7 @@
     defaultValues: {
       firstname: "",
       lastname: "",
-      age: 0,
+      age: 15,
       specialNeeds: "",
       province: "0",
       howDidYouKnowUs: [] as string[],
@@ -50,7 +51,7 @@
 
       status: "" as ParticipantStatus | "",
       school: "",
-      interestedDepertments: [
+      interestedDepartments: [
         String(departments[0].id),
         "none",
         "none",
@@ -60,7 +61,32 @@
       console.log(props);
     },
     onSubmit: async ({ value }) => {
-      console.log(value);
+      await actions.registerParticipant({
+        givenName: value.firstname,
+        familyName: value.lastname,
+        ags: value.age,
+        specialNeed: value.specialNeeds,
+        attendeeType: value.status,
+        residentProvince: value.province,
+        school: value.school,
+        questions: {
+          howDidYouKnowUs: value.howDidYouKnowUs.includes("other")
+            ? [
+                ...value.howDidYouKnowUs.filter((it) => it !== "other"),
+                value.howDidYouKnowUsOther,
+              ]
+            : value.howDidYouKnowUs,
+          whyJoinThis: value.whyJoinThis.includes("other")
+            ? [
+                ...value.whyJoinThis.filter((it) => it !== "other"),
+                value.whyJoinThisOther,
+              ]
+            : value.whyJoinThis,
+          interestedDepartments: value.interestedDepartments
+            .filter((it) => it !== "none")
+            .map((it) => Number(it)),
+        },
+      });
     },
   }));
 
@@ -95,7 +121,7 @@
       <form.Field
         name="firstname"
         validators={{
-          onChange: z.string().min(1, "กรุณากรอกชื่อ"),
+          onChange: z.string().min(1, "กรุณาระบุชื่อ"),
         }}
       >
         {#snippet children(field)}
@@ -108,7 +134,7 @@
                   () => field.state.value, (value) => field.handleChange(value)
                 }
                 onblur={field.handleBlur}
-                class="w-full p-2 rounded-lg outline-blue-500 outline-offset-2"
+                class="w-full p-2 rounded-lg outline-blue-500 outline-offset-2 placeholder:"
                 placeholder="สมชาย"
               />
             </CutoutBox>
@@ -124,7 +150,7 @@
       <form.Field
         name="lastname"
         validators={{
-          onChange: z.string().min(1, "กรุณากรอกนามสกุล"),
+          onChange: z.string().min(1, "กรุณาระบุนามสกุล"),
         }}
       >
         {#snippet children(field)}
@@ -159,9 +185,9 @@
       name="age"
       validators={{
         onChange: z
-          .number("กรุณากรอกอายุ")
-          .min(0, "ไม่เกิดที")
-          .max(200, "ไม่เชื่อ โม้"),
+          .number("กรุณาระบุอายุ")
+          .min(5, "อายุน้อยเกินไป")
+          .max(100, "อายุมากเกินไป"),
       }}
     >
       {#snippet children(field)}
@@ -177,6 +203,8 @@
               onblur={field.handleBlur}
               class="w-full p-2 rounded-lg outline-blue-500 outline-offset-2"
               placeholder="23"
+              min="5"
+              max="100"
             />
           </CutoutBox>
           {@render fieldError(
@@ -216,23 +244,21 @@
       {#snippet children(field)}
         <label class="flex flex-col gap-1">
           <span class="text-white">จังหวัดที่พำนัก</span>
-          <CutoutBox class="p-0! rounded-lg!">
-            <select
-              name={field.name}
-              bind:value={
-                () => field.state.value, (value) => field.handleChange(value)
-              }
-              onblur={field.handleBlur}
-              class="w-full p-2 rounded-lg outline-blue-500 outline-offset-2"
-            >
-              <!-- TODO: report this issue -->
-              <!-- <button>เลือก</button> -->
-              <option value="0" selected disabled hidden>เลือก</option>
-              {#each provincesOptions as { label, value }}
-                <option {value}>{label}</option>
-              {/each}
-            </select>
-          </CutoutBox>
+          <select
+            name={field.name}
+            bind:value={
+              () => field.state.value, (value) => field.handleChange(value)
+            }
+            onblur={field.handleBlur}
+            class="select shadow-inner shadow-black/30 w-full p-2 rounded-lg outline-blue-500 outline-offset-2"
+          >
+            <!-- TODO: report this issue -->
+            <!-- <button>เลือก</button> -->
+            <option value="0" selected disabled hidden>เลือก</option>
+            {#each provincesOptions as { label, value }}
+              <option {value}>{label}</option>
+            {/each}
+          </select>
           {@render fieldError(field.state.meta.errors.join(", "))}
         </label>
       {/snippet}
@@ -249,7 +275,7 @@
                 () => field.state.value, (value) => field.handleChange(value)
               }
               onblur={field.handleBlur}
-              class="w-full p-2 rounded-lg outline-blue-500 outline-offset-2"
+              class="select shadow-inner shadow-black/30 w-full p-2 rounded-lg outline-blue-500 outline-offset-2"
             >
               <option value="" selected disabled hidden>เลือก</option>
               {#each participantStatus as status}
@@ -267,7 +293,7 @@
         <form.Field
           name="school"
           validators={{
-            onChange: z.string().min(1, "กรุณากรอกสถานศึกษา"),
+            onChange: z.string().min(1, "กรุณาระบุสถานศึกษา"),
           }}
         >
           {#snippet children(field)}
@@ -295,7 +321,7 @@
         </form.Field>
 
         <form.Field
-          name="interestedDepertments"
+          name="interestedDepartments"
           validators={{
             onChange: (it) => {
               // console.log($state.snapshot(it.value))

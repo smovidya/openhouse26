@@ -31,14 +31,14 @@
     }
 
     // fuck tanstack store
-    selected = selected
+    selected = selected;
   };
 
   const get = (key: string) => () => selected.includes(key);
 </script>
 
 <section class="text-white">
-  <span>
+  <span class="text-lg">
     {title}
   </span>
   <div class="grid grid-cols-1 sm:grid-cols-2 gap-1 mt-3">
@@ -47,7 +47,7 @@
         <input
           type="checkbox"
           name="{id}-value-{value}"
-          class="size-4 accent-neutral-400"
+          class="checkbox bg-base-100 checked:bg-base-300 size-4 accent-neutral-400"
           bind:checked={get(value), set(value)}
         />
         <span class="ml-1">{label}</span>
