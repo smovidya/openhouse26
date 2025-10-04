@@ -1,6 +1,7 @@
 ---
 import Layout from "../layouts/ContentLayout.astro";
 import LoginButton from "@src/components/login-button.svelte";
+import LogoutButton from "@src/components/logout-button.svelte";
 import Button from "@src/components/common/button.svelte";
 const user = Astro.locals.user;
 ---
@@ -32,6 +33,9 @@ const user = Astro.locals.user;
           </span>
           <span>คุณล็อกอินแล้ว ดำเนินการต่อ</span>
         </Button>
+        <LogoutButton client:load class="mt-4">
+          Logout
+        </LogoutButton>
       ) : true ? (
         <LoginButton client:load>
           <span class="flex flex-col items-center text-2xl">ลงทะเบียนเลย</span>
