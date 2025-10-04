@@ -32,7 +32,7 @@ workshopRegistrationDate;
   <!-- TODO: nav -->
   <NavBar class="fixed! inset-x-0! top-3 z-50" />
 
-  <main class="text-sm relative mt-12">
+  <main class="text-sm relative mt-12 w-full overflow-x-clip">
     <!-- TODO: resize this -->
     <img
       src={MyIdHeader.src}
@@ -41,7 +41,7 @@ workshopRegistrationDate;
     />
     <section
       id="my-id-card"
-      class="bg-[#FBB84B] [transform-origin:_center_-100px] transition-transform duration-75 rounded-xl max-w-78 shadow-md shadow-base-content/40 mt-7 mx-auto flex flex-col"
+      class="bg-[#FBB84B] [transform-origin:_center_-100px] transition-transform duration-75 ease-in-out rounded-xl max-w-78 shadow-md shadow-base-content/40 mt-7 mx-auto flex flex-col"
     >
       <div>
         <div class="relative flex flex-col items-center">
@@ -194,11 +194,12 @@ workshopRegistrationDate;
       });
     }
 
+    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+    if (!isMobile) return;
     window.addEventListener("deviceorientation", (event) => {
       if (!el) return;
-      const y = event.beta; // In degree in the range [-180,180]
-      if (!y) return;
-      el.style.transform = `rotate(${Math.min(Math.max(y / 4, -10), 10)}deg)`;
+      if (!event.gamma) return;
+      el.style.transform = `rotate(${Math.min(Math.max((-1 * event.gamma) / 6, -20), 20)}deg)`;
     });
   })();
 </script>
