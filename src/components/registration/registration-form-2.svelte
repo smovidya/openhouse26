@@ -61,7 +61,7 @@
       console.log(props);
     },
     onSubmit: async ({ value }) => {
-      console.log({value})
+      console.log({ value });
       await actions.registerParticipant({
         givenName: value.firstname,
         familyName: value.lastname,
@@ -87,14 +87,14 @@
 
   const status = form.useStore((it) => it.values.status);
   const showDepartmentPicker = $derived(
-    status.current != "ผู้ปกครอง" && status.current != "อื่นๆ",
+    status.current != "ผู้ปกครอง" && status.current != "อื่นๆ"
   );
   const showOther = form.useStore((it) =>
-    it.values.howDidYouKnowUs.includes("other"),
+    it.values.howDidYouKnowUs.includes("other")
   );
 
   const showOther2 = form.useStore((it) =>
-    it.values.whyJoinThis.includes("other"),
+    it.values.whyJoinThis.includes("other")
   );
 
   const onsubmit: EventHandler<SubmitEvent, HTMLFormElement> = (event) => {
@@ -138,7 +138,7 @@
             {@render fieldError(
               field.state.meta.errors
                 .map((it: any) => it?.message ?? "")
-                .join(", "),
+                .join(", ")
             )}
           </label>
         {/snippet}
@@ -167,7 +167,7 @@
             {@render fieldError(
               field.state.meta.errors
                 .map((it: any) => it?.message ?? "")
-                .join(", "),
+                .join(", ")
             )}
           </label>
         {/snippet}
@@ -207,7 +207,7 @@
           {@render fieldError(
             field.state.meta.errors
               .map((it: any) => it?.message ?? "")
-              .join(", "),
+              .join(", ")
           )}
         </label>
       {/snippet}
@@ -311,7 +311,7 @@
               {@render fieldError(
                 field.state.meta.errors
                   .map((it: any) => it?.message ?? "")
-                  .join(", "),
+                  .join(", ")
               )}
             </label>
           {/snippet}
@@ -363,7 +363,7 @@
             {@render fieldError(
               field.state.meta.errors
                 .map((it: any) => it?.message ?? "")
-                .join(", "),
+                .join(", ")
             )}
           {/snippet}
         </form.Field>
@@ -406,7 +406,7 @@
           {@render fieldError(
             field.state.meta.errors
               .map((it: any) => it?.message ?? "")
-              .join(", "),
+              .join(", ")
           )}
         {/snippet}
       </form.Field>
@@ -454,7 +454,9 @@
         name="accept-privacy-policy"
         bind:checked={acceptPrivacyPolicy}
       />
-      <span> ยอมรับนโยบายข้อมูลส่วนบุคคลและข้อกำหนด การใช้งานระบบ </span>
+      <span class="text-white">
+        ยอมรับนโยบายข้อมูลส่วนบุคคลและข้อกำหนด การใช้งานระบบ
+      </span>
     </label>
 
     <Button
