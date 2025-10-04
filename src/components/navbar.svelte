@@ -21,7 +21,7 @@
   <div class="absolute strip-2 translate-y-[0.5px] inset-y-1 inset-x-0"></div>
   <div class="absolute strip-1 inset-y-1 inset-x-0"></div>
 
-  <div class="flex justify-between items-center w-full h-full pl-4 pr-2">
+  <div class="flex justify-between items-center w-full h-full px-4">
     <img src={LogoNoCircle.src} alt="logo" class="size-14 object-cover" />
 
     <div
@@ -34,12 +34,12 @@
         <span class="mt-1"> MyId </span>
       </button>
 
-      <button
+      <!-- <button
         class="flex flex-col items-center justify-center w-17 h-18"
       >
         <img src={NavIcon.src} alt="" class="size-8 m-1" />
         <span class="mt-1"> นำทาง </span>
-      </button>
+      </button> -->
     </div>
   </div>
 </nav>
