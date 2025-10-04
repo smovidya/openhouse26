@@ -40,7 +40,8 @@ workshopRegistrationDate;
       class="w-screen object-cover relative z-3 max-w-full sm:max-w-100 mx-auto"
     />
     <section
-      class="bg-[#FBB84B] rounded-xl max-w-78 shadow-md shadow-base-content/40 mt-7 mx-auto flex flex-col"
+      id="my-id-card"
+      class="bg-[#FBB84B] [transform-origin:_center_-100px] transition-transform duration-75 rounded-xl max-w-78 shadow-md shadow-base-content/40 mt-7 mx-auto flex flex-col"
     >
       <div>
         <div class="relative flex flex-col items-center">
@@ -182,3 +183,22 @@ workshopRegistrationDate;
       0.25px 0.25px 0 0 rgba(255, 255, 255, 0.5); */
   }
 </style>
+
+<script>
+  (() => {
+    const el = document.getElementById("my-id-card");
+    if (el) {
+      el.addEventListener("contextmenu", (e) => {
+        e.preventDefault();
+        return false;
+      });
+    }
+
+    window.addEventListener("deviceorientation", (event) => {
+      if (!el) return;
+      const y = event.beta; // In degree in the range [-180,180]
+      if (!y) return;
+      el.style.transform = `rotate(${Math.min(Math.max(y / 4, -10), 10)}deg)`;
+    });
+  })();
+</script>
