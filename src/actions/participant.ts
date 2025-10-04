@@ -1,6 +1,8 @@
 import { z } from "astro/zod";
 import { ActionError, defineAction } from "astro:actions";
 import { authModel, participantModel } from "@src/db";
+import { howDidYouKnowUsOptions, whyJoinThisOptions } from "@src/data/constants";
+import { departments } from "@src/data/departments";
 
 export const registerParticipant = defineAction({
   input: z.object({
@@ -12,6 +14,23 @@ export const registerParticipant = defineAction({
     attendeeType: z.string().min(1),
     school: z.string().optional(),
     questions: z.string().optional(),
+
+    howDidYouKnowUs: z.enum([...howDidYouKnowUsOptions.map(it => it.value), "other"] as any).array().min(1),
+    howDidYouKnowUsOther: z.string(),
+
+    whyJoinThis: z.enum([[...whyJoinThisOptions.map(it => it.value), "other"]] as any).array().min(1),
+    whyJoinThisOther: z.string(),
+
+    interestedDepertments: z.enum([departments.map(it => String(it.id)), "none"] as any).array().length(3)
+  }).transform(data => {
+    if (data.attendeeType === "ผู้ปกครอง" || data.attendeeType === "อื่นๆ") {
+      return {
+        ...data,
+        interestedDepertments: ["none", "none", "none"]
+      };
+    }
+    
+    return data;
   }),
   async handler(input, context) {
     const { locals } = context;
@@ -21,6 +40,7 @@ export const registerParticipant = defineAction({
         message: "คุณต้องเข้าสู่ระบบก่อนลงทะเบียน",
       });
     }
+
 
     let isExisted;
 
