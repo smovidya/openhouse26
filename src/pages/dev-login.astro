@@ -1,12 +1,7 @@
 ---
 import Layout from "../layouts/ContentLayout.astro";
-import { Image } from "astro:assets";
-
 import LoginButton from "@src/components/login-button.svelte";
 import Button from "@src/components/common/button.svelte";
-
-import { featureFlags } from "@src/data/constants";
-
 const user = Astro.locals.user;
 ---
 
@@ -16,7 +11,7 @@ const user = Astro.locals.user;
   async function signInWithGoogle() {
     await authClient.signIn.social({
       provider: "google",
-      callbackURL: "/my", // MyID page
+      callbackURL: "/my-id", // MyID page
     });
   }
 </script>
