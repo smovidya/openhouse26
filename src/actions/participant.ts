@@ -20,7 +20,9 @@ export const registerParticipant = defineAction({
         .min(1)
         .max(77)
         .transform((val) => {
-          const code = provinces.find((it) => it.id === val)?.provinceNameTh;
+          const code = provinces.find(
+            (it) => it.provinceCode === val
+          )?.provinceNameTh;
           if (!code) {
             throw new Error("รหัสจังหวัดไม่ถูกต้อง");
           }
