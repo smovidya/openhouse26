@@ -19,17 +19,17 @@ const { title, description, image } = Astro.props;
     >
     </div>
   </div>
-  <main class="container relative min-h-screen max-w-3xl mx-auto px-4 py-8">
-    <div>
-      <slot />
-    </div>
-  </main>
-  <footer>
-    <div
-      class="container text-blue-300/65 max-w-3xl mx-auto px-4 py-4 text-center text-sm"
-    >
-      <a href="/info/privacy-policy">นโยบายข้อมูลส่วนบุคคล</a> |{" "}
-      <a href="/info/terms-of-service">ข้อกำหนดการให้บริการ</a>
-    </div>
-  </footer>
+  <div class="contents">
+    <main class="container relative min-h-screen max-w-3xl mx-auto px-4 py-8">
+      <div>
+        <slot />
+      </div>
+      <footer>
+        <div class="text-blue-300/65 px-4 py-4 text-center text-sm">
+          <a href="/info/privacy-policy">นโยบายข้อมูลส่วนบุคคล</a> |{" "}
+          <a href="/info/terms-of-service">ข้อกำหนดการให้บริการ</a>
+        </div>
+      </footer>
+    </main>
+  </div>
 </Base>
