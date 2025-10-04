@@ -58,7 +58,7 @@
       ] as string[],
     },
     onSubmitInvalid(props) {
-      console.log(props);
+      alert("กรุณากรอกข้อมูลให้ถูกต้อง");
     },
     onSubmit: async ({ value }) => {
       console.log({ value });
@@ -335,11 +335,9 @@
                 if (departments === "none") {
                   founded = true;
                 } else if (founded) {
-                  console.log("asdnfgytu");
                   return "กรุณาเรียงลำดับให้ถูกต้อง";
                 }
               }
-              console.log("ok");
             },
           }}
         >
