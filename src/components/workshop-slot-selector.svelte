@@ -57,6 +57,13 @@
   function shouldDisabled(index: number) {
     const slot = workshop.slots[index]!;
 
+    if (initialSelectedWorkshops.length >= 2) {
+      return {
+        disabled: true,
+        maximumReached: true,
+      };
+    }
+
     if ((registerCount.at(index) ?? 0) > workshop.capacity) {
       return {
         disabled: true,
@@ -141,7 +148,7 @@
           "disabled:text-blue-200/60  disabled:hover:bg-transparent disabled:hover:cursor-not-allowed",
           index === selectedIndex
             ? "text-white shadow-inner shadow-black/50 bg-blue-950/50 hover:bg-blue-950/60 border-white/30"
-            : "text-blue-100 border-blue-200/30 shadow shadow-black/20 hover:bg-black/10",
+            : "text-blue-50/90 border-blue-200/30 shadow shadow-black/20 hover:bg-white/5",
         )}
         onclick={() => toggle(index)}
       >
@@ -151,11 +158,13 @@
           </span>
           <p class="text-left text-sm leading-4">
             {#if status.collidedWith}
-              ซ้อนกับ <span class="text-blue-50/90"
+              เวลาใกล้กับ <span class="text-blue-50/70"
                 >{status.collidedWith.title}</span
               >
             {:else if status.full}
               เต็ม
+            {:else if status.maximumReached}
+              เลือกเวิร์กช็อปครบแล้ว
             {/if}
           </p>
         </div>
