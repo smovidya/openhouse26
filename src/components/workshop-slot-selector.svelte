@@ -6,6 +6,7 @@
   import CheckmarkFilled from "carbon-icons-svelte/lib/CheckmarkFilled.svelte";
 
   import clsx from "clsx";
+  import { onMount, untrack } from "svelte";
 
   interface Props {
     class?: any;
@@ -46,6 +47,7 @@
   let registerCount = $state(initialRegisterCount);
 
   function toggle(index: number) {
+    changed = true;
     if (selectedIndex === index) {
       selectedIndex = undefined;
     } else {
@@ -84,6 +86,14 @@
     } as const;
   }
 
+  async function saveSelected(index: number | undefined) {
+    // undefined = not select
+    // TODO: send to backend
+    // TODO: update register count somehow
+
+    saved = true;
+  }
+
   // submission -------------
 
   const debouncedIndex = debounced({
@@ -92,16 +102,35 @@
   });
 
   $effect(() => {
-    // undefined = not select
     const index = debouncedIndex.current;
 
-    // TODO: send to backend
-    // TODO: update register count
+    untrack(() => saveSelected(index));
+  });
+
+  let changed = $state(false);
+  let saved = $state(true);
+  $effect(() => {
+    if (debouncedIndex.pending) {
+      saved = false;
+    }
+  });
+
+  let dotCount = $state(0);
+  onMount(() => {
+    setInterval(() => {
+      dotCount = (dotCount % 3) + 1;
+    }, 500);
   });
 </script>
 
-<div class={clsx("", className)}>
-  <h3 class="text-white text-xl">
+<section class={clsx("", className)}>
+  <h2 class="text-white text-2xl">รอบการทำกิจกรรม</h2>
+  <p class="text-blue-300">
+    กดที่เวลาเพื่อเลือก กดซ้ำเพื่อยกเลิก
+    บางรายการอาจเลือกไม่ได้เนื่องจากติดเงื่อนไข
+  </p>
+
+  <h3 class="text-white text-xl mt-5">
     {toLocalDateString(workshop.slots[0].date)}
   </h3>
   <div class="grid gap-2 mt-2">
@@ -143,4 +172,16 @@
       </button>
     {/each}
   </div>
-</div>
+
+  <div class="mt-4 h-5">
+    {#if changed}
+      <p class="text-blue-300/95 text-center">
+        {#if saved}
+          บันทึกแล้ว
+        {:else}
+          กำลังบันทึก{".".repeat(dotCount)}
+        {/if}
+      </p>
+    {/if}
+  </div>
+</section>

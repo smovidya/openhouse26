@@ -51,18 +51,11 @@ const registeredParticipantCount =
     {workshop.description}
   </article>
 
-  <section class="mt-8 mb-8">
-    <h2 class="text-white text-2xl">รอบการทำกิจกรรม</h2>
-    <p class="text-blue-300">
-      กดที่เวลาเพื่อเลือก กดซ้ำเพื่อยกเลิก บางรายการอาจเลือกไม่ได้เนื่องจากติดเงื่อนไข
-    </p>
-
-    <WorkshopSlotSelector
-      workshopId={workshop.id}
-      initialSelectedWorkshops={selectedWorkshops}
-      initialRegisterCount={registeredParticipantCount}
-      client:load
-      class="mt-5"
-    />
-  </section>
+  <WorkshopSlotSelector
+    workshopId={workshop.id}
+    initialSelectedWorkshops={selectedWorkshops}
+    initialRegisterCount={registeredParticipantCount}
+    client:load
+    class="my-8"
+  />
 </Layout>
