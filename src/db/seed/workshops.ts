@@ -4,7 +4,6 @@ import { createClient } from "@libsql/client";
 import { schema } from "../schema";
 import { drizzle } from "drizzle-orm/libsql";
 import { eq } from "drizzle-orm";
-import { id } from "zod/v4/locales";
 
 async function main() {
   const db = drizzle({
