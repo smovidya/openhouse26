@@ -1,10 +1,9 @@
 <script lang="ts">
   import type { SelectedWorkshop } from "@src/client/shared-state.svelte";
-  import { getWorkshopById, TimeSlot, workshops } from "@src/data/workshops";
+  import { getWorkshopById, workshops } from "@src/data/workshops";
   import { debounced } from "@src/utils/state.svelte";
   import { toLocalDateString } from "@src/utils/time";
   import CheckmarkFilled from "carbon-icons-svelte/lib/CheckmarkFilled.svelte";
-
   import clsx from "clsx";
   import { onMount, untrack } from "svelte";
 
@@ -86,6 +85,8 @@
     } as const;
   }
 
+  // submission -------------
+
   async function saveSelected(index: number | undefined) {
     // undefined = not select
     // TODO: send to backend
@@ -94,8 +95,6 @@
     saved = true;
   }
 
-  // submission -------------
-
   const debouncedIndex = debounced({
     getter: () => selectedIndex,
     debouncedTimeMs: 500,
@@ -103,7 +102,6 @@
 
   $effect(() => {
     const index = debouncedIndex.current;
-
     untrack(() => saveSelected(index));
   });
 
