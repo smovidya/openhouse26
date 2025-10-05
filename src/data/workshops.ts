@@ -25,11 +25,16 @@ export class TimeSlot {
   start: Time;
   end: Time;
 
-  constructor({ date, end, round, start }: {
-    round: number,
-    date: Date,
-    start: Time,
-    end: Time,
+  constructor({
+    date,
+    end,
+    round,
+    start,
+  }: {
+    round: number;
+    date: Date;
+    start: Time;
+    end: Time;
   }) {
     this.round = round;
     this.date = date;
@@ -133,10 +138,44 @@ export const workshops: Workshop[] = [
       }),
     ],
   },
+  {
+    id: "foodtech-playground",
+    title: "FoodTech Playground",
+    capacity: 20,
+    hostDepartment: "เทคโนโลยีทางอาหาร",
+    hostDepartmentAbbr: "FoodTech",
+    description:
+      "กิจกรรม workshop : Foodtech playground ให้ทุกคนได้รู้จักภาควิชาในมุมมองใหม่จากพี่ๆในภาควิชาและร่วมเล่นเกมที่ทำให้รู้จักกระบวนการผลิตอาหารตั้งแต่จุดเริ่มต้นจนได้เป็นผลิตภัณฑ์ เปิดมุมมองใหม่ที่ได้ทั้งความรู้และความสนุก",
+    image: "/logo.png",
+    slots: [
+      new TimeSlot({
+        round: 1,
+        date: new Date("2025-10-18"),
+        start: new Time(10, 0),
+        end: new Time(10, 45),
+      }),
+      new TimeSlot({
+        round: 2,
+        date: new Date("2025-10-18"),
+        start: new Time(11, 15),
+        end: new Time(12, 0),
+      }),
+      new TimeSlot({
+        round: 3,
+        date: new Date("2025-10-18"),
+        start: new Time(14, 15),
+        end: new Time(15, 0),
+      }),
+      new TimeSlot({
+        round: 4,
+        date: new Date("2025-10-18"),
+        start: new Time(15, 30),
+        end: new Time(16, 15),
+      }),
+    ],
+  },
 ];
 
-
 export function getWorkshopById(id: string) {
-  return workshops
-    .find(it => it.id === id);
+  return workshops.find((it) => it.id === id);
 }
