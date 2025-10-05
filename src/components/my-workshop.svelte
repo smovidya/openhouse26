@@ -18,7 +18,7 @@
 <section class="mt-8 mb-6 text-sm text-blue-300/85 font-serif">
   <h2 class="text-2xl text-white">My workshops</h2>
   <div class="flex justify-between text-md">
-    <span> เวิร์กช็อปที่ลงทะเบียนแล้ว ({selectedWorkshops.length}/3) </span>
+    <span> เวิร์กช็อปที่ลงทะเบียนแล้ว ({selectedWorkshops.length}/2) </span>
     <a href="/workshops" class="underline underline-offset-2">ดูทั้งหมด →</a>
   </div>
 
@@ -40,9 +40,13 @@
         class="p-4 flex flex-col justify-center items-center h-42 mt-6 border-2 border-dashed border-blue-300/35 shadow-inner shadow-black/45 bg-blue-950/25"
       >
         <Add class="size-9 text-blue-300" />
-        <h3 class="text-lg text-blue-200">ลงทะเบียนเพิ่ม</h3>
+        <h3 class="text-lg text-blue-200">
+          ลงทะเบียน{selectedWorkshops.length === 0
+            ? "เข้าร่วมเวิร์กช็อป"
+            : "เพิ่ม"}
+        </h3>
         <p class="text-sm text-blue-300/85">
-          คุณลงทะเบียนได้อีก {3 - selectedWorkshops.length} เวิร์กช็อป
+          คุณลงทะเบียนได้อีก {2 - selectedWorkshops.length} เวิร์กช็อป
         </p>
       </a>
     {/if}
