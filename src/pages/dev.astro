@@ -1,4 +1,5 @@
 ---
+import WorkshopList from "@src/components/workshop-list.svelte";
 import NavBar from "../components/navbar.svelte";
 import Layout from "../layouts/Base.astro";
 
@@ -14,4 +15,7 @@ if (!import.meta.env.DEV) {
 >
   <div class="h-4"></div>
   <NavBar class="" />
+
+  <!-- Some data (Time) is not serializable -->
+  <WorkshopList client:load class="m-6" />
 </Layout>

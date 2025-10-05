@@ -26,15 +26,17 @@ interface TimeSlot {
   end: Time;
 }
 
-interface Workshop {
+export interface Workshop {
   id: string;
   title: string;
   description: string;
   hostDepartment: string;
+  // hostDepartmentIds: number[];
   hostDepartmentAbbr: string;
   image: string;
   capacity: number;
   slots: TimeSlot[];
+
 }
 
 export const workshops: Workshop[] = [

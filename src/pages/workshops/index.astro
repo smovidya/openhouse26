@@ -2,6 +2,7 @@
 import Layout from "@src/layouts/ContentLayout.astro";
 import CutoutBox from "@src/components/common/cutout-box.svelte";
 import { Content } from "@src/data/workshops-term.md";
+import WorkshopList from "@src/components/workshop-list.svelte";
 ---
 
 <Layout
@@ -27,5 +28,7 @@ import { Content } from "@src/data/workshops-term.md";
         </div>
       </CutoutBox>
     </section>
+
+    <WorkshopList client:load class="mt-6 text-black" />
   </article>
 </Layout>
