@@ -111,7 +111,7 @@
         disabled={status.disabled}
         class={clsx(
           "rounded-lg border py-1.5 px-3 transition-all cursor-pointer text-left flex justify-between items-center",
-          "disabled:text-blue-200/60 disabled:bg-blue-200/5 disabled:hover:bg disabled:hover:cursor-not-allowed",
+          "disabled:text-blue-200/60  disabled:hover:bg-transparent disabled:hover:cursor-not-allowed",
           index === selectedIndex
             ? "text-white shadow-inner shadow-black/50 bg-blue-950/50 hover:bg-blue-950/60 border-white/30"
             : "text-blue-100 border-blue-200/30 shadow shadow-black/20 hover:bg-black/10",
