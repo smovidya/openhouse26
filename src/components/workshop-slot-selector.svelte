@@ -124,9 +124,9 @@
           </span>
           <p class="text-left text-sm leading-4">
             {#if status.collidedWith}
-              คุณลงเวลานี้ไม่ได้ ซ้อนกับ<span class="text-blue-50/90"
+              ซ้อนกับ <span class="text-blue-50/90"
                 >{status.collidedWith.title}</span
-              >ที่ลงทะเบียนแล้ว
+              >
             {:else if status.full}
               เต็ม
             {/if}
