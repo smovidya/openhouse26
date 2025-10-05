@@ -1,15 +1,15 @@
 class Time {
-  #hour: number;
-  #minute: number;
+  hour: number;
+  minute: number;
 
   constructor(hour: number, minute: number) {
-    this.#hour = hour;
-    this.#minute = minute;
+    this.hour = hour;
+    this.minute = minute;
   }
 
   toString() {
-    const h = this.#hour.toString().padStart(2, "0");
-    const m = this.#minute.toString().padStart(2, "0");
+    const h = this.hour.toString().padStart(2, "0");
+    const m = this.minute.toString().padStart(2, "0");
     return `${h}:${m}`;
   }
 
@@ -19,11 +19,44 @@ class Time {
   }
 }
 
-export interface TimeSlot {
+export class TimeSlot {
   round: number;
   date: Date;
   start: Time;
   end: Time;
+
+  constructor({ date, end, round, start }: {
+    round: number,
+    date: Date,
+    start: Time,
+    end: Time,
+  }) {
+    this.round = round;
+    this.date = date;
+    this.start = start;
+    this.end = end;
+  }
+
+  isIn1Hour(other: TimeSlot) {
+    // Check if dates are the same
+    if (this.date.toDateString() !== other.date.toDateString()) {
+      return false;
+    }
+
+    // Convert times to minutes for easier calculation
+    const thisStartMinutes = this.start.hour * 60 + this.start.minute;
+    const thisEndMinutes = this.end.hour * 60 + this.end.minute;
+    const otherStartMinutes = other.start.hour * 60 + other.start.minute;
+    const otherEndMinutes = other.end.hour * 60 + other.end.minute;
+
+    // Check if slots overlap or are within 1 hour (60 minutes) of each other
+    const gap = Math.min(
+      Math.abs(thisStartMinutes - otherEndMinutes),
+      Math.abs(otherStartMinutes - thisEndMinutes)
+    );
+
+    return gap <= 60;
+  }
 }
 
 export interface Workshop {
@@ -36,7 +69,6 @@ export interface Workshop {
   image: string;
   capacity: number;
   slots: TimeSlot[];
-
 }
 
 export const workshops: Workshop[] = [
@@ -51,30 +83,30 @@ export const workshops: Workshop[] = [
     capacity: 15,
     image: "/logo.png",
     slots: [
-      {
+      new TimeSlot({
         round: 1,
         date: new Date("2025-10-18"),
         start: new Time(10, 10),
         end: new Time(10, 50),
-      },
-      {
+      }),
+      new TimeSlot({
         round: 2,
         date: new Date("2025-10-18"),
         start: new Time(11, 5),
         end: new Time(11, 40),
-      },
-      {
+      }),
+      new TimeSlot({
         round: 3,
         date: new Date("2025-10-18"),
         start: new Time(13, 30),
         end: new Time(14, 10),
-      },
-      {
+      }),
+      new TimeSlot({
         round: 4,
         date: new Date("2025-10-18"),
         start: new Time(14, 30),
         end: new Time(15, 10),
-      },
+      }),
     ],
   },
   {
@@ -87,18 +119,24 @@ export const workshops: Workshop[] = [
     capacity: 20,
     image: "/logo.png",
     slots: [
-      {
+      new TimeSlot({
         round: 1,
         date: new Date("2025-10-18"),
         start: new Time(11, 15),
         end: new Time(12, 15),
-      },
-      {
+      }),
+      new TimeSlot({
         round: 2,
         date: new Date("2025-10-18"),
         start: new Time(13, 30),
         end: new Time(14, 30),
-      },
+      }),
     ],
   },
 ];
+
+
+export function getWorkshopById(id: string) {
+  return workshops
+    .find(it => it.id === id);
+}

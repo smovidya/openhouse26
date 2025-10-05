@@ -43,6 +43,6 @@ if (!workshop) {
       กดที่เวลาเพื่อเลือก บางรายการอาจเลือกไม่ได้เนื่องจากติดเงื่อนไข
     </p>
 
-    <WorkshopSlotSelector workshopId={workshop.id} client:load/>
+    <WorkshopSlotSelector workshopId={workshop.id} initialRegisterCount={[0, 12, 32, 35]} client:load class="mt-5"/>
   </section>
 </Layout>
