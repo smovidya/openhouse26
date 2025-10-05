@@ -148,7 +148,7 @@
           "disabled:text-blue-200/60  disabled:hover:bg-transparent disabled:hover:cursor-not-allowed",
           index === selectedIndex
             ? "text-white shadow-inner shadow-black/50 bg-blue-950/50 hover:bg-blue-950/60 border-white/30"
-            : "text-blue-50/90 border-blue-200/30 shadow shadow-black/20 hover:bg-white/5",
+            : "text-blue-50 border-blue-200/30 shadow shadow-black/20 hover:bg-white/5",
         )}
         onclick={() => toggle(index)}
       >
