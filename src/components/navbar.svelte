@@ -1,8 +1,7 @@
 <script lang="ts">
-  import clsx from "clsx";
-  import LogoNoCircle from "@src/assets/logo-no-circle.png";
   import QrIcon from "@src/assets/icons/qrcode.svg";
-  import NavIcon from "@src/assets/icons/Vector.png";
+  import LogoNoCircle from "@src/assets/logo-no-circle.png";
+  import clsx from "clsx";
 
   interface Props {
     class?: any;
@@ -14,7 +13,7 @@
 <nav
   class={clsx(
     "w-full h-24 velvet relative shadow-md shadow-black/30",
-    className
+    className,
   )}
 >
   <div class="absolute strip-3 -translate-y-[0.5px] inset-y-1 inset-x-0"></div>
@@ -24,15 +23,16 @@
   <div class="flex justify-between items-center w-full h-full px-4">
     <img src={LogoNoCircle.src} alt="logo" class="size-14 object-cover" />
 
-    <div class="flex h-full items-center text-white/80 text-xs font-serif">
-      <button
+    <div class="flex z-3 h-full items-center text-white/80 text-xs font-serif">
+      <a
+        href="/my-id"
         class="flex flex-col items-center justify-center w-17 h-18 button-active"
       >
         <span>
           <img src={QrIcon.src} alt="" class="size-8 m-1" />
         </span>
         <span class="mt-1"> MyId </span>
-      </button>
+      </a>
 
       <!-- <button
         class="flex flex-col items-center justify-center w-17 h-18"
