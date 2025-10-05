@@ -15,6 +15,10 @@ async function main() {
 
   for (const workshop of workshops) {
     console.log(`🌟 Inserting workshop: ${workshop.title}`);
+    console.log(`Capacity: ${workshop.capacity}`);
+    console.log(`Description: ${workshop.description}`);
+    console.log(`Host Department: ${workshop.hostDepartment} (${workshop.hostDepartmentAbbr})`);
+    console.log(`Image: ${workshop.image}`);
     await db.transaction(async (tx) => {
       const existingWorkshop = await tx
         .select({
