@@ -86,7 +86,7 @@ export const workshops: Workshop[] = [
       "เทคโนโลยีชีวภาพ (นานาชาติ) ร่วมกับ หลักสูตรวิทยาศาสตร์และเทคโนโลยีอุตสาหการ (นานาชาติ)",
     hostDepartmentAbbr: "BBTech & BISTech",
     capacity: 15,
-    image: "/logo.png",
+    image: "/workshop-pictures/01.png",
     slots: [
       new TimeSlot({
         round: 1,
@@ -122,7 +122,7 @@ export const workshops: Workshop[] = [
     hostDepartment: "ชีวเคมี",
     hostDepartmentAbbr: "BioChem",
     capacity: 20,
-    image: "/logo.png",
+    image: "/workshop-pictures/02.png",
     slots: [
       new TimeSlot({
         round: 1,
@@ -146,7 +146,7 @@ export const workshops: Workshop[] = [
     hostDepartmentAbbr: "FoodTech",
     description:
       "กิจกรรม workshop : Foodtech playground ให้ทุกคนได้รู้จักภาควิชาในมุมมองใหม่จากพี่ๆในภาควิชาและร่วมเล่นเกมที่ทำให้รู้จักกระบวนการผลิตอาหารตั้งแต่จุดเริ่มต้นจนได้เป็นผลิตภัณฑ์ เปิดมุมมองใหม่ที่ได้ทั้งความรู้และความสนุก",
-    image: "/logo.png",
+    image: "/workshop-pictures/04.png",
     slots: [
       new TimeSlot({
         round: 1,
@@ -182,7 +182,7 @@ export const workshops: Workshop[] = [
       "แบ่งผู้ร่วมกิจกรรมออกเป็นกลุ่มเตรียม contour line ให้ผู้ร่วมกิจกรรมโดยแต่ละคนในกลุ่มจะได้รับรูปแบบที่ต่างกัน จากนั้นผู้ร่วมกิจกรรมจับคู่ภาพตัดขวางของตนกับภาพสถานที่ท่องเที่ยว จากนั้นให้ตอบคำถาม  โดยจะมีตัวอย่างหินให้ได้ศึกษาด้วย",
     hostDepartment: "ธรณีวิทยา",
     hostDepartmentAbbr: "Geo",
-    image: "/logo.png",
+    image: "/workshop-pictures/05.png",
     slots: [
       new TimeSlot({
         round: 1,
@@ -218,7 +218,7 @@ export const workshops: Workshop[] = [
       "การแข่งขันการแยกแยะสีคือการจัดเรียงแถบสี 85 แถบตามลำดับสีธรรมชาติเพื่อประเมินความแม่นยำและตรวจหาความบกพร่องในการมองเห็นสี ซึ่งสำคัญต่ออุตสาหกรรมที่ต้องใช้การมองสีอย่างแม่นยำ เช่น การออกแบบ การถ่ายภาพ และการควบคุมคุณภาพ",
     hostDepartment: "เทคโนโลยีทางภาพและการพิมพ์",
     hostDepartmentAbbr: "ImPrint",
-    image: "/logo.png",
+    image: "/workshop-pictures/06.png",
     slots: [
       new TimeSlot({
         round: 1,
@@ -242,7 +242,7 @@ export const workshops: Workshop[] = [
       "สนุกไปกับการทำ ‘‘สไลม์’’ ที่ไม่ธรรมดา เพราะ สไลม์ของเราจะมีทั้งแบบเปลี่ยนสีตามอุณหภูมิ (Thermochromic) หรือแบบเปล่งแสงได้ (Fluorescent) พร้อมเรียนรู้หลักการทางวัสดุศาสตร์ ของวัสดุเปลี่ยนสีเมื่อสิ่งแวดล้อมเปลี่ยนและการเปล่งแสงในที่มืด",
     hostDepartment: "วัสดุศาสตร์",
     hostDepartmentAbbr: "MatSci",
-    image: "/logo.png",
+    image: "/workshop-pictures/07.png",
     slots: [
       new TimeSlot({
         round: 1,
@@ -272,7 +272,7 @@ export const workshops: Workshop[] = [
       "Workshop นี้เปิดโอกาสให้ผู้เข้าร่วมทดลองทำ “สไลม์” ด้วยกาว PVA ร่วมกับสารละลาย Borax และสูตรน้ำยาล้างคอนแทคเลนส์ สำหรับการเรียนรู้หลักการพอลิเมอร์และปฏิกิริยา Cross-linking Polymerization พร้อมการปรับแต่งสไลม์ด้วยสีผสมอาหาร กลิตเตอร์ และน้ำหอม",
     hostDepartment: "เคมีร่วมกับเคมีประยุกต์ (นานาชาติ)",
     hostDepartmentAbbr: "Chem & BSAC",
-    image: "/logo.png",
+    image: "/workshop-pictures/03.png",
     slots: [
       new TimeSlot({
         round: 1,
@@ -296,7 +296,7 @@ export const workshops: Workshop[] = [
       "กิจกรรม streak plate แบบสร้างสรรค์ด้วยสีอะคริลิค เพื่อให้น้อง ๆ ได้เข้าใจพื้นฐานความรู้ที่เกี่ยวข้องกับภาควิชาจุลชีววิทยา รวมไปถึงมีการให้คำแนะนำสำหรับการเรียนต่อ และตอบข้อซักถามอื่น ๆ เพิ่มเติม",
     hostDepartment: "จุลชีววิทยา",
     hostDepartmentAbbr: "MicroBio",
-    image: "/logo.png",
+    image: "/workshop-pictures/08.png",
     slots: [
       new TimeSlot({
         round: 1,
