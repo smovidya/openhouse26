@@ -41,8 +41,6 @@ export const registerParticipant = defineAction({
       specialNeeds: z.string().optional(),
       residentProvince: z
         .number()
-        .min(1)
-        .max(77)
         .transform((val) => {
           const code = provinces.find(
             (it) => it.provinceCode === val
