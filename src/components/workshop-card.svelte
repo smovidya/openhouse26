@@ -1,37 +1,83 @@
 <script lang="ts">
   import type { Workshop } from "@src/data/workshops";
+  import TimeFilled from "carbon-icons-svelte/lib/TimeFilled.svelte";
+
   import clsx from "clsx";
   interface Props {
     class?: any;
     workshop: Workshop;
+    /**
+     * Only to be used in my workshop section
+     */
+    selectedTimeSlotText?: string;
     variant?: "red" | "yellow";
   }
 
-  let { class: className, workshop, variant = "yellow" }: Props = $props();
+  let {
+    class: className,
+    workshop,
+    variant = "yellow",
+    selectedTimeSlotText,
+  }: Props = $props();
+
+  const df = new Intl.DateTimeFormat("th-TH", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  });
 </script>
 
-<div class={clsx("border border-white/50 p-4 shadow-lg shadow-black/20", variant, className)}>
+<div
+  class={clsx(
+    "border border-white/50 p-4 shadow-lg shadow-black/20",
+    variant,
+    className,
+  )}
+>
   <div class="flex gap-3">
+    <img
+      src={workshop.image}
+      alt=""
+      class="size-28 aspect-square bg-neutral-200 rounded overflow-clip"
+    />
     <div>
-      <img src={workshop.image} alt="" class="size-28 bg-neutral-400" />
-    </div>
-    <div>
-      <h2>{workshop.title}</h2>
-      <p class="text-yellow-700 text-sm">{workshop.hostDepartmentAbbr}</p>
-      <div class="text-sm">
-        <!-- TODO: format time -->
-        {workshop.slots.map((it) => it.start)}
+      <h2 class="text-lg">{workshop.title}</h2>
+      <p
+        class={clsx(
+          "text-sm",
+          variant === "yellow" && "text-yellow-700",
+          variant === "red" && "text-red-200",
+        )}
+      >
+        {workshop.hostDepartmentAbbr}
+      </p>
+      <div class="text-sm mt-1 flex gap-1 items-center">
+        <TimeFilled />
+        <span>
+          {df.format(workshop.slots[0].date)}
+          {selectedTimeSlotText}
+        </span>
       </div>
     </div>
   </div>
 
   <div class="flex flex-col items-end mt-3 gap-3">
-    <p class="line-clamp-3 text-sm">
+    <p
+      class={clsx(
+        "line-clamp-3 text-sm",
+        variant === "yellow" && "text-black",
+        variant === "red" && "text-white",
+      )}
+    >
       {workshop.description}
     </p>
     <a
-      href=""
-      class="block shadow-inner shadow-black/20 border border-amber-100 rounded-md text-nowrap px-4 py-1.5 text-white text-shadow-md bg-black/25"
+      href="/workshops/{workshop.id}"
+      class={clsx(
+        "block shadow-inner shadow-black/20 border rounded-md text-nowrap px-4 py-1.5 text-white text-shadow-md bg-black/25",
+        variant === "yellow" && "border-amber-200/50",
+        variant === "red" && "border-red-200/50",
+      )}
     >
       ดูเพิ่มเติม
     </a>
@@ -40,6 +86,7 @@
 
 <style>
   .red {
+    background: linear-gradient(180deg, #f15c5c 52.88%, #7c0101 100%);
   }
 
   .yellow {

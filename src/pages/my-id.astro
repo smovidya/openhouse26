@@ -7,6 +7,7 @@ import Layout from "../layouts/ContentLayout.astro";
 import { workshopRegistrationDate } from "@src/data/constants";
 import Countdown from "@src/components/countdown.svelte";
 import MyWorkshop from "@src/components/my-workshop.svelte"
+import { getSelectedWorkshop} from "@src/db/model/workshop-registration"
 // import LockIcon from ""
 
 const uid = Astro.locals.user?.id;
@@ -23,6 +24,9 @@ const id = participant.id;
 const name = participant.givenName;
 
 const dev = import.meta.env.DEV;
+
+// TODO: implement this
+const selectedWorkshops = await getSelectedWorkshop()
 ---
 
 <Layout
@@ -106,7 +110,7 @@ const dev = import.meta.env.DEV;
         </div>
       </section>
     ) : (
-      <MyWorkshop selectedWorkshops={[]} />
+      <MyWorkshop selectedWorkshops={selectedWorkshops} />
     )
   }
 </Layout>

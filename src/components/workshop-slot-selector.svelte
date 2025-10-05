@@ -15,7 +15,7 @@
     /**
      * we need to pass every workshop select info here to determine if its ห่างกัน 1 ชั่วโมง
      */
-    initialSelectedWorkshops?: SelectedWorkshop[];
+    initialSelectedWorkshops: SelectedWorkshop[];
 
     /**
      * this too, for ssr, we can indeed refetch this at the client every n sec
@@ -28,14 +28,11 @@
   let {
     class: className,
     workshopId,
-    initialSelectedWorkshops = [],
+    initialSelectedWorkshops,
     initialRegisterCount,
   }: Props = $props();
 
   const workshop = workshops.find((it) => it.id === workshopId)!;
-  if (!workshop) {
-    throw new Error("nah");
-  }
 
   // undefined = not select
   const otherSelectedWorkshops = initialSelectedWorkshops.filter(
@@ -58,16 +55,6 @@
 
   function shouldDisabled(index: number) {
     const slot = workshop.slots[index]!;
-
-    // if (selectedIndex) {
-    //   const selectedSlot = workshop?.slots[selectedIndex];
-    //   if (slot.isIn1Hour(selectedSlot)) {
-    //     return {
-    //       disabled: true,
-    //       collidedWith: workshop,
-    //     };
-    //   }
-    // }
 
     if ((registerCount.at(index) ?? 0) > workshop.capacity) {
       return {

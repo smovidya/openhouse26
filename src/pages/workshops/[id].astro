@@ -3,6 +3,10 @@ import { workshops } from "@src/data/workshops";
 import Layout from "@src/layouts/ContentLayout.astro";
 import type { GetStaticPaths } from "astro";
 import WorkshopSlotSelector from "@src/components/workshop-slot-selector.svelte";
+import {
+  getSelectedWorkshop,
+  getRegisteredParticipantCount,
+} from "@src/db/model/workshop-registration";
 
 // uncomment this if we want to query workshop from db
 export const prerender = false;
@@ -18,6 +22,10 @@ const workshop = workshops.find((it) => it.id === id)!;
 if (!workshop) {
   return Astro.redirect("/404");
 }
+
+const selectedWorkshops = await getSelectedWorkshop();
+const registeredParticipantCount =
+  await getRegisteredParticipantCount("kimchi");
 ---
 
 <Layout
@@ -43,6 +51,12 @@ if (!workshop) {
       กดที่เวลาเพื่อเลือก บางรายการอาจเลือกไม่ได้เนื่องจากติดเงื่อนไข
     </p>
 
-    <WorkshopSlotSelector workshopId={workshop.id} initialRegisterCount={[0, 12, 32, 35]} client:load class="mt-5"/>
+    <WorkshopSlotSelector
+      workshopId={workshop.id}
+      initialSelectedWorkshops={selectedWorkshops}
+      initialRegisterCount={registeredParticipantCount}
+      client:load
+      class="mt-5"
+    />
   </section>
 </Layout>
