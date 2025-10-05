@@ -15,8 +15,8 @@
   let { class: className, selectedWorkshops }: Props = $props();
 </script>
 
-<section class="mt-8 mb-6 text-sm text-blue-300/85 font-serif">
-  <h2 class="text-2xl text-white">My workshops</h2>
+<section class="mt-8 mb-6 text-sm text-blue-300/85">
+  <h2 class="text-2xl text-white font-serif">My workshops</h2>
   <div class="flex justify-between text-md">
     <span> เวิร์กช็อปที่ลงทะเบียนแล้ว ({selectedWorkshops.length}/2) </span>
     <a href="/workshops" class="underline underline-offset-2">ดูทั้งหมด →</a>
