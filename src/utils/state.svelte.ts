@@ -1,3 +1,5 @@
+import { untrack } from "svelte";
+
 export class Debounced<T> {
   #value: T = $state() as T;
   #timeoutId: any;
@@ -13,9 +15,10 @@ export class Debounced<T> {
   }
 
   set current(value: T) {
-
-    if (this.#timeoutId) {
-      clearTimeout(this.#timeoutId);
+    console.log("readed")
+    const timeout = untrack(() => this.#timeoutId)
+    if (timeout) {
+      clearTimeout(timeout);
     }
 
     this.#timeoutId = setTimeout(() => {
