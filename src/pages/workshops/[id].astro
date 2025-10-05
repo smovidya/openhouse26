@@ -1,0 +1,48 @@
+---
+import { workshops } from "@src/data/workshops";
+import Layout from "@src/layouts/ContentLayout.astro";
+import type { GetStaticPaths } from "astro";
+import WorkshopSlotSelector from "@src/components/workshop-slot-selector.svelte";
+
+// uncomment this if we want to query workshop from db
+export const prerender = false;
+
+export const getStaticPaths: GetStaticPaths = () =>
+  workshops.map((it) => ({
+    params: { id: it.id },
+  }));
+
+const { id } = Astro.params;
+const workshop = workshops.find((it) => it.id === id)!;
+
+if (!workshop) {
+  return Astro.redirect("/404");
+}
+---
+
+<Layout
+  title="Workshops"
+  description="เวิร์กช็อปสำหรับน้อง ๆ ที่สนใจกิจกรรมของภาควิชาต่าง ๆ"
+  image="/og-image.png"
+  showNavBar={true}
+>
+  <!-- TODO: image? -->
+  <div class="flex flex-col text-white mt-4">
+    <span class="text-blue-300 text-xl font-serif">Workshop</span>
+    <h1 class="text-4xl font-serif">{workshop.title}</h1>
+    <span class="mt-4 text-blue-200">{workshop.hostDepartment}</span>
+  </div>
+
+  <article class="mt-8 text-blue-100 text-sm">
+    {workshop.description}
+  </article>
+
+  <section class="mt-8 mb-8">
+    <h2 class="text-white text-2xl">รอบการทำกิจกรรม</h2>
+    <p class="text-blue-300">
+      กดที่เวลาเพื่อเลือก บางรายการอาจเลือกไม่ได้เนื่องจากติดเงื่อนไข
+    </p>
+
+    <WorkshopSlotSelector workshopId={workshop.id} client:load/>
+  </section>
+</Layout>

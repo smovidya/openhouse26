@@ -19,7 +19,7 @@ class Time {
   }
 }
 
-interface TimeSlot {
+export interface TimeSlot {
   round: number;
   date: Date;
   start: Time;
