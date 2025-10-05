@@ -174,6 +174,42 @@ export const workshops: Workshop[] = [
       }),
     ],
   },
+  {
+    id: "contour-landform-drawing",
+    title: "ขีด Contour สร้าง Landform",
+    capacity: 20,
+    description:
+      "แบ่งผู้ร่วมกิจกรรมออกเป็นกลุ่มเตรียม contour line ให้ผู้ร่วมกิจกรรมโดยแต่ละคนในกลุ่มจะได้รับรูปแบบที่ต่างกัน จากนั้นผู้ร่วมกิจกรรมจับคู่ภาพตัดขวางของตนกับภาพสถานที่ท่องเที่ยว จากนั้นให้ตอบคำถาม  โดยจะมีตัวอย่างหินให้ได้ศึกษาด้วย",
+    hostDepartment: "ธรณีวิทยา",
+    hostDepartmentAbbr: "Geo",
+    image: "/logo.png",
+    slots: [
+      new TimeSlot({
+        round: 1,
+        date: new Date("2025-10-18"),
+        start: new Time(10, 0),
+        end: new Time(11, 0),
+      }),
+      new TimeSlot({
+        round: 2,
+        date: new Date("2025-10-18"),
+        start: new Time(11, 15),
+        end: new Time(12, 15),
+      }),
+      new TimeSlot({
+        round: 3,
+        date: new Date("2025-10-18"),
+        start: new Time(13, 30),
+        end: new Time(14, 30),
+      }),
+      new TimeSlot({
+        round: 4,
+        date: new Date("2025-10-18"),
+        start: new Time(14, 45),
+        end: new Time(15, 45),
+      }),
+    ],
+  },
 ];
 
 export function getWorkshopById(id: string) {
