@@ -21,27 +21,30 @@
     <span> เวิร์กช็อปที่ลงทะเบียนแล้ว ({selectedWorkshops.length}/3) </span>
     <a href="/workshops" class="underline underline-offset-2">ดูทั้งหมด →</a>
   </div>
-  {#each selectedWorkshops as { timeSlotIndex, workshopId }}
-    {@const workshop = getWorkshopById(workshopId)!}
-    {@const slot = workshop.slots[timeSlotIndex]}
-    <WorkshopCard
-      class="text-white"
-      selectedTimeSlotText="({slot.start.toString()} - {slot.end.toString()} น.)"
-      variant="red"
-      {workshop}
-    />
-  {/each}
 
-  {#if selectedWorkshops.length !== 3}
-    <a
-      href="/workshops"
-      class="p-4 flex flex-col justify-center items-center h-42 mt-6 border-2 border-dashed border-blue-300/35 rounded-xl shadow-inner shadow-black/45 bg-blue-950/25"
-    >
-      <Add class="size-9 text-blue-300" />
-      <h3 class="text-lg text-blue-200">ลงทะเบียนเพิ่ม</h3>
-      <p class="text-sm text-blue-300/85">
-        คุณลงทะเบียนได้อีก {3 - selectedWorkshops.length} เวิร์กช็อป
-      </p>
-    </a>
-  {/if}
+  <div class="mt-6">
+    {#each selectedWorkshops as { timeSlotIndex, workshopId }}
+      {@const workshop = getWorkshopById(workshopId)!}
+      {@const slot = workshop.slots[timeSlotIndex]}
+      <WorkshopCard
+        class="text-white"
+        selectedTimeSlotText="({slot.start.toString()} - {slot.end.toString()} น.)"
+        variant="red"
+        {workshop}
+      />
+    {/each}
+
+    {#if selectedWorkshops.length !== 3}
+      <a
+        href="/workshops"
+        class="p-4 flex flex-col justify-center items-center h-42 mt-6 border-2 border-dashed border-blue-300/35 rounded-xl shadow-inner shadow-black/45 bg-blue-950/25"
+      >
+        <Add class="size-9 text-blue-300" />
+        <h3 class="text-lg text-blue-200">ลงทะเบียนเพิ่ม</h3>
+        <p class="text-sm text-blue-300/85">
+          คุณลงทะเบียนได้อีก {3 - selectedWorkshops.length} เวิร์กช็อป
+        </p>
+      </a>
+    {/if}
+  </div>
 </section>

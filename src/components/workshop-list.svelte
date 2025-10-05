@@ -10,6 +10,8 @@
   let { class: className }: Props = $props();
 </script>
 
-<section class={clsx("grid sm:grid-cols-2", className)}>
-  <WorkshopCard workshop={workshops[0]} />
+<section class={clsx("grid sm:grid-cols-2 gap-4", className)}>
+  {#each workshops as workshop, index}
+    <WorkshopCard {workshop} variant={index % 2 === 0 ? "red" : "yellow"} />
+  {/each}
 </section>

@@ -31,6 +31,8 @@
   class={clsx(
     "border border-white/50 p-4 shadow-lg shadow-black/20",
     variant,
+    variant === "yellow" && "text-black",
+    variant === "red" && "text-white",
     className,
   )}
 >
@@ -62,19 +64,13 @@
   </div>
 
   <div class="flex flex-col items-end mt-3 gap-3">
-    <p
-      class={clsx(
-        "line-clamp-3 text-sm",
-        variant === "yellow" && "text-black",
-        variant === "red" && "text-white",
-      )}
-    >
+    <p class="line-clamp-3 text-sm">
       {workshop.description}
     </p>
     <a
       href="/workshops/{workshop.id}"
       class={clsx(
-        "block shadow-inner shadow-black/20 border rounded-md text-nowrap px-4 py-1.5 text-white text-shadow-md bg-black/25",
+        "block shadow-inner shadow-black/20 border rounded-md text-nowrap px-5 py-1.5 text-white text-shadow-md bg-black/25",
         variant === "yellow" && "border-amber-200/50",
         variant === "red" && "border-red-200/50",
       )}
