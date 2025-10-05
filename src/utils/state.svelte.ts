@@ -2,12 +2,16 @@ import { untrack } from "svelte";
 
 export class Debounced<T> {
   #value: T = $state() as T;
-  #timeoutId: any;
+  #timeoutId: any = $state();
   debouncedTimeMs: number;
 
   constructor(initial: T, debouncedTimeMs = 500) {
     this.#value = initial;
     this.debouncedTimeMs = debouncedTimeMs;
+  }
+
+  get pending() {
+    return !!this.#timeoutId;
   }
 
   get current() {
@@ -23,6 +27,7 @@ export class Debounced<T> {
 
     this.#timeoutId = setTimeout(() => {
       this.#value = value;
+      this.#timeoutId = undefined;
     }, this.debouncedTimeMs);
   }
 }
