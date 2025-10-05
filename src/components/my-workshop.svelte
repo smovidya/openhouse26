@@ -37,7 +37,7 @@
     {#if selectedWorkshops.length !== 3}
       <a
         href="/workshops"
-        class="p-4 flex flex-col justify-center items-center h-42 mt-6 border-2 border-dashed border-blue-300/35 rounded-xl shadow-inner shadow-black/45 bg-blue-950/25"
+        class="p-4 flex flex-col justify-center items-center h-42 mt-6 border-2 border-dashed border-blue-300/35 shadow-inner shadow-black/45 bg-blue-950/25"
       >
         <Add class="size-9 text-blue-300" />
         <h3 class="text-lg text-blue-200">ลงทะเบียนเพิ่ม</h3>

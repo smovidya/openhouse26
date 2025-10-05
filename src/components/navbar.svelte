@@ -26,12 +26,12 @@
     <div class="flex z-3 h-full items-center text-white/80 text-xs font-serif">
       <a
         href="/my-id"
-        class="flex flex-col items-center justify-center w-17 h-18 button-active"
+        class="flex flex-col items-center justify-center w-15 h-16.5 button-active"
       >
         <span>
-          <img src={QrIcon.src} alt="" class="size-8 m-1" />
+          <img src={QrIcon.src} alt="" class="size-9 m-0.5" />
         </span>
-        <span class="mt-1"> MyId </span>
+        <span class=""> MyId </span>
       </a>
 
       <!-- <button
