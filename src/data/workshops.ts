@@ -210,6 +210,114 @@ export const workshops: Workshop[] = [
       }),
     ],
   },
+  {
+    id: "farnsworth-munsell-test",
+    title: "Farnsworth-Munsell 100 Hue Test",
+    capacity: 16,
+    description:
+      "การแข่งขันการแยกแยะสีคือการจัดเรียงแถบสี 85 แถบตามลำดับสีธรรมชาติเพื่อประเมินความแม่นยำและตรวจหาความบกพร่องในการมองเห็นสี ซึ่งสำคัญต่ออุตสาหกรรมที่ต้องใช้การมองสีอย่างแม่นยำ เช่น การออกแบบ การถ่ายภาพ และการควบคุมคุณภาพ",
+    hostDepartment: "เทคโนโลยีทางภาพและการพิมพ์",
+    hostDepartmentAbbr: "ImPrint",
+    image: "/logo.png",
+    slots: [
+      new TimeSlot({
+        round: 1,
+        date: new Date("2025-10-19"),
+        start: new Time(10, 45),
+        end: new Time(11, 30),
+      }),
+      new TimeSlot({
+        round: 2,
+        date: new Date("2025-10-19"),
+        start: new Time(13, 45),
+        end: new Time(14, 30),
+      }),
+    ],
+  },
+  {
+    id: "chroma-glow",
+    title: "Chroma Glow Materials Workshops",
+    capacity: 20,
+    description:
+      "สนุกไปกับการทำ ‘‘สไลม์’’ ที่ไม่ธรรมดา เพราะ สไลม์ของเราจะมีทั้งแบบเปลี่ยนสีตามอุณหภูมิ (Thermochromic) หรือแบบเปล่งแสงได้ (Fluorescent) พร้อมเรียนรู้หลักการทางวัสดุศาสตร์ ของวัสดุเปลี่ยนสีเมื่อสิ่งแวดล้อมเปลี่ยนและการเปล่งแสงในที่มืด",
+    hostDepartment: "วัสดุศาสตร์",
+    hostDepartmentAbbr: "MatSci",
+    image: "/logo.png",
+    slots: [
+      new TimeSlot({
+        round: 1,
+        date: new Date("2025-10-19"),
+        start: new Time(10, 30),
+        end: new Time(11, 30),
+      }),
+      new TimeSlot({
+        round: 2,
+        date: new Date("2025-10-19"),
+        start: new Time(13, 0),
+        end: new Time(14, 0),
+      }),
+      new TimeSlot({
+        round: 3,
+        date: new Date("2025-10-19"),
+        start: new Time(15, 0),
+        end: new Time(16, 0),
+      }),
+    ],
+  },
+  {
+    id: "baymaxs-belly-slime",
+    title: "Baymax’s belly slime",
+    capacity: 20,
+    description:
+      "Workshop นี้เปิดโอกาสให้ผู้เข้าร่วมทดลองทำ “สไลม์” ด้วยกาว PVA ร่วมกับสารละลาย Borax และสูตรน้ำยาล้างคอนแทคเลนส์ สำหรับการเรียนรู้หลักการพอลิเมอร์และปฏิกิริยา Cross-linking Polymerization พร้อมการปรับแต่งสไลม์ด้วยสีผสมอาหาร กลิตเตอร์ และน้ำหอม",
+    hostDepartment: "เคมีร่วมกับเคมีประยุกต์ (นานาชาติ)",
+    hostDepartmentAbbr: "Chem & BSAC",
+    image: "/logo.png",
+    slots: [
+      new TimeSlot({
+        round: 1,
+        date: new Date("2025-10-19"),
+        start: new Time(14, 45),
+        end: new Time(15, 30),
+      }),
+      new TimeSlot({
+        round: 2,
+        date: new Date("2025-10-19"),
+        start: new Time(15, 45),
+        end: new Time(16, 30),
+      }),
+    ],
+  },
+  {
+    id: "culturex",
+    title: "CultureX: Preparing For Take Off!",
+    capacity: 25,
+    description:
+      "กิจกรรม streak plate แบบสร้างสรรค์ด้วยสีอะคริลิค เพื่อให้น้อง ๆ ได้เข้าใจพื้นฐานความรู้ที่เกี่ยวข้องกับภาควิชาจุลชีววิทยา รวมไปถึงมีการให้คำแนะนำสำหรับการเรียนต่อ และตอบข้อซักถามอื่น ๆ เพิ่มเติม",
+    hostDepartment: "จุลชีววิทยา",
+    hostDepartmentAbbr: "MicroBio",
+    image: "/logo.png",
+    slots: [
+      new TimeSlot({
+        round: 1,
+        date: new Date("2025-10-19"),
+        start: new Time(10, 45),
+        end: new Time(11, 30),
+      }),
+      new TimeSlot({
+        round: 2,
+        date: new Date("2025-10-19"),
+        start: new Time(13, 15),
+        end: new Time(14, 0),
+      }),
+      new TimeSlot({
+        round: 3,
+        date: new Date("2025-10-19"),
+        start: new Time(14, 45),
+        end: new Time(15, 30),
+      }),
+    ],
+  },
 ];
 
 export function getWorkshopById(id: string) {
