@@ -6,6 +6,7 @@ import { getParticipantByUserId } from "@src/db/model/participant";
 import Layout from "../layouts/ContentLayout.astro";
 import { workshopRegistrationDate } from "@src/data/constants";
 import Countdown from "@src/components/countdown.svelte";
+import MyWorkshop from "@src/components/my-workshop.svelte"
 // import LockIcon from ""
 
 const uid = Astro.locals.user?.id;
@@ -21,7 +22,7 @@ if (!participant) {
 const id = participant.id;
 const name = participant.givenName;
 
-workshopRegistrationDate;
+const dev = import.meta.env.DEV;
 ---
 
 <Layout
@@ -84,31 +85,30 @@ workshopRegistrationDate;
     </section>
   </main>
 
-  <section class="mt-8 text-sm text-blue-300/85 font-serif">
-    <h2 class="text-2xl text-white">My workshops</h2>
-    <!-- <div class="flex justify-between text-md">
-      <span> เวิร์กช็อปที่ลงทะเบียนแล้ว (1/2) </span>
-      <a href="" class="underline underline-offset-2">ดูทั้งหมด →</a>
-    </div> -->
-  </section>
-
-  <section
-    class="mt-6 relative text-center text-md p-2 bg-neutral-100 rounded-3xl metal-bg shadow-lg shadow-black/20"
-  >
-    <div class="absolute inset-2 translate-[0.3px] rounded-2xl metal-strip-2">
-    </div>
-    <div class="relative z-2 pt-2 pb-4 flex flex-col rounded-2xl metal-strip">
-      <div class="p-4 space-y-2 pb-2">
-        <span class="text-2xl"> 🔒 </span>
-        <h3>เริ่มลงทะเบียนเวิร์กช็อปได้ในวันที่ 6 ตุลาคม เวลา 09:00 น.</h3>
-      </div>
-      <Countdown
-        client:load
-        to={workshopRegistrationDate.getTime()}
-        class="text-neutral-500 mt-2 mb-2 px-2 gap-2! md:gap-6!"
-      />
-    </div>
-  </section>
+  
+  {
+    !dev ? (
+    <section class="mt-8 text-sm text-blue-300/85 font-serif">
+      <h2 class="text-2xl text-white">My workshops</h2>
+    </section>
+      <section class="mt-6 relative text-center text-md p-2 bg-neutral-100 rounded-3xl metal-bg shadow-lg shadow-black/20">
+        <div class="absolute inset-2 translate-[0.3px] rounded-2xl metal-strip-2"></div>
+        <div class="relative z-2 pt-2 pb-4 flex flex-col rounded-2xl metal-strip">
+          <div class="p-4 space-y-2 pb-2">
+            <span class="text-2xl"> 🔒 </span>
+            <h3>เริ่มลงทะเบียนเวิร์กช็อปได้ในวันที่ 6 ตุลาคม เวลา 09:00 น.</h3>
+          </div>
+          <Countdown
+            client:load
+            to={workshopRegistrationDate.getTime()}
+            class="text-neutral-500 mt-2 mb-2 px-2 gap-2! md:gap-6!"
+          />
+        </div>
+      </section>
+    ) : (
+      <MyWorkshop selectedWorkshops={[]} />
+    )
+  }
 </Layout>
 
 <style>
