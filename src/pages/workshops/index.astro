@@ -3,6 +3,11 @@ import Layout from "@src/layouts/ContentLayout.astro";
 import CutoutBox from "@src/components/common/cutout-box.svelte";
 import { Content } from "@src/data/workshops-term.md";
 import WorkshopList from "@src/components/workshop-list.svelte";
+import { featureFlags } from "@src/data/constants";
+
+if (!import.meta.env.DEV && !featureFlags.workshopRegistration) {
+  return Astro.redirect("/404");
+}
 ---
 
 <Layout

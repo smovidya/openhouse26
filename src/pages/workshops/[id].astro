@@ -7,6 +7,7 @@ import {
   getSelectedWorkshop,
   getRegisteredParticipantCount,
 } from "@src/db/model/workshop-registration";
+import { featureFlags } from "@src/data/constants";
 
 // uncomment this if we want to query workshop from db
 export const prerender = false;
@@ -19,7 +20,7 @@ export const getStaticPaths: GetStaticPaths = () =>
 const { id } = Astro.params;
 const workshop = workshops.find((it) => it.id === id)!;
 
-if (!workshop) {
+if (!workshop || (!import.meta.env.DEV && !featureFlags.workshopRegistration)) {
   return Astro.redirect("/404");
 }
 
@@ -34,7 +35,11 @@ const registeredParticipantCount =
   image="/og-image.png"
   showNavBar={true}
 >
-  <img src={workshop.image} alt="" class="object-cover w-full max-h-[50vh] rounded ">
+  <img
+    src={workshop.image}
+    alt=""
+    class="object-cover w-full max-h-[50vh] rounded"
+  />
   <!-- TODO: image? -->
   <div class="flex flex-col text-white mt-4">
     <span class="text-blue-300 text-xl font-serif">Workshop</span>
