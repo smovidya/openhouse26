@@ -4,7 +4,7 @@ import NavBar from "../components/navbar.svelte";
 import QrId from "@src/components/qr-id.svelte";
 import { getParticipantByUserId } from "@src/db/model/participant";
 import Layout from "../layouts/ContentLayout.astro";
-import { workshopRegistrationDate } from "@src/data/constants";
+import { featureFlags, workshopRegistrationDate } from "@src/data/constants";
 import Countdown from "@src/components/countdown.svelte";
 import MyWorkshop from "@src/components/my-workshop.svelte"
 import { getSelectedWorkshop} from "@src/db/model/workshop-registration"
@@ -23,7 +23,7 @@ if (!participant) {
 const id = participant.id;
 const name = participant.givenName;
 
-const dev = import.meta.env.DEV;
+const showWorkshop = import.meta.env.DEV || featureFlags.workshopRegistration
 
 // TODO: implement this
 const selectedWorkshops = await getSelectedWorkshop()
@@ -91,7 +91,7 @@ const selectedWorkshops = await getSelectedWorkshop()
 
   
   {
-    !dev ? (
+    !showWorkshop ? (
     <section class="mt-8 text-sm text-blue-300/85 font-serif">
       <h2 class="text-2xl text-white">My workshops</h2>
     </section>
