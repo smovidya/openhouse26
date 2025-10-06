@@ -110,8 +110,7 @@
       });
 
       if (error) {
-
-    saved = true;
+        saved = true;
         alert("เกิดข้อผิดพลาดขณะลบ: " + error.message);
         throw error;
       }
@@ -148,12 +147,14 @@
     debouncedTimeMs: 500,
   });
 
+  let firstRun = true;
   $effect(() => {
-    if (!changed) {
-      saved = true;
+    const index = debouncedRounded.current;
+    if (firstRun) {
+      firstRun = false;
       return;
     }
-    const index = debouncedRounded.current;
+    console.log({ index });
     untrack(() => saveSelected(index));
   });
 

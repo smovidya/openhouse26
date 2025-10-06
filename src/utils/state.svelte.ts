@@ -1,8 +1,8 @@
 import { untrack } from "svelte";
 
 export class Debounced<T> {
-  #value: T;
-  #id = $state(0);
+  #value: T = $state() as T;
+  // #id = $state(0);
   #timeoutId: any = $state(null);
   debouncedTimeMs: number;
 
@@ -16,7 +16,7 @@ export class Debounced<T> {
   }
 
   get current() {
-    this.#id;
+    // this.#id;
     return this.#value;
   }
 
@@ -27,7 +27,7 @@ export class Debounced<T> {
     }
 
     this.#timeoutId = setTimeout(() => {
-      this.#id += 1;
+      // this.#id += 1;
       this.#value = value;
       this.#timeoutId = null;
     }, this.debouncedTimeMs);
