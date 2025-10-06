@@ -36,6 +36,26 @@
       }
     ]
   },
+  "migrations": [
+    {
+      "tag": "v1",
+      "new_classes": [
+        "WorkshopRegistrationHandler"
+      ]
+    },
+    {
+      "tag": "v2",
+      "deleted_classes": [
+        "WorkshopRegistrationHandler"
+      ]
+    },
+    {
+      "tag": "v3",
+      "new_sqlite_classes": [
+        "WorkshopRegistrationHandler"
+      ]
+    }
+  ],
   "env": {
     "staging": {
       "vars": {
@@ -70,26 +90,6 @@
           }
         ]
       },
-      "migrations": [
-        {
-          "tag": "v1",
-          "new_classes": [
-            "WorkshopRegistrationHandler"
-          ]
-        },
-        {
-          "tag": "v2",
-          "deleted_classes": [
-            "WorkshopRegistrationHandler"
-          ]
-        },
-        {
-          "tag": "v3",
-          "new_sqlite_classes": [
-            "WorkshopRegistrationHandler"
-          ]
-        }
-      ],
     },
     "production": {
       "vars": {
@@ -109,14 +109,6 @@
           }
         ]
       },
-      "migrations": [
-        {
-          "tag": "v1",
-          "new_sqlite_classes": [
-            "WorkshopRegistrationHandler"
-          ]
-        }
-      ],
     }
   }
 }
