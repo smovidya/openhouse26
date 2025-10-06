@@ -7,7 +7,7 @@ import Layout from "../layouts/ContentLayout.astro";
 import { featureFlags, workshopRegistrationDate } from "@src/data/constants";
 import Countdown from "@src/components/countdown.svelte";
 import MyWorkshop from "@src/components/my-workshop.svelte"
-import { getSelectedWorkshop} from "@src/db/model/workshop-registration"
+import { workshopModel} from "@src/db"
 // import LockIcon from ""
 
 const uid = Astro.locals.user?.id;
@@ -25,8 +25,7 @@ const name = participant.givenName;
 
 const showWorkshop = import.meta.env.DEV || featureFlags.workshopRegistration
 
-// TODO: implement this
-const selectedWorkshops = await getSelectedWorkshop()
+const selectedWorkshops = await workshopModel.getUserRegisteredSlots(Astro.locals.db, uid);
 ---
 
 <Layout

@@ -6,6 +6,7 @@
   import CheckmarkFilled from "carbon-icons-svelte/lib/CheckmarkFilled.svelte";
   import clsx from "clsx";
   import { onMount, untrack } from "svelte";
+  import { actions } from "astro:actions";
 
   interface Props {
     class?: any;
@@ -36,10 +37,10 @@
 
   // undefined = not select
   const otherSelectedWorkshops = initialSelectedWorkshops.filter(
-    (it) => it.workshopId !== workshopId,
+    (it) => it.workshopId !== workshopId
   );
   const initialSelected = initialSelectedWorkshops.find(
-    (it) => it.workshopId === workshopId,
+    (it) => it.workshopId === workshopId
   )?.timeSlotIndex;
   let selectedIndex = $state(initialSelected);
 
@@ -95,9 +96,41 @@
   // submission -------------
 
   async function saveSelected(index: number | undefined) {
-    // undefined = not select
-    // TODO: send to backend
-    // TODO: update register count somehow
+    // if undefined, delete
+    if (index === undefined) {
+      const { data, error } = await actions.removeMeFromSlot({
+        workshopId: workshop.id,
+      });
+
+      if (error) {
+        alert("เกิดข้อผิดพลาดชณะลบ: " + error.message);
+        throw error;
+      }
+
+      if (data) {
+        registerCount = data.data.updatedWorkshopCounts;
+      }
+    } else {
+      const slot = workshop.slots[index];
+      if (!slot) {
+        alert("เกิดข้อผิดพลาดขณะลงทะเบียน: เวลาที่เลือกไม่ถูกต้อง");
+        throw new Error("invalid slot index");
+      }
+
+      const { data, error } = await actions.registerMeToSlot({
+        roundNumber: slot.round,
+        workshopId: workshop.id,
+      });
+
+      if (error) {
+        alert("เกิดข้อผิดพลาดเกิดข้อผิดพลาดขณะลงทะเบียน: " + error.message);
+        throw error;
+      }
+
+      if (data) {
+        registerCount = data.data.updatedWorkshopCounts;
+      }
+    }
 
     saved = true;
   }
@@ -107,10 +140,10 @@
     debouncedTimeMs: 500,
   });
 
-  $effect(() => {
-    const index = debouncedIndex.current;
-    untrack(() => saveSelected(index));
-  });
+  // $effect(() => {
+  //   const index = debouncedIndex.current;
+  //   untrack(() => saveSelected(index));
+  // });
 
   let changed = $state(false);
   let saved = $state(true);
@@ -148,7 +181,7 @@
           "disabled:text-blue-200/60  disabled:hover:bg-transparent disabled:hover:cursor-not-allowed",
           index === selectedIndex
             ? "text-white shadow-inner shadow-black/50 bg-blue-950/50 hover:bg-blue-950/60 border-white/30"
-            : "text-blue-50 border-blue-200/30 shadow shadow-black/20 hover:bg-white/5",
+            : "text-blue-50 border-blue-200/30 shadow shadow-black/20 hover:bg-white/5"
         )}
         onclick={() => toggle(index)}
       >

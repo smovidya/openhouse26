@@ -1,4 +1,4 @@
-class Time {
+export class Time {
   hour: number;
   minute: number;
 

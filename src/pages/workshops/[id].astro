@@ -4,13 +4,14 @@ import Layout from "@src/layouts/ContentLayout.astro";
 import type { GetStaticPaths } from "astro";
 import WorkshopSlotSelector from "@src/components/workshop-slot-selector.svelte";
 import {
-  getSelectedWorkshop,
+  getUserRegisteredSlots,
   getRegisteredParticipantCount,
-} from "@src/db/model/workshop-registration";
+} from "@src/db/model/workshop";
 import { featureFlags } from "@src/data/constants";
 
-// uncomment this if we want to query workshop from db
-// export const prerender = false;
+// We still need to load user registration data on the server side
+// so we cannot prerender this page.
+export const prerender = false;
 
 export const getStaticPaths: GetStaticPaths = () =>
   workshops.map((it) => ({
@@ -24,9 +25,13 @@ if (!workshop || (!import.meta.env.DEV && !featureFlags.workshopRegistration)) {
   return Astro.redirect("/404");
 }
 
-const selectedWorkshops = await getSelectedWorkshop();
-const registeredParticipantCount =
-  await getRegisteredParticipantCount("kimchi");
+const selectedWorkshops = Astro.locals.user?.id
+  ? await getUserRegisteredSlots(Astro.locals.db, Astro.locals.user?.id)
+  : [];
+const registeredParticipantCount = await getRegisteredParticipantCount(
+  Astro.locals.db,
+  String(id)
+);
 ---
 
 <Layout
