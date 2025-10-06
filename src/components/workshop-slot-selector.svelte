@@ -53,7 +53,9 @@
 
   function toggle(roundedNumber: number) {
     changed = true;
-    if (selectedRounded === roundedNumber) {
+    if (currentRound === roundedNumber) {
+      selectedRounded = undefined;
+    } else if (selectedRounded === roundedNumber) {
       selectedRounded = undefined;
     } else {
       selectedRounded = roundedNumber;
@@ -145,6 +147,7 @@
       if (error) {
         alert("เกิดข้อผิดพลาดขณะลบ: " + error.message);
         await refreshRegistrationInfo();
+        selectedRounded = currentRound;
         submitState = "error";
         throw error;
       }
@@ -167,6 +170,8 @@
         submitState = "error";
         alert("เกิดข้อผิดพลาดเกิดข้อผิดพลาดขณะลงทะเบียน: " + error.message);
         await refreshRegistrationInfo();
+        selectedRounded = currentRound;
+        submitState = "error";
         throw error;
       }
 
@@ -185,6 +190,11 @@
     const round = debouncedRounded.current;
     if (firstRun) {
       firstRun = false;
+      return;
+    }
+    if (round === currentRound) {
+      // no change
+      submitState = "none";
       return;
     }
     untrack(() => saveSelected(round));
