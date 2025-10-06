@@ -40,10 +40,10 @@
 
   // undefined = not select
   const otherSelectedWorkshops = $derived(
-    initialSelectedWorkshops.filter((it) => it.workshopId !== workshopId)
+    initialSelectedWorkshops.filter((it) => it.workshopId !== workshopId),
   );
   const initialSelected = initialSelectedWorkshops.find(
-    (it) => it.workshopId === workshopId
+    (it) => it.workshopId === workshopId,
   )?.roundNumber;
 
   let currentRound = $state(initialSelected);
@@ -79,7 +79,7 @@
         roundNumber: it.roundNumber,
       }));
       currentRound = data.registrations.find(
-        (it) => it.workshopId === workshopId
+        (it) => it.workshopId === workshopId,
       )?.roundNumber;
     }
   }
@@ -87,10 +87,7 @@
   function shouldDisabled(roundNumber: number) {
     const slot = workshop.slots.find((it) => it.round === roundNumber)!;
 
-    if (
-      initialSelectedWorkshops.length >= 2 &&
-      currentRound !== roundNumber
-    ) {
+    if (initialSelectedWorkshops.length >= 2 && currentRound !== roundNumber) {
       return {
         disabled: true,
         maximumReached: true,
@@ -98,7 +95,7 @@
     }
 
     const currentSlot = registerCount.find(
-      (it) => it.roundNumber === roundNumber
+      (it) => it.roundNumber === roundNumber,
     );
     if (!currentSlot) {
       // wtf
@@ -230,17 +227,17 @@
     {#each workshop.slots as slot, index}
       {@const status = shouldDisabled(slot.round)}
       {@const currentCount = registerCount.find(
-        (it) => it.roundNumber === slot.round
+        (it) => it.roundNumber === slot.round,
       )}
       <button
         disabled={status.disabled}
         class={clsx(
           "rounded-lg border py-1.5 px-3 transition-all cursor-pointer text-left flex justify-between items-center",
-          !status.selected &&
+          (currentRound !== slot.round) &&
             "disabled:text-blue-200/60  disabled:hover:bg-transparent disabled:hover:cursor-not-allowed",
           currentRound === slot.round
             ? "text-white shadow-inner shadow-black/50 bg-blue-950/50 hover:bg-blue-950/60 border-white/30"
-            : "text-blue-50 border-blue-200/30 shadow shadow-black/20 hover:bg-white/5"
+            : "text-blue-50 border-blue-200/30 shadow shadow-black/20 hover:bg-white/5",
         )}
         onclick={() => toggle(slot.round)}
       >
