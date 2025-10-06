@@ -28,6 +28,14 @@
       "migrations_dir": "drizzle"
     }
   ],
+  "durable_objects": {
+    "bindings": [
+      {
+        "name": "WORKSHOP_REGISTRATION_HANDLER2",
+        "class_name": "WorkshopRegistrationHandler2"
+      }
+    ]
+  },
   "migrations": [
     {
       "tag": "v1",
