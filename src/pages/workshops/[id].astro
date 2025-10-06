@@ -52,6 +52,13 @@ const selectedWorkshops = await handler.getRegistrationsByUser(participant.id);
 const registeredParticipantCount = await handler.getRegistrationCount(
   workshop.id,
 );
+
+const initialRegisterCount = Object.entries(registeredParticipantCount).map(
+  (it) => ({
+    roundNumber: parseInt(it[0]),
+    count: parseInt(it[1]),
+  }),
+);
 ---
 
 <Layout
@@ -86,7 +93,7 @@ const registeredParticipantCount = await handler.getRegistrationCount(
   <WorkshopSlotSelector
     workshopId={workshop.id}
     initialSelectedWorkshops={selectedWorkshops}
-    initialRegisterCount={registeredParticipantCount}
+    initialRegisterCount={initialRegisterCount}
     client:load
     class="my-8"
   />
