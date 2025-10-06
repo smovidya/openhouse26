@@ -9,9 +9,9 @@ if (!Astro.locals.user) {
 
 const { data } = await Astro.callAction(actions.amIRegistered, {});
 
-// if (data?.results) {
-//   return Astro.redirect("/my-id");
-// }
+if (data?.results) {
+  return Astro.redirect("/my-id");
+}
 ---
 
 <Layout
