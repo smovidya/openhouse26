@@ -14,6 +14,22 @@
   "observability": {
     "enabled": true
   },
+  "kv_namespaces": [
+    {
+      "binding": "openhouse26_kv",
+      // Cloudflare say top level binding shuold for be dev
+      "id": "54eff58aa403471087e573a3e61fc320"
+    }
+  ],
+  "d1_databases": [
+    {
+      "binding": "openhouse26_db",
+      "database_name": "openhouse26-db",
+      // Cloudflare say top level binding shuold for be dev
+      "database_id": "62624ef6-24a7-45e9-94d5-a955b19e7609",
+      "migrations_dir": "drizzle"
+    }
+  ],
   "env": {
     "staging": {
       "vars": {
