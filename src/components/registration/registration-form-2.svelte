@@ -12,11 +12,13 @@
   import CutoutBox from "../common/cutout-box.svelte";
   import Checkboxes from "./checkboxes.svelte";
   import { provincesOptions } from "@src/data/provinces";
+  import LogoutButton from "@src/components/logout-button.svelte";
   import InterestedDepartments from "./interested-departments.svelte";
   import { departments } from "@src/data/departments";
   import Logo from "@src/assets/logo.png";
   import { actions } from "astro:actions";
   import WarningDiamond from "carbon-icons-svelte/lib/WarningDiamond.svelte";
+  import { authClientSvelte } from "@src/auth/client";
 
   const howDidYouKnowUsOptions2 = [
     ...howDidYouKnowUsOptions,
@@ -95,14 +97,14 @@
 
   const status = form.useStore((it) => it.values.status);
   const showDepartmentPicker = $derived(
-    status.current != "ผู้ปกครอง" && status.current != "อื่นๆ"
+    status.current != "ผู้ปกครอง" && status.current != "อื่นๆ",
   );
   const showOther = form.useStore((it) =>
-    it.values.howDidYouKnowUs.includes("other")
+    it.values.howDidYouKnowUs.includes("other"),
   );
 
   const showOther2 = form.useStore((it) =>
-    it.values.whyJoinThis.includes("other")
+    it.values.whyJoinThis.includes("other"),
   );
 
   const onsubmit: EventHandler<SubmitEvent, HTMLFormElement> = (event) => {
@@ -115,6 +117,17 @@
 </script>
 
 <article class="oph-soft-white">
+  <div class="flex justify-end">
+    <button
+      class="text-white underline hover:cursor-pointer"
+      onclick={async () => {
+        await authClientSvelte.signOut();
+        window.location.href = "/";
+      }}
+    >
+      ออกจากระบบ
+    </button>
+  </div>
   <img src={Logo.src} alt="logo" class="size-24" />
   <h1 class="text-3xl oph-soft-white mt-8 font-serif text-white font-bold">
     ลงทะเบียนเข้าร่วมงาน
@@ -146,7 +159,7 @@
             {@render fieldError(
               field.state.meta.errors
                 .map((it: any) => it?.message ?? "")
-                .join(", ")
+                .join(", "),
             )}
           </label>
         {/snippet}
@@ -175,7 +188,7 @@
             {@render fieldError(
               field.state.meta.errors
                 .map((it: any) => it?.message ?? "")
-                .join(", ")
+                .join(", "),
             )}
           </label>
         {/snippet}
@@ -215,7 +228,7 @@
           {@render fieldError(
             field.state.meta.errors
               .map((it: any) => it?.message ?? "")
-              .join(", ")
+              .join(", "),
           )}
         </label>
       {/snippet}
@@ -319,7 +332,7 @@
               {@render fieldError(
                 field.state.meta.errors
                   .map((it: any) => it?.message ?? "")
-                  .join(", ")
+                  .join(", "),
               )}
             </label>
           {/snippet}
@@ -369,7 +382,7 @@
             {@render fieldError(
               field.state.meta.errors
                 .map((it: any) => it?.message ?? "")
-                .join(", ")
+                .join(", "),
             )}
           {/snippet}
         </form.Field>
@@ -412,7 +425,7 @@
           {@render fieldError(
             field.state.meta.errors
               .map((it: any) => it?.message ?? "")
-              .join(", ")
+              .join(", "),
           )}
         {/snippet}
       </form.Field>
