@@ -34,30 +34,30 @@ function createAuth(env?: Env, cf?: IncomingRequestCfProperties) {
         // @ts-ignore
         d1: env
           ? {
-            db,
-            options: {
-              usePlural: true,
-              debugLogs: true,
-            },
-          }
+              db,
+              options: {
+                usePlural: true,
+                debugLogs: true,
+              },
+            }
           : undefined,
         // @ts-ignore
-        kv: (
-          env?.openhouse26_kv ? {
-            delete: async (key: string) => {
-              return env?.openhouse26_kv.delete(key);
-            },
-            get: async (key: string) => {
-              return env?.openhouse26_kv.get(key);
-            },
-            put(key, value, options) {
-              return env.openhouse26_kv.put(key, value as any, {
-                ...options,
-                expirationTtl: Math.max(options?.expirationTtl ?? 120, 120)
-              });
-            },
-          } : undefined
-        ),
+        kv: env?.openhouse26_kv
+          ? {
+              delete: async (key: string) => {
+                return env?.openhouse26_kv.delete(key);
+              },
+              get: async (key: string) => {
+                return env?.openhouse26_kv.get(key);
+              },
+              put(key, value, options) {
+                return env.openhouse26_kv.put(key, value as any, {
+                  ...options,
+                  expirationTtl: Math.max(options?.expirationTtl ?? 120, 120),
+                });
+              },
+            }
+          : undefined,
         // Optional: Enable R2 file storage
         // r2: {
         //   bucket: env.R2_BUCKET,
@@ -89,29 +89,8 @@ function createAuth(env?: Env, cf?: IncomingRequestCfProperties) {
         },
         rateLimit: {
           enabled: true,
-          window: 120
+          window: 120,
         },
-        plugins: [
-          admin({
-            ac,
-            roles: {
-              admin: adminRole,
-              majorBoothStaff,
-              registarStaff,
-              rewardStaff,
-              workshopStaff,
-              user,
-            },
-          }),
-          // anonymous({
-          //   emailDomainName: "anon.vidyachula.org",
-          //   // async onLinkAccount({ anonymousUser, newUser }) {
-          //   //   await db.update(schema.users).set({
-          //   //   })
-          //   // },
-          // }),
-          oneTap(),
-        ],
         // disabledPaths: [
         //   import.meta.env.DEV ? null : "/sign-in/anonymous",
         // ].filter(Boolean),
@@ -132,12 +111,33 @@ function createAuth(env?: Env, cf?: IncomingRequestCfProperties) {
     ...(env
       ? {}
       : {
-        database: drizzleAdapter({} as D1Database, {
-          provider: "sqlite",
-          usePlural: true,
-          debugLogs: true,
+          database: drizzleAdapter({} as D1Database, {
+            provider: "sqlite",
+            usePlural: true,
+            debugLogs: true,
+          }),
         }),
+    plugins: [
+      admin({
+        ac,
+        roles: {
+          admin: adminRole,
+          majorBoothStaff,
+          registarStaff,
+          rewardStaff,
+          workshopStaff,
+          user,
+        },
       }),
+      // anonymous({
+      //   emailDomainName: "anon.vidyachula.org",
+      //   // async onLinkAccount({ anonymousUser, newUser }) {
+      //   //   await db.update(schema.users).set({
+      //   //   })
+      //   // },
+      // }),
+      oneTap(),
+    ],
   });
 }
 

@@ -7,7 +7,7 @@ declare namespace App {
     db: import("drizzle-orm/d1").DrizzleD1Database<
       typeof import("@src/db").schema
     >;
-    auth: import("better-auth").Auth;
+    auth: ReturnType<typeof import("@src/auth").createAuth>;
     user: import("better-auth").User | null;
     session: import("better-auth").Session | null;
   }

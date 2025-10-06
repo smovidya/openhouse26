@@ -14,36 +14,25 @@ const { data } = await Astro.callAction(actions.amIRegistered, {});
 const isRegistered = data?.results ?? false;
 ---
 
-<script>
-  import { authClient } from "@src/auth/client";
-
-  async function signInWithGoogle() {
-    await authClient.signIn.social({
-      provider: "google",
-      callbackURL: "/my", // MyID page
-    });
-  }
-</script>
-
 <Layout
   title="หน้าหลัก"
   description="งาน Open House คณะวิทยาศาสตร์ จุฬาลงกรณ์มหาวิทยาลัย 2566"
   image="/og-image.png"
 >
-  <div class="flex flex-col items-center text-white">
-    <img src="/logo.png" alt="Logo" class="mx-auto my-8 w-48" loading="lazy" />
-    <h1 class="text-4xl text-center mb-2">Science Chula Openhouse 2026</h1>
-    {
-      !featureFlags.signup && (
-        <div class="flex flex-col items-center text-center">
-          <span> 18-19 พฤศจิกายน 2568 | จามจุรีสแควร์ </span>
-          <div class="my-5 text-2xl">
-            Coming&nbsp;Soon! เปิดลงทะเบียน 4&nbsp;ตุลาคม 18:00&nbsp;น. ที่นี่
-          </div>
-        </div>
-      )
-    }
-
+  <div class="flex mt-20 flex-col items-center text-white">
+    <div class="relative w-full max-w-xl pt-20">
+      <img
+        data-parallax-speed="0.5"
+        class="absolute right-0 top-0 w-1/2 transition-transform"
+        src="/landing/logo-white.png"
+      />
+      <img
+        class="relative w-full"
+        data-parallax-speed="0.01"
+        src="/landing/artwork.png"
+        alt="Artwork แสดงภาพพาแนล 4 ช่องแสดงอนาคตที่เด็กคนที่อยู่ทางซ้ายบนสามารถเป็นได้"
+      />
+    </div>
     {
       user ? (
         !isRegistered ? (
@@ -69,4 +58,14 @@ const isRegistered = data?.results ?? false;
       ) : null
     }
   </div>
+
+  <script>
+    document.querySelectorAll("img[data-parallax-speed]").forEach((img) => {
+      const speed = parseFloat(img.getAttribute("data-parallax-speed")!);
+      window.addEventListener("scroll", () => {
+        const offset = window.scrollY * speed;
+        (img as HTMLElement).style.transform = `translateY(${offset}px)`;
+      });``
+    });
+  </script>
 </Layout>
