@@ -15,7 +15,7 @@ export default defineConfig({
     sessionKVBindingName: "openhouse26_kv",
     workerEntryPoint: {
       path: "src/workers/index.ts",
-      namedExports: ["WorkshopRegistrationHandler"],
+      namedExports: ["WorkshopRegistrationHandler2"],
     },
     imageService: "compile",
   }),

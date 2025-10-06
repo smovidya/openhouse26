@@ -6,7 +6,7 @@ export type SelectedWorkshopWithUser = SelectedWorkshop & {
   participantId: string;
 };
 
-export class WorkshopRegistrationHandler extends DurableObject<Env> {
+export class WorkshopRegistrationHandler2 extends DurableObject<Env> {
   constructor(ctx: DurableObjectState, env: Env) {
     super(ctx, env);
 

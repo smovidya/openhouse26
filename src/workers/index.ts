@@ -1,9 +1,9 @@
 import { handle } from "@astrojs/cloudflare/handler";
 import type { SSRManifest } from "astro";
 import { App } from "astro/app";
-import { WorkshopRegistrationHandler } from "./workshop-registration";
+import { WorkshopRegistrationHandler2 } from "./workshop-registration";
 
-export { WorkshopRegistrationHandler };
+export { WorkshopRegistrationHandler2 };
 
 export function createExports(manifest: SSRManifest) {
   const app = new App(manifest);
@@ -14,6 +14,6 @@ export function createExports(manifest: SSRManifest) {
       },
     } satisfies ExportedHandler<Env>,
     
-    WorkshopRegistrationHandler
+    WorkshopRegistrationHandler2
   };
 }

@@ -45,14 +45,8 @@
     },
     {
       "tag": "v2",
-      "deleted_classes": [
-        "WorkshopRegistrationHandler"
-      ]
-    },
-    {
-      "tag": "v3",
       "new_sqlite_classes": [
-        "WorkshopRegistrationHandler"
+        "WorkshopRegistrationHandler2"
       ]
     }
   ],
@@ -86,7 +80,7 @@
         "bindings": [
           {
             "name": "WORKSHOP_REGISTRATION_HANDLER",
-            "class_name": "WorkshopRegistrationHandler"
+            "class_name": "WorkshopRegistrationHandler2"
           }
         ]
       },
@@ -105,7 +99,7 @@
         "bindings": [
           {
             "name": "WORKSHOP_REGISTRATION_HANDLER",
-            "class_name": "WorkshopRegistrationHandler"
+            "class_name": "WorkshopRegistrationHandler2"
           }
         ]
       },

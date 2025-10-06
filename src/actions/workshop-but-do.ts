@@ -1,9 +1,9 @@
 import { participantModel, workshopModel } from "@src/db";
-import type { WorkshopRegistrationHandler } from "@src/workers";
+import type { WorkshopRegistrationHandler2 } from "@src/workers";
 import { z } from "astro/zod";
 import { ActionError, defineAction, type ActionAPIContext } from "astro:actions";
 
-export const getHandler = (context: ActionAPIContext) => context.locals.runtime.env.WORKSHOP_REGISTRATION_HANDLER.getByName("default") as DurableObjectStub<WorkshopRegistrationHandler>;
+export const getHandler = (context: ActionAPIContext) => context.locals.runtime.env.WORKSHOP_REGISTRATION_HANDLER.getByName("default") as DurableObjectStub<WorkshopRegistrationHandler2>;
 
 export async function getParticipant(ctx: ActionAPIContext) {
   if (!ctx.locals.user) {
