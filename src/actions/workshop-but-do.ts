@@ -3,9 +3,9 @@ import type { WorkshopRegistrationHandler } from "@src/workers";
 import { z } from "astro/zod";
 import { ActionError, defineAction, type ActionAPIContext } from "astro:actions";
 
-const getHandler = (context: ActionAPIContext) => context.locals.runtime.env.WORKSHOP_REGISTRATION_HANDLER.getByName("default") as DurableObjectStub<WorkshopRegistrationHandler>;
+export const getHandler = (context: ActionAPIContext) => context.locals.runtime.env.WORKSHOP_REGISTRATION_HANDLER.getByName("default") as DurableObjectStub<WorkshopRegistrationHandler>;
 
-async function getParticipant(ctx: ActionAPIContext) {
+export async function getParticipant(ctx: ActionAPIContext) {
   if (!ctx.locals.user) {
     throw new ActionError({
       code: "UNAUTHORIZED",
@@ -128,7 +128,7 @@ export const registerMeToSlot2 = defineAction({
 });
 
 
-export const removeMeFromSlot = defineAction({
+export const removeMeFromSlot2 = defineAction({
   input: z.object({
     workshopId: z.string(),
   }),

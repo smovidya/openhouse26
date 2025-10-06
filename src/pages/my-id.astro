@@ -8,6 +8,7 @@ import { featureFlags, workshopRegistrationDate } from "@src/data/constants";
 import Countdown from "@src/components/countdown.svelte";
 import MyWorkshop from "@src/components/my-workshop.svelte"
 import { workshopModel} from "@src/db"
+import type { WorkshopRegistrationHandler } from "@src/workers";
 // import LockIcon from ""
 
 const uid = Astro.locals.user?.id;
@@ -23,9 +24,19 @@ if (!participant) {
 const id = participant.id;
 const name = participant.givenName;
 
-const showWorkshop = import.meta.env.DEV || featureFlags.workshopRegistration
+const dev =
+  import.meta.env.DEV || Astro.locals.runtime.env.ENVIRONMENT === "staging";
 
-const selectedWorkshops = await workshopModel.getUserRegisteredSlots(Astro.locals.db, uid);
+const showWorkshop = dev || featureFlags.workshopRegistration
+
+// const selectedWorkshops = await workshopModel.getUserRegisteredSlots(Astro.locals.db, uid);
+
+const handler =
+  Astro.locals.runtime.env.WORKSHOP_REGISTRATION_HANDLER.getByName(
+    "default",
+  ) as DurableObjectStub<WorkshopRegistrationHandler>;
+const selectedWorkshops = await handler.getRegistrationsByUser(participant.id);
+
 ---
 
 <Layout

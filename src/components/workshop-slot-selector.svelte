@@ -137,7 +137,7 @@
   async function saveSelected(roundedNumber: number | undefined) {
     // if undefined, delete
     if (roundedNumber === undefined) {
-      const { data, error } = await actions.removeMeFromSlot({
+      const { data, error } = await actions.removeMeFromSlot2({
         workshopId: workshop.id,
       });
 
@@ -158,7 +158,7 @@
         throw new Error("invalid slot roundedNumber");
       }
 
-      const { data, error } = await actions.registerMeToSlot({
+      const { data, error } = await actions.registerMeToSlot2({
         roundNumber: slot.round,
         workshopId: workshop.id,
       });

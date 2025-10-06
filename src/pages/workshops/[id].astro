@@ -8,6 +8,9 @@ import {
   getRegisteredParticipantCount,
 } from "@src/db/model/workshop";
 import { featureFlags } from "@src/data/constants";
+import { getHandler } from "@src/actions/workshop-but-do";
+import { getParticipantByUserId } from "@src/db/model/participant";
+import type { WorkshopRegistrationHandler } from "@src/workers";
 
 // We still need to load user registration data on the server side
 // so we cannot prerender this page.
@@ -21,16 +24,32 @@ export const getStaticPaths: GetStaticPaths = () =>
 const { id } = Astro.params;
 const workshop = workshops.find((it) => it.id === id)!;
 
-if (!workshop || (!import.meta.env.DEV && !featureFlags.workshopRegistration)) {
+const dev =
+  import.meta.env.DEV || Astro.locals.runtime.env.ENVIRONMENT === "staging";
+if (!workshop || (!dev && !featureFlags.workshopRegistration)) {
   return Astro.redirect("/404");
 }
 
-const selectedWorkshops = Astro.locals.user?.id
-  ? await getUserRegisteredSlots(Astro.locals.db, Astro.locals.user?.id)
-  : [];
-const registeredParticipantCount = await getRegisteredParticipantCount(
-  Astro.locals.db,
-  String(id)
+// const selectedWorkshops = Astro.locals.user?.id
+//   ? await getUserRegisteredSlots(Astro.locals.db, Astro.locals.user?.id)
+//   : [];
+// const registeredParticipantCount = await getRegisteredParticipantCount(
+//   Astro.locals.db,
+//   String(id)
+// );
+
+const uid = Astro.locals.user?.id;
+if (!uid) {
+  return Astro.redirect("/");
+}
+const participant = (await getParticipantByUserId(Astro.locals.db, uid))!;
+const handler =
+  Astro.locals.runtime.env.WORKSHOP_REGISTRATION_HANDLER.getByName(
+    "default",
+  ) as DurableObjectStub<WorkshopRegistrationHandler>;
+const selectedWorkshops = await handler.getRegistrationsByUser(participant.id);
+const registeredParticipantCount = await handler.getRegistrationCount(
+  workshop.id,
 );
 ---
 
