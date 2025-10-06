@@ -3,6 +3,58 @@ import { ActionError, defineAction } from "astro:actions";
 import { participantModel, workshopModel } from "@src/db";
 import { Time, TimeSlot } from "@src/data/workshops";
 
+export const myCurrentRegistrationsForWorkshop = defineAction({
+  input: z.object({ workshopId: z.string() }),
+  async handler(input, ctx) {
+    if (!ctx.locals.user) {
+      throw new ActionError({
+        code: "UNAUTHORIZED",
+        message: "คุณต้องเข้าสู่ระบบก่อนจึงจะสามารถดูการลงทะเบียนเวิร์กช็อปได้",
+      });
+    }
+
+    let registrations: Awaited<
+      ReturnType<typeof workshopModel.getUserRegisteredSlots>
+    >;
+
+    try {
+      registrations = await workshopModel.getUserRegisteredSlots(
+        ctx.locals.db,
+        ctx.locals.user.id
+      );
+    } catch (e) {
+      console.error("Error fetching registrations:", e);
+      throw new ActionError({
+        code: "INTERNAL_SERVER_ERROR",
+        message: "เกิดข้อผิดพลาดขณะดึงข้อมูลการลงทะเบียน กรุณาลองใหม่อีกครั้ง",
+      });
+    }
+
+    let registeredParticipantsCount: Awaited<
+      ReturnType<typeof workshopModel.getRegisteredParticipantCount>
+    >;
+
+    try {
+      registeredParticipantsCount =
+        await workshopModel.getRegisteredParticipantCount(
+          ctx.locals.db,
+          input.workshopId
+        );
+    } catch (e) {
+      console.error("Error counting registrations:", e);
+      throw new ActionError({
+        code: "INTERNAL_SERVER_ERROR",
+        message: "เกิดข้อผิดพลาดขณะดึงข้อมูลเวิร์กช็อป กรุณาลองใหม่อีกครั้ง",
+      });
+    }
+
+    return {
+      registrations,
+      registeredParticipantsCount,
+    };
+  },
+});
+
 export const registerMeToSlot = defineAction({
   input: z.object({
     workshopId: z.string(),
@@ -100,14 +152,16 @@ export const registerMeToSlot = defineAction({
       throw new ActionError({
         code: "BAD_REQUEST",
         message:
-          "คุณได้ลงทะเบียนเวิร์กช็อปนี้ไปแล้วในรอบอื่น ไม่สามารถลงทะเบียนซ้ำได้",
+          "คุณได้ลงทะเบียนเวิร์กช็อปนี้ไปแล้วในรอบอื่น ไม่สามารถลงทะเบียนซ้ำได้ กดที่เวลาที่คุณลงทะเบียนไว้เพื่อยกเลิกการลงทะเบียนก่อนแล้วค่อยลงทะเบียนใหม่",
       });
     }
 
+    // User need to explicitly remove old registration before adding new one or change the round
     if (myRegistrations.length >= 2) {
       throw new ActionError({
         code: "BAD_REQUEST",
-        message: "คุณลงทะเบียนเวิร์กช็อปครบจำนวนสูงสุดแล้ว (2 รอบ) ลองยกเลิกบางรอบเพื่อเปลี่ยนแปลง",
+        message:
+          "คุณลงทะเบียนเวิร์กช็อปครบจำนวนสูงสุดแล้ว (2 รอบ) กดยกเลิกอันเก่าก่อนแล้วค่อยลงทะเบียนใหม่",
       });
     }
 
@@ -173,7 +227,7 @@ export const registerMeToSlot = defineAction({
         workshop.timeSlots[index].roundNumber === input.roundNumber
     )!;
 
-    if (currentTimeSlotCount >= workshop.capacity) {
+    if (currentTimeSlotCount.count >= workshop.capacity) {
       throw new ActionError({
         code: "BAD_REQUEST",
         message: `ขออภัย รอบที่คุณเลือกเต็มแล้ว (จำนวนสูงสุด ${workshop.capacity} คนต่อรอบ) กรุณาเลือกเวิร์กช็อปรอบอื่น`,

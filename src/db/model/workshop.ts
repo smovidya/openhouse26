@@ -2,7 +2,7 @@ import type { SelectedWorkshop } from "@src/client/shared-state.svelte";
 import { participantModel, schema, type Db } from "@src/db";
 import { and, asc, count, eq, inArray, sql } from "drizzle-orm";
 import { workshops } from "@src/data/workshops";
-import { createId } from '@paralleldrive/cuid2';
+import { createId } from "@paralleldrive/cuid2";
 
 export async function insertNewTimeSlotRegistration(
   db: Db,
@@ -188,7 +188,10 @@ export async function getRegisteredParticipantCount(
     orderBy: (ws) => [asc(ws.roundNumber)],
   });
 
-  return timeSlots.map((slot) => slot.registrations.length);
+  return timeSlots.map((slot) => ({
+    roundNumber: slot.roundNumber,
+    count: slot.registrations.length,
+  }));
 }
 
 export async function getRegisteredParticipantCountForTimeSlot(

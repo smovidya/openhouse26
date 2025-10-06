@@ -7,6 +7,7 @@
   import clsx from "clsx";
   import { onMount, untrack } from "svelte";
   import { actions } from "astro:actions";
+  import type { workshopModel } from "@src/db";
 
   interface Props {
     class?: any;
@@ -23,7 +24,9 @@
      *
      * Record of round number and count
      */
-    initialRegisterCount: Record<number, number>;
+    initialRegisterCount: Awaited<
+      ReturnType<typeof workshopModel.getRegisteredParticipantCount>
+    >;
   }
 
   let {
@@ -36,12 +39,14 @@
   const workshop = workshops.find((it) => it.id === workshopId)!;
 
   // undefined = not select
-  const otherSelectedWorkshops = initialSelectedWorkshops.filter(
-    (it) => it.workshopId !== workshopId,
+  const otherSelectedWorkshops = $derived(
+    initialSelectedWorkshops.filter((it) => it.workshopId !== workshopId)
   );
   const initialSelected = initialSelectedWorkshops.find(
-    (it) => it.workshopId === workshopId,
+    (it) => it.workshopId === workshopId
   )?.roundNumber;
+
+  let currentRound = $state(initialSelected);
   let selectedRounded = $state(initialSelected);
 
   let registerCount = $state(initialRegisterCount);
@@ -55,24 +60,52 @@
     }
   }
 
+  async function refreshRegistrationInfo() {
+    const { error, data } = await actions.myCurrentRegistrationsForWorkshop({
+      workshopId: workshopId,
+    });
+
+    if (error) {
+      alert("เกิดข้อผิดพลาดขณะรีเฟรชข้อมูล: " + error.message);
+      throw error;
+    }
+
+    if (data) {
+      registerCount = data.registeredParticipantsCount;
+      initialSelectedWorkshops = data.registrations.map((it) => ({
+        workshopId: it.workshopId,
+        roundNumber: it.roundNumber,
+      }));
+      currentRound = data.registrations.find(
+        (it) => it.workshopId === workshopId
+      )?.roundNumber;
+    }
+  }
+
   function shouldDisabled(roundNumber: number) {
     const slot = workshop.slots.find((it) => it.round === roundNumber)!;
 
-    if (selectedRounded === roundNumber) {
-      return {
-        disabled: true,
-        selected: true,
-      };
-    }
-
-    if (initialSelectedWorkshops.length >= 2) {
+    if (
+      initialSelectedWorkshops.length >= 2 &&
+      currentRound !== roundNumber
+    ) {
       return {
         disabled: true,
         maximumReached: true,
       };
     }
 
-    if ((registerCount[roundNumber] ?? 0) > workshop.capacity) {
+    const currentSlot = registerCount.find(
+      (it) => it.roundNumber === roundNumber
+    );
+    if (!currentSlot) {
+      // wtf
+      return {
+        disabled: false,
+      } as const;
+    }
+
+    if ((currentSlot.count ?? 0) > workshop.capacity) {
       return {
         disabled: true,
         full: true,
@@ -110,14 +143,14 @@
       });
 
       if (error) {
-        saved = true;
         alert("เกิดข้อผิดพลาดขณะลบ: " + error.message);
+        await refreshRegistrationInfo();
+        submitState = "error";
         throw error;
       }
 
-      if (data) {
-        registerCount = data.data.updatedWorkshopCounts;
-      }
+      await refreshRegistrationInfo();
+      submitState = "saved";
     } else {
       const slot = workshop.slots.find((it) => it.round === roundedNumber);
       if (!slot) {
@@ -131,14 +164,14 @@
       });
 
       if (error) {
-        saved = true;
+        submitState = "error";
         alert("เกิดข้อผิดพลาดเกิดข้อผิดพลาดขณะลงทะเบียน: " + error.message);
+        await refreshRegistrationInfo();
         throw error;
       }
 
-      if (data) {
-        registerCount = data.data.updatedWorkshopCounts;
-      }
+      await refreshRegistrationInfo();
+      submitState = "saved";
     }
   }
 
@@ -149,20 +182,19 @@
 
   let firstRun = true;
   $effect(() => {
-    const index = debouncedRounded.current;
+    const round = debouncedRounded.current;
     if (firstRun) {
       firstRun = false;
       return;
     }
-    console.log({ index });
-    untrack(() => saveSelected(index));
+    untrack(() => saveSelected(round));
   });
 
   let changed = $state(false);
-  let saved = $state(true);
+  let submitState = $state<"none" | "saved" | "saving" | "error">("none");
   $effect(() => {
     if (debouncedRounded.pending) {
-      saved = false;
+      submitState = "saving";
     }
   });
 
@@ -186,16 +218,19 @@
   </h3>
   <div class="grid gap-2 mt-2">
     {#each workshop.slots as slot, index}
-      {@const status = shouldDisabled(index)}
+      {@const status = shouldDisabled(slot.round)}
+      {@const currentCount = registerCount.find(
+        (it) => it.roundNumber === slot.round
+      )}
       <button
         disabled={status.disabled}
         class={clsx(
           "rounded-lg border py-1.5 px-3 transition-all cursor-pointer text-left flex justify-between items-center",
           !status.selected &&
             "disabled:text-blue-200/60  disabled:hover:bg-transparent disabled:hover:cursor-not-allowed",
-          selectedRounded === slot.round
+          currentRound === slot.round
             ? "text-white shadow-inner shadow-black/50 bg-blue-950/50 hover:bg-blue-950/60 border-white/30"
-            : "text-blue-50 border-blue-200/30 shadow shadow-black/20 hover:bg-white/5",
+            : "text-blue-50 border-blue-200/30 shadow shadow-black/20 hover:bg-white/5"
         )}
         onclick={() => toggle(slot.round)}
       >
@@ -212,12 +247,14 @@
               เต็ม
             {:else if status.maximumReached}
               เลือกเวิร์กช็อปครบแล้ว
+            {:else if currentRound === slot.round}
+              คุณเลือกเวิร์กช็อปเวลานี้ (กดซ้ำเพื่อยกเลิก)
             {/if}
           </p>
         </div>
         <div class="text-sm flex items-center gap-3">
           <span>
-            {registerCount[slot.round] ?? 0} / {workshop.capacity}
+            {currentCount?.count ?? 0} / {workshop.capacity}
           </span>
           {#if slot.round === selectedRounded}
             <CheckmarkFilled class="size-4" />
@@ -230,10 +267,12 @@
   <div class="mt-4 h-5">
     {#if changed}
       <p class="text-blue-300/95 text-center">
-        {#if saved}
+        {#if submitState === "saved"}
           บันทึกแล้ว
-        {:else}
+        {:else if submitState === "saving"}
           กำลังบันทึก{".".repeat(dotCount)}
+        {:else if submitState === "error"}
+          เกิดข้อผิดพลาดในการบันทึก
         {/if}
       </p>
     {/if}
