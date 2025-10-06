@@ -23,9 +23,9 @@
   </div>
 
   <div class="mt-6">
-    {#each selectedWorkshops as { timeSlotIndex, workshopId }}
+    {#each selectedWorkshops as { roundNumber, workshopId }}
       {@const workshop = getWorkshopById(workshopId)!}
-      {@const slot = workshop.slots[timeSlotIndex]}
+      {@const slot = workshop.slots.find((it) => it.round === roundNumber)!}
       <WorkshopCard
         class="text-white"
         selectedTimeSlotText="({slot.start.toString()} - {slot.end.toString()} น.)"

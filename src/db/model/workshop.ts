@@ -133,7 +133,7 @@ export async function getUserRegisteredSlots(
 
     return {
       workshopId: reg.timeSlot.workshopId,
-      timeSlotIndex: slotIndex,
+      roundNumber: reg.timeSlot.roundNumber,
     };
   });
 }

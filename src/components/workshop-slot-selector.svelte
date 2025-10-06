@@ -21,9 +21,9 @@
     /**
      * this too, for ssr, we can indeed refetch this at the client every n sec
      *
-     * count's index match each slot index
+     * Record of round number and count
      */
-    initialRegisterCount: number[];
+    initialRegisterCount: Record<number, number>;
   }
 
   let {
@@ -37,44 +37,51 @@
 
   // undefined = not select
   const otherSelectedWorkshops = initialSelectedWorkshops.filter(
-    (it) => it.workshopId !== workshopId
+    (it) => it.workshopId !== workshopId,
   );
   const initialSelected = initialSelectedWorkshops.find(
-    (it) => it.workshopId === workshopId
-  )?.timeSlotIndex;
-  let selectedIndex = $state(initialSelected);
+    (it) => it.workshopId === workshopId,
+  )?.roundNumber;
+  let selectedRounded = $state(initialSelected);
 
   let registerCount = $state(initialRegisterCount);
 
-  function toggle(index: number) {
+  function toggle(roundedNumber: number) {
     changed = true;
-    if (selectedIndex === index) {
-      selectedIndex = undefined;
+    if (selectedRounded === roundedNumber) {
+      selectedRounded = undefined;
     } else {
-      selectedIndex = index;
+      selectedRounded = roundedNumber;
     }
   }
 
-  function shouldDisabled(index: number) {
-    const slot = workshop.slots[index]!;
+  function shouldDisabled(roundNumber: number) {
+    const slot = workshop.slots.find((it) => it.round === roundNumber)!;
 
-    if (initialSelectedWorkshops.length >= 2 && selectedIndex !== index) {
+    if (selectedRounded === roundNumber) {
+      return {
+        disabled: true,
+        selected: true,
+      };
+    }
+
+    if (initialSelectedWorkshops.length >= 2) {
       return {
         disabled: true,
         maximumReached: true,
       };
     }
 
-    if ((registerCount.at(index) ?? 0) > workshop.capacity) {
+    if ((registerCount[roundNumber] ?? 0) > workshop.capacity) {
       return {
         disabled: true,
         full: true,
       };
     }
 
-    for (const { timeSlotIndex, workshopId } of otherSelectedWorkshops) {
+    for (const { roundNumber, workshopId } of otherSelectedWorkshops) {
       const w = getWorkshopById(workshopId);
-      const other = w?.slots.at(timeSlotIndex);
+      const other = w?.slots.find((it) => it.round === roundNumber);
       if (!other) {
         // wtf
         continue;
@@ -95,9 +102,9 @@
 
   // submission -------------
 
-  async function saveSelected(index: number | undefined) {
+  async function saveSelected(roundedNumber: number | undefined) {
     // if undefined, delete
-    if (index === undefined) {
+    if (roundedNumber === undefined) {
       const { data, error } = await actions.removeMeFromSlot({
         workshopId: workshop.id,
       });
@@ -113,10 +120,10 @@
         registerCount = data.data.updatedWorkshopCounts;
       }
     } else {
-      const slot = workshop.slots[index];
+      const slot = workshop.slots.find((it) => it.round === roundedNumber);
       if (!slot) {
         alert("เกิดข้อผิดพลาดขณะลงทะเบียน: เวลาที่เลือกไม่ถูกต้อง");
-        throw new Error("invalid slot index");
+        throw new Error("invalid slot roundedNumber");
       }
 
       const { data, error } = await actions.registerMeToSlot({
@@ -136,23 +143,24 @@
     }
   }
 
-  const debouncedIndex = debounced({
-    getter: () => selectedIndex,
+  const debouncedRounded = debounced({
+    getter: () => selectedRounded,
     debouncedTimeMs: 500,
   });
 
   $effect(() => {
     if (!changed) {
+      saved = true;
       return;
     }
-    const index = debouncedIndex.current;
+    const index = debouncedRounded.current;
     untrack(() => saveSelected(index));
   });
 
   let changed = $state(false);
   let saved = $state(true);
   $effect(() => {
-    if (debouncedIndex.pending) {
+    if (debouncedRounded.pending) {
       saved = false;
     }
   });
@@ -182,12 +190,13 @@
         disabled={status.disabled}
         class={clsx(
           "rounded-lg border py-1.5 px-3 transition-all cursor-pointer text-left flex justify-between items-center",
-          "disabled:text-blue-200/60  disabled:hover:bg-transparent disabled:hover:cursor-not-allowed",
-          index === selectedIndex
+          !status.selected &&
+            "disabled:text-blue-200/60  disabled:hover:bg-transparent disabled:hover:cursor-not-allowed",
+          selectedRounded === slot.round
             ? "text-white shadow-inner shadow-black/50 bg-blue-950/50 hover:bg-blue-950/60 border-white/30"
-            : "text-blue-50 border-blue-200/30 shadow shadow-black/20 hover:bg-white/5"
+            : "text-blue-50 border-blue-200/30 shadow shadow-black/20 hover:bg-white/5",
         )}
-        onclick={() => toggle(index)}
+        onclick={() => toggle(slot.round)}
       >
         <div>
           <span class="text-sm">
@@ -207,9 +216,9 @@
         </div>
         <div class="text-sm flex items-center gap-3">
           <span>
-            {registerCount.at(index) ?? 0} / {workshop.capacity}
+            {registerCount[slot.round] ?? 0} / {workshop.capacity}
           </span>
-          {#if index === selectedIndex}
+          {#if slot.round === selectedRounded}
             <CheckmarkFilled class="size-4" />
           {/if}
         </div>
