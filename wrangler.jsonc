@@ -89,20 +89,6 @@
           "migrations_dir": "drizzle"
         }
       ],
-      "migrations": [
-        {
-          "tag": "v1",
-          "new_classes": [
-            "WorkshopRegistrationHandler"
-          ]
-        },
-        {
-          "tag": "v1",
-          "deleted_classes": [
-            "WorkshopRegistrationHandler"
-          ]
-        }
-      ],
     }
   }
 }
