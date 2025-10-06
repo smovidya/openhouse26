@@ -1,7 +1,8 @@
 import type { SelectedWorkshop } from "@src/client/shared-state.svelte";
 import { participantModel, schema, type Db } from "@src/db";
-import { and, asc, count, eq, inArray } from "drizzle-orm";
+import { and, asc, count, eq, inArray, sql } from "drizzle-orm";
 import { workshops } from "@src/data/workshops";
+import { createId } from '@paralleldrive/cuid2';
 
 export async function insertNewTimeSlotRegistration(
   db: Db,
@@ -10,48 +11,74 @@ export async function insertNewTimeSlotRegistration(
   roundNumber: number,
   registrationType: "pre-registration" | "onsite"
 ) {
-  return await db.transaction(async (tx) => {
-    const timeSlot = await tx.query.workshopTimeSlots.findFirst({
-      where: and(
-        eq(schema.workshopTimeSlots.workshopId, workshopId),
-        eq(schema.workshopTimeSlots.roundNumber, roundNumber)
-      ),
-      columns: {
-        id: true,
-      },
-      with: {
-        workshop: true,
-      },
-    });
+  // return await db.transaction(async (tx) => {
+  //   const timeSlot = await tx.query.workshopTimeSlots.findFirst({
+  //     where: and(
+  //       eq(schema.workshopTimeSlots.workshopId, workshopId),
+  //       eq(schema.workshopTimeSlots.roundNumber, roundNumber)
+  //     ),
+  //     columns: {
+  //       id: true,
+  //     },
+  //     with: {
+  //       workshop: true,
+  //     },
+  //   });
 
-    if (!timeSlot) {
-      tx.rollback();
-      throw new Error("ไม่พบช่วงเวลาที่ระบุ กรุณาลองใหม่อีกครั้ง");
-    }
+  //   if (!timeSlot) {
+  //     tx.rollback();
+  //     throw new Error("ไม่พบช่วงเวลาที่ระบุ กรุณาลองใหม่อีกครั้ง");
+  //   }
 
-    const currentRegistered = await tx
-      .select({
-        count: count(),
-      })
-      .from(schema.workshopRegistrations)
-      .where(eq(schema.workshopRegistrations.timeSlotId, timeSlot.id))
-      .groupBy(schema.workshopRegistrations.timeSlotId)
-      .get();
+  //   const currentRegistered = await tx
+  //     .select({
+  //       count: count(),
+  //     })
+  //     .from(schema.workshopRegistrations)
+  //     .where(eq(schema.workshopRegistrations.timeSlotId, timeSlot.id))
+  //     .groupBy(schema.workshopRegistrations.timeSlotId)
+  //     .get();
 
-    if (
-      !currentRegistered ||
-      currentRegistered.count >= timeSlot.workshop.capacity
-    ) {
-      tx.rollback();
-      throw new Error("ช่วงเวลานี้เต็มแล้ว กรุณาเลือกช่วงเวลาอื่น");
-    }
+  //   if (
+  //     !currentRegistered ||
+  //     currentRegistered.count >= timeSlot.workshop.capacity
+  //   ) {
+  //     tx.rollback();
+  //     throw new Error("ช่วงเวลานี้เต็มแล้ว กรุณาเลือกช่วงเวลาอื่น");
+  //   }
 
-    await tx.insert(schema.workshopRegistrations).values({
-      participantId: participantId,
-      timeSlotId: timeSlot.id,
-      registrationType: registrationType,
-    });
-  });
+  //   await tx.insert(schema.workshopRegistrations).values({
+  //     participantId: participantId,
+  //     timeSlotId: timeSlot.id,
+  //     registrationType: registrationType,
+  //   });
+  // });
+
+  const statement = sql`
+    INSERT INTO workshop_registrations (id,participant_id, time_slot_id, registration_type)
+    SELECT
+        ${createId()},
+        ${participantId},
+        wts.id,
+        ${registrationType}
+    FROM workshop_time_slots AS wts
+    JOIN workshops AS w
+        ON wts.workshop_id = w.id
+    LEFT JOIN (
+        SELECT
+            time_slot_id,
+            COUNT(*) AS current_registered
+        FROM workshop_registrations
+        GROUP BY time_slot_id
+    ) AS reg
+        ON reg.time_slot_id = wts.id
+    WHERE
+        wts.workshop_id = ${workshopId}
+        AND wts.round_number = ${roundNumber}
+        AND COALESCE(reg.current_registered, 0) < w.capacity
+    LIMIT 1;
+`;
+  return await db.run(statement);
 }
 
 export async function deleteTimeSlotRegistration(
