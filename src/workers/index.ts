@@ -1,14 +1,9 @@
+import { handle } from "@astrojs/cloudflare/handler";
 import type { SSRManifest } from "astro";
 import { App } from "astro/app";
-import { handle } from "@astrojs/cloudflare/handler";
-import { DurableObject } from "cloudflare:workers";
 import { WorkshopRegistrationHandler } from "./workshop-registration";
 
-export class MyDurableObject extends DurableObject<Env> {
-  constructor(ctx: DurableObjectState, env: Env) {
-    super(ctx, env);
-  }
-}
+export { WorkshopRegistrationHandler };
 
 export function createExports(manifest: SSRManifest) {
   const app = new App(manifest);
@@ -18,7 +13,7 @@ export function createExports(manifest: SSRManifest) {
         return handle(manifest, app, request as any, env as any, ctx);
       },
     } satisfies ExportedHandler<Env>,
-    MyDurableObject: MyDurableObject,
-    WorkshopRegistrationHandler: WorkshopRegistrationHandler
+    
+    WorkshopRegistrationHandler
   };
 }

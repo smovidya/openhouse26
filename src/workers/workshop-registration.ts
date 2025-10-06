@@ -1,5 +1,5 @@
 import type { SelectedWorkshop } from "@src/client/shared-state.svelte";
-import { getWorkshopById } from "@src/data/workshops";
+import { getWorkshopById, workshops } from "@src/data/workshops";
 import { DurableObject } from "cloudflare:workers";
 
 export type SelectedWorkshopWithUser = SelectedWorkshop & {
@@ -83,14 +83,22 @@ export class WorkshopRegistrationHandler extends DurableObject<Env> {
 
   addRegistration(participantId: string, workshopId: string, roundNumber: number) {
     // Check how many users are registered for this workshop at this round
-    const workshopCountResult = this.ctx.storage.sql.exec(`
-      SELECT COUNT(*) as count
-      FROM registrations
-      WHERE workshopId = '${workshopId}' AND roundNumber = ${roundNumber}
-    `);
-    const workshopCount = (workshopCountResult.toArray()[0] as Record<string, unknown>)?.count as number || 0;
-    if (workshopCount >= 2) {
+    const registered = this.getRegistrationsByUser(participantId);
+    if (registered.length >= 2) {
       return "maximum-workshop-reached" as const;
+    }
+
+    const selectedSlot = getWorkshopById(workshopId)?.slots.find(it => it.round === roundNumber);
+    if (!selectedSlot) {
+      return "not-exist";
+    }
+
+    for (const { roundNumber, workshopId } of registered) {
+      const other = getWorkshopById(workshopId)!.slots.find(it => it.round === roundNumber)!;
+
+      if (selectedSlot.isIn1Hour(other)) {
+        return "collided";
+      }
     }
 
     // Check how many workshops the user has registered for at this round
@@ -109,7 +117,7 @@ export class WorkshopRegistrationHandler extends DurableObject<Env> {
       VALUES ('${participantId}', '${workshopId}', ${roundNumber})
     `);
 
-    return "ok" as const;
+    return this.getRegistrationCount(workshopId);
   }
 
   removeRegistration(participantId: string, workshopId: string) {
@@ -117,6 +125,8 @@ export class WorkshopRegistrationHandler extends DurableObject<Env> {
       DELETE FROM registrations
       WHERE participantId = '${participantId}' AND workshopId = '${workshopId}'
     `);
+
+    return this.getRegistrationCount(workshopId);
   }
 
   getRegistrationCount(workshopId: string): Record<number, number> {
@@ -135,5 +145,19 @@ export class WorkshopRegistrationHandler extends DurableObject<Env> {
     });
 
     return counts;
+  }
+
+  getRegistrationsByUser(participantId: string): SelectedWorkshopWithUser[] {
+    const results = this.ctx.storage.sql.exec(`
+      SELECT participantId, workshopId, roundNumber
+      FROM registrations
+      WHERE participantId = '${participantId}'
+    `);
+
+    return results.toArray().map((row: Record<string, unknown>) => ({
+      participantId: row.participantId as string,
+      workshopId: row.workshopId as string,
+      roundNumber: row.roundNumber as number
+    }));
   }
 }
