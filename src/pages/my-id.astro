@@ -32,7 +32,7 @@ const showWorkshop = dev || featureFlags.workshopRegistration
 // const selectedWorkshops = await workshopModel.getUserRegisteredSlots(Astro.locals.db, uid);
 
 const handler =
-  Astro.locals.runtime.env.WORKSHOP_REGISTRATION_HANDLER.getByName(
+  Astro.locals.runtime.env.WORKSHOP_REGISTRATION_HANDLER2.getByName(
     "default",
   ) as DurableObjectStub<WorkshopRegistrationHandler2>;
 const selectedWorkshops = await handler.getRegistrationsByUser(participant.id);

@@ -9,7 +9,7 @@ declare namespace Cloudflare {
 		BETTER_AUTH_URL: string;
 		GOOGLE_CLIENT_ID: string;
 		GOOGLE_CLIENT_SECRET: string;
-		WORKSHOP_REGISTRATION_HANDLER: DurableObjectNamespace<import("./dist/_worker.js/index").WorkshopRegistrationHandler>;
+		WORKSHOP_REGISTRATION_HANDLER2: DurableObjectNamespace<import("./dist/_worker.js/index").WorkshopRegistrationHandler>;
 		openhouse26_db: D1Database;
 		ASSETS: Fetcher;
 	}
