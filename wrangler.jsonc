@@ -14,34 +14,6 @@
   "observability": {
     "enabled": true
   },
-  "kv_namespaces": [
-    {
-      "binding": "openhouse26_kv",
-      "id": "54eff58aa403471087e573a3e61fc320"
-    }
-  ],
-  "d1_databases": [
-    {
-      "binding": "openhouse26_db",
-      "database_name": "openhouse26-db",
-      "database_id": "62624ef6-24a7-45e9-94d5-a955b19e7609",
-      "migrations_dir": "drizzle"
-    }
-  ],
-  "migrations": [
-    {
-      "tag": "v1",
-      "new_classes": [
-        "WorkshopRegistrationHandler"
-      ]
-    },
-    {
-      "tag": "v1",
-      "deleted_classes": [
-        "WorkshopRegistrationHandler"
-      ]
-    }
-  ],
   "env": {
     "staging": {
       "vars": {
@@ -86,7 +58,35 @@
       ],
       "vars": {
         "ENVIRONMENT": "production"
-      }
+      },
+      "kv_namespaces": [
+        {
+          "binding": "openhouse26_kv",
+          "id": "54eff58aa403471087e573a3e61fc320"
+        }
+      ],
+      "d1_databases": [
+        {
+          "binding": "openhouse26_db",
+          "database_name": "openhouse26-db",
+          "database_id": "62624ef6-24a7-45e9-94d5-a955b19e7609",
+          "migrations_dir": "drizzle"
+        }
+      ],
+      "migrations": [
+        {
+          "tag": "v1",
+          "new_classes": [
+            "WorkshopRegistrationHandler"
+          ]
+        },
+        {
+          "tag": "v1",
+          "deleted_classes": [
+            "WorkshopRegistrationHandler"
+          ]
+        }
+      ],
     }
   }
 }
