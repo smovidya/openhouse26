@@ -7,6 +7,7 @@
     "start": "wrangler types && astro dev",
     "build": "wrangler types && astro check && astro build",
     "preview": "wrangler types && astro preview",
+    "deploy:staging": "bunx wrangler deploy --env staging",
     "astro": "astro",
     "cf-types": "wrangler types",
     "db:generate": "bun drizzle-kit generate",

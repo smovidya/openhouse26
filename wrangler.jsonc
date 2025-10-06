@@ -28,26 +28,57 @@
       "migrations_dir": "drizzle"
     }
   ],
-  "routes": [
-    {
-      "pattern": "scichulaopenhouse.com",
-      "custom_domain": true
-    }
-  ],
-  "durable_objects": {
-    "bindings": [
-      {
-        "name": "WORKSHOP_REGISTRATION_HANDLER",
-        "class_name": "WorkshopRegistrationHandler"
-      }
-    ]
-  },
   "migrations": [
     {
       "tag": "v1",
       "new_classes": [
         "WorkshopRegistrationHandler"
       ]
+    },
+    {
+      "tag": "v1",
+      "deleted_classes": [
+        "WorkshopRegistrationHandler"
+      ]
     }
-  ]
+  ],
+  "env": {
+    "staging": {
+      "vars": {
+        "BETTER_AUTH_URL": "https://ena.scichulaopenhouse.com/api/auth",
+        "ENVIRONMENT": "staging"
+      },
+      "d1_databases": [
+        {
+          "binding": "openhouse26_db",
+          "database_name": "openhouse26_db_staging",
+          "database_id": "df51e549-c836-416a-ba87-5168facb8aff",
+          "migrations_dir": "drizzle"
+        }
+      ],
+      "kv_namespaces": [
+        {
+          "binding": "openhouse26_kv",
+          "id": "da15ec6100f84cd4b0b37b3d9039b4c9"
+        }
+      ],
+      "routes": [
+        {
+          "pattern": "ena.scichulaopenhouse.com",
+          "custom_domain": true
+        }
+      ],
+    },
+    "production": {
+      "routes": [
+        {
+          "pattern": "scichulaopenhouse.com",
+          "custom_domain": true
+        }
+      ],
+      "vars": {
+        "ENVIRONMENT": "production"
+      }
+    }
+  }
 }
