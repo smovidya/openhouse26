@@ -44,6 +44,12 @@
       ]
     },
     {
+      "tag": "v1.5",
+      "deleted_classes": [
+        "WorkshopRegistrationHandler"
+      ]
+    },
+    {
       "tag": "v2",
       "new_sqlite_classes": [
         "WorkshopRegistrationHandler2"
