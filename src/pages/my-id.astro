@@ -23,7 +23,8 @@ if (!participant) {
 const id = participant.id;
 const name = participant.givenName;
 
-const showWorkshop = import.meta.env.DEV || featureFlags.workshopRegistration
+const staging = Astro.locals.runtime.env.ENVIRONMENT === "staging"
+const showWorkshop = staging || import.meta.env.DEV || featureFlags.workshopRegistration
 
 const selectedWorkshops = await workshopModel.getUserRegisteredSlots(Astro.locals.db, uid);
 ---

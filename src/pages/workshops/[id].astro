@@ -21,7 +21,9 @@ export const getStaticPaths: GetStaticPaths = () =>
 const { id } = Astro.params;
 const workshop = workshops.find((it) => it.id === id)!;
 
-if (!workshop || (!import.meta.env.DEV && !featureFlags.workshopRegistration)) {
+const staging = Astro.locals.runtime.env.ENVIRONMENT === "staging"
+
+if (!workshop || (!(import.meta.env.DEV || staging) && !featureFlags.workshopRegistration)) {
   return Astro.redirect("/404");
 }
 

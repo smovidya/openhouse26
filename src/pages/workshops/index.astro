@@ -5,7 +5,8 @@ import { Content } from "@src/data/workshops-term.md";
 import WorkshopList from "@src/components/workshop-list.svelte";
 import { featureFlags } from "@src/data/constants";
 
-if (!import.meta.env.DEV && !featureFlags.workshopRegistration) {
+const staging = Astro.locals.runtime.env.ENVIRONMENT === "staging";
+if (!(import.meta.env.DEV || staging) && !featureFlags.workshopRegistration) {
   return Astro.redirect("/404");
 }
 ---
