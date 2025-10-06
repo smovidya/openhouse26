@@ -55,12 +55,14 @@ export async function insertNewTimeSlotRegistration(
   // });
 
   const statement = sql`
-    INSERT INTO workshop_registrations (id,participant_id, time_slot_id, registration_type)
+    INSERT INTO workshop_registrations (id,participant_id, time_slot_id, registration_type, created_at, updated_at)
     SELECT
         ${createId()},
         ${participantId},
         wts.id,
-        ${registrationType}
+        ${registrationType},
+        ${new Date().getTime() / 1000},
+        ${new Date().getTime() / 1000}
     FROM workshop_time_slots AS wts
     JOIN workshops AS w
         ON wts.workshop_id = w.id
