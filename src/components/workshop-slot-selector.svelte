@@ -103,7 +103,9 @@
       });
 
       if (error) {
-        alert("เกิดข้อผิดพลาดชณะลบ: " + error.message);
+
+    saved = true;
+        alert("เกิดข้อผิดพลาดขณะลบ: " + error.message);
         throw error;
       }
 
@@ -123,6 +125,7 @@
       });
 
       if (error) {
+        saved = true;
         alert("เกิดข้อผิดพลาดเกิดข้อผิดพลาดขณะลงทะเบียน: " + error.message);
         throw error;
       }
@@ -131,8 +134,6 @@
         registerCount = data.data.updatedWorkshopCounts;
       }
     }
-
-    saved = true;
   }
 
   const debouncedIndex = debounced({
