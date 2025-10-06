@@ -58,7 +58,7 @@
   function shouldDisabled(index: number) {
     const slot = workshop.slots[index]!;
 
-    if (initialSelectedWorkshops.length >= 2) {
+    if (initialSelectedWorkshops.length >= 2 && selectedIndex !== index) {
       return {
         disabled: true,
         maximumReached: true,
@@ -140,10 +140,13 @@
     debouncedTimeMs: 500,
   });
 
-  // $effect(() => {
-  //   const index = debouncedIndex.current;
-  //   untrack(() => saveSelected(index));
-  // });
+  $effect(() => {
+    if (!changed) {
+      return;
+    }
+    const index = debouncedIndex.current;
+    untrack(() => saveSelected(index));
+  });
 
   let changed = $state(false);
   let saved = $state(true);
@@ -162,7 +165,7 @@
 </script>
 
 <section class={clsx("", className)}>
-  <h2 class="text-white text-2xl">รอบการทำกิจกรรม</h2>
+  <h2 class="text-white text-2xl">เลือกเพื่อลงทะเบียนรอบการทำกิจกรรม</h2>
   <p class="text-blue-300">
     กดที่เวลาเพื่อเลือก กดซ้ำเพื่อยกเลิก
     บางรายการอาจเลือกไม่ได้เนื่องจากติดเงื่อนไข
