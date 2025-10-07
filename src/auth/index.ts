@@ -78,30 +78,7 @@ function createAuth(env?: Env, cf?: IncomingRequestCfProperties) {
         //   },
         // },
       },
-      {
-        logger: {
-          level: "debug", // =-= แม่นหยัง
-        },
-        secret: env?.BETTER_AUTH_SECRET,
-        baseURL: env?.BETTER_AUTH_URL,
-        emailAndPassword: {
-          enabled: true,
-        },
-        rateLimit: {
-          enabled: true,
-          window: 120,
-        },
-        // disabledPaths: [
-        //   import.meta.env.DEV ? null : "/sign-in/anonymous",
-        // ].filter(Boolean),
-        socialProviders: {
-          google: {
-            prompt: "select_account",
-            clientId: env?.GOOGLE_CLIENT_ID,
-            clientSecret: env?.GOOGLE_CLIENT_SECRET,
-          },
-        },
-      }
+      {}
     ),
     // rateLimit: {
     //   enabled: true,
@@ -138,11 +115,33 @@ function createAuth(env?: Env, cf?: IncomingRequestCfProperties) {
       // }),
       oneTap(),
     ],
+    logger: {
+      level: "debug", // =-= แม่นหยัง
+    },
+    secret: env?.BETTER_AUTH_SECRET,
+    baseURL: env?.BETTER_AUTH_URL,
+    emailAndPassword: {
+      enabled: true,
+    },
+    rateLimit: {
+      enabled: true,
+      window: 120,
+    },
+    // disabledPaths: [
+    //   import.meta.env.DEV ? null : "/sign-in/anonymous",
+    // ].filter(Boolean),
+    socialProviders: {
+      google: {
+        prompt: "select_account",
+        clientId: env?.GOOGLE_CLIENT_ID ?? "",
+        clientSecret: env?.GOOGLE_CLIENT_SECRET,
+      },
+    },
   });
 }
 
 // Export for CLI schema generation
-export const auth = createAuth();
+// export const auth = createAuth();
 
 // Export for runtime usage
 export { createAuth };
