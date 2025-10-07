@@ -1,0 +1,18 @@
+---
+import Layout from "./ContentLayout.astro";
+
+const { frontmatter, title, description } = Astro.props;
+---
+
+<Layout
+  title={title || frontmatter.title || "Management"}
+  description={description || frontmatter.description || ""}
+  image="/og-image.png"
+>
+  <Fragment slot="head">
+    <meta name="robots" content="noindex,nofollow" />
+    <link rel="icon" type="image/png" href="/logo.png" />
+    <link rel="apple-touch-icon" href="/logo.png" />
+  </Fragment>
+  <slot />
+</Layout>
