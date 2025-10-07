@@ -4,10 +4,6 @@ import { drizzle } from "drizzle-orm/d1";
 import { schema } from "@src/db";
 
 export const onRequest = defineMiddleware(async (context, next) => {
-  // console.log("Middleware:", {
-  //   env: context.locals.runtime.env,
-  //   cf: context.locals.runtime.cf,
-  // });
   const auth = createAuth(
     context.locals.runtime.env,
     context.locals.runtime.cf
@@ -30,6 +26,23 @@ export const onRequest = defineMiddleware(async (context, next) => {
   } else {
     context.locals.user = null;
     context.locals.session = null;
+  }
+
+  const pathname = new URL(context.request.url).pathname;
+
+  if (
+    pathname === "/admin" &&
+    !context.locals.auth.api.userHasPermission({
+      body: {
+        userId: context.locals.user?.id || "",
+        role: "admin",
+        permission: {
+          user: ["list"],
+        },
+      },
+    })
+  ) {
+    return context.rewrite("/");
   }
 
   return next();
