@@ -14,9 +14,9 @@
   color-scheme: light;
   /* color of browser-provided UI */
 
-  --color-base-100: oklch(98% 0.02 240);
-  --color-base-200: oklch(95% 0.03 240);
-  --color-base-300: oklch(92% 0.04 240);
+  --color-base-100: oklch(0.340 0.112 265.4);
+  --color-base-200: oklch(0.539 0.123 260.6);
+  --color-base-300: oklch(0.824 0.112 265.4);
   --color-base-content: oklch(98% 0.003 247.858);
   --color-primary: oklch(55% 0.3 240);
   --color-primary-content: oklch(98% 0.01 240);
