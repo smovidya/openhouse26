@@ -8,7 +8,6 @@ import { featureFlags, workshopRegistrationDate } from "@src/data/constants";
 import Countdown from "@src/components/countdown.svelte";
 import MyWorkshop from "@src/components/my-workshop.svelte"
 import { workshopModel} from "@src/db"
-// import LockIcon from ""
 
 const uid = Astro.locals.user?.id;
 if (!uid) {
@@ -41,8 +40,8 @@ const selectedWorkshops = await workshopModel.getUserRegisteredSlots(Astro.local
     <!-- TODO: resize this -->
     <img
       src={MyIdHeader.src}
-      alt="MyId"
-      class="w-screen object-cover relative z-3 max-w-full sm:max-w-100 mx-auto"
+      alt="MyID Header"
+      class="w-2/3 object-cover relative z-3 max-w-full sm:max-w-100 mx-auto"
     />
     <section
       id="my-id-card"
