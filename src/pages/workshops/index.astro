@@ -17,18 +17,16 @@ if (!(import.meta.env.DEV || staging) && !featureFlags.workshopRegistration) {
   image="/og-image.png"
   showNavBar={true}
 >
-  <article class="text-sm relative w-full overflow-x-clip text-white/90">
+  <article class="text-sm relative w-full overflow-x-clip">
     <h1 class="text-3xl">Workshops</h1>
     <span>เวิร์กช็อปสำหรับน้อง ๆ ที่สนใจกิจกรรมของภาควิชาต่าง ๆ</span>
 
     <section class="mt-6 flex flex-col gap-4">
       <CutoutBox
-        class="p-4 bg-white/90 text-base-content overflow-y-auto max-h-44"
+        class="p-4 bg-base-100/60 backdrop-blur-md text-shadow-2xs text-shadow border-base-200 inset-shadow-xs overflow-y-auto max-h-44"
       >
         <h2 class="text-xl">เงื่อนไขในการเข้าร่วมเวิร์กช็อป</h2>
-        <span class="text-base-content/80"
-          >โปรดศึกษาก่อนเริ่มเลือกเวิร์กช็อปที่สนใจ</span
-        >
+        <span>โปรดศึกษาก่อนเริ่มเลือกเวิร์กช็อปที่สนใจ</span>
         <div class="prose">
           <Content />
         </div>

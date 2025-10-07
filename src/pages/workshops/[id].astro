@@ -21,9 +21,12 @@ export const getStaticPaths: GetStaticPaths = () =>
 const { id } = Astro.params;
 const workshop = workshops.find((it) => it.id === id)!;
 
-const staging = Astro.locals.runtime.env.ENVIRONMENT === "staging"
+const staging = Astro.locals.runtime.env.ENVIRONMENT === "staging";
 
-if (!workshop || (!(import.meta.env.DEV || staging) && !featureFlags.workshopRegistration)) {
+if (
+  !workshop ||
+  (!(import.meta.env.DEV || staging) && !featureFlags.workshopRegistration)
+) {
   return Astro.redirect("/404");
 }
 
@@ -42,6 +45,7 @@ const registeredParticipantCount = await getRegisteredParticipantCount(
   image="/og-image.png"
   showNavBar={true}
 >
+  <a href="/workshops" class="btn btn-ghost">กลับไปรายการเวิร์กช็อป</a>
   <div class="flex flex-col items-center text-center">
     <img
       src="/workshop-pictures/Workshop.png"
