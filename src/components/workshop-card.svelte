@@ -40,7 +40,7 @@
     <img
       src={workshop.image}
       alt=""
-      class="size-28 aspect-square bg-neutral-200 rounded overflow-clip"
+      class="size-28 mask mask-hexagon aspect-square bg-neutral-200 rounded overflow-clip"
     />
     <div>
       <h2 class="text-lg">{workshop.title}</h2>

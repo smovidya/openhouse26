@@ -1,6 +1,6 @@
 <script lang="ts">
-  import clsx, { type ClassValue } from "clsx";
   import type { Snippet } from "svelte";
+  import { cn } from "../utils";
 
   interface Props {
     class?: ClassValue;
@@ -11,9 +11,9 @@
 </script>
 
 <div
-  class={clsx(
+  class={cn(
     "border-neutral-400 border-1 rounded-xl bg-white p-4 shadow-inner shadow-black/30",
-    clazz,
+    clazz
   )}
 >
   {@render children?.()}
