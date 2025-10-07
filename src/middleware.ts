@@ -2,6 +2,7 @@ import { createAuth } from "@src/auth";
 import { defineMiddleware } from "astro:middleware";
 import { drizzle } from "drizzle-orm/d1";
 import { schema } from "@src/db";
+import { hasOneOfRoleIn } from "./auth/utils";
 
 export const onRequest = defineMiddleware(async (context, next) => {
   const auth = createAuth(
@@ -32,17 +33,22 @@ export const onRequest = defineMiddleware(async (context, next) => {
 
   if (
     pathname === "/admin" &&
-    !context.locals.auth.api.userHasPermission({
-      body: {
-        userId: context.locals.user?.id || "",
-        role: "admin",
-        permission: {
-          user: ["list"],
-        },
-      },
-    })
+    !hasOneOfRoleIn(context.locals.user, ["admin"])
   ) {
-    return context.rewrite("/");
+    return context.redirect("/");
+  }
+
+  if (
+    pathname.startsWith("/staff") &&
+    !hasOneOfRoleIn(context.locals.user, [
+      "admin",
+      "majorBoothStaff",
+      "registarStaff",
+      "rewardStaff",
+      "workshopStaff",
+    ])
+  ) {
+    return context.redirect("/");
   }
 
   return next();
