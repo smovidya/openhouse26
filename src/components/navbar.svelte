@@ -13,7 +13,7 @@
 <nav
   class={clsx(
     "w-full h-24 velvet relative shadow-md shadow-black/30",
-    className,
+    className
   )}
 >
   <div class="absolute strip-3 -translate-y-[0.5px] inset-y-1 inset-x-0"></div>
@@ -21,7 +21,9 @@
   <div class="absolute strip-1 inset-y-1 inset-x-0"></div>
 
   <div class="flex justify-between items-center w-full h-full px-4">
-    <img src={LogoNoCircle.src} alt="logo" class="size-14 object-cover" />
+    <a href="/" class="z-10">
+      <img src={LogoNoCircle.src} alt="logo" class="size-14 object-cover" />
+    </a>
 
     <div class="flex z-3 h-full items-center text-white/80 text-xs font-serif">
       <a
