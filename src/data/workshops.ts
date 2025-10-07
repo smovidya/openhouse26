@@ -17,6 +17,14 @@ export class Time {
     const [h, m] = timeStr.split(":").map(Number);
     return new Time(h, m);
   }
+
+  add(time: { hour?: number; minute?: number }): Time {
+    const totalMinutes =
+      this.hour * 60 + this.minute + (time.hour ?? 0) * 60 + (time.minute ?? 0);
+    const newHour = Math.floor((totalMinutes % 1440) / 60);
+    const newMinute = totalMinutes % 60;
+    return new Time(newHour, newMinute);
+  }
 }
 
 export class TimeSlot {

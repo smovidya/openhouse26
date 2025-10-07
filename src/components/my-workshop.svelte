@@ -3,6 +3,7 @@
   import Add from "carbon-icons-svelte/lib/Add.svelte";
   import WorkshopCard from "./workshop-card.svelte";
   import { getWorkshopById } from "@src/data/workshops";
+  import { featureFlags } from "@src/data/constants";
 
   // i know this can be a staic astro file
   // but dont question it
@@ -28,13 +29,15 @@
       {@const slot = workshop.slots.find((it) => it.round === roundNumber)!}
       <WorkshopCard
         class="text-white"
-        selectedTimeSlotText="({slot.start.toString()} - {slot.end.toString()} น.)"
+        selectedTimeSlotText="({slot.start.toString()} - {slot.end.toString()} น. แต่ต้องแสดงตัวเวลา {slot.start.add(
+          { minute: -15 }
+        )} - {slot.start.add({ minute: -10 }).toString()} น. เท่านั้น)"
         variant="red"
         {workshop}
       />
     {/each}
 
-    {#if selectedWorkshops.length < 2}
+    {#if selectedWorkshops.length < 2 || featureFlags.workshopRegistrationClosed}
       <a
         href="/workshops"
         class="p-4 flex flex-col justify-center items-center h-42 mt-6 border-2 border-dashed border-blue-300/35 shadow-inner shadow-black/45 bg-blue-950/25"
@@ -49,6 +52,13 @@
           คุณลงทะเบียนได้อีก {2 - selectedWorkshops.length} เวิร์กช็อป
         </p>
       </a>
+    {/if}
+
+    {#if featureFlags.workshopRegistrationClosed}
+      <p class="mt-4 text-center text-sm text-yellow-300/90">
+        การลงทะเบียนเวิร์กช็อปปิดแล้ว แต่คุณยังสามารถเข้าร่วมหน้างานได้!
+        ติดตามในวันที่ 18-19 ตุลาคม เล้ย!
+      </p>
     {/if}
   </div>
 </section>
