@@ -104,7 +104,7 @@
       } as const;
     }
 
-    if ((currentSlot.count ?? 0) >= workshop.capacity) {
+    if ((currentSlot.count ?? 0) >= workshop.capacity && currentRound !== roundNumber) {
       return {
         disabled: true,
         full: true,
