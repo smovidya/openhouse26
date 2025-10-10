@@ -11,6 +11,10 @@
     "binding": "ASSETS",
     "directory": "./dist"
   },
+  "vars": {
+    "ENVIRONMENT": "development",
+    "SSE_URL": "http://localhost:8787",
+  },
   "observability": {
     "enabled": true
   },
@@ -34,7 +38,8 @@
     "staging": {
       "vars": {
         "BETTER_AUTH_URL": "https://ena.scichulaopenhouse.com/api/auth",
-        "ENVIRONMENT": "staging"
+        "ENVIRONMENT": "staging",
+        "SSE_URL": "https://isei.scichulaopenhouse.com",
       },
       "d1_databases": [
         {
@@ -73,7 +78,8 @@
         }
       ],
       "vars": {
-        "ENVIRONMENT": "production"
+        "ENVIRONMENT": "production",
+        "SSE_URL": "https://sse.scichulaopenhouse.com",
       },
       "kv_namespaces": [
         {
