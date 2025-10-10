@@ -55,10 +55,12 @@ export const workshopRegistrations = sqliteTable("workshop_registrations", {
     .text("time_slot_id")
     .notNull()
     .references(() => workshopTimeSlots.id),
-  registrationType: t.text("registration_type").notNull(), // e.g., "pre-registration", "on-site"
-  isParticipated: t
-    .integer("is_participated", { mode: "boolean" })
-    .default(false),
+  registrationType: t
+    .text("registration_type", {
+      enum: ["pre-registration", "on-site"],
+    })
+    .notNull(),
+  participatedAt: t.integer("participated_at", { mode: "timestamp" }),
   ...timestamps,
 });
 
