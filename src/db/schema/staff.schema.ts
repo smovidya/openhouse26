@@ -14,6 +14,7 @@ export const staffs = sqliteTable("staffs", {
   phone: t.text("phone").notNull(),
   lineId: t.text("line_id").notNull(),
   requestedRole: t.text("requested_role").notNull(),
+  approvedAt: t.integer("approved_at", { mode: "timestamp" }),
   ...timestamps,
 });
 
