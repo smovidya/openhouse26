@@ -34,6 +34,12 @@
       "migrations_dir": "drizzle"
     }
   ],
+  "services": [
+    {
+      "binding": "SSE",
+      "service": "openhouse26-sse"
+    }
+  ],
   "env": {
     "staging": {
       "vars": {
@@ -69,6 +75,12 @@
           ]
         }
       ],
+      "services": [
+        {
+          "binding": "SSE",
+          "service": "openhouse26-sse-staging"
+        }
+      ],
     },
     "production": {
       "routes": [
@@ -93,6 +105,12 @@
           "database_name": "openhouse26-db",
           "database_id": "62624ef6-24a7-45e9-94d5-a955b19e7609",
           "migrations_dir": "drizzle"
+        }
+      ],
+      "services": [
+        {
+          "binding": "SSE",
+          "service": "openhouse26-sse"
         }
       ],
     }

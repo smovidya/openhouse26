@@ -8,6 +8,7 @@ import { featureFlags, workshopRegistrationDate } from "@src/data/constants";
 import Countdown from "@src/components/countdown.svelte";
 import MyWorkshop from "@src/components/my-workshop.svelte"
 import { workshopModel} from "@src/db"
+import type { SSEWorkerRpc } from "@src/type";
 
 const uid = Astro.locals.user?.id;
 if (!uid) {
@@ -18,6 +19,9 @@ const participant = await getParticipantByUserId(Astro.locals.db, uid);
 if (!participant) {
   return Astro.redirect("/register");
 }
+
+// this explode sometime, dont forget to run the sse worker simultaneously too
+// console.log((Astro.locals.runtime.env.SSE as any as SSEWorkerRpc).double(12))
 
 const id = participant.id;
 const name = participant.givenName;
