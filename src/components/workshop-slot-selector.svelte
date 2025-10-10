@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { SelectedWorkshop } from "@src/client/shared-state.svelte";
+  import type { SelectedWorkshop } from "@src/type";
   import { getWorkshopById, workshops } from "@src/data/workshops";
   import { debounced } from "@src/utils/state.svelte";
   import { toLocalDateString } from "@src/utils/time";

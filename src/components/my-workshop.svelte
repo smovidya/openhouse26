@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { SelectedWorkshop } from "@src/client/shared-state.svelte";
+  import type { SelectedWorkshop } from "@src/type";
   import Add from "carbon-icons-svelte/lib/Add.svelte";
   import WorkshopCard from "./workshop-card.svelte";
   import { getWorkshopById } from "@src/data/workshops";

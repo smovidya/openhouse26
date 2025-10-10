@@ -1,4 +1,4 @@
-import type { SelectedWorkshop } from "@src/client/shared-state.svelte";
+import type { SelectedWorkshop } from "@src/type";
 import { participantModel, schema, type Db } from "@src/db";
 import { and, asc, count, eq, inArray, sql } from "drizzle-orm";
 import { workshops } from "@src/data/workshops";
