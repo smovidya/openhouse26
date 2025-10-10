@@ -37,7 +37,7 @@ function createAuth(env?: Env, cf?: IncomingRequestCfProperties) {
               db,
               options: {
                 usePlural: true,
-                debugLogs: true,
+                debugLogs: false,
               },
             }
           : undefined,
@@ -85,7 +85,7 @@ function createAuth(env?: Env, cf?: IncomingRequestCfProperties) {
               database: drizzleAdapter({} as D1Database, {
                 provider: "sqlite",
                 usePlural: true,
-                debugLogs: true,
+                debugLogs: false,
               }),
             }),
         plugins: [
@@ -111,7 +111,7 @@ function createAuth(env?: Env, cf?: IncomingRequestCfProperties) {
           jwt(),
         ],
         logger: {
-          level: "info", // =-= แม่นหยัง
+          level: "error", // =-= แม่นหยัง
         },
         secret: env?.BETTER_AUTH_SECRET,
         baseURL: env?.BETTER_AUTH_URL,
