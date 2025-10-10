@@ -2,6 +2,7 @@ import { z } from "astro/zod";
 import { ActionError, defineAction } from "astro:actions";
 import { participantModel, workshopModel } from "@src/db";
 import { Time, TimeSlot } from "@src/data/workshops";
+import { featureFlags } from "@src/data/constants";
 
 export const myCurrentRegistrationsForWorkshop = defineAction({
   input: z.object({ workshopId: z.string() }),
@@ -61,6 +62,11 @@ export const registerMeToSlot = defineAction({
     roundNumber: z.number(),
   }),
   async handler(input, ctx) {
+    if (featureFlags.workshopRegistrationClosed)
+      throw new ActionError({
+        code: "FORBIDDEN",
+        message: "ขออภัย ปิดการลงทะเบียนหรือแก้ไขเวิร์กช็อปแล้ว",
+      });
     if (!ctx.locals.user) {
       throw new ActionError({
         code: "UNAUTHORIZED",
@@ -282,6 +288,11 @@ export const removeMeFromSlot = defineAction({
     workshopId: z.string(),
   }),
   async handler(input, ctx) {
+    if (featureFlags.workshopRegistrationClosed)
+      throw new ActionError({
+        code: "FORBIDDEN",
+        message: "ขออภัย ปิดการลงทะเบียนหรือแก้ไขเวิร์กช็อปแล้ว",
+      });
     if (!ctx.locals.user) {
       throw new ActionError({
         code: "UNAUTHORIZED",
