@@ -1,12 +1,21 @@
 ---
 import Layout from "./ContentLayout.astro";
 
+interface Props {
+  title?: string;
+  description?: string;
+  frontmatter?: {
+    title?: string;
+    description?: string;
+  };
+}
+
 const { frontmatter, title, description } = Astro.props;
 ---
 
 <Layout
-  title={title || frontmatter.title || "Management"}
-  description={description || frontmatter.description || ""}
+  title={title || frontmatter?.title || "Management"}
+  description={description || frontmatter?.description || ""}
   image="/og-image.png"
 >
   <Fragment slot="head">
@@ -14,5 +23,8 @@ const { frontmatter, title, description } = Astro.props;
     <link rel="icon" type="image/png" href="/logo.png" />
     <link rel="apple-touch-icon" href="/logo.png" />
   </Fragment>
-  <slot />
+
+  <div class="container mx-auto px-4 py-8 prose">
+    <slot />
+  </div>
 </Layout>

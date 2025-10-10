@@ -1,7 +1,9 @@
 import { createAuthClient } from "better-auth/client";
 import { createAuthClient as createAuthClientSvelte } from "better-auth/svelte";
+import { createAuthClient as createAuthClientReact } from "better-auth/react";
 import {
   adminClient,
+  jwtClient,
   oneTapClient,
 } from "better-auth/client/plugins";
 import {
@@ -32,6 +34,7 @@ export const plugins = [
     cancelOnTapOutside: true,
     context: "signup",
   }),
+  jwtClient(),
 ];
 
 export const authClient = createAuthClient({
@@ -39,5 +42,9 @@ export const authClient = createAuthClient({
 });
 
 export const authClientSvelte = createAuthClientSvelte({
+  plugins,
+});
+
+export const authClientReact = createAuthClientReact({
   plugins,
 });
