@@ -6,7 +6,7 @@ import { schema } from "@src/db";
 import { betterAuth } from "better-auth";
 import { withCloudflare } from "better-auth-cloudflare";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
-import { admin, oneTap } from "better-auth/plugins";
+import { admin, jwt, oneTap } from "better-auth/plugins";
 import { drizzle, DrizzleD1Database } from "drizzle-orm/d1";
 import {
   ac,
@@ -114,9 +114,10 @@ function createAuth(env?: Env, cf?: IncomingRequestCfProperties) {
       //   // },
       // }),
       oneTap(),
+      jwt(),
     ],
     logger: {
-      level: "debug", // =-= แม่นหยัง
+      level: "info", // =-= แม่นหยัง
     },
     secret: env?.BETTER_AUTH_SECRET,
     baseURL: env?.BETTER_AUTH_URL,
@@ -141,7 +142,7 @@ function createAuth(env?: Env, cf?: IncomingRequestCfProperties) {
 }
 
 // Export for CLI schema generation
-// export const auth = createAuth();
+export const auth = createAuth();
 
 // Export for runtime usage
 export { createAuth };
