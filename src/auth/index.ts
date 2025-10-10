@@ -78,71 +78,67 @@ function createAuth(env?: Env, cf?: IncomingRequestCfProperties) {
         //   },
         // },
       },
-      {}
-    ),
-    // rateLimit: {
-    //   enabled: true,
-    //   ttl: 120
-    // },
-    // Only add database adapter for CLI schema generation
-    ...(env
-      ? {}
-      : {
-          database: drizzleAdapter({} as D1Database, {
-            provider: "sqlite",
-            usePlural: true,
-            debugLogs: true,
+      {
+        ...(env
+          ? {}
+          : {
+              database: drizzleAdapter({} as D1Database, {
+                provider: "sqlite",
+                usePlural: true,
+                debugLogs: true,
+              }),
+            }),
+        plugins: [
+          admin({
+            ac,
+            roles: {
+              admin: adminRole,
+              majorBoothStaff,
+              registarStaff,
+              rewardStaff,
+              workshopStaff,
+              user,
+            },
           }),
-        }),
-    plugins: [
-      admin({
-        ac,
-        roles: {
-          admin: adminRole,
-          majorBoothStaff,
-          registarStaff,
-          rewardStaff,
-          workshopStaff,
-          user,
+          // anonymous({
+          //   emailDomainName: "anon.vidyachula.org",
+          //   // async onLinkAccount({ anonymousUser, newUser }) {
+          //   //   await db.update(schema.users).set({
+          //   //   })
+          //   // },
+          // }),
+          oneTap(),
+          jwt(),
+        ],
+        logger: {
+          level: "info", // =-= แม่นหยัง
         },
-      }),
-      // anonymous({
-      //   emailDomainName: "anon.vidyachula.org",
-      //   // async onLinkAccount({ anonymousUser, newUser }) {
-      //   //   await db.update(schema.users).set({
-      //   //   })
-      //   // },
-      // }),
-      oneTap(),
-      jwt(),
-    ],
-    logger: {
-      level: "info", // =-= แม่นหยัง
-    },
-    secret: env?.BETTER_AUTH_SECRET,
-    baseURL: env?.BETTER_AUTH_URL,
-    emailAndPassword: {
-      enabled: true,
-    },
-    rateLimit: {
-      enabled: true,
-      window: 120,
-    },
-    // disabledPaths: [
-    //   import.meta.env.DEV ? null : "/sign-in/anonymous",
-    // ].filter(Boolean),
-    socialProviders: {
-      google: {
-        prompt: "select_account",
-        clientId: env?.GOOGLE_CLIENT_ID ?? "",
-        clientSecret: env?.GOOGLE_CLIENT_SECRET,
-      },
-    },
+        secret: env?.BETTER_AUTH_SECRET,
+        baseURL: env?.BETTER_AUTH_URL,
+        emailAndPassword: {
+          enabled: true,
+        },
+        rateLimit: {
+          enabled: true,
+          window: 120,
+        },
+        // disabledPaths: [
+        //   import.meta.env.DEV ? null : "/sign-in/anonymous",
+        // ].filter(Boolean),
+        socialProviders: {
+          google: {
+            prompt: "select_account",
+            clientId: env?.GOOGLE_CLIENT_ID ?? "",
+            clientSecret: env?.GOOGLE_CLIENT_SECRET,
+          },
+        },
+      }
+    ),
   });
 }
 
 // Export for CLI schema generation
-export const auth = createAuth();
+// export const auth = createAuth();
 
 // Export for runtime usage
 export { createAuth };
