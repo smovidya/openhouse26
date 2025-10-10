@@ -15,3 +15,7 @@ export const timestamps = {
     .$defaultFn(() => new Date())
     .$onUpdateFn(() => new Date()),
 };
+
+export const deletedAt = {
+  deletedAt: integer("deleted_at", { mode: "timestamp" }),
+};
