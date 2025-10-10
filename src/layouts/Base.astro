@@ -24,6 +24,7 @@ const isLoggedIn = !!user;
           ? `posthog.identify('${user.id}', ${JSON.stringify({
               email: user.email,
               name: user.name,
+              // @ts-ignore
               role: user.role,
               image: user.image,
             })});`

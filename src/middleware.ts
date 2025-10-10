@@ -33,6 +33,7 @@ export const onRequest = defineMiddleware(async (context, next) => {
 
   if (
     pathname === "/admin" &&
+    // @ts-ignore pinky swear this is correct - ptsgrn
     !hasOneOfRoleIn(context.locals.user, ["admin"])
   ) {
     return context.redirect("/");
@@ -40,6 +41,7 @@ export const onRequest = defineMiddleware(async (context, next) => {
 
   if (
     pathname.startsWith("/staff") &&
+    // @ts-ignore pinky swear this is correct - ptsgrn
     !hasOneOfRoleIn(context.locals.user, [
       "admin",
       "majorBoothStaff",
