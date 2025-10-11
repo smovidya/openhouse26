@@ -80,6 +80,7 @@
           limit={tableState.limit}
           page={tableState.page}
           onPageChange={(page) => (tableState.page = page)}
+          onLimitChange={(limit) => (tableState.limit = limit)}
         />
       </div>
     {/if}

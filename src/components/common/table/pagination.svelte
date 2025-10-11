@@ -3,9 +3,9 @@
     total: number;
     limit: number;
     page: number;
-    limitOptions: number[];
-    onPageChange: (page: number) => void;
-    onLimitChange: (limit: number) => void;
+    limitOptions?: number[];
+    onPageChange?: (page: number) => void;
+    onLimitChange?: (limit: number) => void;
   }
 
   const {
