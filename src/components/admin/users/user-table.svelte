@@ -17,7 +17,6 @@
   });
 
   async function loadUsers({ page = 1, limit = tableState.limit }) {
-    throw new Error("test");
     const { data, error } = await authClientSvelte.admin.listUsers({
       query: {
         limit,
