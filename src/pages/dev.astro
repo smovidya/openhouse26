@@ -1,19 +1,18 @@
 ---
-import WorkshopList from "@src/components/workshop-list.svelte";
-import NavBar from "../components/navbar.svelte";
+import Receiver from "@src/components/dev/notification-receiver.svelte";
+import Sender from "@src/components/dev/notification-sender.svelte";
 import Layout from "../layouts/Base.astro";
 
 if (!import.meta.env.DEV) {
   Astro.redirect("/");
 }
+
+const wsUrl = Astro.locals.runtime.env.SSE_URL;
+// const wsUrl = "ws://localhost:8787/sse";
 ---
 
-<Layout
-  title="หน้าหลัก"
->
+<Layout title="หน้าหลัก">
   <div class="h-4"></div>
-  <NavBar class="" />
-
-  <!-- Some data (Time) is not serializable -->
-  <WorkshopList client:load class="m-6" />
+  <Sender client:load />
+  <Receiver wsUrl={wsUrl} client:load/>
 </Layout>

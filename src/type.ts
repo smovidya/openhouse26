@@ -7,7 +7,7 @@ export interface SelectedWorkshop {
 
 
 export interface SSEWorkerRpc {
-  sendEvent(uid: string, data: string): Promise<void>;
+  sendEvent(uid: string, data: string): Promise<string>;
   fetch(request: Request): Promise<Response>;
   double(n: number): number;
 };

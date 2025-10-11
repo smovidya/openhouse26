@@ -41,6 +41,12 @@ All commands are run from the root of the project, from a terminal:
 | `bun astro ...`       | Run CLI commands like `astro add`, `astro check` |
 | `bun astro -- --help` | Get help using the Astro CLI                     |
 
+## How to test sse
+- clone the sse repo
+- start (sse) dev server
+- start this repo dev server
+- if you see any red error message, please restart (this) dev sever
+
 ## 👀 Want to learn more?
 
 Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
