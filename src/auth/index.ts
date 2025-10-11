@@ -100,13 +100,6 @@ function createAuth(env?: Env, cf?: IncomingRequestCfProperties) {
               user,
             },
           }),
-          // anonymous({
-          //   emailDomainName: "anon.vidyachula.org",
-          //   // async onLinkAccount({ anonymousUser, newUser }) {
-          //   //   await db.update(schema.users).set({
-          //   //   })
-          //   // },
-          // }),
           oneTap(),
           jwt(),
         ],
