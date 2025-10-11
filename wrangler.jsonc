@@ -41,7 +41,6 @@
   "env": {
     "staging": {
       "vars": {
-        "BETTER_AUTH_URL": "https://ena.scichulaopenhouse.com/api/auth",
         "ENVIRONMENT": "staging",
         "SSE_URL": "https://isei.scichulaopenhouse.com",
       },
