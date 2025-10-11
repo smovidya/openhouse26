@@ -68,7 +68,6 @@
 @layer base {
   body {
     background-color: #1f3776;
-    color: black;
     min-height: 100vh;
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
