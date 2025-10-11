@@ -6,8 +6,8 @@ import { getParticipantByUserId } from "@src/db/model/participant";
 import Layout from "../layouts/ContentLayout.astro";
 import { featureFlags, workshopRegistrationDate } from "@src/data/constants";
 import Countdown from "@src/components/countdown.svelte";
-import MyWorkshop from "@src/components/my-workshop.svelte"
-import { workshopModel} from "@src/db"
+import MyWorkshop from "@src/components/my-workshop.svelte";
+import { workshopModel } from "@src/db";
 import type { SSEWorkerRpc } from "@src/type";
 
 const uid = Astro.locals.user?.id;
@@ -26,55 +26,57 @@ if (!participant) {
 const id = participant.id;
 const name = participant.givenName;
 
-const staging = Astro.locals.runtime.env.ENVIRONMENT === "staging"
-const showWorkshop = staging || import.meta.env.DEV || featureFlags.workshopRegistration
+const staging = Astro.locals.runtime.env.ENVIRONMENT === "staging";
+const showWorkshop =
+  staging || import.meta.env.DEV || featureFlags.workshopRegistration;
 
-const selectedWorkshops = await workshopModel.getUserRegisteredSlots(Astro.locals.db, uid);
+const selectedWorkshops = await workshopModel.getUserRegisteredSlots(
+  Astro.locals.db,
+  uid,
+);
 ---
 
-<Layout
-  title="หน้าหลัก"
->
+<Layout title="หน้าหลัก">
   <!-- TODO: nav -->
   <NavBar class="fixed! inset-x-0! top-3 z-50" />
 
-  <main class="text-sm relative mt-12 w-full overflow-x-clip">
+  <main class="relative mt-12 w-full overflow-x-clip text-sm">
     <!-- TODO: resize this -->
     <img
       src={MyIdHeader.src}
       alt="MyID Header"
-      class="w-2/3 object-cover relative z-3 max-w-full sm:max-w-100 mx-auto"
+      class="relative z-3 mx-auto w-2/3 max-w-full object-cover sm:max-w-100"
     />
     <section
       id="my-id-card"
-      class="bg-[#FBB84B] [transform-origin:_center_-100px] transition-transform duration-75 ease-in-out rounded-xl max-w-78 shadow-md shadow-base-100/40 mt-7 mx-auto flex flex-col"
+      class="shadow-base-100/40 mx-auto mt-7 flex max-w-78 [transform-origin:_center_-100px] flex-col rounded-xl bg-[#FBB84B] shadow-md transition-transform duration-75 ease-in-out"
     >
       <div>
         <div class="relative flex flex-col items-center">
           <div class="back-strap absolute bottom-7 ml-9"></div>
-          <div id="yellow-fill" class="absolute top-0 bg-[#FBB84B] h-4 w-23">
+          <div id="yellow-fill" class="absolute top-0 h-4 w-23 bg-[#FBB84B]">
           </div>
           <div class="front-strap absolute bottom-7 mr-9"></div>
           <div
-            class="z-2 mx-auto h-6 my-4 w-23 bg-[#3f60b4] rounded-full inset-shadow-md shadow-inner shadow-black/50"
+            class="inset-shadow-md z-2 mx-auto my-4 h-6 w-23 rounded-full bg-[#3f60b4] shadow-inner shadow-black/50"
           >
           </div>
         </div>
-        <p class="leading-5 text-center px-2 pb-1 text-amber-900/60">
+        <p class="px-2 pb-1 text-center leading-5 text-amber-900/60">
           สามารถกดค้างที่ QR เพื่อบันทึกลงในอุปกรณ์ได้
         </p>
       </div>
       <div
-        class="flex flex-col items-center p-10 pb-3 qr-bg shadow-sm shadow-black/20"
+        class="qr-bg flex flex-col items-center p-10 pb-3 shadow-sm shadow-black/20"
       >
         <div
-          class="aspect-square w-48 bg-[#2b3247] border border-slate-500 rounded-md shadow-inner shadow-black/20 text-white overflow-clip"
+          class="aspect-square w-48 overflow-clip rounded-md border border-slate-500 bg-[#2b3247] text-white shadow-inner shadow-black/20"
         >
           <QrId client:only content={id ?? "not-loggedin"} />
         </div>
-        <h3 class="text-xl mt-2 font-medium text-white">{name}</h3>
+        <h3 class="mt-2 text-xl font-medium text-white">{name}</h3>
         <h3
-          class="font-medium text-xs text-nowrap whitespace-nowrap text-slate-400"
+          class="text-xs font-medium text-nowrap whitespace-nowrap text-slate-400"
         >
           ID: {id}
         </h3>
@@ -89,27 +91,32 @@ const selectedWorkshops = await workshopModel.getUserRegisteredSlots(Astro.local
     </section>
   </main>
 
-  
   {
     !showWorkshop ? (
-    <section class="mt-8 text-sm text-blue-300/85 font-serif">
-      <h2 class="text-2xl text-white">My workshops</h2>
-    </section>
-      <section class="mt-6 relative text-center text-md p-2 bg-neutral-100 rounded-3xl metal-bg shadow-lg shadow-black/20">
-        <div class="absolute inset-2 translate-[0.3px] rounded-2xl metal-strip-2"></div>
-        <div class="relative z-2 pt-2 pb-4 flex flex-col rounded-2xl metal-strip">
-          <div class="p-4 space-y-2 pb-2">
-            <span class="text-2xl"> 🔒 </span>
-            <h3>เริ่มลงทะเบียนเวิร์กช็อปได้ในวันที่ 6 ตุลาคม เวลา 18:00 น.</h3>
-            <span class="text-neutral-500 text-xs">(เลื่อนจากเวลา 09:00 น. ทีมงานขออภัยในความไม่สะดวก 🙇‍♂️)</span>
+      <>
+        <section class="mt-8 font-serif text-sm text-blue-300/85">
+          <h2 class="text-2xl text-white">My workshops</h2>
+        </section>
+        <section class="text-md metal-bg relative mt-6 rounded-3xl bg-neutral-100 p-2 text-center shadow-lg shadow-black/20">
+          <div class="metal-strip-2 absolute inset-2 translate-[0.3px] rounded-2xl" />
+          <div class="metal-strip relative z-2 flex flex-col rounded-2xl pt-2 pb-4">
+            <div class="space-y-2 p-4 pb-2">
+              <span class="text-2xl"> 🔒 </span>
+              <h3>
+                เริ่มลงทะเบียนเวิร์กช็อปได้ในวันที่ 6 ตุลาคม เวลา 18:00 น.
+              </h3>
+              <span class="text-xs text-neutral-500">
+                (เลื่อนจากเวลา 09:00 น. ทีมงานขออภัยในความไม่สะดวก 🙇‍♂️)
+              </span>
+            </div>
+            <Countdown
+              client:load
+              to={workshopRegistrationDate.getTime()}
+              class="mt-2 mb-2 gap-2! px-2 text-neutral-500 md:gap-6!"
+            />
           </div>
-          <Countdown
-            client:load
-            to={workshopRegistrationDate.getTime()}
-            class="text-neutral-500 mt-2 mb-2 px-2 gap-2! md:gap-6!"
-          />
-        </div>
-      </section>
+        </section>
+      </>
     ) : (
       <MyWorkshop selectedWorkshops={selectedWorkshops} class="mt-6" />
     )
