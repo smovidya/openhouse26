@@ -1,28 +1,37 @@
-export interface UserEvent {
+export interface UserEvent {}
 
-}
-
-export function onNotify(wsUrl: string, jwt: string, fn: (event: UserEvent) => unknown) {
+export function onNotify(
+  wsUrl: string,
+  jwt: string,
+  fn: (event: UserEvent) => unknown,
+) {
   if (import.meta.env.SSR) {
-    return () => { };
+    return () => {};
   }
 
-  const ws = new WebSocket(wsUrl)
+  const ws = new WebSocket(wsUrl);
   const abortController = new AbortController();
-  
-  ws.addEventListener("open", () => {
-    ws.send(jwt)
-  }, { once: true });
 
-  ws.addEventListener("message", async (event) => {
-    try {
-      const data = JSON.parse(event.data);
-      await fn(data);
-    } catch { }
-  }, {
-    signal: abortController.signal
-  });
+  ws.addEventListener(
+    "open",
+    () => {
+      ws.send(jwt);
+    },
+    { once: true },
+  );
+
+  ws.addEventListener(
+    "message",
+    async (event) => {
+      try {
+        const data = JSON.parse(event.data);
+        fn(data);
+      } catch {}
+    },
+    {
+      signal: abortController.signal,
+    },
+  );
 
   return () => abortController.abort();
 }
-

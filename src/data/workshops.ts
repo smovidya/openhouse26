@@ -65,7 +65,7 @@ export class TimeSlot {
     // Check if slots overlap or are within 1 hour (60 minutes) of each other
     const gap = Math.min(
       Math.abs(thisStartMinutes - otherEndMinutes),
-      Math.abs(otherStartMinutes - thisEndMinutes)
+      Math.abs(otherStartMinutes - thisEndMinutes),
     );
 
     return gap <= 60;

@@ -1,13 +1,11 @@
-
 // this interface should be in the api file
 export interface SelectedWorkshop {
-  workshopId: string,
+  workshopId: string;
   roundNumber: number;
 }
-
 
 export interface SSEWorkerRpc {
   sendEvent(uid: string, data: string): Promise<string>;
   fetch(request: Request): Promise<Response>;
   double(n: number): number;
-};
+}

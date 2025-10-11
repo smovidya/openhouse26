@@ -17,7 +17,9 @@ async function main() {
     console.log(`🌟 Inserting workshop: ${workshop.title}`);
     console.log(`Capacity: ${workshop.capacity}`);
     console.log(`Description: ${workshop.description}`);
-    console.log(`Host Department: ${workshop.hostDepartment} (${workshop.hostDepartmentAbbr})`);
+    console.log(
+      `Host Department: ${workshop.hostDepartment} (${workshop.hostDepartmentAbbr})`,
+    );
     console.log(`Image: ${workshop.image}`);
     await db.transaction(async (tx) => {
       const existingWorkshop = await tx
@@ -72,7 +74,7 @@ async function main() {
           .returning()
           .get();
         console.log(
-          `  Inserted slot: ${slot.round} (${slot.date.toDateString()} ${slot.start.toString()} - ${slot.end.toString()})`
+          `  Inserted slot: ${slot.round} (${slot.date.toDateString()} ${slot.start.toString()} - ${slot.end.toString()})`,
         );
       }
 

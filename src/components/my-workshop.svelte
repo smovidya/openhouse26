@@ -30,7 +30,7 @@
       <WorkshopCard
         class="text-white"
         selectedTimeSlotText="({slot.start.toString()} - {slot.end.toString()} น. แต่ต้องแสดงตัวเวลา {slot.start.add(
-          { minute: -15 }
+          { minute: -15 },
         )} - {slot.start.add({ minute: -10 }).toString()} น. เท่านั้น)"
         variant="red"
         {workshop}

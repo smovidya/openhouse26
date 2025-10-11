@@ -9,7 +9,7 @@ export async function insertNewTimeSlotRegistration(
   participantId: string,
   workshopId: string,
   roundNumber: number,
-  registrationType: "pre-registration" | "onsite"
+  registrationType: "pre-registration" | "onsite",
 ) {
   // return await db.transaction(async (tx) => {
   //   const timeSlot = await tx.query.workshopTimeSlots.findFirst({
@@ -85,7 +85,7 @@ export async function insertNewTimeSlotRegistration(
 
 export async function deleteTimeSlotRegistration(
   db: Db,
-  registrationId: string
+  registrationId: string,
 ) {
   return await db
     .delete(schema.workshopRegistrations)
@@ -96,7 +96,7 @@ export async function deleteTimeSlotRegistration(
 export async function deleteTimeSlotRegistrationByWorkshopId(
   db: Db,
   participantId: string,
-  workshopId: string
+  workshopId: string,
 ) {
   const registeredTimeSlot = await db.query.workshopTimeSlots.findMany({
     where: eq(schema.workshopTimeSlots.workshopId, workshopId),
@@ -107,9 +107,9 @@ export async function deleteTimeSlotRegistrationByWorkshopId(
       eq(schema.workshopRegistrations.participantId, participantId),
       inArray(
         schema.workshopRegistrations.timeSlotId,
-        registeredTimeSlot.map((t) => t.id)
-      )
-    )
+        registeredTimeSlot.map((t) => t.id),
+      ),
+    ),
   );
 }
 
@@ -124,7 +124,7 @@ export async function getWorkshop(db: Db, workshopId: string) {
 
 export async function getUserRegisteredSlots(
   db: Db,
-  userId: string
+  userId: string,
 ): Promise<SelectedWorkshop[]> {
   const participant = await participantModel.getParticipantByUserId(db, userId);
   if (!participant) {
@@ -153,7 +153,7 @@ export async function getUserRegisteredSlots(
     }
 
     const slotIndex = workshop?.slots.findIndex(
-      (t) => t.round === reg.timeSlot.roundNumber
+      (t) => t.round === reg.timeSlot.roundNumber,
     );
 
     if (slotIndex === -1) {
@@ -169,7 +169,7 @@ export async function getUserRegisteredSlots(
 
 export async function getRegisteredParticipantCount(
   db: Db,
-  workshopId: string
+  workshopId: string,
 ) {
   const timeSlots = await db.query.workshopTimeSlots.findMany({
     where: eq(schema.workshopTimeSlots.workshopId, workshopId),
@@ -198,7 +198,7 @@ export async function getRegisteredParticipantCount(
 
 export async function getRegisteredParticipantCountForTimeSlot(
   db: Db,
-  timeSlotId: string
+  timeSlotId: string,
 ) {
   const result = await db
     .select({
@@ -214,7 +214,7 @@ export async function getRegisteredParticipantCountForTimeSlot(
 
 export async function getTimeSlotRegistrationForParticipant(
   db: Db,
-  participantId: string
+  participantId: string,
 ) {
   return await db.query.workshopRegistrations.findMany({
     where: eq(schema.workshopRegistrations.participantId, participantId),
@@ -241,7 +241,7 @@ export async function getTimeSlotRegistrationForParticipant(
 
 export async function setSelectedWorkshopTimeSlots(
   workshopId: string,
-  timeSlotIndex: number | undefined
+  timeSlotIndex: number | undefined,
 ) {
   // ถ้ามีเคยเลือกของ workshopId เดียวกัน ให้ลบของเก่า แล้วเปลี่ยนเป็น timeSlotIndex ที่ pass มา
   // ถ้า pass undefined มาให้ลบอย่างเดียว

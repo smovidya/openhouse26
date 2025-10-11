@@ -13,7 +13,7 @@
 <nav
   class={clsx(
     "w-full h-24 velvet relative shadow-md shadow-black/30",
-    className
+    className,
   )}
 >
   <div class="absolute strip-3 -translate-y-[0.5px] inset-y-1 inset-x-0"></div>

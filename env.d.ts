@@ -9,7 +9,7 @@ declare namespace App {
       typeof import("@src/db").schema
     >;
     auth: Auth;
-    user: Auth['$Infer']['Session']['user'] | null;
-    session: Auth['$Infer']['Session']['session'] | null;
+    user: Auth["$Infer"]["Session"]["user"] | null;
+    session: Auth["$Infer"]["Session"]["session"] | null;
   }
 }

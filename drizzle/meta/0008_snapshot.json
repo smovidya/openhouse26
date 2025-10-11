@@ -106,12 +106,8 @@
           "name": "accounts_user_id_users_id_fk",
           "tableFrom": "accounts",
           "tableTo": "users",
-          "columnsFrom": [
-            "user_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["user_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -247,9 +243,7 @@
       "indexes": {
         "sessions_token_unique": {
           "name": "sessions_token_unique",
-          "columns": [
-            "token"
-          ],
+          "columns": ["token"],
           "isUnique": true
         }
       },
@@ -258,12 +252,8 @@
           "name": "sessions_user_id_users_id_fk",
           "tableFrom": "sessions",
           "tableTo": "users",
-          "columnsFrom": [
-            "user_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["user_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -381,9 +371,7 @@
       "indexes": {
         "users_email_unique": {
           "name": "users_email_unique",
-          "columns": [
-            "email"
-          ],
+          "columns": ["email"],
           "isUnique": true
         }
       },
@@ -561,12 +549,8 @@
           "name": "participants_user_id_users_id_fk",
           "tableFrom": "participants",
           "tableTo": "users",
-          "columnsFrom": [
-            "user_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["user_id"],
+          "columnsTo": ["id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
@@ -659,9 +643,7 @@
       "indexes": {
         "staffs_student_id_unique": {
           "name": "staffs_student_id_unique",
-          "columns": [
-            "student_id"
-          ],
+          "columns": ["student_id"],
           "isUnique": true
         }
       },
@@ -670,12 +652,8 @@
           "name": "staffs_user_id_users_id_fk",
           "tableFrom": "staffs",
           "tableTo": "users",
-          "columnsFrom": [
-            "user_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["user_id"],
+          "columnsTo": ["id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
@@ -744,12 +722,8 @@
           "name": "workshop_registrations_participant_id_participants_id_fk",
           "tableFrom": "workshop_registrations",
           "tableTo": "participants",
-          "columnsFrom": [
-            "participant_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["participant_id"],
+          "columnsTo": ["id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         },
@@ -757,12 +731,8 @@
           "name": "workshop_registrations_time_slot_id_workshop_time_slots_id_fk",
           "tableFrom": "workshop_registrations",
           "tableTo": "workshop_time_slots",
-          "columnsFrom": [
-            "time_slot_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["time_slot_id"],
+          "columnsTo": ["id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
@@ -823,12 +793,8 @@
           "name": "workshop_time_slots_workshop_id_workshops_id_fk",
           "tableFrom": "workshop_time_slots",
           "tableTo": "workshops",
-          "columnsFrom": [
-            "workshop_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["workshop_id"],
+          "columnsTo": ["id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         }

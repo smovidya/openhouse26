@@ -19,11 +19,11 @@ const isRegistered = data?.results ?? false;
   description="Science Chula Open House 2026 เปิดบ้านวิดยาจุฬาฯ 2569 | 18 - 19 ตุลาคม 2568"
   image="/og-image.png"
 >
-  <div class="flex mt-20 flex-col items-center text-white">
+  <div class="mt-20 flex flex-col items-center text-white">
     <div class="relative w-full max-w-xl pt-20">
       <img
         data-parallax-speed="0.5"
-        class="absolute right-0 top-0 w-1/2 transition-transform"
+        class="absolute top-0 right-0 w-1/2 transition-transform"
         src="/landing/logo-white.png"
       />
       <img
@@ -65,7 +65,8 @@ const isRegistered = data?.results ?? false;
       window.addEventListener("scroll", () => {
         const offset = window.scrollY * speed;
         (img as HTMLElement).style.transform = `translateY(${offset}px)`;
-      });``
+      });
+      ``;
     });
   </script>
 </Layout>

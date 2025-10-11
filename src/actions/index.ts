@@ -5,5 +5,5 @@ import * as devActions from "./dev";
 export const server = {
   ...participantActions,
   ...workshopActions,
-  ...devActions
+  ...(import.meta.env.DEV ? devActions : {}),
 };

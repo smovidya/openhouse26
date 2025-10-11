@@ -21,7 +21,7 @@ export const myCurrentRegistrationsForWorkshop = defineAction({
     try {
       registrations = await workshopModel.getUserRegisteredSlots(
         ctx.locals.db,
-        ctx.locals.user.id
+        ctx.locals.user.id,
       );
     } catch (e) {
       console.error("Error fetching registrations:", e);
@@ -39,7 +39,7 @@ export const myCurrentRegistrationsForWorkshop = defineAction({
       registeredParticipantsCount =
         await workshopModel.getRegisteredParticipantCount(
           ctx.locals.db,
-          input.workshopId
+          input.workshopId,
         );
     } catch (e) {
       console.error("Error counting registrations:", e);
@@ -81,7 +81,7 @@ export const registerMeToSlot = defineAction({
     try {
       participant = await participantModel.getParticipantByUserId(
         ctx.locals.db,
-        ctx.locals.user.id
+        ctx.locals.user.id,
       );
     } catch (e) {
       console.error("Error fetching participant:", e);
@@ -103,7 +103,7 @@ export const registerMeToSlot = defineAction({
     try {
       workshop = await workshopModel.getWorkshop(
         ctx.locals.db,
-        input.workshopId
+        input.workshopId,
       );
     } catch (e) {
       console.error("Error fetching workshop:", e);
@@ -139,7 +139,7 @@ export const registerMeToSlot = defineAction({
       myRegistrations =
         await workshopModel.getTimeSlotRegistrationForParticipant(
           ctx.locals.db,
-          participant.id
+          participant.id,
         );
     } catch (e) {
       console.error("Error fetching my registrations:", e);
@@ -173,7 +173,7 @@ export const registerMeToSlot = defineAction({
 
     // Check if the slot start or end time is colliding with other registered slots
     const selectedSlot = workshop.timeSlots.find(
-      (slot) => slot.roundNumber === input.roundNumber
+      (slot) => slot.roundNumber === input.roundNumber,
     );
 
     if (!selectedSlot || !selectedSlot.date) {
@@ -217,7 +217,7 @@ export const registerMeToSlot = defineAction({
       currentRegistrationCount =
         await workshopModel.getRegisteredParticipantCount(
           ctx.locals.db,
-          workshop.id
+          workshop.id,
         );
     } catch (e) {
       console.error("Error counting current registrations:", e);
@@ -230,7 +230,7 @@ export const registerMeToSlot = defineAction({
 
     const currentTimeSlotCount = currentRegistrationCount.find(
       (count, index) =>
-        workshop.timeSlots[index].roundNumber === input.roundNumber
+        workshop.timeSlots[index].roundNumber === input.roundNumber,
     )!;
 
     if (currentTimeSlotCount.count >= workshop.capacity) {
@@ -247,7 +247,7 @@ export const registerMeToSlot = defineAction({
         participant.id,
         workshop.id,
         selectedSlot.roundNumber,
-        "pre-registration"
+        "pre-registration",
       );
     } catch (e) {
       console.error("Error inserting registration:", e);
@@ -264,7 +264,7 @@ export const registerMeToSlot = defineAction({
     try {
       updatedWorkshopCounts = await workshopModel.getRegisteredParticipantCount(
         ctx.locals.db,
-        workshop.id
+        workshop.id,
       );
     } catch (e) {
       console.error("Error counting updated registrations:", e);
@@ -308,7 +308,7 @@ export const removeMeFromSlot = defineAction({
     try {
       participant = await participantModel.getParticipantByUserId(
         ctx.locals.db,
-        ctx.locals.user.id
+        ctx.locals.user.id,
       );
     } catch (e) {
       console.error("Error fetching participant:", e);
@@ -330,7 +330,7 @@ export const removeMeFromSlot = defineAction({
     try {
       workshop = await workshopModel.getWorkshop(
         ctx.locals.db,
-        input.workshopId
+        input.workshopId,
       );
     } catch (e) {
       console.error("Error fetching workshop:", e);
@@ -355,7 +355,7 @@ export const removeMeFromSlot = defineAction({
       myRegistrations =
         await workshopModel.getTimeSlotRegistrationForParticipant(
           ctx.locals.db,
-          participant.id
+          participant.id,
         );
     } catch (e) {
       console.error("Error fetching my registrations:", e);
@@ -370,7 +370,7 @@ export const removeMeFromSlot = defineAction({
       await workshopModel.deleteTimeSlotRegistrationByWorkshopId(
         ctx.locals.db,
         participant.id,
-        workshop.id
+        workshop.id,
       );
     } catch (e) {
       console.error("Error deleting registration:", e);
@@ -387,7 +387,7 @@ export const removeMeFromSlot = defineAction({
     try {
       updatedWorkshopCounts = await workshopModel.getRegisteredParticipantCount(
         ctx.locals.db,
-        workshop.id
+        workshop.id,
       );
     } catch (e) {
       console.error("Error counting updated registrations:", e);

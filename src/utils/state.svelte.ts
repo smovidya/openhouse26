@@ -35,7 +35,7 @@ export class Debounced<T> {
 }
 
 interface DebouncedParams<T> {
-  getter: () => T,
+  getter: () => T;
   debouncedTimeMs?: number;
 }
 
@@ -48,4 +48,3 @@ export function debounced<T>(params: DebouncedParams<T>) {
 
   return d;
 }
-

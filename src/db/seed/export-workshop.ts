@@ -28,7 +28,7 @@ async function main() {
       ${workshop.capacity},
       ${workshop.createdAt ? new Date(workshop.createdAt).getTime() : null},
       ${workshop.updatedAt ? new Date(workshop.updatedAt).getTime() : null}
-    );`.replace(/\n/g, " ")
+    );`.replace(/\n/g, " "),
     );
 
     const timeSlots = await db.query.workshopTimeSlots.findMany({
@@ -47,7 +47,7 @@ async function main() {
         '${slot.startTime}',
         '${slot.endTime}',
         ${slot.date?.getTime()}
-      );`.replace(/(\n| ){1,}/g, " ")
+      );`.replace(/(\n| ){1,}/g, " "),
       );
     }
   }

@@ -3,27 +3,25 @@
   "name": "openhouse26",
   "account_id": "4ec83c42527307cc087ab2207efb4297",
   "compatibility_date": "2025-09-20",
-  "compatibility_flags": [
-    "nodejs_compat"
-  ],
+  "compatibility_flags": ["nodejs_compat"],
   "main": "./dist/_worker.js/index.js",
   "assets": {
     "binding": "ASSETS",
-    "directory": "./dist"
+    "directory": "./dist",
   },
   "vars": {
     "ENVIRONMENT": "development",
     "SSE_URL": "http://localhost:8787",
   },
   "observability": {
-    "enabled": true
+    "enabled": true,
   },
   "kv_namespaces": [
     {
       "binding": "openhouse26_kv",
       // Cloudflare say top level binding shuold for be dev
-      "id": "54eff58aa403471087e573a3e61fc320"
-    }
+      "id": "54eff58aa403471087e573a3e61fc320",
+    },
   ],
   "d1_databases": [
     {
@@ -31,14 +29,14 @@
       "database_name": "openhouse26-db",
       // Cloudflare say top level binding shuold for be dev
       "database_id": "62624ef6-24a7-45e9-94d5-a955b19e7609",
-      "migrations_dir": "drizzle"
-    }
+      "migrations_dir": "drizzle",
+    },
   ],
   "services": [
     {
       "binding": "SSE",
-      "service": "openhouse26-sse"
-    }
+      "service": "openhouse26-sse",
+    },
   ],
   "env": {
     "staging": {
@@ -52,42 +50,40 @@
           "binding": "openhouse26_db",
           "database_name": "openhouse26_db_staging",
           "database_id": "df51e549-c836-416a-ba87-5168facb8aff",
-          "migrations_dir": "drizzle"
-        }
+          "migrations_dir": "drizzle",
+        },
       ],
       "kv_namespaces": [
         {
           "binding": "openhouse26_kv",
-          "id": "da15ec6100f84cd4b0b37b3d9039b4c9"
-        }
+          "id": "da15ec6100f84cd4b0b37b3d9039b4c9",
+        },
       ],
       "routes": [
         {
           "pattern": "ena.scichulaopenhouse.com",
-          "custom_domain": true
-        }
+          "custom_domain": true,
+        },
       ],
       "migrations": [
         {
           "tag": "sdcjuisu",
-          "deleted_classes": [
-            "WorkshopRegistrationHandler2"
-          ]
-        }
+          "deleted_classes": ["WorkshopRegistrationHandler2"],
+        },
       ],
       "services": [
         {
           "binding": "SSE",
-          "service": "openhouse26-sse-staging"
-        }
+          "service": "openhouse26-sse-staging",
+        },
       ],
     },
     "production": {
       "routes": [
         {
           "pattern": "scichulaopenhouse.com",
-          "custom_domain": true
-        }
+          "custom_domain": true,
+        },
       ],
       "vars": {
         "ENVIRONMENT": "production",
@@ -96,23 +92,23 @@
       "kv_namespaces": [
         {
           "binding": "openhouse26_kv",
-          "id": "54eff58aa403471087e573a3e61fc320"
-        }
+          "id": "54eff58aa403471087e573a3e61fc320",
+        },
       ],
       "d1_databases": [
         {
           "binding": "openhouse26_db",
           "database_name": "openhouse26-db",
           "database_id": "62624ef6-24a7-45e9-94d5-a955b19e7609",
-          "migrations_dir": "drizzle"
-        }
+          "migrations_dir": "drizzle",
+        },
       ],
       "services": [
         {
           "binding": "SSE",
-          "service": "openhouse26-sse"
-        }
+          "service": "openhouse26-sse",
+        },
       ],
-    }
-  }
+    },
+  },
 }

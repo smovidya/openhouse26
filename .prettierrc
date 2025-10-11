@@ -1,8 +1,8 @@
 {
   "plugins": [
-  "prettier-plugin-astro",
-  "prettier-plugin-tailwindcss",
-  "prettier-plugin-svelte"
+    "prettier-plugin-astro",
+    "prettier-plugin-tailwindcss",
+    "prettier-plugin-svelte"
   ],
   "overrides": [
     {
@@ -12,10 +12,10 @@
       }
     },
     {
-        "files": "*.svelte",
-        "options": {
-            "parser": "svelte"
-        }
+      "files": "*.svelte",
+      "options": {
+        "parser": "svelte"
+      }
     }
   ]
 }

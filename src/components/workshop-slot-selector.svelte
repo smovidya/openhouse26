@@ -104,7 +104,10 @@
       } as const;
     }
 
-    if ((currentSlot.count ?? 0) >= workshop.capacity && currentRound !== roundNumber) {
+    if (
+      (currentSlot.count ?? 0) >= workshop.capacity &&
+      currentRound !== roundNumber
+    ) {
       return {
         disabled: true,
         full: true,
@@ -233,7 +236,7 @@
         disabled={status.disabled}
         class={clsx(
           "rounded-lg border py-1.5 px-3 transition-all cursor-pointer text-left flex justify-between items-center",
-          (currentRound !== slot.round) &&
+          currentRound !== slot.round &&
             "disabled:text-blue-200/60  disabled:hover:bg-transparent disabled:hover:cursor-not-allowed",
           currentRound === slot.round
             ? "text-white shadow-inner shadow-black/50 bg-blue-950/50 hover:bg-blue-950/60 border-white/30"

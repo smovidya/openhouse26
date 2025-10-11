@@ -35,7 +35,7 @@ const selectedWorkshops = Astro.locals.user?.id
   : [];
 const registeredParticipantCount = await getRegisteredParticipantCount(
   Astro.locals.db,
-  String(id)
+  String(id),
 );
 ---
 
@@ -50,22 +50,22 @@ const registeredParticipantCount = await getRegisteredParticipantCount(
     <img
       src="/workshop-pictures/Workshop.png"
       alt="Workshops"
-      class="w-72 mt-6"
+      class="mt-6 w-72"
     />
     <img
       src={workshop.image}
       alt=""
-      class="mask mask-hexagon-2 size-48 object-cover mx-auto mt-6"
+      class="mask mask-hexagon-2 mx-auto mt-6 size-48 object-cover"
     />
   </div>
   <!-- TODO: image? -->
-  <div class="flex flex-col text-white mt-4">
-    <span class="text-blue-300 text-xl font-serif">Workshop</span>
-    <h1 class="text-4xl font-bold font-serif">{workshop.title}</h1>
-    <span class="mt-2 text-blue-200 text-lg">{workshop.hostDepartment}</span>
+  <div class="mt-4 flex flex-col text-white">
+    <span class="font-serif text-xl text-blue-300">Workshop</span>
+    <h1 class="font-serif text-4xl font-bold">{workshop.title}</h1>
+    <span class="mt-2 text-lg text-blue-200">{workshop.hostDepartment}</span>
   </div>
 
-  <article class="mt-5 text-blue-100 text-sm">
+  <article class="mt-5 text-sm text-blue-100">
     {workshop.description}
   </article>
 

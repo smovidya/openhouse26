@@ -1,6 +1,6 @@
-const df = new Intl.DateTimeFormat('th-TH', {
-  day: 'numeric',
-  month: 'short'
+const df = new Intl.DateTimeFormat("th-TH", {
+  day: "numeric",
+  month: "short",
 });
 
 // const tf = new Intl.DateTimeFormat('th-TH', {
@@ -16,4 +16,3 @@ export function toLocalDateString(date: Date) {
 // export function toLocalTimeString(date: Date) {
 //   return tf.format(date);
 // }
-

@@ -14,7 +14,7 @@
   color-scheme: light;
   /* color of browser-provided UI */
 
-  --color-base-100: oklch(0.340 0.112 265.4);
+  --color-base-100: oklch(0.34 0.112 265.4);
   --color-base-200: oklch(0.539 0.123 260.6);
   --color-base-300: oklch(0.824 0.112 265.4);
   --color-base-content: oklch(98% 0.003 247.858);
@@ -52,19 +52,22 @@
   --noise: 1;
 }
 
-
 @import "./fonts.css";
 
 @theme {
   /* content */
-  --font-sans: "Genty", "Cloud Soft", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --font-sans:
+    "Genty", "Cloud Soft", ui-sans-serif, system-ui, sans-serif,
+    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   /* heading */
-  --font-serif: "Futura PT", "Mitr", ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
+  --font-serif:
+    "Futura PT", "Mitr", ui-serif, Georgia, Cambria, "Times New Roman", Times,
+    serif;
 }
 
 @layer base {
   body {
-    background-color: #1F3776;
+    background-color: #1f3776;
     min-height: 100vh;
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;

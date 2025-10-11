@@ -13,7 +13,7 @@
 <div
   class={cn(
     "border-neutral-400 border-1 rounded-xl bg-white p-4 shadow-inner shadow-black/30",
-    clazz
+    clazz,
   )}
 >
   {@render children?.()}

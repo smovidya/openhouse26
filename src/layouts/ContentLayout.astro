@@ -14,7 +14,7 @@ const { title, description, image, showNavBar = false } = Astro.props;
 
 <Base title={title} description={description} image={image}>
   <div
-    class="fixed overflow-hidden top-0 left-0 flex items-center justify-center w-screen h-screen"
+    class="fixed top-0 left-0 flex h-screen w-screen items-center justify-center overflow-hidden"
   >
     <div
       class="aspect-square h-screen bg-[radial-gradient(ellipse_50.00%_50.00%_at_50.00%_50.00%,_#3A64AC_0%,_#305498_29%,_#2B4B8E_46%,_#274586_62%,_#1F3776_100%)]"
@@ -24,17 +24,17 @@ const { title, description, image, showNavBar = false } = Astro.props;
   <div class="contents">
     {
       showNavBar && (
-        <NavBar class="sticky z-50 rounded-sm inset-x-0 top-3 max-w-3xl m-auto" />
+        <NavBar class="sticky inset-x-0 top-3 z-50 m-auto max-w-3xl rounded-sm" />
       )
     }
     <main
-      class="container relative min-h-screen max-w-3xl mx-auto px-4 py-8 flex flex-col"
+      class="relative container mx-auto flex min-h-screen max-w-3xl flex-col px-4 py-8"
     >
       <div>
         <slot />
       </div>
       <footer>
-        <div class="text-blue-300/65 px-4 py-4 text-center text-sm">
+        <div class="px-4 py-4 text-center text-sm text-blue-300/65">
           <a href="/info/privacy-policy">นโยบายข้อมูลส่วนบุคคล</a> |{" "}
           <a href="/info/terms-of-service">ข้อกำหนดการให้บริการ</a>
         </div>

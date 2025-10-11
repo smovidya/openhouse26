@@ -4,7 +4,10 @@
   font-style: bold;
   font-weight: 700;
   font-stretch: 100%;
-  src: local("Cloud Soft Bold"), local("CloudSoft-Bold"), url(/fonts/cloud-soft-bold.woff2) format("woff2");
+  src:
+    local("Cloud Soft Bold"),
+    local("CloudSoft-Bold"),
+    url(/fonts/cloud-soft-bold.woff2) format("woff2");
   font-display: swap;
 }
 
@@ -25,7 +28,10 @@ cloud-soft-light
   font-style: normal;
   font-weight: 400;
   font-stretch: 100%;
-  src: local("Futura Cyrillic Book"), local("FuturaCyrillicBook"), url(/fonts/futura-pt-book.woff2) format("woff2");
+  src:
+    local("Futura Cyrillic Book"),
+    local("FuturaCyrillicBook"),
+    url(/fonts/futura-pt-book.woff2) format("woff2");
   font-display: swap;
 }
 
@@ -35,7 +41,10 @@ cloud-soft-light
   font-style: normal;
   font-weight: 400;
   font-stretch: 100%;
-  src: local("Genty Sans"), local("GentySans-Regular"), url(/fonts/genty-sans.woff2) format("woff2");
+  src:
+    local("Genty Sans"),
+    local("GentySans-Regular"),
+    url(/fonts/genty-sans.woff2) format("woff2");
   font-display: swap;
 }
 
@@ -45,6 +54,9 @@ cloud-soft-light
   font-style: normal;
   font-weight: 300;
   font-stretch: 100%;
-  src: local("Mitr Light"), local("Mitr-Light"), url(/fonts/mitr-light.woff2) format("woff2");
+  src:
+    local("Mitr Light"),
+    local("Mitr-Light"),
+    url(/fonts/mitr-light.woff2) format("woff2");
   font-display: swap;
 }

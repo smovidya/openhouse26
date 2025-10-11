@@ -4,7 +4,7 @@ import { eq } from "drizzle-orm";
 export async function linkParticipantToUser(
   db: Db,
   participantId: string,
-  userId: string
+  userId: string,
 ) {
   return await db
     .update(schema.users)

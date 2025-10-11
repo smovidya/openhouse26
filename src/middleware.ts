@@ -7,7 +7,7 @@ import { hasOneOfRoleIn } from "./auth/utils";
 export const onRequest = defineMiddleware(async (context, next) => {
   const auth = createAuth(
     context.locals.runtime.env,
-    context.locals.runtime.cf
+    context.locals.runtime.cf,
   );
   const db = drizzle(context.locals.runtime.env.openhouse26_db, {
     schema,

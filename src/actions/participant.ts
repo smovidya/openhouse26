@@ -18,7 +18,7 @@ export const amIRegistered = defineAction({
     try {
       isExisted = !!(await participantModel.getParticipantByUserId(
         ctx.locals.db,
-        ctx.locals.user.id
+        ctx.locals.user.id,
       ));
     } catch (e) {
       console.error("Error checking existing participant:", e);
@@ -39,17 +39,15 @@ export const registerParticipant = defineAction({
       familyName: z.string().min(1),
       age: z.number().min(1).max(100),
       specialNeeds: z.string().optional(),
-      residentProvince: z
-        .number()
-        .transform((val) => {
-          const code = provinces.find(
-            (it) => it.provinceCode === val
-          )?.provinceNameTh;
-          if (!code) {
-            throw new Error("รหัสจังหวัดไม่ถูกต้อง");
-          }
-          return code;
-        }),
+      residentProvince: z.number().transform((val) => {
+        const code = provinces.find(
+          (it) => it.provinceCode === val,
+        )?.provinceNameTh;
+        if (!code) {
+          throw new Error("รหัสจังหวัดไม่ถูกต้อง");
+        }
+        return code;
+      }),
       attendeeType: z.string().min(1),
       school: z.string().optional(),
 
@@ -85,7 +83,7 @@ export const registerParticipant = defineAction({
     try {
       isExisted = await participantModel.getParticipantByUserId(
         locals.db,
-        locals.user.id
+        locals.user.id,
       );
     } catch (e) {
       console.error("Error checking existing participant:", e);
@@ -127,7 +125,7 @@ export const registerParticipant = defineAction({
             interestedDepartments: departmentTextList,
           }),
           userId: locals.user!.id,
-        }
+        },
       );
     } catch (e) {
       console.error("Error inserting participant:", e);
@@ -143,7 +141,7 @@ export const registerParticipant = defineAction({
       linkResult = await authModel.linkParticipantToUser(
         locals.db,
         insertedParticipant.id,
-        locals.user.id
+        locals.user.id,
       );
     } catch (e) {
       console.error("Error linking participant to user:", e);

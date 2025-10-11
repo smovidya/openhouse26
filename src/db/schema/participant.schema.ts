@@ -18,9 +18,7 @@ export const participants = sqliteTable(
       .text("user_id")
       .notNull()
       .references(() => users.id),
-    qrCodeId: t
-      .text("qr_code_id")
-      .$defaultFn(() => createId()),
+    qrCodeId: t.text("qr_code_id").$defaultFn(() => createId()),
     givenName: t.text("given_name").notNull(),
     familyName: t.text("family_name").notNull(),
     age: t.int("age").notNull(),
@@ -37,7 +35,7 @@ export const participants = sqliteTable(
   (table) => [
     t.index("qr_code_id_idx").on(table.qrCodeId),
     t.index("user_id_idx").on(table.userId),
-  ]
+  ],
 );
 
 export const participantsRelations = relations(
@@ -48,5 +46,5 @@ export const participantsRelations = relations(
       references: [users.id],
     }),
     workshopRegistrations: many(workshopRegistrations),
-  })
+  }),
 );

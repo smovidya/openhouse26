@@ -21,7 +21,7 @@ function rolesListCheckboxes(currentRole: string) {
         <input type="checkbox" name="role" value="${roleKey}" ${splitedCurrentRole.includes(roleKey) ? "checked" : ""}>
         ${roleKey}
       </label>
-    `
+    `,
       )
       .join("")}
   `;
@@ -36,7 +36,7 @@ async function drawUserInfo(canvas: HTMLElement, user: any) {
       <button id="login-google-btn">Login with Google</button>
     `;
     const loginGoogleBtn = div.querySelector(
-      "#login-google-btn"
+      "#login-google-btn",
     ) as HTMLButtonElement;
     loginGoogleBtn.onclick = async () => {
       await authClient.signIn.social({
@@ -89,7 +89,7 @@ async function drawUserInfo(canvas: HTMLElement, user: any) {
         });
         if (!res.ok) return alert(await res.text());
         alert(
-          "Role updated successfully. Please login again to see the effect."
+          "Role updated successfully. Please login again to see the effect.",
         );
       } catch (err: any) {
         alert("Error updating role: " + err.message);

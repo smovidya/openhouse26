@@ -9,7 +9,7 @@ export const id = {
 
 export const timestamps = {
   createdAt: integer("created_at", { mode: "timestamp" }).$defaultFn(
-    () => new Date()
+    () => new Date(),
   ),
   updatedAt: integer("updated_at", { mode: "timestamp" })
     .$defaultFn(() => new Date())

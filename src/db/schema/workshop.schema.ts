@@ -41,7 +41,7 @@ export const workshopTimeSlotRelations = relations(
       references: [workshops.id],
     }),
     registrations: many(workshopRegistrations),
-  })
+  }),
 );
 
 // Workshop Registration Table
@@ -75,5 +75,5 @@ export const workshopRegistrationsRelations = relations(
       fields: [workshopRegistrations.timeSlotId],
       references: [workshopTimeSlots.id],
     }),
-  })
+  }),
 );

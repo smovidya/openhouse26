@@ -132,7 +132,7 @@ function createAuth(env?: Env, cf?: IncomingRequestCfProperties) {
             clientSecret: env?.GOOGLE_CLIENT_SECRET,
           },
         },
-      }
+      },
     ),
   });
 }

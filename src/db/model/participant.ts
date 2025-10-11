@@ -11,7 +11,7 @@ export async function getParticipantByUserId(db: Db, userId: string) {
 
 export async function insertParticipant(
   db: Db,
-  data: typeof schema.participants.$inferInsert
+  data: typeof schema.participants.$inferInsert,
 ) {
   return await db
     .insert(schema.participants)
