@@ -15,6 +15,7 @@
     "db:studio": "bun drizzle-kit studio",
     "d1:migrate": "bun wrangler d1 migrations apply openhouse26_db --local",
     "d1:migrate:remote": "bun wrangler d1 migrations apply openhouse26_db --remote",
+    "d1:migrate:staging": "bun wrangler d1 migrations apply openhouse26_db --remote -e staging",
     "auth:generate": "bun x @better-auth/cli@latest generate --output ./src/db/schema/auth.schema.ts --config ./src/auth/index.ts -y",
     "format": "prettier --write ."
   },
