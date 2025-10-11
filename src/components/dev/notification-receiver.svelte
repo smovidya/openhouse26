@@ -32,18 +32,22 @@
 
     <label>
         <span>jwt (no jwt yet, use uid instead)</span>
-        <CutoutBox class="p-0! text-black">
+        <CutoutBox class="p-0! text-white bg-black/30">
             <input type="text" bind:value={jwt} class="p-2 w-full" />
         </CutoutBox>
     </label>
 
-    <h3>Latest event</h3>
-    <CutoutBox class="text-black font-mono">
-        <pre>{JSON.stringify(latestEvent, null, 2)}</pre>
-    </CutoutBox>
+    <div>
+        <h3>Latest event</h3>
+        <CutoutBox class="text-black font-mono">
+            <pre class="min-h-[1rem]">{JSON.stringify(latestEvent, null, 2)}</pre>
+        </CutoutBox>
+    </div>
 
-    <h3>all events</h3>
-    <CutoutBox class="text-black font-mono">
-        <pre>{JSON.stringify(events, null, 2)}</pre>
-    </CutoutBox>
+    <div>
+        <h3>all events</h3>
+        <CutoutBox class="text-black font-mono">
+            <pre>{JSON.stringify(events, null, 2)}</pre>
+        </CutoutBox>
+    </div>
 </div>

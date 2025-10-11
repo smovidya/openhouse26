@@ -17,7 +17,7 @@ export function onNotify(wsUrl: string, jwt: string, fn: (event: UserEvent) => u
   ws.addEventListener("message", async (event) => {
     try {
       const data = JSON.parse(event.data);
-      fn(data);
+      await fn(data);
     } catch { }
   }, {
     signal: abortController.signal
