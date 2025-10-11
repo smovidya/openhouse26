@@ -105,7 +105,7 @@
       "services": [
         {
           "binding": "SSE",
-          "service": "openhouse26-sse",
+          "service": "openhouse26-sse-production",
         },
       ],
     },
