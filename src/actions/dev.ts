@@ -8,7 +8,7 @@ export const sentStuff = defineAction({
         data: z.any()
     }),
     handler(input, context) {
-        if (!import.meta.env.DEV) {
+        if (!(import.meta.env.DEV || context.locals.runtime.env.ENVIRONMENT === "staging")) {
             return
         }
         return sendEvent(context.locals.runtime.env.SSE, input.to, input.data)

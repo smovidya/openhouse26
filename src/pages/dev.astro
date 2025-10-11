@@ -3,16 +3,17 @@ import Receiver from "@src/components/dev/notification-receiver.svelte";
 import Sender from "@src/components/dev/notification-sender.svelte";
 import Layout from "../layouts/Base.astro";
 
-if (!import.meta.env.DEV) {
+if (
+  !(import.meta.env.DEV || Astro.locals.runtime.env.ENVIRONMENT === "staging")
+) {
   Astro.redirect("/");
 }
 
 const wsUrl = Astro.locals.runtime.env.SSE_URL;
-// const wsUrl = "ws://localhost:8787/sse";
 ---
 
 <Layout title="หน้าหลัก">
   <div class="h-4"></div>
   <Sender client:load />
-  <Receiver wsUrl={wsUrl} client:load/>
+  <Receiver wsUrl={wsUrl} client:load />
 </Layout>
