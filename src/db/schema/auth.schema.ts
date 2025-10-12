@@ -35,8 +35,7 @@ export const usersRelations = relations(users, ({ one }) => ({
   }),
   staffAccount: one(staffs, {
     fields: [users.staffAccountId],
-    references: [staffs.userId],
-    relationName: "staff_account",
+    references: [staffs.id],
   }),
 }));
 

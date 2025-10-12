@@ -6,21 +6,15 @@ import { users } from "./auth.schema";
 
 export const staffs = sqliteTable("staffs", {
   ...id,
-  userId: t.text("user_id").references(() => users.id),
-  studentId: t.text("student_id").notNull().unique(),
+  studentId: t.text("student_id"),
   name: t.text("name").notNull(),
   email: t.text("email").notNull(),
   major: t.text("major").notNull(),
   phone: t.text("phone").notNull(),
-  lineId: t.text("line_id").notNull(),
   requestedRole: t.text("requested_role").notNull(),
-  approvedAt: t.integer("approved_at", { mode: "timestamp" }),
   ...timestamps,
 });
 
-export const staffRelations = relations(staffs, ({ one }) => ({
-  user: one(users, {
-    fields: [staffs.userId],
-    references: [users.id],
-  }),
+export const staffRelations = relations(staffs, ({ many }) => ({
+  users: many(users),
 }));
