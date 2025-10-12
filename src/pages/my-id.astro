@@ -2,6 +2,7 @@
 import MyIdHeader from "@src/assets/my-id-header.png";
 import NavBar from "../components/navbar.svelte";
 import QrId from "@src/components/qr-id.svelte";
+import LogoutButton from "@src/components/logout-button.svelte";
 import { getParticipantByUserId } from "@src/db/model/participant";
 import Layout from "../layouts/ContentLayout.astro";
 import { featureFlags, workshopRegistrationDate } from "@src/data/constants";
@@ -32,7 +33,7 @@ const showWorkshop =
 
 const selectedWorkshops = await workshopModel.getUserRegisteredSlots(
   Astro.locals.db,
-  uid,
+  uid
 );
 ---
 
@@ -121,6 +122,11 @@ const selectedWorkshops = await workshopModel.getUserRegisteredSlots(
       <MyWorkshop selectedWorkshops={selectedWorkshops} class="mt-6" />
     )
   }
+  <div class="mt-10 flex justify-center">
+    <LogoutButton client:load>
+      ออกจากระบบ
+    </LogoutButton>
+  </div>
 </Layout>
 
 <style>

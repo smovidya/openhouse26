@@ -5,11 +5,12 @@
   const { children } = $props();
 </script>
 
-<Button
+<button
+  class="btn btn-sm btn-ghost"
   onclick={async () => {
     await authClientSvelte.signOut();
-    alert("คุณได้ออกจากระบบแล้ว");
+    window.location.reload();
   }}
 >
   {@render children?.()}
-</Button>
+</button>
