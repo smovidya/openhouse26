@@ -37,7 +37,7 @@
       />
     {/each}
 
-    {#if selectedWorkshops.length < 2 || featureFlags.workshopRegistrationClosed}
+    {#if selectedWorkshops.length < 2 && !featureFlags.workshopRegistrationClosed}
       <a
         href="/workshops"
         class="p-4 flex flex-col justify-center items-center h-42 mt-6 border-2 border-dashed border-blue-300/35 shadow-inner shadow-black/45 bg-blue-950/25"
