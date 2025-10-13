@@ -115,6 +115,10 @@ function createAuth(env?: Env, cf?: IncomingRequestCfProperties) {
           enabled: true,
           window: 120,
         },
+        trustedOrigins: (request) => {
+          if (import.meta.env.DEV) return [new URL(request.url).origin];
+          return [env?.BETTER_AUTH_URL];
+        },
         // disabledPaths: [
         //   import.meta.env.DEV ? null : "/sign-in/anonymous",
         // ].filter(Boolean),

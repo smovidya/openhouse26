@@ -53,8 +53,8 @@
       >
         {workshop.hostDepartmentAbbr}
       </p>
-      <div class="text-sm mt-1 flex gap-1 items-center">
-        <TimeFilled />
+      <div class="text-sm mt-1 gap-1 flex">
+        <TimeFilled class="shrink-0 hidden md:flex" />
         <span>
           {df.format(workshop.slots[0].date)}
           {selectedTimeSlotText}

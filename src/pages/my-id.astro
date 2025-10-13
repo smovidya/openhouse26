@@ -123,9 +123,7 @@ const selectedWorkshops = await workshopModel.getUserRegisteredSlots(
     )
   }
   <div class="mt-10 flex justify-center">
-    <LogoutButton client:load>
-      ออกจากระบบ
-    </LogoutButton>
+    <LogoutButton client:load> ออกจากระบบ </LogoutButton>
   </div>
 </Layout>
 
@@ -189,12 +187,13 @@ const selectedWorkshops = await workshopModel.getUserRegisteredSlots(
       });
     }
 
-    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+    const isMobile = true; // /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
     if (!isMobile) return;
     window.addEventListener("deviceorientation", (event) => {
       if (!el) return;
-      if (!event.gamma) return;
-      el.style.transform = `rotate(${Math.min(Math.max((-1 * event.gamma) / 6, -20), 20)}deg)`;
+      if (!event.gamma || !event.beta) return;
+      console.log({ gamma: event.gamma, beta: event.beta });
+      el.style.transform = `rotate(${Math.min(Math.max(((event.beta < 0 ? -1 : 1) * event.gamma) / 6, -20), 20)}deg)`;
     });
   })();
 </script>
