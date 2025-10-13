@@ -1,33 +1,45 @@
 <script>
   import Drawer from "@src/components/common/drawer.svelte";
-  import ChangeRoundButton from "@src/components/staff/qrcode-scanner/change-round-button.svelte";
-  import QrcodeScannerBase from "@src/components/staff/qrcode-scanner/qrcode-scanner-base.svelte";
+  import Navbar from "@src/components/staff/navbar.svelte";
+  import ChangeRoundButton from "@src/components/staff/change-round-button.svelte";
+  import QrcodeScannerBase from "@src/components/staff/qrcode-scanner-base.svelte";
+  import NavigationRails from "@src/components/staff/navigation-rails.svelte";
 
-  let open = $state(true);
+  let open = $state(false);
   let scanning = $derived(!open);
 </script>
 
+<Navbar />
 <QrcodeScannerBase enable={scanning}>
   {#snippet header()}
-    <div class="flex items-center justify-between px-4 py-3">
-      <div class="flex items-center gap-3">
-        <div class="size-10 rounded bg-white/30"></div>
-        <p class="text-xl">Title</p>
-      </div>
-      <div class="size-10 rounded-full bg-red-500"></div>
-    </div>
-    <h2 class="text-4xl mt-4 px-9">คุณกำลังหกแวสาหก่ืรีอ่าหกอาืาส</h2>
+    <h2 class="text-4xl mt-9 px-9">คุณกำลังหกแวสาหก่ืรีอ่าหกอาืาส</h2>
+  {/snippet}
+  {#snippet notSoBottomUi()}
+    <NavigationRails
+      items={[
+        {
+          label: "เช็คอิน",
+          value: "checkin",
+        },
+        {
+          label: "เพิ่มคน",
+          value: "add",
+        },
+      ]}
+    />
   {/snippet}
   {#snippet bottomUi()}
-    <ChangeRoundButton title="ทำกือ่่ผแส" subtitle="รอบ 12.00 น." />
+    <ChangeRoundButton
+      onclick={() => (open = true)}
+      title="ทำกือ่่ผแส"
+      subtitle="รอบ 12.00 น."
+    />
   {/snippet}
 </QrcodeScannerBase>
 
-<button onclick={() => (open = !open)} class="p-3 border">open = {open}</button>
-
 <Drawer bind:open>
   {#snippet header()}
-    <h2 class="text-3xl">sjdfhuk</h2>
+    <h2 class="text-3xl">เปลี่ยนเวิร์กช็อปและรอบ</h2>
   {/snippet}
   <p class="mx-6 mt-3">
     We're no strangers to love You know the rules and so do I (do I) A full
@@ -39,10 +51,10 @@
   </p>
   {#snippet buttons()}
     <button
-      class="p-3 bg-yellow-500 active:bg-yellow-600 text-white rounded-full"
+      class="p-3 bg-yellow-500 active:bg-yellow-600 rounded-full"
       onclick={() => (open = false)}
     >
-      Ok
+      ตกลง
     </button>
   {/snippet}
 </Drawer>

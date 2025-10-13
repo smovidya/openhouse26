@@ -33,11 +33,11 @@
           <Close size={32} />
         </button>
 
-        <header class="m-6 mb-3 max-w-[70%]">
+        <header class="m-6 mb-3 max-w-[80%]">
           {@render header?.()}
         </header>
         {@render children?.()}
-        <div class="flex flex-col m-4 gap-3">
+        <div class="flex flex-col mt-6 m-4 gap-3">
           {@render buttons?.()}
         </div>
       </div>

@@ -7,6 +7,7 @@
 
   interface Props {
     bottomUi?: Snippet;
+    notSoBottomUi?: Snippet;
     onResult?: (value: string) => unknown;
     header?: Snippet;
     enable?: boolean;
@@ -14,6 +15,7 @@
 
   let {
     bottomUi,
+    notSoBottomUi,
     onResult,
     header,
     enable = $bindable(true),
@@ -87,17 +89,22 @@
   <div
     class="absolute inset-x-9 top-48 aspect-square rounded-3xl border-4 border-yellow-500"
   ></div>
-  <div class="absolute bottom-4 right-4 left-4 flex gap-3">
-    <div class="flex-1 h-full">
-      {@render bottomUi?.()}
+  <section class="absolute bottom-4 right-4 left-4 flex flex-col gap-3">
+    <div>
+      {@render notSoBottomUi?.()}
     </div>
-    <button
-      class="aspect-square rounded-full p-3 bg-black/40 active:bg-neutral-800/30 border border-white/15 backdrop-blur-2xl transition-colors"
-      onclick={switchDevice}
-    >
-      <Renew class="size-6" />
-    </button>
-  </div>
+    <div class="flex gap-3">
+      <div class="flex-1 h-full">
+        {@render bottomUi?.()}
+      </div>
+      <button
+        class="aspect-square rounded-full p-3 bg-black/40 active:bg-neutral-800/30 border border-white/15 backdrop-blur-2xl transition-colors"
+        onclick={switchDevice}
+      >
+        <Renew class="size-6" />
+      </button>
+    </div>
+  </section>
 </div>
 
 <style>
