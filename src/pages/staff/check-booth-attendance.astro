@@ -1,0 +1,13 @@
+---
+import BoothQrScanner from "@src/components/staff/pages/booth-qr-scanner.svelte";
+import Layout from "@src/layouts/ManagementLayout.astro";
+---
+
+<Layout
+  title="สแกนเช็คสถานะผู้เข้าร่วมงาน"
+  description="Staff dashboard for Open House 2024"
+>
+  <div class="mx-[-2rem] mt-[-4rem]">
+    <BoothQrScanner client:load />
+  </div>
+</Layout>
