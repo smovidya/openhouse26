@@ -1,8 +1,9 @@
 <script lang="ts">
   import CutoutBox from "../common/cutout-box.svelte";
+  import { cn } from "../utils";
 
   interface Props {
-    title: string;
+    title?: string;
     options: {
       label: string;
       value: string;
@@ -37,10 +38,12 @@
   const get = (key: string) => () => selected.includes(key);
 </script>
 
-<section class="text-white">
-  <span class="text-lg">
-    {title}
-  </span>
+<section class={cn("text-white", className)}>
+  {#if title}
+    <span class="text-lg">
+      {title}
+    </span>
+  {/if}
   <div class="grid grid-cols-1 sm:grid-cols-2 gap-1 mt-3">
     {#each options as { label, value }}
       <label>

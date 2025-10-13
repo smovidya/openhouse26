@@ -1,0 +1,10 @@
+---
+import Layout from "@src/layouts/ManagementLayout.astro";
+import AddStaffForm from "@src/components/admin/staff/add-staff-form.svelte";
+---
+
+<Layout title="เพิ่มสตาฟคนใหม่">
+  <h1>เพิ่มสตาฟจากชีต</h1>
+  <p>หน้านี้ใช้สำหรับเพิ่มสตาฟใหม่จากชีตที่เตรียมไว้</p>
+  <AddStaffForm client:load />
+</Layout>

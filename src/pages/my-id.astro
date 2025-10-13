@@ -24,7 +24,7 @@ if (!participant) {
 // this explode sometime, dont forget to run the sse worker simultaneously too
 // console.log((Astro.locals.runtime.env.SSE as any as SSEWorkerRpc).double(12))
 
-const id = participant.id;
+const id = participant.qrCodeId || participant.id;
 const name = participant.givenName;
 
 const staging = Astro.locals.runtime.env.ENVIRONMENT === "staging";
@@ -33,7 +33,7 @@ const showWorkshop =
 
 const selectedWorkshops = await workshopModel.getUserRegisteredSlots(
   Astro.locals.db,
-  uid
+  uid,
 );
 ---
 
@@ -64,7 +64,7 @@ const selectedWorkshops = await workshopModel.getUserRegisteredSlots(
           </div>
         </div>
         <p class="px-2 pb-1 text-center leading-5 text-amber-900/60">
-          สามารถกดค้างที่ QR เพื่อบันทึกลงในอุปกรณ์ได้
+          สามารถจับภาพหน้าจอเพื่อบันทึก QR ได้
         </p>
       </div>
       <div
@@ -187,7 +187,7 @@ const selectedWorkshops = await workshopModel.getUserRegisteredSlots(
       });
     }
 
-    const isMobile = true; // /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
     if (!isMobile) return;
     window.addEventListener("deviceorientation", (event) => {
       if (!el) return;

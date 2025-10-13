@@ -25,7 +25,7 @@
 
     toCanvas(canvas, {
       text: content,
-      bcid: "azteccode",
+      bcid: "qrcode",
       scale: 4,
     });
   });

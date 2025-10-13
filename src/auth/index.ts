@@ -3,7 +3,7 @@ import type {
   IncomingRequestCfProperties,
 } from "@cloudflare/workers-types";
 import { schema } from "@src/db";
-import { betterAuth } from "better-auth";
+import { betterAuth, type BetterAuthOptions } from "better-auth";
 import { withCloudflare } from "better-auth-cloudflare";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { admin, jwt, oneTap } from "better-auth/plugins";
