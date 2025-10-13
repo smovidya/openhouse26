@@ -89,7 +89,7 @@
     }
 
     if (enable) {
-      setTimeout(() => {
+      const id = setTimeout(() => {
         reader.decodeFromVideoDevice(
           activeInputDeviceId,
           videoElement,
@@ -102,7 +102,9 @@
             }
           },
         );
-      }, 80);
+      }, 0);
+
+      return () => clearTimeout(id);
     } else {
       const { width, height } = videoElement.getBoundingClientRect();
       context.canvas.width = width;
@@ -147,7 +149,8 @@
     }
 
     if (enable) {
-      setTimeout(() => videoBlur.set(0), 400);
+      const id = setTimeout(() => videoBlur.set(0), 400);
+      return () => clearTimeout(id);
     } else {
       videoBlur.set(24);
     }

@@ -11,11 +11,18 @@
     element: () => window,
   });
   const isAtTop = $derived(scroll.progress.y <= 400);
+
   let isWorkshopSelectorOpen = $state(false);
   let isConfirmDialogOpen = $state(false);
+  let isIdInputtingDialogOpen = $state(false);
+  let codeInput = $state("");
   let mode = $state("checkin" as "checkin" | "add");
   const scanning = $derived(
-    !(isWorkshopSelectorOpen || isConfirmDialogOpen) && isAtTop,
+    !(
+      isWorkshopSelectorOpen ||
+      isConfirmDialogOpen ||
+      isIdInputtingDialogOpen
+    ) && isAtTop,
   );
 
   // Workshop and timeslot selection ------------------------------------
@@ -74,6 +81,19 @@
   }
 
   //
+
+  function openSelfIdInputtingDialog() {
+    codeInput = "";
+    isIdInputtingDialogOpen = true;
+  }
+
+  function onSelfIdInputtingDialogDone() {
+    isIdInputtingDialogOpen = false;
+    let cached = codeInput;
+    // setTimeout(() => {
+    onResult(cached);
+    // }, 200);
+  }
 </script>
 
 <Navbar />
@@ -109,6 +129,19 @@
     />
   {/snippet}
 </QrcodeScannerBase>
+
+<section class="px-8 mt-4 font-serif">
+  <div class="flex flex-col items-center">
+    <button
+      class="px-4 py-1.5 rounded-md active:bg-black/10 text-yellow-600"
+      onclick={openSelfIdInputtingDialog}
+    >
+      สแกนไม่ติด? <span class="underline underline-offset-2"
+        >กรอกโค้ดด้วยตนเอง</span
+      >
+    </button>
+  </div>
+</section>
 
 <Drawer bind:open={isWorkshopSelectorOpen}>
   {#snippet header()}
@@ -184,6 +217,40 @@
     <button
       class="p-3 bg-yellow-500 active:bg-yellow-600 rounded-full"
       onclick={onScanConfirmed}
+    >
+      ตกลง
+    </button>
+  {/snippet}
+</Drawer>
+
+<Drawer bind:open={isIdInputtingDialogOpen}>
+  {#snippet header()}
+    <h2 class="text-3xl">
+      กรอกโค้ด{mode === "checkin" ? "เช็คอิน" : "เพิ่มคน"}
+    </h2>
+    <p class="text-neutral-600">สามารถดูได้ใต้ Qr Code ในหน้า MyID</p>
+  {/snippet}
+  <section class="px-6">
+    <label class="flex flex-col gap-1">
+      <span>โค้ด</span>
+      <input
+        type="text"
+        class="input"
+        placeholder="UI490"
+        bind:value={codeInput}
+      />
+    </label>
+  </section>
+  {#snippet buttons()}
+    <button
+      class="p-3 bg-neutral-200 active:bg-neutral-300 text-black rounded-full"
+      onclick={() => (isIdInputtingDialogOpen = false)}
+    >
+      ยกเลิก
+    </button>
+    <button
+      class="p-3 bg-yellow-500 active:bg-yellow-600 rounded-full"
+      onclick={onSelfIdInputtingDialogDone}
     >
       ตกลง
     </button>
