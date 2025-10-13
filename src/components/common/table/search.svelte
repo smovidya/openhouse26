@@ -1,9 +1,22 @@
 <script lang="ts">
-  interface Props {
+  import { cn } from "@src/components/utils";
+  import { type HTMLAttributes } from "svelte/elements";
+  type Props = {
     searchQuery: string;
-  }
+    class: string;
+  } & HTMLAttributes<HTMLInputElement>;
 
-  let { searchQuery = $bindable("") }: Props = $props();
+  let {
+    searchQuery = $bindable(""),
+    class: className = "",
+    ...rest
+  }: Props = $props();
 </script>
 
-<input type="text" bind:value={searchQuery} />
+<input
+  class={cn("input input-sm", className)}
+  type="text"
+  bind:value={searchQuery}
+  placeholder="ค้นหา..."
+  {...rest}
+/>

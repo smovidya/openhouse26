@@ -9,9 +9,9 @@
   }
 
   const {
-    total,
-    limit,
-    page,
+    total = $bindable(0),
+    limit = $bindable(10),
+    page = $bindable(1),
     limitOptions = [10, 30, 50, 100, 500],
     onPageChange = () => {},
     onLimitChange = () => {},

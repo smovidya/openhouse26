@@ -1,5 +1,10 @@
 ---
 import Layout from "@src/layouts/ManagementLayout.astro";
+import { hasOneOfRoleIn } from "@src/auth/utils";
+import Button from "@src/components/staff/button.svelte";
+
+// @ts-expect-error role is defined via withCloudflare
+const roles = Astro.locals.user?.role || "";
 ---
 
 <Layout
@@ -7,9 +12,10 @@ import Layout from "@src/layouts/ManagementLayout.astro";
   description="Staff dashboard for Open House 2024"
 >
   <main class="relative mt-12 w-full overflow-x-clip text-sm">
-    <h1 class="my-8 text-center text-3xl font-bold">Staff Dashboard</h1>
-    <p class="text-center">
-      Welcome to the staff dashboard. More features coming soon!
-    </p>
+    <h1 class="my-8 text-center text-3xl font-bold">เมนูสตาฟ</h1>
+    <div class="flex flex-col">
+      <h2>สำหรับสตาฟทุกคน</h2>
+      <Button href="/staff/check-attendance"> ตรวจสถานะผู้เข้าร่วม </Button>
+    </div>
   </main>
 </Layout>
