@@ -1,7 +1,8 @@
 ---
 import Receiver from "@src/components/dev/notification-receiver.svelte";
 import Sender from "@src/components/dev/notification-sender.svelte";
-import Layout from "../layouts/Base.astro";
+import Layout from "../../layouts/Base.astro";
+import { Toaster } from 'sonner';
 
 if (
   !(import.meta.env.DEV || Astro.locals.runtime.env.ENVIRONMENT === "staging")
@@ -16,4 +17,5 @@ const wsUrl = Astro.locals.runtime.env.SSE_URL;
   <div class="h-4"></div>
   <Sender client:load />
   <Receiver wsUrl={wsUrl} client:load />
+  <!-- <Toaster client:load /> -->
 </Layout>

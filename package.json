@@ -51,6 +51,7 @@
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
     "runed": "^0.34.0",
+    "sonner": "^2.0.7",
     "svelte": "^5.39.11",
     "sveltekit-superforms": "^2.27.2",
     "tailwind-merge": "^3.3.1",

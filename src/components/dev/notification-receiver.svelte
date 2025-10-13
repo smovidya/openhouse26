@@ -1,7 +1,9 @@
 <script lang="ts">
   import CutoutBox from "@src/components/common/cutout-box.svelte";
+    import React from "@src/components/common/react.svelte";
   import { onNotify } from "@src/notification/client";
-  import { onDestroy, onMount, untrack } from "svelte";
+  import { toast, Toaster } from 'sonner';
+
 
   interface Props {
     wsUrl: string;
@@ -14,14 +16,12 @@
   let latestEvent = $state() as any;
 
   $effect(() => {
-    jwt;
-    const stop = untrack(() =>
-      onNotify(wsUrl, jwt, (event) => {
-        events.push(event);
-        console.log(event);
-        latestEvent = event;
-      }),
-    );
+    const stop = onNotify(wsUrl, jwt, (event) => {
+      events.push(event);
+      console.log(event);
+      toast(JSON.stringify(event));
+      latestEvent = event;
+    });
 
     return stop;
   });
@@ -47,3 +47,6 @@
     <pre>{JSON.stringify(events, null, 2)}</pre>
   </CutoutBox>
 </div>
+
+
+<React component={Toaster} props={{ position: "bottom-center" }} />

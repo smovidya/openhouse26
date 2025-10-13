@@ -2,7 +2,7 @@
   import { actions } from "astro:actions";
 
   let uid = $state("isei");
-  let data = $state("");
+  let data = $state('"sdjcfksnhdvk"');
 
   function send() {
     if (!actions.sentStuff) {
