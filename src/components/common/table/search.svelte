@@ -1,9 +1,9 @@
 <script lang="ts">
   import { cn } from "@src/components/utils";
-  import { type HTMLAttributes } from "svelte/elements";
+  import type { HTMLAttributes } from "svelte/elements";
   type Props = {
     searchQuery: string;
-    class: string;
+    class?: string;
   } & HTMLAttributes<HTMLInputElement>;
 
   let {
