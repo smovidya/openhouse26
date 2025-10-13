@@ -5,12 +5,14 @@ interface Props {
   title?: string;
   description?: string;
   image?: string;
+  theme?: string
 }
 
 const {
   title = "Sci Chula Open House 2026",
   description = "Science Chula Open House 2026 เปิดบ้านวิดยาจุฬาฯ 2569 | 18 - 19 ตุลาคม 2568",
   image = "/og-image.png",
+  theme = "light"
 } = Astro.props;
 
 const user = Astro.locals.user;
@@ -48,7 +50,7 @@ const isLoggedIn = !!user;
     />
     <slot name="head" />
   </head>
-  <body>
+  <body data-theme={theme}>
     <div class="contents">
       <slot />
     </div>

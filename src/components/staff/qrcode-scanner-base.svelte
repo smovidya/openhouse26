@@ -1,7 +1,7 @@
 <script lang="ts">
   import { BrowserMultiFormatReader } from "@zxing/library";
   import Renew from "carbon-icons-svelte/lib/Renew.svelte";
-  import { onMount, type Snippet } from "svelte";
+  import { onMount, tick, type Snippet } from "svelte";
 
   let videoElement: HTMLVideoElement;
 
@@ -56,21 +56,25 @@
     }
 
     if (enable) {
-      reader.decodeFromVideoDevice(
-        activeInputDeviceId,
-        videoElement,
-        (result) => {
-          if (result) {
-            onResult?.(result.getText());
-            console.log(result);
-          }
-        },
-      );
+      setTimeout(() => {
+        reader.decodeFromVideoDevice(
+          activeInputDeviceId,
+          videoElement,
+          (result) => {
+            if (result) {
+              console.log(result);
+              if (enable) {
+                onResult?.(result.getText());
+              }
+            }
+          },
+        );
+      }, 100);
     } else {
-      // videoElement.pause();
       reader.stopContinuousDecode();
     }
 
+    // return () => reader.stopContinuousDecode();
     // return () => videoElement.pause();
   });
 </script>

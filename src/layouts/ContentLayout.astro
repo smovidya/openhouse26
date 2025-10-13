@@ -1,4 +1,5 @@
 ---
+import { cn } from "@src/components/utils";
 import Base from "./Base.astro";
 import NavBar from "@src/components/navbar.svelte";
 
@@ -7,19 +8,29 @@ interface Props {
   description?: string;
   image?: string;
   showNavBar?: boolean;
+  theme?: string;
+  blueBg?: boolean;
 }
 
-const { title, description, image, showNavBar = false } = Astro.props;
+const {
+  title,
+  description,
+  image,
+  showNavBar = false,
+  theme,
+  blueBg = true,
+} = Astro.props;
 ---
 
-<Base title={title} description={description} image={image}>
+<Base title={title} description={description} image={image} theme={theme}>
   <div
-    class="fixed top-0 left-0 flex h-screen w-screen items-center justify-center overflow-hidden"
+    class={cn(
+      "fixed top-0 left-0 flex h-screen w-screen items-center justify-center overflow-hidden",
+      blueBg &&
+        "bg-[radial-gradient(ellipse_50.00%_50.00%_at_50.00%_50.00%,_#3A64AC_0%,_#305498_29%,_#2B4B8E_46%,_#274586_62%,_#1F3776_100%)]",
+    )}
   >
-    <div
-      class="aspect-square h-screen bg-[radial-gradient(ellipse_50.00%_50.00%_at_50.00%_50.00%,_#3A64AC_0%,_#305498_29%,_#2B4B8E_46%,_#274586_62%,_#1F3776_100%)]"
-    >
-    </div>
+    <div class="{} aspect-square h-screen"></div>
   </div>
   <div class="contents">
     {
@@ -34,7 +45,12 @@ const { title, description, image, showNavBar = false } = Astro.props;
         <slot />
       </div>
       <footer>
-        <div class="px-4 py-4 text-center text-sm text-blue-300/65">
+        <div
+          class={cn(
+            "px-4 py-4 text-center text-sm",
+            blueBg && "text-blue-300/65",
+          )}
+        >
           <a href="/info/privacy-policy">นโยบายข้อมูลส่วนบุคคล</a> |{" "}
           <a href="/info/terms-of-service">ข้อกำหนดการให้บริการ</a>
         </div>
