@@ -193,7 +193,7 @@ const selectedWorkshops = await workshopModel.getUserRegisteredSlots(
       if (!el) return;
       if (!event.gamma || !event.beta) return;
       console.log({ gamma: event.gamma, beta: event.beta });
-      el.style.transform = `rotate(${Math.min(Math.max(((event.beta < 0 ? -1 : 1) * event.gamma) / 6, -20), 20)}deg)`;
+      el.style.transform = `rotate(${Math.min(Math.max(((event.beta <= 90 ? -1 : 1) * event.gamma) / 6, -20), 20)}deg)`;
     });
   })();
 </script>
