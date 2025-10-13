@@ -1,9 +1,13 @@
 <script lang="ts">
+  import { cn } from "@src/components/utils";
   import { BrowserMultiFormatReader } from "@zxing/library";
   import Renew from "carbon-icons-svelte/lib/Renew.svelte";
-  import { onMount, tick, type Snippet } from "svelte";
+  import { onMount, type Snippet } from "svelte";
+  import { Spring } from "svelte/motion";
 
-  let videoElement: HTMLVideoElement;
+  let videoElement = $state(null) as HTMLVideoElement | null;
+  let canvasElement = $state(null) as HTMLCanvasElement | null;
+  const context = $derived(canvasElement?.getContext("2d"));
 
   interface Props {
     bottomUi?: Snippet;
@@ -11,6 +15,7 @@
     onResult?: (value: string) => unknown;
     header?: Snippet;
     enable?: boolean;
+    fancyDisabledAnimation?: boolean;
   }
 
   let {
@@ -19,6 +24,7 @@
     onResult,
     header,
     enable = $bindable(true),
+    fancyDisabledAnimation = true,
   }: Props = $props();
 
   // const reader = new BrowserAztecCodeReader();
@@ -26,6 +32,29 @@
 
   let videoInputDevices: MediaDeviceInfo[] = $state([]);
   let activeInputDeviceId: MediaDeviceInfo["deviceId"] | null = $state(null);
+
+  function computeCoverTransform(
+    sourceWidth: number,
+    sourceHeight: number,
+    targetWidth: number,
+    targetHeight: number,
+  ) {
+    if (!sourceWidth || !sourceHeight) {
+      return null;
+    }
+
+    const scale = Math.max(
+      targetWidth / sourceWidth,
+      targetHeight / sourceHeight,
+    );
+
+    return {
+      sx: scale,
+      sy: scale,
+      dx: (targetWidth - sourceWidth * scale) / 2,
+      dy: (targetHeight - sourceHeight * scale) / 2,
+    } as const;
+  }
 
   function switchDevice() {
     const index = videoInputDevices.findIndex(
@@ -46,12 +75,16 @@
   onMount(async () => {
     videoInputDevices = await reader.listVideoInputDevices();
     activeInputDeviceId = videoInputDevices[0].deviceId;
-
-    videoInputDevices;
   });
 
   $effect(() => {
-    if (!videoElement) {
+    if (!videoElement || !context) {
+      return;
+    }
+  });
+
+  $effect(() => {
+    if (!videoElement || !context) {
       return;
     }
 
@@ -69,23 +102,76 @@
             }
           },
         );
-      }, 100);
+      }, 80);
     } else {
-      reader.stopContinuousDecode();
+      const { width, height } = videoElement.getBoundingClientRect();
+      context.canvas.width = width;
+      context.canvas.height = height;
+
+      const videoWidth = videoElement.videoWidth;
+      const videoHeight = videoElement.videoHeight;
+
+      // we need diffrent cropping based on aspect ratio
+      const transform = computeCoverTransform(
+        videoWidth,
+        videoHeight,
+        width,
+        height,
+      );
+
+      if (!transform) {
+        return;
+      }
+
+      const { sx, sy, dx, dy } = transform;
+
+      context.setTransform(1, 0, 0, 1, 0, 0);
+      context.clearRect(0, 0, width, height);
+      context.setTransform(sx, 0, 0, sy, dx, dy);
+      context.drawImage(videoElement, 0, 0);
+      context.setTransform(1, 0, 0, 1, 0, 0);
+      // reader.decodeOnce(videoElement)
+      videoElement.pause();
+      reader.reset();
     }
 
     // return () => reader.stopContinuousDecode();
     // return () => videoElement.pause();
   });
+
+  const videoBlur = new Spring(0);
+  $effect(() => {
+    if (!fancyDisabledAnimation) {
+      videoBlur.set(0);
+      return;
+    }
+
+    if (enable) {
+      setTimeout(() => videoBlur.set(0), 400);
+    } else {
+      videoBlur.set(24);
+    }
+  });
 </script>
 
-<div class="relative w-full min-h-12 font-serif select-none text-white">
+<div
+  class="relative w-full min-h-12 font-serif select-none overflow-clip text-white"
+>
   <!-- svelte-ignore a11y_media_has_caption -->
   <video
     bind:this={videoElement}
     class="object-cover aspect-[9/16] bg-neutral-700"
+    style="filter: blur({videoBlur.current}px);"
   >
   </video>
+  <canvas
+    bind:this={canvasElement}
+    class={cn(
+      "absolute inset-0 w-full object-cover aspect-[9/16] bg-transparent",
+    )}
+    style="filter: blur({videoBlur.current}px); opacity: {videoBlur.current /
+      24};"
+  ></canvas>
   <div class="dim-overlay absolute inset-0"></div>
   <div class="absolute top-0 inset-x-0">
     {@render header?.()}

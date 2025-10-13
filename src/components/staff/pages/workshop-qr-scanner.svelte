@@ -4,12 +4,21 @@
   import ChangeRoundButton from "@src/components/staff/change-round-button.svelte";
   import QrcodeScannerBase from "@src/components/staff/qrcode-scanner-base.svelte";
   import NavigationRails from "@src/components/staff/navigation-rails.svelte";
-  import { resource } from "runed";
+  import { resource, ScrollState } from "runed";
   import { workshops } from "@src/data/workshops";
 
+  const scroll = new ScrollState({
+    element: () => window,
+  });
+  const isAtTop = $derived(scroll.progress.y <= 400);
   let isWorkshopSelectorOpen = $state(false);
   let isConfirmDialogOpen = $state(false);
-  const scanning = $derived(!(isWorkshopSelectorOpen || isConfirmDialogOpen));
+  let mode = $state("checkin" as "checkin" | "add");
+  const scanning = $derived(
+    !(isWorkshopSelectorOpen || isConfirmDialogOpen) && isAtTop,
+  );
+
+  // Workshop and timeslot selection ------------------------------------
 
   // TODO: save this to localstorage
   let selectedWorkshopId = $state.raw({
@@ -39,6 +48,8 @@
     isWorkshopSelectorOpen = false;
   }
 
+  // Scanning ------------------------------------------------------------
+
   // we should actually cache these data in case of workshop
   let currentQrId: string | null = $state(null);
   const user = resource(
@@ -55,15 +66,29 @@
     currentQrId = value;
     isConfirmDialogOpen = true;
   }
+
+  function onScanConfirmed() {
+    isConfirmDialogOpen = false;
+
+    // TODO: actually submitting this
+  }
+
+  //
 </script>
 
 <Navbar />
 <QrcodeScannerBase enable={scanning} {onResult}>
   {#snippet header()}
-    <h2 class="text-3xl mt-9 px-9">กำลังเช็คอิน {selectedWorkshop.title} รอบ {selectedTimeSlot.start}</h2>
+    <h2 class="text-3xl mt-9 px-9">
+      กำลัง<span class="font-bold"
+        >{mode === "checkin" ? "เช็คอิน" : "เพิ่มคนเข้า"}</span
+      >
+      {selectedWorkshop.title} รอบ {selectedTimeSlot.start}
+    </h2>
   {/snippet}
   {#snippet notSoBottomUi()}
     <NavigationRails
+      bind:selected={mode}
       items={[
         {
           label: "เช็คอิน",
@@ -79,7 +104,7 @@
   {#snippet bottomUi()}
     <ChangeRoundButton
       onclick={launchWorkshopSelector}
-      title={selectedWorkshop.title}
+      title="{selectedWorkshop.title} ({selectedWorkshop.hostDepartmentAbbr})"
       subtitle="รอบ {selectedTimeSlot.start} - {selectedTimeSlot.end}"
     />
   {/snippet}
@@ -92,9 +117,20 @@
   <section class="mx-6 flex flex-col gap-3">
     <label class="flex flex-col gap-1">
       <span>เวิร์กช็อป</span>
-      <select class="select" bind:value={dialogWorkshop.workshopId}>
+      <select
+        class="select"
+        bind:value={
+          () => dialogWorkshop.workshopId,
+          (value) => {
+            dialogWorkshop.workshopId = value;
+            dialogWorkshop.roundNumber = 1;
+          }
+        }
+      >
         {#each workshops as workshop}
-          <option value={workshop.id}>{workshop.title}</option>
+          <option value={workshop.id}
+            >{workshop.title} ({workshop.hostDepartmentAbbr})</option
+          >
         {/each}
       </select>
     </label>
@@ -128,7 +164,9 @@
 
 <Drawer bind:open={isConfirmDialogOpen}>
   {#snippet header()}
-    <h2 class="text-3xl">ยืนยันการเช็คอิน</h2>
+    <h2 class="text-3xl">
+      ยืนยันการ{mode === "checkin" ? "เช็คอิน" : "เพิ่มคน"}
+    </h2>
   {/snippet}
   <p class="mx-6 mt-3">
     {#if !user.loading}
@@ -145,7 +183,7 @@
     </button>
     <button
       class="p-3 bg-yellow-500 active:bg-yellow-600 rounded-full"
-      onclick={() => (isConfirmDialogOpen = false)}
+      onclick={onScanConfirmed}
     >
       ตกลง
     </button>
