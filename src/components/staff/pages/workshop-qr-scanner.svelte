@@ -5,28 +5,38 @@
   import QrcodeScannerBase from "@src/components/staff/qrcode-scanner-base.svelte";
   import NavigationRails from "@src/components/staff/navigation-rails.svelte";
   import { resource } from "runed";
+  import { workshops } from "@src/data/workshops";
 
   let isWorkshopSelectorOpen = $state(false);
   let isConfirmDialogOpen = $state(false);
   const scanning = $derived(!(isWorkshopSelectorOpen || isConfirmDialogOpen));
 
   // TODO: save this to localstorage
-  let selectedWorkshop = $state({
+  let selectedWorkshopId = $state.raw({
     workshopId: "foodtech-playground",
     roundNumber: 1,
   });
+  const selectedWorkshop = $derived(
+    workshops.find((it) => it.id === selectedWorkshopId.workshopId)!,
+  );
+  const selectedTimeSlot = $derived(
+    selectedWorkshop?.slots.find(
+      (it) => it.round === selectedWorkshopId.roundNumber,
+    )!,
+  );
 
   // svelte-ignore state_referenced_locally : I know
-  let dialogWorkshop = $state($state.snapshot(selectedWorkshop));
+  let dialogWorkshop = $state($state.snapshot(selectedWorkshopId));
+  // $inspect(dialogWorkshop)
 
   function launchWorkshopSelector() {
-    dialogWorkshop = $state.snapshot(selectedWorkshop);
+    dialogWorkshop = $state.snapshot(selectedWorkshopId);
     isWorkshopSelectorOpen = true;
   }
 
   function updateSelectedWorkshop() {
+    selectedWorkshopId = $state.snapshot(dialogWorkshop);
     isWorkshopSelectorOpen = false;
-    selectedWorkshop = $state.snapshot(dialogWorkshop);
   }
 
   // we should actually cache these data in case of workshop
@@ -50,7 +60,7 @@
 <Navbar />
 <QrcodeScannerBase enable={scanning} {onResult}>
   {#snippet header()}
-    <h2 class="text-4xl mt-9 px-9">คุณกำลังหกแวสาหก่ืรีอ่าหกอาืาส</h2>
+    <h2 class="text-3xl mt-9 px-9">กำลังเช็คอิน {selectedWorkshop.title} รอบ {selectedTimeSlot.start}</h2>
   {/snippet}
   {#snippet notSoBottomUi()}
     <NavigationRails
@@ -69,8 +79,8 @@
   {#snippet bottomUi()}
     <ChangeRoundButton
       onclick={launchWorkshopSelector}
-      title="ทำกือ่่ผแส"
-      subtitle="รอบ 12.00 น."
+      title={selectedWorkshop.title}
+      subtitle="รอบ {selectedTimeSlot.start} - {selectedTimeSlot.end}"
     />
   {/snippet}
 </QrcodeScannerBase>
@@ -79,18 +89,37 @@
   {#snippet header()}
     <h2 class="text-3xl">เปลี่ยนเวิร์กช็อปและรอบ</h2>
   {/snippet}
-  <section>
-    <select class="select select-ghost">
-      <option disabled selected>Pick a color</option>
-      <option>Crimson</option>
-      <option>Amber</option>
-      <option>Velvet</option>
-    </select>
+  <section class="mx-6 flex flex-col gap-3">
+    <label class="flex flex-col gap-1">
+      <span>เวิร์กช็อป</span>
+      <select class="select" bind:value={dialogWorkshop.workshopId}>
+        {#each workshops as workshop}
+          <option value={workshop.id}>{workshop.title}</option>
+        {/each}
+      </select>
+    </label>
+
+    <label class="flex flex-col gap-1">
+      <span>รอบ</span>
+      <select
+        class="select"
+        bind:value={
+          () => String(dialogWorkshop.roundNumber),
+          (value) => (dialogWorkshop.roundNumber = parseInt(value))
+        }
+      >
+        {#each workshops.find((it) => it.id === dialogWorkshop.workshopId)?.slots ?? [] as slot}
+          <option value={String(slot.round)}
+            >รอบ {slot.start.toString()} - {slot.end.toString()}</option
+          >
+        {/each}
+      </select>
+    </label>
   </section>
   {#snippet buttons()}
     <button
       class="p-3 bg-yellow-500 active:bg-yellow-600 rounded-full"
-      onclick={() => (isWorkshopSelectorOpen = false)}
+      onclick={updateSelectedWorkshop}
     >
       ตกลง
     </button>
@@ -116,7 +145,7 @@
     </button>
     <button
       class="p-3 bg-yellow-500 active:bg-yellow-600 rounded-full"
-      onclick={updateSelectedWorkshop}
+      onclick={() => (isConfirmDialogOpen = false)}
     >
       ตกลง
     </button>
