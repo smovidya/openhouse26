@@ -1,6 +1,6 @@
 <script lang="ts">
   import CutoutBox from "@src/components/common/cutout-box.svelte";
-    import React from "@src/components/common/react.svelte";
+  import React from "@src/components/react/react.svelte";
   import { onNotify } from "@src/notification/client";
   import { toast, Toaster } from 'sonner';
 
