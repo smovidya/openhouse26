@@ -8,11 +8,12 @@
   import { workshops } from "@src/data/workshops";
   import DrawerButton from "@src/components/common/drawer-button.svelte";
   import ManualIdDialog from "@src/components/staff/manual-id-dialog.svelte";
+  import WorkshopAttendeeList from "@src/components/staff/pages/workshop-attendee-list.svelte";
 
   const scroll = new ScrollState({
     element: () => window,
   });
-  const isAtTop = $derived(scroll.progress.y <= 400);
+  const isAtTop = $derived(scroll.progress.y <= 60);
 
   let isWorkshopSelectorOpen = $state(false);
   let isConfirmDialogOpen = $state(false);
@@ -30,7 +31,7 @@
   // Workshop and timeslot selection ------------------------------------
 
   // TODO: save this to localstorage
-  let selectedWorkshopId = $state.raw({
+  let selectedWorkshopId = $state({
     workshopId: "foodtech-playground",
     roundNumber: 1,
   });
@@ -128,7 +129,7 @@
   {/snippet}
 </QrcodeScannerBase>
 
-<section class="px-8 mt-4 font-serif">
+<section class="px-8 mt-3 font-serif">
   <div class="flex flex-col items-center">
     <button
       class="px-4 py-1.5 rounded-md active:bg-black/10 text-yellow-600"
@@ -140,6 +141,11 @@
     </button>
   </div>
 </section>
+
+<WorkshopAttendeeList
+  bind:workshopId={selectedWorkshopId.workshopId}
+  bind:roundNumber={selectedWorkshopId.roundNumber}
+/>
 
 <Drawer bind:open={isWorkshopSelectorOpen}>
   {#snippet header()}

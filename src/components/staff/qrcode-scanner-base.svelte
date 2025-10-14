@@ -155,12 +155,12 @@
 </script>
 
 <div
-  class="relative w-full rounded-2xl min-h-12 font-serif select-none overflow-clip text-white"
+  class="relative w-full rounded-2xl min-h-12 font-serif select-none overflow-clip text-white mt-6 shadow-lg shadow-black/20"
 >
   <!-- svelte-ignore a11y_media_has_caption -->
   <video
     bind:this={videoElement}
-    class="object-cover w-full aspect-[9/16] bg-neutral-700"
+    class="object-cover w-full aspect-[9/16] p-0! m-0! bg-neutral-700"
     style="filter: blur({videoBlur.current}px);"
   >
   </video>
@@ -172,7 +172,7 @@
     style="filter: blur({videoBlur.current}px); opacity: {videoBlur.current /
       24};"
   ></canvas>
-  <div class="dim-overlay absolute inset-0"></div>
+  <div class="dim-overlay absolute inset-0 rounded-2xl"></div>
   <div class="absolute top-0 inset-x-0">
     {@render header?.()}
   </div>
