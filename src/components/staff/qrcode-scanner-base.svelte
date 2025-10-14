@@ -179,12 +179,12 @@
   <div
     class="absolute inset-x-9 top-48 aspect-square rounded-3xl border-4 border-yellow-500"
   ></div>
-  <section class="absolute bottom-4 right-4 left-4 flex flex-col gap-3">
+  <section class="absolute bottom-4 right-4 left-4 flex flex-col items-center gap-3">
     <div>
       {@render notSoBottomUi?.()}
     </div>
     <div class="flex gap-3">
-      <div class="flex-1 h-full">
+      <div class="flex-1 h-full w-full">
         {@render bottomUi?.()}
       </div>
       <button

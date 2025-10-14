@@ -6,6 +6,7 @@
   import NavigationRails from "@src/components/staff/navigation-rails.svelte";
   import { resource, ScrollState } from "runed";
   import { workshops } from "@src/data/workshops";
+  import { cn } from "@src/components/utils";
   import DrawerButton from "@src/components/common/drawer-button.svelte";
   import ManualIdDialog from "@src/components/staff/manual-id-dialog.svelte";
   import WorkshopAttendeeList from "@src/components/staff/pages/workshop-attendee-list.svelte";
@@ -98,11 +99,21 @@
 
 <QrcodeScannerBase enable={scanning} {onResult}>
   {#snippet header()}
-    <h2 class="text-3xl mt-9 px-9 text-white">
-      กำลัง<span class="font-bold"
+    <h2
+      class={cn(
+        "text-5xl bg-base-200/80 font-normal mt-9 p-4 px-9",
+        mode === "add" ? "bg-error text-base-100" : "",
+      )}
+    >
+      <span class="font-bold"
         >{mode === "checkin" ? "เช็คอิน" : "เพิ่มคนเข้า"}</span
       >
-      {selectedWorkshop.title} รอบ {selectedTimeSlot.start}
+      <span class="text-lg">
+        {selectedWorkshop.title}
+      </span>
+      <span class="font-mono font-bold">
+        {selectedTimeSlot.start}
+      </span>
     </h2>
   {/snippet}
   {#snippet notSoBottomUi()}

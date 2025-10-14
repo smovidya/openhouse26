@@ -54,7 +54,7 @@
 
 {#if items?.length}
   <nav
-    class="flex w-full h-10 items-center space-x-1 rounded-full border border-white/15 bg-black/40 p-0.5 backdrop-blur-2xl"
+    class="flex w-fit min-w-60 h-10 items-center space-x-1 rounded-full border border-white/15 bg-black/40 p-0.5 backdrop-blur-2xl"
     aria-label={ariaLabel}
   >
     {#each items as item (item.value)}

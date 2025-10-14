@@ -208,3 +208,71 @@ export const staffCheckin = defineAction({
     return;
   },
 });
+
+export const staffCheckinWorkshop = defineAction({
+  input: z.object({
+    participantIdOrQrCodeId: z.string(),
+    workshopId: z.string(),
+    roundId: z.string()
+  }),
+  handler: async (input, ctx) => { 
+    if (!ctx.locals.user) {
+      throw new ActionError({
+        code: "UNAUTHORIZED",
+        message: "ผู้ใช้ไม่ได้เข้าสู่ระบบ",
+      });
+    }
+    if (
+      !hasOneOfRoleIn(ctx.locals.user, [
+        "admin",
+        "workshopStaff",
+      ])
+    ) {
+      throw new ActionError({
+        code: "FORBIDDEN",
+        message: "ไม่ได้รับอนุญาต คุณไม่มีสิทธิ์เข้าใช้งาน",
+      });
+    }
+
+    let participant: Awaited<
+      ReturnType<typeof participantModel.getParticipantByIdOrQrCodeId>
+      >;
+    
+    try {
+      participant = await participantModel.getParticipantByIdOrQrCodeId(
+        ctx.locals.db,
+        input.participantIdOrQrCodeId,
+      );
+    } catch (err) {
+      throw new ActionError({
+        code: "INTERNAL_SERVER_ERROR",
+        message: "ไม่สามารถเข้าถึงข้อมูลผู้เข้าร่วมกิจกรรมได้",
+      });
+    }
+
+    if (!participant) {
+      throw new ActionError({
+        code: "NOT_FOUND",
+        message: "ไม่พบผู้เข้าร่วมกิจกรรม",
+      });
+    }
+
+    let checkinForWorkshop: Awaited<
+      ReturnType<typeof checkinModel.getCheckinByParticipantAndWorkshop>
+      >;
+    
+    try {
+      checkinForWorkshop = await checkinModel.getCheckinByParticipantAndWorkshop(
+        ctx.locals.db,
+        participant.id,
+        input.workshopId,
+        input.roundId
+      );
+    } catch (err) {
+      throw new ActionError({
+        code: "INTERNAL_SERVER_ERROR",
+        message: "ไม่สามารถเข้าถึงข้อมูลการเข้าร่วมกิจกรรมได้",
+      });
+    }
+  }
+})
