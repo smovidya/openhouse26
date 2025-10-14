@@ -163,33 +163,33 @@ export const addCheckinForParticipant = async (
   return checkin;
 };
 
-export const getCheckinByParticipantAndWorkshop = async (
-  db: Db,
-  participantIdOrQrCodeId: string,
-  workshopId: string,
-  roundId: string
-) => {
-  return db
-    .select()
-    .from(schema.checkins)
-    .leftJoin(
-      schema.participants,
-      eq(schema.participants.id, schema.checkins.participantId),
-    )
-    .leftJoin(
-      schema.checkpoints,
-      eq(schema.checkpoints.id, schema.checkins.checkpointId),
-  )
-    // MARKER(ptsgrn): fix here
-    .where(
-      and(
-        isNull(schema.checkins.deletedAt),
-        or(
-          eq(schema.participants.id, participantIdOrQrCodeId),
-          eq(schema.participants.qrCodeId, participantIdOrQrCodeId),
-        ),
-        eq(schema.checkpoints., workshopId),
-        eq(schema.checkpoints.roundId, roundId)
-      ),
-    );
-}
+// export const getCheckinByParticipantAndWorkshop = async (
+//   db: Db,
+//   participantIdOrQrCodeId: string,
+//   workshopId: string,
+//   roundId: string
+// ) => {
+//   return db
+//     .select()
+//     .from(schema.checkins)
+//     .leftJoin(
+//       schema.participants,
+//       eq(schema.participants.id, schema.checkins.participantId),
+//     )
+//     .leftJoin(
+//       schema.checkpoints,
+//       eq(schema.checkpoints.id, schema.checkins.checkpointId),
+//   )
+//     // MARKER(ptsgrn): fix here
+//     .where(
+//       and(
+//         isNull(schema.checkins.deletedAt),
+//         or(
+//           eq(schema.participants.id, participantIdOrQrCodeId),
+//           eq(schema.participants.qrCodeId, participantIdOrQrCodeId),
+//         ),
+//         eq(schema.checkpoints., workshopId),
+//         eq(schema.checkpoints.roundId, roundId)
+//       ),
+//     );
+// }
