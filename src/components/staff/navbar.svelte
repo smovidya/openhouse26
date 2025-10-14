@@ -1,6 +1,8 @@
 <script lang="ts">
   import { roles } from "@src/auth/permissions";
   import { hasOneOfRoleIn } from "@src/auth/utils";
+  import { prefetch } from "astro:prefetch";
+    import { onMount } from "svelte";
 
   interface PageOption {
     label: string;
@@ -53,6 +55,11 @@
     },
   ];
 
+  onMount(() => {
+    for (const { href } of pageOptions) {
+      prefetch(href)
+    }
+  })
 
   const {
     currentPath,
@@ -68,9 +75,9 @@
 
 <div class="not-prose flex flex-row items-center justify-between gap-3">
   <div class="flex flex-row items-center gap-3 flex-1">
-    <div class="">
+    <a class="block" href="/staff" data-astro-prefetch>
       <img src="/logo.png" alt="Logo" width="48" height="48" />
-    </div>
+    </a>
     <select
       class="text-xl select flex-1"
       bind:value={
@@ -79,7 +86,9 @@
             return currentPath;
           }
           const url = window.location.href;
-          const page = pageOptions.toReversed().find((it) => url.includes(it.href))!;
+          const page = pageOptions
+            .toReversed()
+            .find((it) => url.includes(it.href))!;
           return page.href;
         },
         (value) => {

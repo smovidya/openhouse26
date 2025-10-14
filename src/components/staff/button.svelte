@@ -10,6 +10,6 @@
   } = $props();
 </script>
 
-<a {href} class="btn btn-xl">
+<a {href} class="btn btn-xl" data-astro-prefetch="load">
   {@render children?.()}
 </a>
