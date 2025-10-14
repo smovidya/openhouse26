@@ -6,6 +6,8 @@
   import NavigationRails from "@src/components/staff/navigation-rails.svelte";
   import { resource, ScrollState } from "runed";
   import { workshops } from "@src/data/workshops";
+  import DrawerButton from "@src/components/common/drawer-button.svelte";
+  import ManualIdDialog from "@src/components/staff/manual-id-dialog.svelte";
 
   const scroll = new ScrollState({
     element: () => window,
@@ -15,7 +17,7 @@
   let isWorkshopSelectorOpen = $state(false);
   let isConfirmDialogOpen = $state(false);
   let isIdInputtingDialogOpen = $state(false);
-  let codeInput = $state("");
+
   let mode = $state("checkin" as "checkin" | "add");
   const scanning = $derived(
     !(
@@ -80,16 +82,13 @@
     // TODO: actually submitting this
   }
 
-  //
-
   function openSelfIdInputtingDialog() {
-    codeInput = "";
     isIdInputtingDialogOpen = true;
   }
 
-  function onSelfIdInputtingDialogDone() {
+  function onSelfIdInputtingDialogDone(value: string) {
     isIdInputtingDialogOpen = false;
-    let cached = codeInput;
+    let cached = value;
     // setTimeout(() => {
     onResult(cached);
     // }, 200);
@@ -98,7 +97,7 @@
 
 <QrcodeScannerBase enable={scanning} {onResult}>
   {#snippet header()}
-    <h2 class="text-3xl mt-9 px-9">
+    <h2 class="text-3xl mt-9 px-9 text-white">
       กำลัง<span class="font-bold"
         >{mode === "checkin" ? "เช็คอิน" : "เพิ่มคนเข้า"}</span
       >
@@ -185,12 +184,7 @@
     </label>
   </section>
   {#snippet buttons()}
-    <button
-      class="p-3 bg-yellow-500 active:bg-yellow-600 rounded-full"
-      onclick={updateSelectedWorkshop}
-    >
-      ตกลง
-    </button>
+    <DrawerButton onclick={updateSelectedWorkshop}>ตกลง</DrawerButton>
   {/snippet}
 </Drawer>
 
@@ -207,51 +201,19 @@
     {/if}
   </p>
   {#snippet buttons()}
-    <button
-      class="p-3 bg-neutral-200 active:bg-neutral-300 text-black rounded-full"
+    <DrawerButton
+      variant="neutral"
       onclick={() => (isConfirmDialogOpen = false)}
     >
       ยกเลิก
-    </button>
-    <button
-      class="p-3 bg-yellow-500 active:bg-yellow-600 rounded-full"
-      onclick={onScanConfirmed}
-    >
-      ตกลง
-    </button>
+    </DrawerButton>
+    <DrawerButton onclick={onScanConfirmed}>ตกลง</DrawerButton>
   {/snippet}
 </Drawer>
 
-<Drawer bind:open={isIdInputtingDialogOpen}>
-  {#snippet header()}
-    <h2 class="text-3xl">
-      กรอกโค้ด{mode === "checkin" ? "เช็คอิน" : "เพิ่มคน"}
-    </h2>
-    <p class="text-neutral-600">สามารถดูได้ใต้ Qr Code ในหน้า MyID</p>
-  {/snippet}
-  <section class="px-6">
-    <label class="flex flex-col gap-1">
-      <span>โค้ด</span>
-      <input
-        type="text"
-        class="input"
-        placeholder="UI490"
-        bind:value={codeInput}
-      />
-    </label>
-  </section>
-  {#snippet buttons()}
-    <button
-      class="p-3 bg-neutral-200 active:bg-neutral-300 text-black rounded-full"
-      onclick={() => (isIdInputtingDialogOpen = false)}
-    >
-      ยกเลิก
-    </button>
-    <button
-      class="p-3 bg-yellow-500 active:bg-yellow-600 rounded-full"
-      onclick={onSelfIdInputtingDialogDone}
-    >
-      ตกลง
-    </button>
-  {/snippet}
-</Drawer>
+<ManualIdDialog
+  headerText="กรอกโค้ด{mode === 'checkin' ? 'เช็คอิน' : 'เพิ่มคน'}"
+  subText="ผู้เข้าร่วมสามารถดูได้ใต้ Qr Code ในหน้า MyID"
+  bind:open={isIdInputtingDialogOpen}
+  onDone={onSelfIdInputtingDialogDone}
+/>

@@ -53,6 +53,7 @@
     },
   ];
 
+
   const {
     currentPath,
     user,
@@ -65,33 +66,37 @@
   } = $props();
 </script>
 
-<div class="not-prose flex flex-row items-center justify-between">
-  <div class="flex flex-row items-center gap-3">
+<div class="not-prose flex flex-row items-center justify-between gap-3">
+  <div class="flex flex-row items-center gap-3 flex-1">
     <div class="">
       <img src="/logo.png" alt="Logo" width="48" height="48" />
     </div>
     <select
-      class="text-2xl select"
-      onchange={(e) => {
-        if (!e || !e.target || !e.target?.value) return;
-        window.location.href = e.target.value;
-      }}
+      class="text-xl select flex-1"
+      bind:value={
+        () => {
+          if (import.meta.env.SSR) {
+            return currentPath;
+          }
+          const url = window.location.href;
+          const page = pageOptions.toReversed().find((it) => url.includes(it.href))!;
+          return page.href;
+        },
+        (value) => {
+          window.location.href = value;
+        }
+      }
     >
       {#each pageOptions as page}
         {#if hasOneOfRoleIn(user, page.role)}
-          <option value={page.href} selected={page.href === currentPath}
-            >{page.label}</option
-          >
+          <option value={page.href}>{page.label}</option>
         {/if}
       {/each}
     </select>
   </div>
   <div class="avatar">
     <div class="rounded-full w-10">
-      <img
-        src={user.image}
-        alt="User Avatar"
-      />
+      <img src={user.image} alt="User Avatar" />
     </div>
   </div>
 </div>

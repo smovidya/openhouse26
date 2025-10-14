@@ -1,15 +1,16 @@
 <script lang="ts">
+  import DrawerButton from "@src/components/common/drawer-button.svelte";
   import Drawer from "@src/components/common/drawer.svelte";
   import ChangeRoundButton from "@src/components/staff/change-round-button.svelte";
-  import Navbar from "@src/components/staff/navbar.svelte";
+  import ManualIdDialog from "@src/components/staff/manual-id-dialog.svelte";
   import QrcodeScannerBase from "@src/components/staff/qrcode-scanner-base.svelte";
-  import { resource, ScrollState } from "runed";
-  import { actions } from "astro:actions";
   import {
     boothCheckpoints,
     isDepartmentStaffSelectable,
   } from "@src/data/checkpoints";
+  import { actions } from "astro:actions";
   import WarningAltFilled from "carbon-icons-svelte/lib/WarningAltFilled.svelte";
+  import { resource, ScrollState } from "runed";
 
   const scroll = new ScrollState({
     element: () => window,
@@ -19,7 +20,7 @@
   let isBoothSelectorOpen = $state(false);
   let isConfirmDialogOpen = $state(false);
   let isIdInputtingDialogOpen = $state(false);
-  let codeInput = $state("");
+
   const scanning = $derived(
     !(isBoothSelectorOpen || isConfirmDialogOpen || isIdInputtingDialogOpen) &&
       isAtTop,
@@ -105,14 +106,9 @@
     }
   }
 
-  function openSelfIdInputtingDialog() {
-    codeInput = "";
-    isIdInputtingDialogOpen = true;
-  }
-
-  function onSelfIdInputtingDialogDone() {
+  function onSelfIdInputtingDialogDone(value: string) {
     isIdInputtingDialogOpen = false;
-    let cached = codeInput;
+    let cached = value;
     // setTimeout(() => {
     onResult(cached);
     // }, 200);
@@ -138,7 +134,7 @@
   <div class="flex flex-col items-center">
     <button
       class="px-4 py-1.5 rounded-md active:bg-black/10 text-yellow-600"
-      onclick={openSelfIdInputtingDialog}
+      onclick={() => (isIdInputtingDialogOpen = true)}
     >
       สแกนไม่ติด? <span class="underline underline-offset-2"
         >กรอกโค้ดด้วยตนเอง</span
@@ -175,12 +171,7 @@
     {/if}
   </section>
   {#snippet buttons()}
-    <button
-      class="p-3 bg-yellow-500 active:bg-yellow-600 rounded-full"
-      onclick={updateSelectedBooth}
-    >
-      ตกลง
-    </button>
+    <DrawerButton onclick={updateSelectedBooth}>ตกลง</DrawerButton>
   {/snippet}
 </Drawer>
 
@@ -220,51 +211,19 @@
     </table>
   {/if}
   {#snippet buttons()}
-    <button
-      class="p-3 bg-neutral-200 active:bg-neutral-300 text-black rounded-full"
+    <DrawerButton
+      variant="neutral"
       onclick={() => (isConfirmDialogOpen = false)}
     >
       ยกเลิก
-    </button>
-    <button
-      class="p-3 bg-yellow-500 active:bg-yellow-600 rounded-full"
-      onclick={onScanConfirmed}
-    >
-      ตกลง
-    </button>
+    </DrawerButton>
+    <DrawerButton onclick={onScanConfirmed}>ตกลง</DrawerButton>
   {/snippet}
 </Drawer>
 
-<Drawer bind:open={isIdInputtingDialogOpen}>
-  {#snippet header()}
-    <h2 class="text-3xl">กรอกโค้ดเช็คอิน</h2>
-    <p class="text-neutral-600">
-      ผู้เข้าร่วมสามารถดูได้ใต้ Qr Code ในหน้า MyID
-    </p>
-  {/snippet}
-  <section class="px-6">
-    <label class="flex flex-col gap-1">
-      <span>โค้ด</span>
-      <input
-        type="text"
-        class="input"
-        placeholder="UI490"
-        bind:value={codeInput}
-      />
-    </label>
-  </section>
-  {#snippet buttons()}
-    <button
-      class="p-3 bg-neutral-200 active:bg-neutral-300 text-black rounded-full"
-      onclick={() => (isIdInputtingDialogOpen = false)}
-    >
-      ยกเลิก
-    </button>
-    <button
-      class="p-3 bg-yellow-500 active:bg-yellow-600 rounded-full"
-      onclick={onSelfIdInputtingDialogDone}
-    >
-      ตกลง
-    </button>
-  {/snippet}
-</Drawer>
+<ManualIdDialog
+  headerText="กรอกโค้ดเช็คอิน"
+  subText="ผู้เข้าร่วมสามารถดูได้ใต้ Qr Code ในหน้า MyID"
+  bind:open={isIdInputtingDialogOpen}
+  onDone={onSelfIdInputtingDialogDone}
+/>
