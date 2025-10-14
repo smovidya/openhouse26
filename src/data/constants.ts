@@ -13,6 +13,7 @@ export const featureFlags = {
   get workshopRegistrationClosed() {
     return new Date() > new Date("2025-10-10T23:59:59+07:00");
   },
+  showMission: true,
 };
 
 export const howDidYouKnowUsOptions = [

@@ -27,9 +27,9 @@ export const participants = sqliteTable(
     attendeeType: t.text("attendee_type").notNull(),
     school: t.text("school"),
     questions: t.text("questions"), // Serialized JSON string for analytical questions
-    emergencyContactName: t.text("emergency_contact_name"),
-    emergencyContactPhone: t.text("emergency_contact_phone"),
-    emergencyContactRelation: t.text("emergency_contact_relation"),
+    // emergencyContactName: t.text("emergency_contact_name"),
+    // emergencyContactPhone: t.text("emergency_contact_phone"),
+    // emergencyContactRelation: t.text("emergency_contact_relation"),
     ...timestamps,
   },
   (table) => [

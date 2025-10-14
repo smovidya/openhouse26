@@ -12,9 +12,9 @@
   class="w-full h-12 rounded-full bg-black/40 active:bg-neutral-800/30 border border-white/15 backdrop-blur-2xl flex gap-2 text-left items-center justify-between px-5 transition-colors"
   {onclick}
 >
-  <div class="leading-4 text-sm">
-    <p class="line-clamp-1">{title}</p>
-    <p class="text-white/60">{subtitle}</p>
+  <div class="flex flex-col text-sm">
+    <span class="line-clamp-1">{title}</span>
+    <span class="text-white/60 text-xs">{subtitle}</span>
   </div>
-  <p class="rounded-full text-sm text-yellow-500">เปลี่ยน</p>
+  <span class="rounded-full text-sm text-yellow-500">เปลี่ยน</span>
 </button>

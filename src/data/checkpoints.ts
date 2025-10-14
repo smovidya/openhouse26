@@ -132,3 +132,19 @@ export const checkpoints: Checkpoint[] = [
   },
   ...workshopCheckpoints,
 ];
+
+export const boothCheckpoints = checkpoints.filter(
+  (checkpoint) => checkpoint.type === "booth",
+);
+
+export const isDepartmentStaffSelectable = (checkpointId: string) => {
+  return ![
+    "entry-register",
+    "add-your",
+    "recive-reward",
+    "tcas",
+    "sci-playground",
+    "stage",
+    "hashtag",
+  ].includes(checkpointId);
+};

@@ -163,7 +163,7 @@
   <!-- svelte-ignore a11y_media_has_caption -->
   <video
     bind:this={videoElement}
-    class="object-cover aspect-[9/16] bg-neutral-700"
+    class="object-cover w-full aspect-[9/16] bg-neutral-700"
     style="filter: blur({videoBlur.current}px);"
   >
   </video>

@@ -2,8 +2,7 @@ import { getLocalD1DB } from "@src/db/getDbFile";
 import { createClient } from "@libsql/client";
 import { schema } from "../schema";
 import { drizzle } from "drizzle-orm/libsql";
-import { asc, eq, sql } from "drizzle-orm";
-import { QueryBuilder } from "drizzle-orm/sqlite-core";
+import { asc, eq } from "drizzle-orm";
 
 async function main() {
   const db = drizzle({

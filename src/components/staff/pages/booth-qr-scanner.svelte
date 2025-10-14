@@ -3,8 +3,13 @@
   import ChangeRoundButton from "@src/components/staff/change-round-button.svelte";
   import Navbar from "@src/components/staff/navbar.svelte";
   import QrcodeScannerBase from "@src/components/staff/qrcode-scanner-base.svelte";
-  import { departments } from "@src/data/departments";
   import { resource, ScrollState } from "runed";
+  import { actions } from "astro:actions";
+  import {
+    boothCheckpoints,
+    isDepartmentStaffSelectable,
+  } from "@src/data/checkpoints";
+  import WarningAltFilled from "carbon-icons-svelte/lib/WarningAltFilled.svelte";
 
   const scroll = new ScrollState({
     element: () => window,
@@ -23,14 +28,13 @@
   // Workshop and timeslot selection ------------------------------------
 
   // TODO: save this to localstorage
-  let selectedBoothId = $state(String(departments[0].id));
+  let selectedBoothId = $state("bsac");
   const selectedBooth = $derived(
-    departments.find((it) => String(it.id) === selectedBoothId)!,
+    boothCheckpoints.find((it) => String(it.id) === selectedBoothId)!,
   );
 
   // svelte-ignore state_referenced_locally : I know
   let dialogWorkshopId = $state($state.snapshot(selectedBoothId));
-  // $inspect(dialogWorkshopId)
 
   function launchWorkshopSelector() {
     dialogWorkshopId = $state.snapshot(selectedBoothId);
@@ -49,25 +53,57 @@
   const user = resource(
     () => currentQrId,
     async () => {
-      currentQrId;
-      return {
-        id: currentQrId,
-      };
+      if (!currentQrId) {
+        alert("No QR code scanned");
+        return;
+      }
+      const { data, error } =
+        await actions.getParticipantCheckinBoothByIdOrQrCodeId({
+          boothId: selectedBoothId,
+          participantIdOrQrCodeId: currentQrId,
+        });
+      if (error) {
+        throw new Error(error.message);
+      }
+      if (!data) {
+        throw new Error("No user found");
+      }
+      return data;
+    },
+    {
+      lazy: true,
     },
   );
 
   function onResult(value: string) {
     currentQrId = value;
     isConfirmDialogOpen = true;
+    user.refetch();
   }
 
-  function onScanConfirmed() {
+  async function onScanConfirmed() {
     isConfirmDialogOpen = false;
-
-    // TODO: actually submitting this
+    // alert(
+    //   JSON.stringify({
+    //     currentQrId,
+    //     selectedBoothId,
+    //   }),
+    // );
+    if (!currentQrId) {
+      alert("กรุณาสแกน QR Code หรือป้อน ID");
+      return;
+    }
+    const { data, error } = await actions.staffCheckin({
+      boothId: selectedBoothId,
+      participantIdOrQrCodeId: currentQrId,
+    });
+    if (error) {
+      alert(error.message);
+    }
+    if (data) {
+      alert("เช็คอินแล้ว");
+    }
   }
-
-  //
 
   function openSelfIdInputtingDialog() {
     codeInput = "";
@@ -86,15 +122,15 @@
 <Navbar />
 <QrcodeScannerBase enable={scanning} {onResult}>
   {#snippet header()}
-    <h2 class="text-3xl mt-9 px-9">
-      กำลัง<span class="font-bold">เช็คอิน</span>บูธ{selectedBooth.thName}
+    <h2 class="text-3xl mt-9 bg-base-200/80 text-base-content px-9">
+      กำลัง<span class="font-bold">เช็คอิน</span>{selectedBooth?.name || "???"}
     </h2>
   {/snippet}
   {#snippet bottomUi()}
     <ChangeRoundButton
       onclick={launchWorkshopSelector}
-      title={selectedBooth.thName}
-      subtitle={selectedBooth.enShortName}
+      title={selectedBooth?.name || "ไม่พบบูธ"}
+      subtitle={selectedBooth?.type || "ไม่พบบูธ"}
     />
   {/snippet}
 </QrcodeScannerBase>
@@ -120,13 +156,24 @@
     <label class="flex flex-col gap-1">
       <span>บูธ</span>
       <select class="select" bind:value={dialogWorkshopId}>
-        {#each departments as department}
-          <option value={String(department.id)}
-            >{department.thName} ({department.enShortName})</option
-          >
+        {#each boothCheckpoints as checkpoint}
+          <option value={String(checkpoint.id)}>{checkpoint.name}</option>
         {/each}
       </select>
     </label>
+    {#if !isDepartmentStaffSelectable(dialogWorkshopId)}
+      <div class="alert alert-warning">
+        <WarningAltFilled />
+        <div>
+          <strong> ตัวเลือกนี้เฉพาะสตาฟส่วนกลาง </strong>
+          <span>
+            ขอความร่วมมือสตาฟภาควิชาเลือกเฉพาะที่เกี่ยวข้องตามที่ระบุในคู่มือเท่านั้น
+            ระบบสามารถสอบทานย้อนหลังเพื่อตรวจสอบการทุจริตได้
+            การไม่ปฏิบัติตามเงื่อนไขการใช้งานจะถูกบันทึกไว้ในระบบ
+          </span>
+        </div>
+      </div>
+    {/if}
   </section>
   {#snippet buttons()}
     <button
@@ -142,12 +189,37 @@
   {#snippet header()}
     <h2 class="text-3xl">ยืนยันการเช็คอิน</h2>
   {/snippet}
-  <p class="mx-6 mt-3">
-    {#if !user.loading}
-      {JSON.stringify(user.current)}
-      name, email, mission, workshop, รอบ
-    {/if}
-  </p>
+  {#if user.loading}
+    <div class="flex gap-2 flex-row justify-center items-center">
+      <span class="loading loading-dots"></span>
+      <span>กำลังโหลด...</span>
+    </div>
+  {/if}
+  {#if user.error}
+    <div class="alert alert-error">
+      <span>{user.error}</span>
+    </div>
+  {/if}
+  {#if user.current && !user.loading && !user.error}
+    <table class="table mx-6 mt-3 text-md">
+      <tbody>
+        <tr>
+          <th> ชื่อ </th>
+          <td class="text-xl">
+            {user.current?.participant?.givenName}
+            {user.current?.participant?.familyName}
+          </td>
+        </tr>
+        <tr>
+          <th> ความคืบหน้าปัจจุบัน </th>
+          <td>
+            WIP
+            <!-- TODO(ptsgrn): participant progress -->
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  {/if}
   {#snippet buttons()}
     <button
       class="p-3 bg-neutral-200 active:bg-neutral-300 text-black rounded-full"
@@ -167,7 +239,9 @@
 <Drawer bind:open={isIdInputtingDialogOpen}>
   {#snippet header()}
     <h2 class="text-3xl">กรอกโค้ดเช็คอิน</h2>
-    <p class="text-neutral-600">สามารถดูได้ใต้ Qr Code ในหน้า MyID</p>
+    <p class="text-neutral-600">
+      ผู้เข้าร่วมสามารถดูได้ใต้ Qr Code ในหน้า MyID
+    </p>
   {/snippet}
   <section class="px-6">
     <label class="flex flex-col gap-1">
