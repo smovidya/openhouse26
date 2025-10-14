@@ -2,6 +2,7 @@
 import Layout from "@src/layouts/ManagementLayout.astro";
 import { hasOneOfRoleIn } from "@src/auth/utils";
 import Button from "@src/components/staff/button.svelte";
+import Logout from "@src/components/logout-button.svelte";
 
 const user = Astro.locals.user;
 ---
@@ -10,8 +11,27 @@ const user = Astro.locals.user;
   title="Staff Dashboard"
   description="Staff dashboard for Open House 2024"
 >
-  <main class="relative mt-12 w-full overflow-x-clip text-sm">
+  <main class="mt-12 w-full overflow-x-clip text-sm">
     <h1 class="my-8 text-center text-3xl font-bold">เมนูสตาฟ</h1>
+    <div>
+      <div class="mb-4 flex flex-col items-center justify-center text-center">
+        <div class="flex flex-col">
+          <img alt="User Avatar" src={user?.image} class="w-20 rounded-full" />
+        </div>
+        <div class="ml-4 flex flex-col justify-center">
+          <span class="text-lg font-medium">{user?.name}</span>
+          <span class="text-sm text-gray-500">{user?.email}</span>
+          <span
+            class="mt-2 flex flex-wrap gap-1 text-xs"
+            >{
+              user?.role
+                ?.split(",")
+                .map((role) => <span class="badge">{role}</span>)
+            }</span
+          >
+        </div>
+      </div>
+    </div>
     <div class="flex flex-col">
       <h2>สำหรับสตาฟทุกคน</h2>
       <Button href="/staff/check-attendance"> ตรวจสถานะของผู้เข้าร่วม </Button>
@@ -42,6 +62,7 @@ const user = Astro.locals.user;
             </Button>
           )
         }
+        <Logout client:load class="btn btn-xl"> ออกจากระบบ </Logout>
       </div>
     </div>
   </main>

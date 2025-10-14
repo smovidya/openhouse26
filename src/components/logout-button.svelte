@@ -1,12 +1,20 @@
-<script>
+<script lang="ts">
   import { authClientSvelte } from "@src/auth/client";
   import Button from "./common/button.svelte";
+  import type { Snippet } from "svelte";
+    import { cn } from './utils';
 
-  const { children } = $props();
+  const {
+    children,
+    class: className,
+  }: {
+    children?: Snippet;
+    class?: string;
+  } = $props();
 </script>
 
 <button
-  class="btn btn-sm btn-ghost"
+  class={cn("btn btn-sm btn-ghost", className)}
   onclick={async () => {
     await authClientSvelte.signOut();
     window.location.reload();

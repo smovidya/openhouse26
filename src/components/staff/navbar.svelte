@@ -60,11 +60,12 @@
     currentPath: string;
     user: {
       role: string;
+      image: string;
     };
   } = $props();
 </script>
 
-<div class="flex flex-row items-center justify-between">
+<div class="not-prose flex flex-row items-center justify-between">
   <div class="flex flex-row items-center gap-3">
     <div class="">
       <img src="/logo.png" alt="Logo" width="48" height="48" />
@@ -85,5 +86,12 @@
       {/each}
     </select>
   </div>
-  <div class="size-10 rounded-full bg-red-500"></div>
+  <div class="avatar">
+    <div class="rounded-full w-10">
+      <img
+        src={user.image}
+        alt="User Avatar"
+      />
+    </div>
+  </div>
 </div>
