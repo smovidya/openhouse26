@@ -4,7 +4,7 @@ import { like } from "drizzle-orm";
 export const getStaffByEmail = async (db: Db, email: string) => {
   return db.query.staffs.findFirst({
     // search in substrings, we store as array-ish of emails :P
-    where: like(schema.staffs.email, `%${email}%`),
+    where: like(schema.staffs.emails, `%${email}%`),
   });
 };
 
@@ -12,7 +12,7 @@ export const addStaff = async (
   db: Db,
   data: typeof schema.staffs.$inferInsert,
 ) => {
-  for (const email of data.email) {
+  for (const email of data.emails) {
     const existingStaff = await getStaffByEmail(db, email);
     if (existingStaff) {
       throw new Error(`Staff with email ${email} already exists`);
