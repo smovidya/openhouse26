@@ -149,7 +149,7 @@
 
 <Drawer bind:open={isBoothSelectorOpen}>
   {#snippet header()}
-    <h2 class="text-3xl">เปลี่ยนเวิร์กช็อปและรอบ</h2>
+    <h2 class="text-3xl">เปลี่ยนบูธ</h2>
   {/snippet}
   <section class="mx-6 flex flex-col gap-3">
     <label class="flex flex-col gap-1">
