@@ -119,7 +119,6 @@
   }
 </script>
 
-<Navbar />
 <QrcodeScannerBase enable={scanning} {onResult}>
   {#snippet header()}
     <h2 class="text-3xl mt-9 bg-base-200/80 text-base-content px-9">
