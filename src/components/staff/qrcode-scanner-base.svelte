@@ -155,7 +155,7 @@
 </script>
 
 <div
-  class="relative w-full min-h-12 font-serif select-none overflow-clip text-white"
+  class="relative w-full rounded-2xl min-h-12 font-serif select-none overflow-clip text-white"
 >
   <!-- svelte-ignore a11y_media_has_caption -->
   <video
