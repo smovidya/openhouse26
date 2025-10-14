@@ -4,6 +4,9 @@
   import Renew from "carbon-icons-svelte/lib/Renew.svelte";
   import { onMount, type Snippet } from "svelte";
   import { Spring } from "svelte/motion";
+  import { IsDocumentVisible } from "runed";
+
+	const isTabActive = new IsDocumentVisible();
 
   let videoElement = $state(null) as HTMLVideoElement | null;
   let canvasElement = $state(null) as HTMLCanvasElement | null;
@@ -81,14 +84,8 @@
     if (!videoElement || !context) {
       return;
     }
-  });
 
-  $effect(() => {
-    if (!videoElement || !context) {
-      return;
-    }
-
-    if (enable) {
+    if (enable && isTabActive.current) {
       const id = setTimeout(() => {
         reader.decodeFromVideoDevice(
           activeInputDeviceId,
@@ -96,7 +93,7 @@
           (result) => {
             if (result) {
               console.log(result);
-              if (enable) {
+              if (enable && isTabActive.current) {
                 onResult?.(result.getText());
               }
             }
@@ -148,7 +145,7 @@
       return;
     }
 
-    if (enable) {
+    if (enable && isTabActive.current) {
       const id = setTimeout(() => videoBlur.set(0), 400);
       return () => clearTimeout(id);
     } else {
