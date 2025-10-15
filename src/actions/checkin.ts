@@ -1,8 +1,14 @@
 import { hasOneOfRoleIn } from "@src/auth/utils";
 import { z } from "astro/zod";
 import { ActionError, defineAction } from "astro:actions";
-import { participantModel, checkinModel, staffModel } from "@src/db";
+import {
+  participantModel,
+  checkinModel,
+  staffModel,
+  workshopModel,
+} from "@src/db";
 import { boothCheckpoints } from "@src/data/checkpoints";
+import type { CheckinWorkshopData } from "@src/type";
 
 export const getParticipantCheckinBoothByIdOrQrCodeId = defineAction({
   input: z.object({
@@ -60,15 +66,14 @@ export const getParticipantCheckinBoothByIdOrQrCodeId = defineAction({
       };
     }
 
-    let checkinForBooth: Awaited<
-      ReturnType<typeof checkinModel.getCheckinByParticipantAndCheckpoint>
+    let checkins: Awaited<
+      ReturnType<typeof checkinModel.getCheckinByParticipant>
     >;
 
     try {
-      checkinForBooth = await checkinModel.getCheckinByParticipantAndCheckpoint(
+      checkins = await checkinModel.getCheckinByParticipant(
         ctx.locals.db,
-        participant.id,
-        input.boothId,
+        input.participantIdOrQrCodeId,
       );
     } catch (err) {
       throw new ActionError({
@@ -77,16 +82,9 @@ export const getParticipantCheckinBoothByIdOrQrCodeId = defineAction({
       });
     }
 
-    if (!checkinForBooth) {
-      throw new ActionError({
-        code: "NOT_FOUND",
-        message: "ไม่พบการเข้าร่วมกิจกรรม",
-      });
-    }
-
     return {
       participant,
-      checkinForBooth,
+      checkinForBooth: checkins,
     };
   },
 });
@@ -127,7 +125,7 @@ export const staffCheckin = defineAction({
     let participant: Awaited<
       ReturnType<typeof participantModel.getParticipantByIdOrQrCodeId>
     >;
-    let checkinForBooth: Awaited<
+    let checkins: Awaited<
       ReturnType<typeof checkinModel.getCheckinByParticipantAndCheckpoint>
     >;
 
@@ -151,7 +149,7 @@ export const staffCheckin = defineAction({
     }
 
     try {
-      checkinForBooth = await checkinModel.getCheckinByParticipantAndCheckpoint(
+      checkins = await checkinModel.getCheckinByParticipantAndCheckpoint(
         ctx.locals.db,
         participant.id,
         input.boothId,
@@ -163,11 +161,41 @@ export const staffCheckin = defineAction({
       });
     }
 
-    if (checkinForBooth.some((v) => v.checkpoints?.id === input.boothId)) {
+    // Does the attendee checkin at register?
+    if (!checkins.find((v) => v.checkpoints?.type === "entry")) {
+      throw new ActionError({
+        code: "CONFLICT",
+        message:
+          "ผู้เข้าร่วมกิจกรรมนี้ยังไม่ได้ลงทะเบียนเข้างาน โปรดแจ้งให้ไปที่จุดลงทะเบียน",
+      });
+    }
+
+    if (checkins.some((v) => v.checkpoints?.id === input.boothId)) {
       throw new ActionError({
         code: "CONFLICT",
         message: "ผู้เข้าร่วมกิจกรรมนี้ได้เข้าร่วมกิจกรรมในบูธนี้แล้ว",
       });
+    }
+
+    const attendedWorkshop =
+      checkins.filter((v) => v.checkpoints?.type === "workshop") || [];
+
+    for (const w of attendedWorkshop) {
+      const currentTime = new Date();
+      const parsedData = JSON.parse(
+        (w.checkins.data || "{}") as string,
+      ) as CheckinWorkshopData;
+      if (parsedData && parsedData.type === "workshop") {
+        const startTime = new Date(parsedData.startTime);
+        const endTime = new Date(parsedData.endTime);
+        // If the current time is within the workshop time, prevent check-in to other booths
+        if (currentTime >= startTime && currentTime <= endTime) {
+          throw new ActionError({
+            code: "CONFLICT",
+            message: `ผู้เข้าร่วมกิจกรรมนี้กำลังเข้าร่วมกิจกรรม Workshop อยู่ ไม่สามารถเข้าร่วมกิจกรรมอื่นได้ในขณะนี้`,
+          });
+        }
+      }
     }
 
     let staffId: Awaited<ReturnType<typeof staffModel.getStaffIdByUserId>>;
@@ -209,46 +237,41 @@ export const staffCheckin = defineAction({
   },
 });
 
-// export const staffCheckinWorkshop = defineAction({
-//   input: z.object({
-//     participantIdOrQrCodeId: z.string(),
-//     workshopId: z.string(),
-//     roundId: z.string()
-//   }),
-//   handler: async (input, ctx) => { 
-//     if (!ctx.locals.user) {
-//       throw new ActionError({
-//         code: "UNAUTHORIZED",
-//         message: "ผู้ใช้ไม่ได้เข้าสู่ระบบ",
-//       });
-//     }
-//     if (
-//       !hasOneOfRoleIn(ctx.locals.user, [
-//         "admin",
-//         "workshopStaff",
-//       ])
-//     ) {
-//       throw new ActionError({
-//         code: "FORBIDDEN",
-//         message: "ไม่ได้รับอนุญาต คุณไม่มีสิทธิ์เข้าใช้งาน",
-//       });
-//     }
+export const staffCheckinWorkshop = defineAction({
+  input: z.object({
+    participantIdOrQrCodeId: z.string(),
+    workshopId: z.string(),
+    roundNumber: z.string(),
+  }),
+  handler: async (input, ctx) => {
+    if (!ctx.locals.user) {
+      throw new ActionError({
+        code: "UNAUTHORIZED",
+        message: "ผู้ใช้ไม่ได้เข้าสู่ระบบ",
+      });
+    }
+    if (!hasOneOfRoleIn(ctx.locals.user, ["admin", "workshopStaff"])) {
+      throw new ActionError({
+        code: "FORBIDDEN",
+        message: "ไม่ได้รับอนุญาต คุณไม่มีสิทธิ์เข้าใช้งาน",
+      });
+    }
 
-//     let participant: Awaited<
-//       ReturnType<typeof participantModel.getParticipantByIdOrQrCodeId>
-//       >;
-    
-//     try {
-//       participant = await participantModel.getParticipantByIdOrQrCodeId(
-//         ctx.locals.db,
-//         input.participantIdOrQrCodeId,
-//       );
-//     } catch (err) {
-//       throw new ActionError({
-//         code: "INTERNAL_SERVER_ERROR",
-//         message: "ไม่สามารถเข้าถึงข้อมูลผู้เข้าร่วมกิจกรรมได้",
-//       });
-//     }
+    let participant: Awaited<
+      ReturnType<typeof participantModel.getParticipantByIdOrQrCodeId>
+    >;
+
+    try {
+      participant = await participantModel.getParticipantByIdOrQrCodeId(
+        ctx.locals.db,
+        input.participantIdOrQrCodeId,
+      );
+    } catch (err) {
+      throw new ActionError({
+        code: "INTERNAL_SERVER_ERROR",
+        message: "ไม่สามารถเข้าถึงข้อมูลผู้เข้าร่วมกิจกรรมได้",
+      });
+    }
 
 //     if (!participant) {
 //       throw new ActionError({
@@ -257,22 +280,76 @@ export const staffCheckin = defineAction({
 //       });
 //     }
 
-//     let checkinForWorkshop: Awaited<
-//       ReturnType<typeof checkinModel.getCheckinByParticipantAndWorkshop>
-//       >;
-    
-//     try {
-//       checkinForWorkshop = await checkinModel.getCheckinByParticipantAndWorkshop(
-//         ctx.locals.db,
-//         participant.id,
-//         input.workshopId,
-//         input.roundId
-//       );
-//     } catch (err) {
-//       throw new ActionError({
-//         code: "INTERNAL_SERVER_ERROR",
-//         message: "ไม่สามารถเข้าถึงข้อมูลการเข้าร่วมกิจกรรมได้",
-//       });
-//     }
-//   }
-// })
+    let userRegisteredSlots: Awaited<
+      ReturnType<
+        (typeof workshopModel)["getTimeSlotRegistrationForParticipant"]
+      >
+    >;
+
+    try {
+      userRegisteredSlots =
+        await workshopModel.getTimeSlotRegistrationForParticipant(
+          ctx.locals.db,
+          participant.id,
+        );
+    } catch (err) {
+      throw new ActionError({
+        code: "INTERNAL_SERVER_ERROR",
+        message: "ไม่สามารถเข้าถึงข้อมูลการลงทะเบียนกิจกรรมได้",
+      });
+    }
+
+    const currentSlot = userRegisteredSlots.find((v) => {
+      return (
+        v.timeSlot.roundNumber === +input.roundNumber &&
+        v.timeSlot.workshopId === input.workshopId
+      );
+    });
+
+    if (!currentSlot) {
+      throw new ActionError({
+        code: "FORBIDDEN",
+        message:
+          "ผู้เข้าร่วมกิจกรรมนี้ไม่ได้ลงทะเบียนกิจกรรม Workshop ในรอบนี้ไว้",
+      });
+    }
+
+    let staffId: Awaited<ReturnType<(typeof staffModel)["getStaffIdByUserId"]>>;
+
+    try {
+      staffId = await staffModel.getStaffIdByUserId(
+        ctx.locals.db,
+        ctx.locals.user.id,
+      );
+    } catch (err) {
+      throw new ActionError({
+        code: "INTERNAL_SERVER_ERROR",
+        message: "ไม่สามารถเข้าถึงข้อมูลสตาฟได้",
+      });
+    }
+
+    if (!staffId) {
+      throw new ActionError({
+        code: "NOT_FOUND",
+        message: "ไม่พบสตาฟ",
+      });
+    }
+    await checkinModel.addCheckinWorkshopForPreregisteredParticipant(
+      ctx.locals.db,
+      {
+        participantId: participant.id,
+        staffId: staffId,
+        workshopId: input.workshopId,
+        roundNumber: parseInt(input.roundNumber),
+        data: {
+          endTime: currentSlot.timeSlot.endTime.toISOString(),
+          startTime: currentSlot.timeSlot.startTime.toISOString(),
+          type: "workshop",
+          workshopId: input.workshopId,
+        },
+      },
+    );
+
+    return;
+  },
+});

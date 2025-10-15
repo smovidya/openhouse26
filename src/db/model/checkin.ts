@@ -1,6 +1,6 @@
 import { checkinModel, schema, type Db } from "@src/db";
 import { and, eq, isNull, or } from "drizzle-orm";
-import { getParticipantByIdOrQrCodeId } from "./participant";
+import type { CheckinWorkshopData } from "@src/type";
 
 export const getCheckinByParticipant = async (
   db: Db,
@@ -163,33 +163,149 @@ export const addCheckinForParticipant = async (
   return checkin;
 };
 
-// export const getCheckinByParticipantAndWorkshop = async (
-//   db: Db,
-//   participantIdOrQrCodeId: string,
-//   workshopId: string,
-//   roundId: string
-// ) => {
-//   return db
-//     .select()
-//     .from(schema.checkins)
-//     .leftJoin(
-//       schema.participants,
-//       eq(schema.participants.id, schema.checkins.participantId),
-//     )
-//     .leftJoin(
-//       schema.checkpoints,
-//       eq(schema.checkpoints.id, schema.checkins.checkpointId),
-//   )
-//     // MARKER(ptsgrn): fix here
-//     .where(
-//       and(
-//         isNull(schema.checkins.deletedAt),
-//         or(
-//           eq(schema.participants.id, participantIdOrQrCodeId),
-//           eq(schema.participants.qrCodeId, participantIdOrQrCodeId),
-//         ),
-//         eq(schema.checkpoints., workshopId),
-//         eq(schema.checkpoints.roundId, roundId)
-//       ),
-//     );
-// }
+export const addCheckinWorkshopForPreregisteredParticipant = async (
+  db: Db,
+  {
+    participantId,
+    staffId,
+    workshopId,
+    roundNumber,
+    data,
+  }: {
+    participantId: string;
+    staffId: string;
+    workshopId: string;
+    roundNumber: number;
+    data: CheckinWorkshopData;
+  },
+) => {
+  const timeSlot = await db
+    .select()
+    .from(schema.workshopTimeSlots)
+    .where(
+      and(
+        eq(schema.workshopTimeSlots.roundNumber, roundNumber),
+        eq(schema.workshopTimeSlots.workshopId, workshopId),
+      ),
+    )
+    .get();
+
+  if (!timeSlot) {
+    throw new Error("ไม่พบรอบกิจกรรม");
+  }
+
+  const currentDateTime = new Date();
+
+  await db.insert(schema.checkins).values([
+    {
+      checkedByStaffId: staffId,
+      participantId,
+      checkpointId: `workshop-${workshopId}`,
+      data: JSON.stringify(data),
+      updatedAt: currentDateTime,
+    },
+  ]);
+
+  await db
+    .update(schema.workshopRegistrations)
+    .set({
+      participatedAt: currentDateTime,
+    })
+    .where(
+      and(
+        eq(schema.workshopRegistrations.participantId, participantId),
+        eq(schema.workshopRegistrations.timeSlotId, timeSlot.id),
+      ),
+    );
+};
+
+export const removeCheckinWorkshopForPreregisteredParticipant = async (
+  db: Db,
+  {
+    participantId,
+    workshopId,
+    roundNumber,
+  }: {
+    participantId: string;
+    workshopId: string;
+    roundNumber: number;
+  },
+) => {
+  const timeSlot = await db
+    .select()
+    .from(schema.workshopTimeSlots)
+    .where(
+      and(
+        eq(schema.workshopTimeSlots.roundNumber, roundNumber),
+        eq(schema.workshopTimeSlots.workshopId, workshopId),
+      ),
+    )
+    .get();
+
+  if (!timeSlot) {
+    throw new Error("ไม่พบรอบกิจกรรม");
+  }
+
+  const currentDateTime = new Date();
+
+  await db
+    .update(schema.checkins)
+    .set({
+      deletedAt: currentDateTime,
+      updatedAt: currentDateTime,
+    })
+    .where(
+      and(
+        eq(schema.checkins.participantId, participantId),
+        eq(schema.checkins.checkpointId, `workshop-${workshopId}`),
+        isNull(schema.checkins.deletedAt),
+      ),
+    );
+
+  await db
+    .update(schema.workshopRegistrations)
+    .set({
+      participatedAt: null,
+    })
+    .where(
+      and(
+        eq(schema.workshopRegistrations.participantId, participantId),
+        eq(schema.workshopRegistrations.timeSlotId, timeSlot.id),
+      ),
+    );
+};
+
+export const removeCheckinForParticipant = async (
+  db: Db,
+  {
+    participantId,
+    checkpointId,
+  }: {
+    participantId: string;
+    checkpointId: string;
+  },
+) => {
+  const currentDateTime = new Date();
+
+  const checkin = await db
+    .update(schema.checkins)
+    .set({
+      deletedAt: currentDateTime,
+      updatedAt: currentDateTime,
+    })
+    .where(
+      and(
+        eq(schema.checkins.participantId, participantId),
+        eq(schema.checkins.checkpointId, checkpointId),
+        isNull(schema.checkins.deletedAt),
+      ),
+    )
+    .returning()
+    .get();
+
+  if (!checkin) {
+    throw new Error("ไม่พบข้อมูลการเข้าร่วมกิจกรรม");
+  }
+
+  return checkin;
+};
