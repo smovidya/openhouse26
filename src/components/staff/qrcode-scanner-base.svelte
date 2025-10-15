@@ -6,7 +6,7 @@
   import { Spring } from "svelte/motion";
   import { IsDocumentVisible } from "runed";
 
-	const isTabActive = new IsDocumentVisible();
+  const isTabActive = new IsDocumentVisible();
 
   let videoElement = $state(null) as HTMLVideoElement | null;
   let canvasElement = $state(null) as HTMLCanvasElement | null;
@@ -33,7 +33,6 @@
   // const reader = new BrowserAztecCodeReader();
   const reader = new BrowserMultiFormatReader();
 
-  let videoInputDevices: MediaDeviceInfo[] = $state([]);
   let activeInputDeviceId: MediaDeviceInfo["deviceId"] | null = $state(null);
 
   function computeCoverTransform(
@@ -59,25 +58,27 @@
     } as const;
   }
 
-  function switchDevice() {
+  async function switchDevice() {
+    const videoInputDevices = await reader.listVideoInputDevices();
+    const before = activeInputDeviceId;
+
     const index = videoInputDevices.findIndex(
       (it) => it.deviceId === activeInputDeviceId,
     );
 
-    if (index === -1) {
-      return;
-    }
+    // if (index === -1) {
+    //   return;
+    // }
 
     const device = videoInputDevices.at(
       (index + 1) % videoInputDevices.length,
     )!;
     activeInputDeviceId = device.deviceId;
-    // console.log(device, videoInputDevices);
+    console.log({ active: activeInputDeviceId, before });
   }
 
   onMount(async () => {
-    videoInputDevices = await reader.listVideoInputDevices();
-    activeInputDeviceId = videoInputDevices[0].deviceId;
+    switchDevice();
   });
 
   $effect(() => {
@@ -86,22 +87,22 @@
     }
 
     if (enable && isTabActive.current) {
-      const id = setTimeout(() => {
-        reader.decodeFromVideoDevice(
-          activeInputDeviceId,
-          videoElement,
-          (result) => {
-            if (result) {
-              console.log(result);
-              if (enable && isTabActive.current) {
-                onResult?.(result.getText());
-              }
+      // these are to track
+      onResult;
+      const id = activeInputDeviceId;
+
+      const timeoutId = setTimeout(() => {
+        reader.decodeFromVideoDevice(id, videoElement, (result) => {
+          if (result) {
+            console.log(result);
+            if (enable && isTabActive.current) {
+              onResult?.(result.getText());
             }
-          },
-        );
+          }
+        });
       }, 0);
 
-      return () => clearTimeout(id);
+      return () => clearTimeout(timeoutId);
     } else {
       const { width, height } = videoElement.getBoundingClientRect();
       context.canvas.width = width;
@@ -179,11 +180,13 @@
   <div
     class="absolute inset-x-9 top-48 aspect-square rounded-3xl border-4 border-yellow-500"
   ></div>
-  <section class="absolute bottom-4 right-4 left-4 flex flex-col items-center gap-3">
+  <section
+    class="absolute bottom-4 right-4 left-4 flex flex-col items-center gap-3"
+  >
     <div>
       {@render notSoBottomUi?.()}
     </div>
-    <div class="flex gap-3">
+    <div class="flex gap-3 w-full">
       <div class="flex-1 h-full w-full">
         {@render bottomUi?.()}
       </div>
