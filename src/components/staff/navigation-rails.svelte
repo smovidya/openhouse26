@@ -64,7 +64,7 @@
           baseButtonClass,
           item.value === selected
             ? "-mx-1 h-10 bg-white border border-neutral-800/20 text-neutral-900 shadow"
-            : "text-white/60 hover:bg-white/10 active:bg-white/15 border-transparent",
+            : "text-white/50 hover:bg-white/10 active:bg-white/15 border-transparent",
           item.disabled && "pointer-events-none",
         )}
         aria-pressed={item.value === selected}

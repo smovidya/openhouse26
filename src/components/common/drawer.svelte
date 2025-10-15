@@ -22,7 +22,7 @@
     <div class="fixed inset-0 bg-black/50"></div>
   </Drawer.Overlay>
   <Drawer.Portal>
-    <Drawer.Content class="fixed bottom-0 left-0 right-0">
+    <Drawer.Content class="fixed safe-area left-0 right-0">
       <div
         class="m-2 relative flex flex-col overflow-clip rounded-4xl bg-white border-neutral-300 shadow-2xl p-0 text-black"
       >
@@ -45,3 +45,10 @@
     <Drawer.Overlay />
   </Drawer.Portal>
 </Drawer.Root>
+
+
+<style>
+  .safe-area {
+    bottom: env(safe-area-inset-bottom, 0);
+  }
+</style>
