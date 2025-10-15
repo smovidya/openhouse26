@@ -196,6 +196,27 @@ export async function getRegisteredParticipantCount(
   }));
 }
 
+export async function getParticipantsForTimeSlot(db: Db, timeSlotId: string) {
+  return await db.query.workshopRegistrations.findMany({
+    where: eq(schema.workshopRegistrations.timeSlotId, timeSlotId),
+    with: {
+      participant: {
+        columns: {
+          givenName: true,
+          familyName: true,
+        },
+        with: {
+          user: {
+            columns: {
+              email: true,
+            },
+          },
+        },
+      },
+    },
+  });
+}
+
 export async function getRegisteredParticipantCountForTimeSlot(
   db: Db,
   timeSlotId: string,
@@ -239,11 +260,15 @@ export async function getTimeSlotRegistrationForParticipant(
   });
 }
 
-export async function setSelectedWorkshopTimeSlots(
+export async function getWorkshopTimeSlotByRoundNumber(
+  db: Db,
   workshopId: string,
-  timeSlotIndex: number | undefined,
+  roundNumber: number,
 ) {
-  // ถ้ามีเคยเลือกของ workshopId เดียวกัน ให้ลบของเก่า แล้วเปลี่ยนเป็น timeSlotIndex ที่ pass มา
-  // ถ้า pass undefined มาให้ลบอย่างเดียว
-  // อย่าเช็ค if (timeSlotIndex) pls do  if (timeSlotIndex === undefined)
+  return await db.query.workshopTimeSlots.findFirst({
+    where: and(
+      eq(schema.workshopTimeSlots.workshopId, workshopId),
+      eq(schema.workshopTimeSlots.roundNumber, roundNumber),
+    ),
+  });
 }

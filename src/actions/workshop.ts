@@ -3,6 +3,7 @@ import { ActionError, defineAction } from "astro:actions";
 import { participantModel, workshopModel } from "@src/db";
 import { Time, TimeSlot } from "@src/data/workshops";
 import { featureFlags } from "@src/data/constants";
+import { hasOneOfRoleIn } from "@src/auth/utils";
 
 export const myCurrentRegistrationsForWorkshop = defineAction({
   input: z.object({ workshopId: z.string() }),
@@ -403,5 +404,71 @@ export const removeMeFromSlot = defineAction({
         updatedWorkshopCounts,
       },
     };
+  },
+});
+
+export const getWorkshopRegistrationByWorkshop = defineAction({
+  input: z.object({
+    workshopId: z.string(),
+    workshopRoundNumber: z.number(),
+  }),
+  handler: async (input, ctx) => {
+    if (!ctx.locals.user) {
+      throw new ActionError({
+        code: "UNAUTHORIZED",
+        message: "คุณต้องเข้าสู่ระบบก่อนจึงจะสามารถดูข้อมูลการลงทะเบียนได้",
+      });
+    }
+
+    if (!hasOneOfRoleIn(ctx.locals.user, ["admin", "workshopStaff"])) {
+      throw new ActionError({
+        code: "FORBIDDEN",
+        message: "คุณไม่มีสิทธิ์เข้าถึงข้อมูลนี้",
+      });
+    }
+
+    let workshopSlot: Awaited<
+      ReturnType<(typeof workshopModel)["getWorkshopTimeSlotByRoundNumber"]>
+    >;
+
+    try {
+      workshopSlot = await workshopModel.getWorkshopTimeSlotByRoundNumber(
+        ctx.locals.db,
+        input.workshopId,
+        input.workshopRoundNumber,
+      );
+    } catch (e) {
+      console.error("Error fetching workshop:", e);
+      throw new ActionError({
+        code: "INTERNAL_SERVER_ERROR",
+        message: "เกิดข้อผิดพลาดขณะดึงข้อมูลเวิร์กช็อป กรุณาลองใหม่อีกครั้ง",
+      });
+    }
+
+    if (!workshopSlot) {
+      throw new ActionError({
+        code: "BAD_REQUEST",
+        message: "ไม่พบรอบของเวิร์กช็อปที่ระบุ กรุณาลองใหม่อีกครั้ง",
+      });
+    }
+
+    let registrations: Awaited<
+      ReturnType<(typeof workshopModel)["getParticipantsForTimeSlot"]>
+    >;
+
+    try {
+      registrations = await workshopModel.getParticipantsForTimeSlot(
+        ctx.locals.db,
+        workshopSlot.id,
+      );
+    } catch (e) {
+      console.error("Error fetching registrations:", e);
+      throw new ActionError({
+        code: "INTERNAL_SERVER_ERROR",
+        message: "เกิดข้อผิดพลาดขณะดึงข้อมูลการลงทะเบียน กรุณาลองใหม่อีกครั้ง",
+      });
+    }
+
+    return { registrations, workshopSlot };
   },
 });

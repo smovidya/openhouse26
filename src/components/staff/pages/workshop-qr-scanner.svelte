@@ -1,6 +1,5 @@
 <script lang="ts">
   import Drawer from "@src/components/common/drawer.svelte";
-  import Navbar from "@src/components/staff/navbar.svelte";
   import ChangeRoundButton from "@src/components/staff/change-round-button.svelte";
   import QrcodeScannerBase from "@src/components/staff/qrcode-scanner-base.svelte";
   import NavigationRails from "@src/components/staff/navigation-rails.svelte";
@@ -68,7 +67,6 @@
     () => currentQrId,
     async () => {
       if (!currentQrId) {
-        alert("No QR code scanned");
         return;
       }
       const { data, error } = await actions.getParticipantByIdOrQrCodeId({
@@ -91,6 +89,22 @@
     },
   );
 
+  const workshopData = resource(
+    [() => selectedWorkshopId.workshopId, () => selectedWorkshopId.roundNumber],
+    async ([workshopId, roundNumber], _, { signal }) => {
+      const { data, error } = await actions.getWorkshopRegistrationByWorkshop({
+        workshopId: workshopId,
+        workshopRoundNumber: roundNumber,
+      });
+
+      if (error) {
+        alert(error.message);
+      }
+
+      return data;
+    },
+  );
+
   function onResult(value: string) {
     currentQrId = value;
     isConfirmDialogOpen = true;
@@ -107,9 +121,11 @@
 
     if (error) {
       alert(error.message);
+      workshopData.refetch();
     }
     if (data) {
       alert("บันทึกข้อมูลเรียบร้อย");
+      workshopData.refetch();
     }
   }
 
@@ -185,6 +201,7 @@
 <WorkshopAttendeeList
   bind:workshopId={selectedWorkshopId.workshopId}
   bind:roundNumber={selectedWorkshopId.roundNumber}
+  {workshopData}
 />
 
 <Drawer bind:open={isWorkshopSelectorOpen}>
