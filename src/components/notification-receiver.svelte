@@ -1,6 +1,6 @@
 <script lang="ts">
   import { onNotify, type UserEvent } from "@src/notification/client";
-  import { Toaster, toast } from "svelte-sonner";
+  import { UserEventMaptoast } from "svelte-sonner";
 
   interface Props {
     wsUrl: string;
@@ -18,7 +18,7 @@
     events.push(event);
     latestEvent = event;
 
-    // todo: map event
+    // todo: map eventUserEventMap
     toast(JSON.stringify(event));
   }
 </script>

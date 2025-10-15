@@ -9,6 +9,7 @@ import {
 } from "@src/db";
 import { boothCheckpoints } from "@src/data/checkpoints";
 import type { CheckinWorkshopData } from "@src/type";
+import { sendEvent } from "@src/notification/server";
 
 export const getParticipantByIdOrQrCodeId = defineAction({
   input: z.object({
@@ -356,9 +357,6 @@ export const staffCheckinWorkshop = defineAction({
         .map((v) => parseInt(v));
       currentSlotEndTime.setHours(endHour, endMinute, 0, 0);
 
-      console.log({
-        currentSlotEndTime,
-      });
       await checkinModel.addCheckinWorkshopForPreregisteredParticipant(
         ctx.locals.db,
         {
@@ -380,6 +378,13 @@ export const staffCheckinWorkshop = defineAction({
         message: "ไม่สามารถบันทึกข้อมูลการเข้าร่วมกิจกรรมได้",
       });
     }
+
+    try {
+      await sendEvent(ctx.locals.runtime.env.SSE, "checkin_workshop", {
+        type: "participant-checkin",
+        workshopName: currentSlot.timeSlot.workshop.title,
+      });
+    } catch {}
 
     return;
   },

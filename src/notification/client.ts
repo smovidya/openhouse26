@@ -1,7 +1,9 @@
-// TODO: what event
-export type UserEvent = {
-
+interface WorkshopParticipantCheckinEvent {
+  type: "participant-checkin";
+  workshopName: string;
 }
+
+export type UserEvent = WorkshopParticipantCheckinEvent;
 
 export function onNotify(
   wsUrl: string,
