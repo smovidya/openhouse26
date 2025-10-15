@@ -130,7 +130,7 @@
   {#snippet header()}
     <h2
       class={cn(
-        "text-5xl bg-base-200/80 font-normal mt-9 p-4 px-9",
+        "text-4xl bg-base-200/80 font-normal mt-9 p-4 px-9",
         mode === "add" ? "bg-error text-base-100" : "",
       )}
     >
