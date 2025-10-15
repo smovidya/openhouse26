@@ -273,12 +273,12 @@ export const staffCheckinWorkshop = defineAction({
       });
     }
 
-//     if (!participant) {
-//       throw new ActionError({
-//         code: "NOT_FOUND",
-//         message: "ไม่พบผู้เข้าร่วมกิจกรรม",
-//       });
-//     }
+    if (!participant) {
+      throw new ActionError({
+        code: "NOT_FOUND",
+        message: "ไม่พบผู้เข้าร่วมกิจกรรม",
+      });
+    }
 
     let userRegisteredSlots: Awaited<
       ReturnType<
