@@ -25,6 +25,11 @@ export const checkins = sqliteTable("checkins", {
   participantId: t.text("participant_id").references(() => participants.id),
   checkedByStaffId: t.text("checked_by_staff_id").references(() => staffs.id),
   checkpointId: t.text("checkpoint_id").references(() => checkpoints.id),
+  data: t
+    .text("data", {
+      mode: "json",
+    })
+    .default("{}"),
   ...timestamps,
   ...deletedAt,
 });
