@@ -4,7 +4,6 @@
   import { onNotify } from "@src/notification/client";
   import { toast, Toaster } from 'sonner';
 
-
   interface Props {
     wsUrl: string;
   }

@@ -15,6 +15,6 @@ const wsUrl = Astro.locals.runtime.env.SSE_URL;
 <Layout title="หน้าหลัก">
   <div class="h-4"></div>
   <Sender client:load />
-  <Receiver wsUrl={wsUrl} client:load />
+  <!-- <Receiver wsUrl={wsUrl} client:load /> -->
   <!-- <Toaster client:load /> -->
 </Layout>

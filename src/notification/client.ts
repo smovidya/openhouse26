@@ -1,13 +1,18 @@
-export interface UserEvent {}
+// TODO: what event
+export type UserEvent = {
+
+}
 
 export function onNotify(
   wsUrl: string,
-  jwt: string,
+  token: string,
   fn: (event: UserEvent) => unknown,
 ) {
   if (import.meta.env.SSR) {
     return () => {};
   }
+
+  // TODO: might implement reconnect
 
   const ws = new WebSocket(wsUrl);
   const abortController = new AbortController();
@@ -15,7 +20,8 @@ export function onNotify(
   ws.addEventListener(
     "open",
     () => {
-      ws.send(jwt);
+      // console.log("send", token)
+      ws.send(token);
     },
     { once: true },
   );
