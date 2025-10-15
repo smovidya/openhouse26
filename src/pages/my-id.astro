@@ -130,7 +130,7 @@ const token = await getToken(Astro.locals.runtime.env.SSE_PRIVATE_KEY, participa
   <div class="mt-10 flex justify-center">
     <LogoutButton client:load> ออกจากระบบ </LogoutButton>
   </div>
-  <NotificationReceiver wsUrl={wsUrl} token={token} client:load />
+  <NotificationReceiver wsUrl={wsUrl} token={token} client:only />
 </Layout>
 
 <style>
