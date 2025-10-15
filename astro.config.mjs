@@ -5,8 +5,6 @@ import svelte from "@astrojs/svelte";
 import tailwindcss from "@tailwindcss/vite";
 import toolbarApp from "./toolbar-app/my-integration";
 
-import react from "@astrojs/react";
-
 // https://astro.build/config
 export default defineConfig({
   prefetch: true,
@@ -26,7 +24,6 @@ export default defineConfig({
       extensions: [".svelte"],
     }),
     toolbarApp,
-    react(),
   ],
   vite: {
     plugins: [tailwindcss()],

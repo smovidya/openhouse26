@@ -1,6 +1,6 @@
 import { createAuthClient } from "better-auth/client";
 import { createAuthClient as createAuthClientSvelte } from "better-auth/svelte";
-import { createAuthClient as createAuthClientReact } from "better-auth/react";
+// import { createAuthClient as createAuthClientReact } from "better-auth/react";
 import {
   adminClient,
   jwtClient,
@@ -45,6 +45,6 @@ export const authClientSvelte = createAuthClientSvelte({
   plugins,
 });
 
-export const authClientReact = createAuthClientReact({
-  plugins,
-});
+// export const authClientReact = createAuthClientReact({
+//   plugins,
+// });

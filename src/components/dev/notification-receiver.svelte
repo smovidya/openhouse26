@@ -1,8 +1,7 @@
 <script lang="ts">
   import CutoutBox from "@src/components/common/cutout-box.svelte";
-  import React from "@src/components/react/react.svelte";
   import { onNotify } from "@src/notification/client";
-  import { toast, Toaster } from 'sonner';
+  import { toast, Toaster } from 'svelte-sonner';
 
   interface Props {
     wsUrl: string;
@@ -47,5 +46,4 @@
   </CutoutBox>
 </div>
 
-
-<React component={Toaster} props={{ position: "bottom-center" }} />
+<Toaster />

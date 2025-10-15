@@ -342,8 +342,8 @@ export const staffCheckinWorkshop = defineAction({
         workshopId: input.workshopId,
         roundNumber: parseInt(input.roundNumber),
         data: {
-          endTime: currentSlot.timeSlot.endTime.toISOString(),
-          startTime: currentSlot.timeSlot.startTime.toISOString(),
+          endTime: "currentSlot.timeSlot.endTime.toISOString()",
+          startTime: "currentSlot.timeSlot.startTime.toISOString()",
           type: "workshop",
           workshopId: input.workshopId,
         },

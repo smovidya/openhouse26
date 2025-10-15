@@ -22,7 +22,6 @@
   "dependencies": {
     "@astrojs/check": "^0.9.4",
     "@astrojs/cloudflare": "^12.6.10",
-    "@astrojs/react": "^4.4.0",
     "@astrojs/svelte": "^7.2.0",
     "@bwip-js/browser": "^4.7.0",
     "@bwip-js/generic": "^4.7.0",
@@ -50,17 +49,15 @@
     "prettier-plugin-svelte": "^3.4.0",
     "prettier-plugin-tailwindcss": "^0.7.0",
     "qr-scanner": "^1.4.2",
-    "react": "^19.2.0",
-    "react-dom": "^19.2.0",
     "runed": "^0.35.1",
-    "sonner": "^2.0.7",
     "svelte": "^5.40.0",
+    "svelte-sonner": "^1.0.5",
     "sveltekit-superforms": "^2.27.4",
     "tailwind-merge": "^3.3.1",
     "tailwind-variants": "^3.1.1",
     "tailwindcss": "^4.1.14",
     "typescript": "^5.9.3",
-    "vaul-svelte": "0.3.2",
+    "vaul-svelte": "1.0.0-next.7",
     "zod": "^4.1.12"
   },
   "devDependencies": {

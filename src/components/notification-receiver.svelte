@@ -1,7 +1,6 @@
 <script lang="ts">
-  import React from "@src/components/react/react.svelte";
   import { onNotify, type UserEvent } from "@src/notification/client";
-  import { toast, Toaster } from "sonner";
+  import { Toaster, toast } from "svelte-sonner";
 
   interface Props {
     wsUrl: string;
@@ -18,10 +17,10 @@
   function onEvent(event: UserEvent) {
     events.push(event);
     latestEvent = event;
-    
+
     // todo: map event
     toast(JSON.stringify(event));
   }
 </script>
 
-<React component={Toaster} props={{ position: "bottom-center" }} />
+<Toaster />
