@@ -10,6 +10,7 @@
   import DrawerButton from "@src/components/common/drawer-button.svelte";
   import ManualIdDialog from "@src/components/staff/manual-id-dialog.svelte";
   import WorkshopAttendeeList from "@src/components/staff/pages/workshop-attendee-list.svelte";
+  import { actions } from "astro:actions";
 
   const scroll = new ScrollState({
     element: () => window,
@@ -66,22 +67,50 @@
   const user = resource(
     () => currentQrId,
     async () => {
-      currentQrId;
+      if (!currentQrId) {
+        alert("No QR code scanned");
+        return;
+      }
+      const { data, error } = await actions.getParticipantByIdOrQrCodeId({
+        participantIdOrQrCodeId: currentQrId,
+      });
+      if (error) {
+        alert(error.message);
+        return;
+      }
+      if (!data) {
+        alert("No user found");
+        return;
+      }
       return {
-        id: currentQrId,
+        data,
       };
+    },
+    {
+      lazy: true,
     },
   );
 
   function onResult(value: string) {
     currentQrId = value;
     isConfirmDialogOpen = true;
+    user.refetch();
   }
 
-  function onScanConfirmed() {
+  async function onScanConfirmed() {
     isConfirmDialogOpen = false;
+    const { data, error } = await actions.staffCheckinWorkshop({
+      participantIdOrQrCodeId: currentQrId!,
+      workshopId: selectedWorkshopId.workshopId,
+      roundNumber: String(selectedWorkshopId.roundNumber),
+    });
 
-    // TODO: actually submitting this
+    if (error) {
+      alert(error.message);
+    }
+    if (data) {
+      alert("บันทึกข้อมูลเรียบร้อย");
+    }
   }
 
   function openSelfIdInputtingDialog() {

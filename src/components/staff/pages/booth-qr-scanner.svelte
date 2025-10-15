@@ -59,7 +59,7 @@
         return;
       }
       const { data, error } =
-        await actions.getParticipantCheckinBoothByIdOrQrCodeId({
+        await actions.getParticipantByIdOrQrCodeId({
           boothId: selectedBoothId,
           participantIdOrQrCodeId: currentQrId,
         });

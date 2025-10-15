@@ -10,10 +10,10 @@ import {
 import { boothCheckpoints } from "@src/data/checkpoints";
 import type { CheckinWorkshopData } from "@src/type";
 
-export const getParticipantCheckinBoothByIdOrQrCodeId = defineAction({
+export const getParticipantByIdOrQrCodeId = defineAction({
   input: z.object({
     participantIdOrQrCodeId: z.string(),
-    boothId: z.string().nullable(),
+    boothId: z.string().optional(),
   }),
   handler: async (input, ctx) => {
     if (!ctx.locals.user) {
@@ -334,6 +334,28 @@ export const staffCheckinWorkshop = defineAction({
         message: "ไม่พบสตาฟ",
       });
     }
+    // currentSlot.timeSlot.startTime is like 13:30
+    // and currentSlot.timeSlot.date is a Date object
+    // merge it to a single Date object
+    if (!currentSlot.timeSlot.date) {
+      throw new ActionError({
+        code: "INTERNAL_SERVER_ERROR",
+        message: "ข้อมูลเวลาของกิจกรรมไม่ถูกต้อง (ไม่ได้ระบุวันที่)",
+      });
+    }
+
+    const currentSlotStartTime = currentSlot.timeSlot.date;
+    const [startHour, startMinute] = currentSlot.timeSlot.startTime
+      .split(":")
+      .map((v) => parseInt(v));
+    currentSlotStartTime.setHours(startHour, startMinute, 0, 0);
+    // do the same for end time
+    const currentSlotEndTime = new Date(currentSlot.timeSlot.endTime);
+    const [endHour, endMinute] = currentSlot.timeSlot.endTime
+      .split(":")
+      .map((v) => parseInt(v));
+    currentSlotEndTime.setHours(endHour, endMinute, 0, 0);
+
     await checkinModel.addCheckinWorkshopForPreregisteredParticipant(
       ctx.locals.db,
       {
@@ -342,8 +364,8 @@ export const staffCheckinWorkshop = defineAction({
         workshopId: input.workshopId,
         roundNumber: parseInt(input.roundNumber),
         data: {
-          endTime: "currentSlot.timeSlot.endTime.toISOString()",
-          startTime: "currentSlot.timeSlot.startTime.toISOString()",
+          endTime: currentSlotStartTime.toISOString(),
+          startTime: currentSlotEndTime.toISOString(),
           type: "workshop",
           workshopId: input.workshopId,
         },
