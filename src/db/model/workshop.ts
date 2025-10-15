@@ -270,5 +270,55 @@ export async function getWorkshopTimeSlotByRoundNumber(
       eq(schema.workshopTimeSlots.workshopId, workshopId),
       eq(schema.workshopTimeSlots.roundNumber, roundNumber),
     ),
+    with: {
+      workshop: true,
+    },
   });
 }
+
+export async function insertOnsiteWorkshopParticipant(
+  db: Db,
+  participantId: string,
+  timeSlotId: string,
+) {
+  return await db.insert(schema.workshopRegistrations).values([
+    {
+      participantId: participantId,
+      timeSlotId: timeSlotId,
+      registrationType: "on-site",
+      participatedAt: new Date(),
+    },
+  ]);
+}
+
+export const removeOnsiteWorkshopParticipant = async (
+  db: Db,
+  participantId: string,
+  workshopId: string,
+  roundNumber: number,
+) => {
+  const timeSlot = await db
+    .select()
+    .from(schema.workshopTimeSlots)
+    .where(
+      and(
+        eq(schema.workshopTimeSlots.roundNumber, roundNumber),
+        eq(schema.workshopTimeSlots.workshopId, workshopId),
+      ),
+    )
+    .get();
+
+  if (!timeSlot) {
+    throw new Error("ไม่พบรอบกิจกรรม");
+  }
+
+  return await db
+    .delete(schema.workshopRegistrations)
+    .where(
+      and(
+        eq(schema.workshopRegistrations.participantId, participantId),
+        eq(schema.workshopRegistrations.timeSlotId, timeSlot.id),
+        eq(schema.workshopRegistrations.registrationType, "on-site"),
+      ),
+    );
+};

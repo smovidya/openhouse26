@@ -487,3 +487,207 @@ export const staffRemoveCheckinWorkshopForPreregisteredParticipant =
       return;
     },
   });
+
+export const staffAddOnSiteCheckinParticipant = defineAction({
+  input: z.object({
+    participantIdOrQrCodeId: z.string(),
+    workshopId: z.string(),
+    roundNumber: z.string(),
+  }),
+  handler: async (input, ctx) => {
+    if (!ctx.locals.user) {
+      throw new ActionError({
+        code: "UNAUTHORIZED",
+        message: "ผู้ใช้ไม่ได้เข้าสู่ระบบ",
+      });
+    }
+    if (!hasOneOfRoleIn(ctx.locals.user, ["admin", "workshopStaff"])) {
+      throw new ActionError({
+        code: "FORBIDDEN",
+        message: "ไม่ได้รับอนุญาต คุณไม่มีสิทธิ์เข้าใช้งาน",
+      });
+    }
+
+    let participant: Awaited<
+      ReturnType<typeof participantModel.getParticipantByIdOrQrCodeId>
+    >;
+
+    try {
+      participant = await participantModel.getParticipantByIdOrQrCodeId(
+        ctx.locals.db,
+        input.participantIdOrQrCodeId,
+      );
+    } catch (err) {
+      throw new ActionError({
+        code: "INTERNAL_SERVER_ERROR",
+        message: "ไม่สามารถเข้าถึงข้อมูลผู้เข้าร่วมกิจกรรมได้",
+      });
+    }
+
+    if (!participant) {
+      throw new ActionError({
+        code: "NOT_FOUND",
+        message: "ไม่พบผู้เข้าร่วมกิจกรรม",
+      });
+    }
+
+    let staffId: Awaited<ReturnType<(typeof staffModel)["getStaffIdByUserId"]>>;
+    try {
+      staffId = await staffModel.getStaffIdByUserId(
+        ctx.locals.db,
+        ctx.locals.user.id,
+      );
+    } catch (err) {
+      throw new ActionError({
+        code: "INTERNAL_SERVER_ERROR",
+        message: "ไม่สามารถเข้าถึงข้อมูลสตาฟได้",
+      });
+    }
+
+    if (!staffId) {
+      throw new ActionError({
+        code: "NOT_FOUND",
+        message: "ไม่พบสตาฟ",
+      });
+    }
+
+    let currentSlot: Awaited<
+      ReturnType<(typeof workshopModel)["getWorkshopTimeSlotByRoundNumber"]>
+    >;
+    try {
+      currentSlot = await workshopModel.getWorkshopTimeSlotByRoundNumber(
+        ctx.locals.db,
+        input.workshopId,
+        parseInt(input.roundNumber),
+      );
+    } catch (err) {
+      throw new ActionError({
+        code: "INTERNAL_SERVER_ERROR",
+        message: "ไม่สามารถเข้าถึงข้อมูลรอบการทำงานได้",
+      });
+    }
+
+    if (!currentSlot) {
+      throw new ActionError({
+        code: "NOT_FOUND",
+        message: "ไม่พบรอบการทำงาน",
+      });
+    }
+
+    if (!currentSlot.date) {
+      throw new ActionError({
+        code: "INTERNAL_SERVER_ERROR",
+        message: "ข้อมูลเวลาของกิจกรรมไม่ถูกต้อง (ไม่ได้ระบุวันที่)",
+      });
+    }
+
+    try {
+      const currentSlotStartTime = currentSlot.date;
+      const [startHour, startMinute] = currentSlot.startTime
+        .split(":")
+        .map((v) => parseInt(v));
+      currentSlotStartTime.setHours(startHour, startMinute, 0, 0);
+      // do the same for end time
+      const currentSlotEndTime = currentSlot.date;
+      const [endHour, endMinute] = currentSlot.endTime
+        .split(":")
+        .map((v) => parseInt(v));
+      currentSlotEndTime.setHours(endHour, endMinute, 0, 0);
+
+      await workshopModel.insertOnsiteWorkshopParticipant(
+        ctx.locals.db,
+        participant.id,
+        currentSlot.id,
+      );
+      await checkinModel.addCheckinWorkshopForOnsiteParticipant(
+        ctx.locals.db,
+        participant.id,
+        currentSlot.workshopId,
+        currentSlot.roundNumber,
+        {
+          type: "workshop",
+          workshopId: currentSlot.workshopId,
+          startTime: currentSlotStartTime.toISOString(),
+          endTime: currentSlotEndTime.toISOString(),
+        },
+      );
+    } catch (err) {
+      console.error(err);
+      throw new ActionError({
+        code: "INTERNAL_SERVER_ERROR",
+        message: "ไม่สามารถบันทึกข้อมูลการเข้าร่วมกิจกรรมได้",
+      });
+    }
+
+    return;
+  },
+});
+
+export const staffRemoveOnSiteCheckinParticipant = defineAction({
+  input: z.object({
+    participantIdOrQrCodeId: z.string(),
+    workshopId: z.string(),
+    roundNumber: z.string(),
+  }),
+  handler: async (input, ctx) => {
+    if (!ctx.locals.user) {
+      throw new ActionError({
+        code: "UNAUTHORIZED",
+        message: "ผู้ใช้ไม่ได้เข้าสู่ระบบ",
+      });
+    }
+    if (!hasOneOfRoleIn(ctx.locals.user, ["admin", "workshopStaff"])) {
+      throw new ActionError({
+        code: "FORBIDDEN",
+        message: "ไม่ได้รับอนุญาต คุณไม่มีสิทธิ์เข้าใช้งาน",
+      });
+    }
+
+    let participant: Awaited<
+      ReturnType<typeof participantModel.getParticipantByIdOrQrCodeId>
+    >;
+
+    try {
+      participant = await participantModel.getParticipantByIdOrQrCodeId(
+        ctx.locals.db,
+        input.participantIdOrQrCodeId,
+      );
+    } catch (err) {
+      throw new ActionError({
+        code: "INTERNAL_SERVER_ERROR",
+        message: "ไม่สามารถเข้าถึงข้อมูลผู้เข้าร่วมกิจกรรมได้",
+      });
+    }
+
+    if (!participant) {
+      throw new ActionError({
+        code: "NOT_FOUND",
+        message: "ไม่พบผู้เข้าร่วมกิจกรรม",
+      });
+    }
+
+    try {
+      await workshopModel.removeOnsiteWorkshopParticipant(
+        ctx.locals.db,
+        participant.id,
+        input.workshopId,
+        parseInt(input.roundNumber),
+      );
+      await checkinModel.removeCheckinWorkshopForPreregisteredParticipant(
+        ctx.locals.db,
+        {
+          participantId: participant.id,
+          workshopId: input.workshopId,
+          roundNumber: parseInt(input.roundNumber),
+        },
+      );
+    } catch (err) {
+      throw new ActionError({
+        code: "INTERNAL_SERVER_ERROR",
+        message: "ไม่สามารถลบข้อมูลการเข้าร่วมกิจกรรมได้",
+      });
+    }
+
+    return;
+  },
+});

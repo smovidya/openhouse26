@@ -309,3 +309,64 @@ export const removeCheckinForParticipant = async (
 
   return checkin;
 };
+
+export const addCheckinWorkshopForOnsiteParticipant = async (
+  db: Db,
+  participantId: string,
+  workshopId: string,
+  roundNumber: number,
+  data: CheckinWorkshopData,
+) => {
+  const currentDateTime = new Date();
+
+  const checkin = await db
+    .insert(schema.checkins)
+    .values([
+      {
+        checkedByStaffId: null,
+        participantId,
+        checkpointId: `workshop-${workshopId}`,
+        data: JSON.stringify(data),
+        updatedAt: currentDateTime,
+      },
+    ])
+    .returning()
+    .get();
+
+  return checkin;
+};
+
+export const removeCheckinWorkshopForOnsiteParticipant = async (
+  db: Db,
+  {
+    participantId,
+    workshopId,
+  }: {
+    participantId: string;
+    workshopId: string;
+  },
+) => {
+  const currentDateTime = new Date();
+
+  const checkin = await db
+    .update(schema.checkins)
+    .set({
+      deletedAt: currentDateTime,
+      updatedAt: currentDateTime,
+    })
+    .where(
+      and(
+        eq(schema.checkins.participantId, participantId),
+        eq(schema.checkins.checkpointId, `workshop-${workshopId}`),
+        isNull(schema.checkins.deletedAt),
+      ),
+    )
+    .returning()
+    .get();
+
+  if (!checkin) {
+    throw new Error("ไม่พบข้อมูลการเข้าร่วมกิจกรรม");
+  }
+
+  return checkin;
+};

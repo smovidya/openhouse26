@@ -8,7 +8,7 @@
     workshopId?: string;
     roundNumber?: number;
     workshopData: ResourceReturn<
-      Awaited<ReturnType<Actions["getWorkshopRegistrationByWorkshop"]>>['data']
+      Awaited<ReturnType<Actions["getWorkshopRegistrationByWorkshop"]>>["data"]
     >;
   }
 
@@ -213,14 +213,17 @@
       class="flex justify-between items-center pl-6 pr-2 py-2 bg-amber-600 text-white"
     >
       <div class="flex flex-col leading-5">
-        <span>นายพัสกร ยืนยง</span>
-        <span class="text-sm text-lime-100">somemail@gmail.com</span>
+        <span>{p.participant.givenName} {p.participant.familyName}</span>
+        <span class="text-sm text-lime-100">{p.participant.user.email}</span>
       </div>
+      <!-- 
+        Im lazy to implement remove onsite participant
+        so just comment this out for now
       <button
         class="underline active:bg-lime-700/50 rounded-md px-4 py-1 underline-offset-2"
       >
         ยกเลิก
-      </button>
+      </button> -->
     </div>
   {:else}
     <div class="p-6 text-center text-sm opacity-75">ไม่มีคนที่เพิ่ม</div>
