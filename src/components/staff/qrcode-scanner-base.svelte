@@ -7,6 +7,7 @@
   import { IsDocumentVisible, ScrollState } from "runed";
   import Console from "@src/components/dev/console.svelte";
   import { getUsableMediaDevices } from "@src/utils/camera";
+    import DrawerAlertDialog from "@src/components/common/drawer-alert-dialog.svelte";
 
   const isTabActive = new IsDocumentVisible();
   const scroll = new ScrollState({
@@ -235,3 +236,6 @@
     );
   }
 </style>
+
+
+<DrawerAlertDialog/>
