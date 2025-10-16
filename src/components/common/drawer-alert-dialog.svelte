@@ -34,7 +34,7 @@
     title = options.title;
     description = options.description;
     mode = "confirm";
-    // disabledConfirm = options.blockConfirmUntil !== undefined;
+    disabledConfirm = options.blockConfirmUntil !== undefined;
     open = true;
 
     const { promise, resolve } = Promise.withResolvers<boolean>();
@@ -97,8 +97,8 @@
     {#if mode == "confirm"}
       <DrawerButton variant="neutral" onclick={onCancel}>ยกเลิก</DrawerButton>
     {/if}
-    <DrawerButton onclick={onConfirmed} disabled={disabledConfirm}
-      >ตกลง</DrawerButton
-    >
+    <DrawerButton onclick={onConfirmed} disabled={disabledConfirm}>
+      ตกลง
+    </DrawerButton>
   {/snippet}
 </Drawer>
