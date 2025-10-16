@@ -29,7 +29,6 @@ const { frontmatter, title, description } = Astro.props;
 
   <div class="prose container mx-auto px-2">
     <slot />
+    <DrawerAlertDialog client:only />
   </div>
-
-  <DrawerAlertDialog client:only />
 </Layout>

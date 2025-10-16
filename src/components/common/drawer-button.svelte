@@ -2,7 +2,7 @@
   import { tv, type VariantProps } from "tailwind-variants";
 
   export const buttonVariants = tv({
-    base: "px-4 py-3 rounded-full w-full focus:outline-2 outline-offset-2",
+    base: "px-4 py-3 rounded-full w-full focus:outline-2 outline-offset-2 disabled:opacity-50",
     variants: {
       variant: {
         primary: "bg-yellow-500 active:bg-yellow-600 text-white outline-yellow-500",

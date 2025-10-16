@@ -1,4 +1,8 @@
 <script lang="ts">
+  import {
+    alert,
+    confirm,
+  } from "@src/components/common/drawer-alert-dialog.svelte";
   import DrawerButton from "@src/components/common/drawer-button.svelte";
   import Drawer from "@src/components/common/drawer.svelte";
   import ChangeRoundButton from "@src/components/staff/change-round-button.svelte";
@@ -10,8 +14,7 @@
   } from "@src/data/checkpoints";
   import { actions } from "astro:actions";
   import WarningAltFilled from "carbon-icons-svelte/lib/WarningAltFilled.svelte";
-  import { resource, ScrollState } from "runed";
-
+  import { resource } from "runed";
 
   let isBoothSelectorOpen = $state(false);
   let isConfirmDialogOpen = $state(false);
@@ -50,7 +53,10 @@
     () => currentQrId,
     async () => {
       if (!currentQrId) {
-        alert("No QR code scanned");
+        alert({
+          title: "ข้อผิดพลาด",
+          description: "ไม่ได้สแกน QR code",
+        });
         return;
       }
       const { data, error } = await actions.getParticipantByIdOrQrCodeId({
@@ -70,22 +76,29 @@
     },
   );
 
-  function onResult(value: string) {
+  async function onResult(value: string) {
     currentQrId = value;
     isConfirmDialogOpen = true;
-    user.refetch();
-  }
 
-  async function onScanConfirmed() {
+    const p = user.refetch();
+    const ok = await confirm({
+      title: "ยืนยันการเช็คอิน",
+      description: confirmDialogBody,
+      blockConfirmUntil: p
+    });
+    console.log("skdfjohi")
+
     isConfirmDialogOpen = false;
-    // alert(
-    //   JSON.stringify({
-    //     currentQrId,
-    //     selectedBoothId,
-    //   }),
-    // );
+
+    if (!ok || user.error) {
+      return
+    }
+ 
     if (!currentQrId) {
-      alert("กรุณาสแกน QR Code หรือป้อน ID");
+      alert({
+        title: "ข้อผิดพลาด",
+        description: "กรุณาสแกน QR Code หรือป้อน ID",
+      });
       return;
     }
     const { data, error } = await actions.staffCheckin({
@@ -93,10 +106,16 @@
       participantIdOrQrCodeId: currentQrId,
     });
     if (error) {
-      alert(error.message);
+      alert({
+        title: "เกิดข้อผิดพลาด",
+        description: error.message,
+      });
     }
     if (data) {
-      alert("เช็คอินแล้ว");
+      alert({
+        title: "เช็คอินแล้ว",
+        description: "เย่",
+      });
     }
   }
 
@@ -169,10 +188,7 @@
   {/snippet}
 </Drawer>
 
-<Drawer bind:open={isConfirmDialogOpen}>
-  {#snippet header()}
-    <h2 class="text-3xl">ยืนยันการเช็คอิน</h2>
-  {/snippet}
+{#snippet confirmDialogBody()}
   {#if user.loading}
     <div class="flex gap-2 flex-row justify-center items-center">
       <span class="loading loading-dots"></span>
@@ -204,16 +220,7 @@
       </tbody>
     </table>
   {/if}
-  {#snippet buttons()}
-    <DrawerButton
-      variant="neutral"
-      onclick={() => (isConfirmDialogOpen = false)}
-    >
-      ยกเลิก
-    </DrawerButton>
-    <DrawerButton onclick={onScanConfirmed}>ตกลง</DrawerButton>
-  {/snippet}
-</Drawer>
+{/snippet}
 
 <ManualIdDialog
   headerText="กรอกโค้ดเช็คอิน"
