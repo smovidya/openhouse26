@@ -161,14 +161,14 @@
   <!-- svelte-ignore a11y_media_has_caption -->
   <video
     bind:this={videoElement}
-    class="object-cover w-full aspect-[9/16] p-0! m-0! bg-neutral-700"
+    class="object-cover w-full aspect-[3/4] p-0! m-0! bg-neutral-700"
     style="filter: blur({videoBlur.current}px);"
   >
   </video>
   <canvas
     bind:this={canvasElement}
     class={cn(
-      "absolute inset-0 w-full object-cover aspect-[9/16] bg-transparent",
+      "absolute inset-0 w-full object-cover aspect-[3/4] bg-transparent",
     )}
     style="filter: blur({videoBlur.current}px); opacity: {videoBlur.current /
       24};"

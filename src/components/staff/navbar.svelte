@@ -24,7 +24,7 @@
     },
     {
       label: "ตรวจสถานะผู้เข้าร่วมงาน",
-      href: "/staff/check-participant-attendance",
+      href: "/staff/check-attendance",
       role: [
         "admin",
         "majorBoothStaff",
