@@ -2,6 +2,8 @@
   import DrawerButton from "@src/components/common/drawer-button.svelte";
   import Drawer from "@src/components/common/drawer.svelte";
 
+  // TODO: stop making this a drawer
+
   interface Props {
     headerText?: string;
     subText?: string;

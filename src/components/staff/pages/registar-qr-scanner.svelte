@@ -1,8 +1,6 @@
 <script lang="ts">
   import DrawerButton from "@src/components/common/drawer-button.svelte";
   import Drawer from "@src/components/common/drawer.svelte";
-  import ChangeRoundButton from "@src/components/staff/change-round-button.svelte";
-  import ManualIdDialog from "@src/components/staff/manual-id-dialog.svelte";
   import QrcodeScannerBase from "@src/components/staff/qrcode-scanner-base.svelte";
   import {
     boothCheckpoints,
@@ -12,40 +10,13 @@
   import WarningAltFilled from "carbon-icons-svelte/lib/WarningAltFilled.svelte";
   import { resource, ScrollState } from "runed";
 
-  const scroll = new ScrollState({
-    element: () => window,
-  });
-  const isAtTop = $derived(scroll.progress.y <= 60);
-
   let isBoothSelectorOpen = $state(false);
   let isConfirmDialogOpen = $state(false);
   let isIdInputtingDialogOpen = $state(false);
 
   const scanning = $derived(
-    !(isBoothSelectorOpen || isConfirmDialogOpen || isIdInputtingDialogOpen) &&
-      isAtTop,
+    !(isBoothSelectorOpen || isConfirmDialogOpen || isIdInputtingDialogOpen),
   );
-
-  // Workshop and timeslot selection ------------------------------------
-
-  // TODO: save this to localstorage
-  let selectedBoothId = $state("bsac");
-  const selectedBooth = $derived(
-    boothCheckpoints.find((it) => String(it.id) === selectedBoothId)!,
-  );
-
-  // svelte-ignore state_referenced_locally : I know
-  let dialogWorkshopId = $state($state.snapshot(selectedBoothId));
-
-  function launchWorkshopSelector() {
-    dialogWorkshopId = $state.snapshot(selectedBoothId);
-    isBoothSelectorOpen = true;
-  }
-
-  function updateSelectedBooth() {
-    selectedBoothId = $state.snapshot(dialogWorkshopId);
-    isBoothSelectorOpen = false;
-  }
 
   // Scanning ------------------------------------------------------------
 
@@ -59,7 +30,7 @@
         return;
       }
       const { data, error } = await actions.getParticipantByIdOrQrCodeId({
-        boothId: selectedBoothId,
+        // boothId: selectedBoothId,
         participantIdOrQrCodeId: currentQrId,
       });
       if (error) {
@@ -94,7 +65,7 @@
       return;
     }
     const { data, error } = await actions.staffCheckin({
-      boothId: selectedBoothId,
+      // boothId: selectedBoothId,
       participantIdOrQrCodeId: currentQrId,
     });
     if (error) {

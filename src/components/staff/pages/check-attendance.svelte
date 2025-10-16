@@ -7,16 +7,12 @@
   import DebugAttendedData from "./debug-attended-data.svelte";
   import { alert } from "@src/components/common/drawer-alert-dialog.svelte";
 
-  const scroll = new ScrollState({
-    element: () => window,
-  });
-  const isAtTop = $derived(scroll.progress.y <= 60);
-
   let isIdInputtingDialogOpen = $state(false);
-
-  const scanning = $derived(!isIdInputtingDialogOpen && isAtTop);
+  const scanning = $derived(!isIdInputtingDialogOpen);
 
   let currentQrId: string | null = $state(null);
+
+  let attendeeDataSection: HTMLElement;
 
   const participantData = resource(
     [() => currentQrId],
@@ -39,6 +35,8 @@
   function onResult(value: string) {
     currentQrId = value;
     participantData.refetch();
+
+    attendeeDataSection.scrollIntoView()
   }
 
   function openSelfIdInputtingDialog() {
@@ -92,7 +90,9 @@
   </div>
 </section>
 
-<DebugAttendedData {participantData} />
+<section bind:this={attendeeDataSection}>
+  <DebugAttendedData {participantData} />
+</section>
 
 <ManualIdDialog
   headerText="กรอกโค้ดผู้เข้าร่วมงาน"

@@ -1,15 +1,16 @@
 <script lang="ts">
+  import { confirm } from "@src/components/common/drawer-alert-dialog.svelte";
+  import DrawerButton from "@src/components/common/drawer-button.svelte";
   import Drawer from "@src/components/common/drawer.svelte";
   import ChangeRoundButton from "@src/components/staff/change-round-button.svelte";
-  import QrcodeScannerBase from "@src/components/staff/qrcode-scanner-base.svelte";
-  import NavigationRails from "@src/components/staff/navigation-rails.svelte";
-  import { resource, ScrollState } from "runed";
-  import { workshops } from "@src/data/workshops";
-  import { cn } from "@src/components/utils";
-  import DrawerButton from "@src/components/common/drawer-button.svelte";
   import ManualIdDialog from "@src/components/staff/manual-id-dialog.svelte";
+  import NavigationRails from "@src/components/staff/navigation-rails.svelte";
   import WorkshopAttendeeList from "@src/components/staff/pages/workshop-attendee-list.svelte";
+  import QrcodeScannerBase from "@src/components/staff/qrcode-scanner-base.svelte";
+  import { cn } from "@src/components/utils";
+  import { workshops } from "@src/data/workshops";
   import { actions } from "astro:actions";
+  import { resource } from "runed";
 
   let isWorkshopSelectorOpen = $state(false);
   let isConfirmDialogOpen = $state(false);
@@ -96,14 +97,23 @@
     },
   );
 
-  function onResult(value: string) {
+  async function onResult(value: string) {
     currentQrId = value;
     isConfirmDialogOpen = true;
-    user.refetch();
-  }
+    const p = user.refetch();
 
-  async function onScanConfirmed() {
+    const ok = await confirm({
+      title: "ยืนยันการเช็คอิน",
+      description: confirmDialogBody,
+      blockConfirmUntil: p,
+    });
+
     isConfirmDialogOpen = false;
+
+    if (!ok || user.error) {
+      return;
+    }
+
     const { data, error } = await actions.staffCheckinWorkshop({
       participantIdOrQrCodeId: currentQrId!,
       workshopId: selectedWorkshopId.workshopId,
@@ -242,28 +252,14 @@
   {/snippet}
 </Drawer>
 
-<Drawer bind:open={isConfirmDialogOpen}>
-  {#snippet header()}
-    <h2 class="text-3xl">
-      ยืนยันการ{mode === "checkin" ? "เช็คอิน" : "เพิ่มคน"}
-    </h2>
-  {/snippet}
+{#snippet confirmDialogBody()}
   <p class="mx-6 mt-3">
     {#if !user.loading}
       {JSON.stringify(user.current)}
       name, email, mission, workshop, รอบ
     {/if}
   </p>
-  {#snippet buttons()}
-    <DrawerButton
-      variant="neutral"
-      onclick={() => (isConfirmDialogOpen = false)}
-    >
-      ยกเลิก
-    </DrawerButton>
-    <DrawerButton onclick={onScanConfirmed}>ตกลง</DrawerButton>
-  {/snippet}
-</Drawer>
+{/snippet}
 
 <ManualIdDialog
   headerText="กรอกโค้ด{mode === 'checkin' ? 'เช็คอิน' : 'เพิ่มคน'}"

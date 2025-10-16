@@ -86,7 +86,7 @@
       description: confirmDialogBody,
       blockConfirmUntil: p
     });
-    console.log("skdfjohi")
+    // console.log("skdfjohi")
 
     isConfirmDialogOpen = false;
 
