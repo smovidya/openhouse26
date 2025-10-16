@@ -233,6 +233,11 @@ export const staffCheckin = defineAction({
       });
     }
 
+    await sendEvent(ctx.locals.runtime.env.SSE, participant.id, {
+      type: "booth-checkin",
+      boothId: input.boothId,
+    });
+
     return;
   },
 });
@@ -384,7 +389,7 @@ export const staffCheckinWorkshop = defineAction({
       workshopId: currentSlot.timeSlot.workshopId,
       roundNumber: currentSlot.timeSlot.roundNumber
     });
-    
+
     return;
   },
 });
@@ -617,6 +622,13 @@ export const staffAddOnSiteCheckinParticipant = defineAction({
         message: "ไม่สามารถบันทึกข้อมูลการเข้าร่วมกิจกรรมได้",
       });
     }
+
+
+    await sendEvent(ctx.locals.runtime.env.SSE, participant.id, {
+      type: "workshop-onsite-participate",
+      roundNumber: currentSlot.roundNumber,
+      workshopId: currentSlot.workshopId
+    });
 
     return;
   },
