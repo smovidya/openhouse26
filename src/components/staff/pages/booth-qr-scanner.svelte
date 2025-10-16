@@ -12,9 +12,6 @@
   import WarningAltFilled from "carbon-icons-svelte/lib/WarningAltFilled.svelte";
   import { resource, ScrollState } from "runed";
 
-  const scroll = new ScrollState({
-    element: () => window,
-  });
 
   let isBoothSelectorOpen = $state(false);
   let isConfirmDialogOpen = $state(false);

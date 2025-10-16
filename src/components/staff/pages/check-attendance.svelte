@@ -5,6 +5,7 @@
   import ManualIdDialog from "@src/components/staff/manual-id-dialog.svelte";
   import { actions } from "astro:actions";
   import DebugAttendedData from "./debug-attended-data.svelte";
+  import { alert } from "@src/components/common/drawer-alert-dialog.svelte";
 
   const scroll = new ScrollState({
     element: () => window,
@@ -25,7 +26,7 @@
       });
 
       if (error) {
-        alert(error.message);
+        alert({ title: "เกิดข้อผิดพลาด", description: "error.message" });
       }
 
       return data;
@@ -59,16 +60,19 @@
   {/snippet}
   {#snippet bottomUi()}
     {#if !participantData.loading && !participantData.error && participantData.current}
-      <div class="px-8 mt-3 font-serif">
+      <div class="pl-3 mt-3 font-serif">
         <div class="flex flex-col items-center">
-          <span class="text-2xl">พบผู้เข้าร่วม: {participantData.current?.participant.givenName} {participantData.current?.participant.familyName}</span>
+          <span class="text-xl leading-5"
+            >พบผู้เข้าร่วม: {participantData.current?.participant.givenName}
+            {participantData.current?.participant.familyName}</span
+          >
           <span class="text-sm">(เลื่อนลงเพื่อดูรายละเอียด)</span>
         </div>
       </div>
     {:else}
-      <div class="px-8 mt-3 font-serif">
+      <div class="pl-3 mt-3 font-serif">
         <div class="flex flex-col items-center">
-          <span class="text-2xl">กรุณาสแกน QR Code หรือกรอก ID</span>
+          <span class="text-xl leading-5">กรุณาสแกน QR Code หรือกรอก ID</span>
         </div>
       </div>
     {/if}
