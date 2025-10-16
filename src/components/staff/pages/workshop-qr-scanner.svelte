@@ -2,6 +2,7 @@
   import {
     alert,
     confirm,
+    isDialogOpen,
   } from "@src/components/common/drawer-alert-dialog.svelte";
   import DrawerButton from "@src/components/common/drawer-button.svelte";
   import Drawer from "@src/components/common/drawer.svelte";
@@ -21,7 +22,7 @@
 
   let mode = $state("checkin" as "checkin" | "add");
   const scanning = $derived(
-    !(isWorkshopSelectorOpen || isConfirmDialogOpen || isIdInputtingDialogOpen),
+    !(isWorkshopSelectorOpen || isConfirmDialogOpen || isIdInputtingDialogOpen || isDialogOpen.current),
   );
 
   // Workshop and timeslot selection ------------------------------------

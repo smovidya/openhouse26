@@ -2,6 +2,7 @@
   import {
       alert,
       confirm,
+      isDialogOpen,
   } from "@src/components/common/drawer-alert-dialog.svelte";
   import ManualIdDialog from "@src/components/staff/manual-id-dialog.svelte";
   import QrcodeScannerBase from "@src/components/staff/qrcode-scanner-base.svelte";
@@ -11,7 +12,7 @@
   let isConfirmDialogOpen = $state(false);
   let isIdInputtingDialogOpen = $state(false);
 
-  const scanning = $derived(!(isConfirmDialogOpen || isIdInputtingDialogOpen));
+  const scanning = $derived(!(isConfirmDialogOpen || isIdInputtingDialogOpen || isDialogOpen.current));
 
   // Scanning ------------------------------------------------------------
 

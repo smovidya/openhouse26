@@ -5,6 +5,12 @@
   let mode = $state("alert" as "alert" | "confirm");
   let disabledConfirm = $state(false);
 
+  export const isDialogOpen = {
+    get current() {
+      return open;
+    },
+  };
+
   let instanceCount = 0;
 
   let onConfirmed: (() => unknown) | undefined = $state();
@@ -71,7 +77,7 @@
 
   onMount(() => {
     instanceCount += 1;
-    console.log("Mounted alert dialog", instanceCount)
+    console.log("Mounted alert dialog", instanceCount);
     return () => (instanceCount -= 1);
   });
 </script>
