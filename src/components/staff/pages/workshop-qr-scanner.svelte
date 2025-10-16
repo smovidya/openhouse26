@@ -65,16 +65,13 @@
         participantIdOrQrCodeId: currentQrId,
       });
       if (error) {
-        alert(error.message);
-        return;
+        throw new Error(error.message);
       }
       if (!data) {
-        alert("No user found");
-        return;
+        throw new Error("No user found");
       }
-      return {
-        data,
-      };
+
+      return data;
     },
     {
       lazy: true,
@@ -253,12 +250,21 @@
 </Drawer>
 
 {#snippet confirmDialogBody()}
-  <p class="mx-6 mt-3">
-    {#if !user.loading}
-      {JSON.stringify(user.current)}
-      name, email, mission, workshop, รอบ
-    {/if}
-  </p>
+  {#if user.loading}
+    <div class="flex gap-2 flex-row justify-center items-center">
+      <span class="loading loading-dots"></span>
+      <span>กำลังโหลด...</span>
+    </div>
+  {/if}
+  {#if user.error}
+    <div class="alert alert-error">
+      <span>{user.error}</span>
+    </div>
+  {/if}
+  {#if user.current && !user.loading && !user.error}
+    {JSON.stringify(user.current)}
+    name, email, mission, workshop, รอบ
+  {/if}
 {/snippet}
 
 <ManualIdDialog
