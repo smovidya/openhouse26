@@ -11,35 +11,50 @@ export function onNotify(
   fn: (event: UserEvent) => unknown,
 ) {
   if (import.meta.env.SSR) {
-    return () => {};
+    return () => { };
   }
 
-  // TODO: might implement reconnect
+  let abortController = new AbortController();
+  let ws: WebSocket;
 
-  const ws = new WebSocket(wsUrl);
-  const abortController = new AbortController();
+  function connect() {
+    if (abortController.signal.aborted) {
+      return;
+    }
 
-  ws.addEventListener(
-    "open",
-    () => {
-      // console.log("send", token)
-      ws.send(token);
-    },
-    { once: true },
-  );
+    ws = new WebSocket(wsUrl)
 
-  ws.addEventListener(
-    "message",
-    async (event) => {
-      try {
-        const data = JSON.parse(event.data);
-        fn(data);
-      } catch {}
-    },
-    {
-      signal: abortController.signal,
-    },
-  );
+    ws.addEventListener(
+      "open",
+      () => {
+        // console.log("send", token)
+        ws.send(token);
+      },
+      { once: true },
+    );
+
+    ws.addEventListener(
+      "message",
+      async (event) => {
+        try {
+          const data = JSON.parse(event.data);
+          fn(data);
+        } catch { }
+      },
+      {
+        signal: abortController.signal,
+      },
+    );
+
+    // reconnect
+    ws.addEventListener("close", () => {
+      setTimeout(() => {
+        connect();
+      }, 1000);
+    }, { signal: abortController.signal });
+  }
+
+  connect();
 
   return () => abortController.abort();
 }
