@@ -5,6 +5,8 @@
   let mode = $state("alert" as "alert" | "confirm");
   let disabledConfirm = $state(false);
 
+  let instanceCount = 0;
+
   let onConfirmed: (() => unknown) | undefined = $state();
   let onCancel: (() => unknown) | undefined = $state();
 
@@ -65,7 +67,13 @@
 <script lang="ts">
   import DrawerButton from "@src/components/common/drawer-button.svelte";
   import Drawer from "@src/components/common/drawer.svelte";
-  import type { Snippet } from "svelte";
+  import { onMount, type Snippet } from "svelte";
+
+  onMount(() => {
+    instanceCount += 1;
+    console.log("Mounted alert dialog", instanceCount)
+    return () => (instanceCount -= 1);
+  });
 </script>
 
 <Drawer

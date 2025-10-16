@@ -1,11 +1,11 @@
 <script lang="ts">
-  import QrcodeScannerBase from "@src/components/staff/qrcode-scanner-base.svelte";
-  import { resource, ScrollState } from "runed";
-  import { cn } from "@src/components/utils";
-  import ManualIdDialog from "@src/components/staff/manual-id-dialog.svelte";
-  import { actions } from "astro:actions";
-  import DebugAttendedData from "./debug-attended-data.svelte";
   import { alert } from "@src/components/common/drawer-alert-dialog.svelte";
+  import ManualIdDialog from "@src/components/staff/manual-id-dialog.svelte";
+  import QrcodeScannerBase from "@src/components/staff/qrcode-scanner-base.svelte";
+  import { cn } from "@src/components/utils";
+  import { actions } from "astro:actions";
+  import { resource } from "runed";
+  import DebugAttendedData from "./debug-attended-data.svelte";
 
   let isIdInputtingDialogOpen = $state(false);
   const scanning = $derived(!isIdInputtingDialogOpen);

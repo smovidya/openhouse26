@@ -1,5 +1,8 @@
 <script lang="ts">
-  import { confirm } from "@src/components/common/drawer-alert-dialog.svelte";
+  import {
+    alert,
+    confirm,
+  } from "@src/components/common/drawer-alert-dialog.svelte";
   import DrawerButton from "@src/components/common/drawer-button.svelte";
   import Drawer from "@src/components/common/drawer.svelte";
   import ChangeRoundButton from "@src/components/staff/change-round-button.svelte";
@@ -53,10 +56,12 @@
 
   // Scanning ------------------------------------------------------------
 
-  // we should actually cache these data in case of workshop
+  // type User = NonNullable<
+  //   Awaited<ReturnType<typeof actions.getParticipantByIdOrQrCodeId>>["data"]
+  // >;
   let currentQrId: string | null = $state(null);
   const user = resource(
-    () => currentQrId,
+    () => [], // fuck this, we are doing manual refetching
     async () => {
       if (!currentQrId) {
         return;
@@ -87,7 +92,10 @@
       });
 
       if (error) {
-        alert(error.message);
+        alert({
+          title: "เกิดข้อผิดพลาด",
+          description: error.message,
+        });
       }
 
       return data;
@@ -98,7 +106,6 @@
     currentQrId = value;
     isConfirmDialogOpen = true;
     const p = user.refetch();
-
     const ok = await confirm({
       title: "ยืนยันการเช็คอิน",
       description: confirmDialogBody,
@@ -118,11 +125,17 @@
     });
 
     if (error) {
-      alert(error.message);
+      alert({
+        title: "เกิดข้อผิดพลาด",
+        description: error.message,
+      });
       workshopData.refetch();
     }
     if (data) {
-      alert("บันทึกข้อมูลเรียบร้อย");
+      alert({
+        title: "บันทึกข้อมูลเรียบร้อย",
+        description: "เย่",
+      });
       workshopData.refetch();
     }
   }
@@ -133,10 +146,7 @@
 
   function onSelfIdInputtingDialogDone(value: string) {
     isIdInputtingDialogOpen = false;
-    let cached = value;
-    // setTimeout(() => {
-    onResult(cached);
-    // }, 200);
+    onResult(value);
   }
 </script>
 
