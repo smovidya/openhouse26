@@ -6,6 +6,7 @@
   import { Spring } from "svelte/motion";
   import { IsDocumentVisible } from "runed";
   import Console from "@src/components/dev/console.svelte";
+  import { getUsableMediaDevices } from "@src/utils/camera";
 
   const isTabActive = new IsDocumentVisible();
 
@@ -66,13 +67,15 @@
       a.label.localeCompare(b.label),
     );
 
-    const index = sorted.findIndex((it) => it.deviceId === before);
+    const usables = getUsableMediaDevices(sorted);
+
+    const index = usables.findIndex((it) => it.deviceId === before);
 
     // if (index === -1) {
     //   return;
     // }
 
-    const device = sorted.at((index + 1) % sorted.length)!;
+    const device = usables.at((index + 1) % usables.length)!;
     activeInputDeviceId = device.deviceId;
     startDecode(activeInputDeviceId);
   }
@@ -131,7 +134,7 @@
   });
 
   $effect(() => {
-    consoleComponent.log(enable && isTabActive.current)
+    consoleComponent.log(enable && isTabActive.current);
     if (enable && isTabActive.current) {
       untrack(() => {
         if (activeInputDeviceId) {
