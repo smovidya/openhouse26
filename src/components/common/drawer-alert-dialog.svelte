@@ -44,17 +44,17 @@
     if (options.blockConfirmUntil) {
       options.blockConfirmUntil
         .then(() => {
-          console.log("Then");
+          // console.log("Then");
           disabledConfirm = false;
         })
         .catch((e) => {
-          console.log("error");
+          // console.log("error");
           console.error(e);
           onCancel?.();
         });
     }
 
-    console.log("what");
+    // console.log("what");
     const result = await promise;
     open = false;
 
@@ -68,13 +68,12 @@
   import type { Snippet } from "svelte";
 </script>
 
-{open}
 <Drawer
   bind:open={
     () => open,
     (v) => {
       if (v) {
-        console.log("wtf");
+        // console.log("wtf");
       } else {
         onCancel?.();
         open = false;
