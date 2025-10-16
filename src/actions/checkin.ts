@@ -379,13 +379,12 @@ export const staffCheckinWorkshop = defineAction({
       });
     }
 
-    try {
-      await sendEvent(ctx.locals.runtime.env.SSE, "checkin_workshop", {
-        type: "participant-checkin",
-        workshopName: currentSlot.timeSlot.workshop.title,
-      });
-    } catch {}
-
+    await sendEvent(ctx.locals.runtime.env.SSE, participant.id, {
+      type: "workshop-checkin",
+      workshopId: currentSlot.timeSlot.workshopId,
+      roundNumber: currentSlot.timeSlot.roundNumber
+    });
+    
     return;
   },
 });

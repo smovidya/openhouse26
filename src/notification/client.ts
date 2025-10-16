@@ -1,9 +1,24 @@
 interface WorkshopParticipantCheckinEvent {
-  type: "participant-checkin";
-  workshopName: string;
+  type: "workshop-checkin";
+  workshopId: string;
+  roundNumber: number
 }
 
-export type UserEvent = WorkshopParticipantCheckinEvent;
+interface BoothParticipantCheckinEvent {
+  type: "booth-checkin";
+  boothId: string;
+}
+
+interface RedeemEvent {
+  type: "redeem";
+  // no data yet 🥹
+}
+
+interface RegistrarCheckinEvent {
+  type: "registrar-checkin";
+}
+
+export type UserEvent = WorkshopParticipantCheckinEvent | BoothParticipantCheckinEvent | RedeemEvent | RegistrarCheckinEvent;
 
 export function onNotify(
   wsUrl: string,

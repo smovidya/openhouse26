@@ -6,8 +6,12 @@ export async function sendEvent(
   participantId: string,
   event: UserEvent,
 ) {
-  const sse = binding as any as SSEWorkerRpc;
-  return sse.sendEvent(participantId, JSON.stringify(event));
+  try {
+    const sse = binding as any as SSEWorkerRpc;
+    return sse.sendEvent(participantId, JSON.stringify(event));
+  } catch {
+    return null
+  }
 }
 
 
