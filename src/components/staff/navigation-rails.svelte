@@ -49,12 +49,12 @@
   }
 
   const baseButtonClass =
-    "relative flex-1 min-w-0 whitespace-nowrap rounded-full px-5 py-2 text-base font-medium transition-all duration-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white/70 disabled:cursor-not-allowed disabled:opacity-40";
+    "relative flex-1 min-w-0 whitespace-nowrap rounded-full px-5 py-1.5 -mx-1 text-base text-sm font-medium transition-all duration-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white/70 disabled:cursor-not-allowed disabled:opacity-40";
 </script>
 
 {#if items?.length}
   <nav
-    class="flex w-fit min-w-60 h-10 items-center space-x-1 rounded-full border border-white/15 bg-black/40 p-0.5 backdrop-blur-2xl"
+    class="flex w-fit min-w-60 h-8.5 items-center space-x-1 rounded-full border border-white/15 bg-black/40 p-0.5 backdrop-blur-2xl"
     aria-label={ariaLabel}
   >
     {#each items as item (item.value)}
@@ -63,7 +63,7 @@
         class={cn(
           baseButtonClass,
           item.value === selected
-            ? "-mx-1 h-10 bg-white border border-neutral-800/20 text-neutral-900 shadow"
+            ? "h-8.5 bg-white border border-neutral-800/20 text-neutral-900 shadow"
             : "text-white/50 hover:bg-white/10 active:bg-white/15 border-transparent",
           item.disabled && "pointer-events-none",
         )}
