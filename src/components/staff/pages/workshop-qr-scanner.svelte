@@ -11,22 +11,13 @@
   import WorkshopAttendeeList from "@src/components/staff/pages/workshop-attendee-list.svelte";
   import { actions } from "astro:actions";
 
-  const scroll = new ScrollState({
-    element: () => window,
-  });
-  const isAtTop = $derived(scroll.y <= 60);
-
   let isWorkshopSelectorOpen = $state(false);
   let isConfirmDialogOpen = $state(false);
   let isIdInputtingDialogOpen = $state(false);
 
   let mode = $state("checkin" as "checkin" | "add");
   const scanning = $derived(
-    !(
-      isWorkshopSelectorOpen ||
-      isConfirmDialogOpen ||
-      isIdInputtingDialogOpen
-    ) && isAtTop,
+    !(isWorkshopSelectorOpen || isConfirmDialogOpen || isIdInputtingDialogOpen),
   );
 
   // Workshop and timeslot selection ------------------------------------

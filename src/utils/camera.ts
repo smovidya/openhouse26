@@ -4,7 +4,7 @@ const geckoCameraLabelPattern = /Facing [a-z]+: \d+/
 export function getUsableMediaDevices(mediaDevices: MediaDeviceInfo[]) {
     // blink on android 
     let usables = mediaDevices.filter(it => blinkCameraLabelPattern.test(it.label));
-    if (usables.length > 0) {
+    if (usables.length === 0) {
         // gecko on android 
         usables = mediaDevices.filter(it => geckoCameraLabelPattern.test(it.label));
     }

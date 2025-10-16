@@ -15,15 +15,13 @@
   const scroll = new ScrollState({
     element: () => window,
   });
-  const isAtTop = $derived(scroll.y <= 60);
 
   let isBoothSelectorOpen = $state(false);
   let isConfirmDialogOpen = $state(false);
   let isIdInputtingDialogOpen = $state(false);
 
   const scanning = $derived(
-    !(isBoothSelectorOpen || isConfirmDialogOpen || isIdInputtingDialogOpen) &&
-      isAtTop,
+    !(isBoothSelectorOpen || isConfirmDialogOpen || isIdInputtingDialogOpen),
   );
 
   // Workshop and timeslot selection ------------------------------------
@@ -58,11 +56,10 @@
         alert("No QR code scanned");
         return;
       }
-      const { data, error } =
-        await actions.getParticipantByIdOrQrCodeId({
-          boothId: selectedBoothId,
-          participantIdOrQrCodeId: currentQrId,
-        });
+      const { data, error } = await actions.getParticipantByIdOrQrCodeId({
+        boothId: selectedBoothId,
+        participantIdOrQrCodeId: currentQrId,
+      });
       if (error) {
         throw new Error(error.message);
       }

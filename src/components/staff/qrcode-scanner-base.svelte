@@ -4,11 +4,15 @@
   import Renew from "carbon-icons-svelte/lib/Renew.svelte";
   import { onMount, untrack, type Snippet } from "svelte";
   import { Spring } from "svelte/motion";
-  import { IsDocumentVisible } from "runed";
+  import { IsDocumentVisible, ScrollState } from "runed";
   import Console from "@src/components/dev/console.svelte";
   import { getUsableMediaDevices } from "@src/utils/camera";
 
   const isTabActive = new IsDocumentVisible();
+  const scroll = new ScrollState({
+    element: () => window,
+  });
+  const isAtTop = $derived(scroll.y <= 60);
 
   let consoleComponent: Console | undefined;
   let videoElement: HTMLVideoElement;
@@ -31,6 +35,8 @@
     enable = $bindable(true),
     fancyDisabledAnimation = true,
   }: Props = $props();
+
+  const doEnable = $derived(enable && isAtTop && isTabActive.current);
 
   // const reader = new BrowserAztecCodeReader();
   const reader = new BrowserMultiFormatReader();
@@ -77,18 +83,22 @@
 
     const device = usables.at((index + 1) % usables.length)!;
     activeInputDeviceId = device.deviceId;
+    consoleComponent?.log(device);
     startDecode(activeInputDeviceId);
   }
 
   function startDecode(deviceId: string) {
-    videoElement.pause()
+    if (!doEnable) {
+      return
+    }
+    videoElement.pause();
     reader.decodeFromVideoDevice(
       deviceId,
       untrack(() => videoElement),
       (result) => {
         if (result) {
           consoleComponent?.log(result);
-          if (enable && isTabActive.current) {
+          if (doEnable) {
             onResult?.(result.getText());
           }
         }
@@ -126,7 +136,7 @@
     context.drawImage(videoElement, 0, 0);
     context.setTransform(1, 0, 0, 1, 0, 0);
     // reader.decodeOnce(videoElement)
-    
+
     videoElement.pause();
     reader.reset();
   }
@@ -136,15 +146,15 @@
   });
 
   $effect(() => {
-    consoleComponent?.log(enable && isTabActive.current);
-    if (enable && isTabActive.current) {
+    consoleComponent?.log({ doEnable });
+    if (doEnable) {
       untrack(() => {
         if (activeInputDeviceId) {
           startDecode(activeInputDeviceId);
         }
       });
     } else {
-      blurCamera();
+      untrack(() => blurCamera());
     }
 
     // return () => reader.stopContinuousDecode();
