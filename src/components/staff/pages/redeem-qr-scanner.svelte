@@ -16,34 +16,10 @@
   import WarningAltFilled from "carbon-icons-svelte/lib/WarningAltFilled.svelte";
   import { resource } from "runed";
 
-  let isBoothSelectorOpen = $state(false);
   let isConfirmDialogOpen = $state(false);
   let isIdInputtingDialogOpen = $state(false);
 
-  const scanning = $derived(
-    !(isBoothSelectorOpen || isConfirmDialogOpen || isIdInputtingDialogOpen),
-  );
-
-  // Workshop and timeslot selection ------------------------------------
-
-  // TODO: save this to localstorage
-  let selectedBoothId = $state("bsac");
-  const selectedBooth = $derived(
-    boothCheckpoints.find((it) => String(it.id) === selectedBoothId)!,
-  );
-
-  // svelte-ignore state_referenced_locally : I know
-  let dialogWorkshopId = $state($state.snapshot(selectedBoothId));
-
-  function launchWorkshopSelector() {
-    dialogWorkshopId = $state.snapshot(selectedBoothId);
-    isBoothSelectorOpen = true;
-  }
-
-  function updateSelectedBooth() {
-    selectedBoothId = $state.snapshot(dialogWorkshopId);
-    isBoothSelectorOpen = false;
-  }
+  const scanning = $derived(!(isConfirmDialogOpen || isIdInputtingDialogOpen));
 
   // Scanning ------------------------------------------------------------
 
@@ -60,7 +36,6 @@
         return;
       }
       const { data, error } = await actions.getParticipantByIdOrQrCodeId({
-        boothId: selectedBoothId,
         participantIdOrQrCodeId: currentQrId,
       });
       if (error) {
@@ -100,22 +75,8 @@
       });
       return;
     }
-    const { data, error } = await actions.staffCheckin({
-      boothId: selectedBoothId,
-      participantIdOrQrCodeId: currentQrId,
-    });
-    if (error) {
-      alert({
-        title: "เกิดข้อผิดพลาด",
-        description: error.message,
-      });
-    }
-    if (data) {
-      alert({
-        title: "เช็คอินแล้ว",
-        description: "เย่",
-      });
-    }
+
+    // TODO: actually submitting it
   }
 
   function onSelfIdInputtingDialogDone(value: string) {
@@ -126,16 +87,9 @@
 
 <QrcodeScannerBase enable={scanning} {onResult}>
   {#snippet header()}
-    <h2 class="text-3xl mt-9 bg-base-200/80 text-base-content px-9">
-      กำลัง<span class="font-bold">เช็คอิน</span>{selectedBooth?.name || "???"}
+    <h2 class="text-3xl mt-9 py-3 bg-base-200/80 text-base-content px-9">
+      สแกนรับของที่ระลึก
     </h2>
-  {/snippet}
-  {#snippet bottomUi()}
-    <ChangeRoundButton
-      onclick={launchWorkshopSelector}
-      title={selectedBooth?.name || "ไม่พบบูธ"}
-      subtitle={selectedBooth?.type || "ไม่พบบูธ"}
-    />
   {/snippet}
 </QrcodeScannerBase>
 
@@ -151,38 +105,6 @@
     </button>
   </div>
 </section>
-
-<Drawer bind:open={isBoothSelectorOpen}>
-  {#snippet header()}
-    <h2 class="text-3xl">เปลี่ยนบูธ</h2>
-  {/snippet}
-  <section class="mx-6 flex flex-col gap-3">
-    <label class="flex flex-col gap-1">
-      <span>บูธ</span>
-      <select class="select" bind:value={dialogWorkshopId}>
-        {#each boothCheckpoints as checkpoint}
-          <option value={String(checkpoint.id)}>{checkpoint.name}</option>
-        {/each}
-      </select>
-    </label>
-    {#if !isDepartmentStaffSelectable(dialogWorkshopId)}
-      <div class="alert alert-warning">
-        <WarningAltFilled />
-        <div>
-          <strong> ตัวเลือกนี้เฉพาะสตาฟส่วนกลาง </strong>
-          <span>
-            ขอความร่วมมือสตาฟภาควิชาเลือกเฉพาะที่เกี่ยวข้องตามที่ระบุในคู่มือเท่านั้น
-            ระบบสามารถสอบทานย้อนหลังเพื่อตรวจสอบการทุจริตได้
-            การไม่ปฏิบัติตามเงื่อนไขการใช้งานจะถูกบันทึกไว้ในระบบ
-          </span>
-        </div>
-      </div>
-    {/if}
-  </section>
-  {#snippet buttons()}
-    <DrawerButton onclick={updateSelectedBooth}>ตกลง</DrawerButton>
-  {/snippet}
-</Drawer>
 
 {#snippet confirmDialogBody()}
   {#if user.loading}
