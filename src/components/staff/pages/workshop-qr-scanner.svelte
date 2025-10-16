@@ -14,7 +14,7 @@
   const scroll = new ScrollState({
     element: () => window,
   });
-  const isAtTop = $derived(scroll.progress.y <= 60);
+  const isAtTop = $derived(scroll.y <= 60);
 
   let isWorkshopSelectorOpen = $state(false);
   let isConfirmDialogOpen = $state(false);

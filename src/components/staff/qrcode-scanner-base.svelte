@@ -5,9 +5,11 @@
   import { onMount, type Snippet } from "svelte";
   import { Spring } from "svelte/motion";
   import { IsDocumentVisible } from "runed";
+  import Console from "@src/components/dev/console.svelte";
 
   const isTabActive = new IsDocumentVisible();
 
+  let consoleComponent: Console;
   let videoElement = $state(null) as HTMLVideoElement | null;
   let canvasElement = $state(null) as HTMLCanvasElement | null;
   const context = $derived(canvasElement?.getContext("2d"));
@@ -61,20 +63,21 @@
   async function switchDevice() {
     const videoInputDevices = await reader.listVideoInputDevices();
     const before = activeInputDeviceId;
-
-    const index = videoInputDevices.findIndex(
-      (it) => it.deviceId === activeInputDeviceId,
+    const sorted = videoInputDevices.toSorted((a, b) =>
+      a.deviceId.localeCompare(b.deviceId),
     );
+
+    const index = sorted.findIndex((it) => it.deviceId === before);
 
     // if (index === -1) {
     //   return;
     // }
 
-    const device = videoInputDevices.at(
-      (index + 1) % videoInputDevices.length,
+    const device = sorted.at(
+      (index + 1) % sorted.length,
     )!;
     activeInputDeviceId = device.deviceId;
-    console.log({ active: activeInputDeviceId, before });
+    consoleComponent.log({ active: activeInputDeviceId, before });
   }
 
   onMount(async () => {
@@ -85,7 +88,7 @@
     if (!videoElement || !context) {
       return;
     }
-    
+
     const id = activeInputDeviceId;
     onResult;
     if (enable && isTabActive.current) {
@@ -94,7 +97,7 @@
       const timeoutId = setTimeout(() => {
         reader.decodeFromVideoDevice(id, videoElement, (result) => {
           if (result) {
-            console.log(result);
+            consoleComponent.log(result);
             if (enable && isTabActive.current) {
               onResult?.(result.getText());
             }
@@ -199,6 +202,8 @@
     </div>
   </section>
 </div>
+
+<Console bind:this={consoleComponent} />
 
 <style>
   .dim-overlay {
