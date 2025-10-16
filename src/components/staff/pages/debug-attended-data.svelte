@@ -24,7 +24,7 @@
         {#each Object.entries(participantData.current.participant) as [key, value]}
           <tr>
             <td>{key}</td>
-            <td>{value}</td>
+            <td class="break-all">{value}</td>
           </tr>
         {/each}
       {/if}

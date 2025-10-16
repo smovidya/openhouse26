@@ -12,7 +12,9 @@
   let isConfirmDialogOpen = $state(false);
   let isIdInputtingDialogOpen = $state(false);
 
-  const scanning = $derived(!(isConfirmDialogOpen || isIdInputtingDialogOpen || isDialogOpen.current));
+  const scanning = $derived(
+    !(isConfirmDialogOpen || isIdInputtingDialogOpen || isDialogOpen.current),
+  );
 
   let currentQrId: string | null = $state(null);
   const user = resource(
@@ -102,8 +104,25 @@
     </div>
   {/if}
   {#if user.current && !user.loading && !user.error}
-    {JSON.stringify(user.current)}
-    name, email, mission, workshop, รอบ
+    {@const participant = user.current.participant}
+    <div class="flex flex-col p-2">
+      <div class="flex justify-between">
+        <span>ชื่อ</span>
+        <span>{participant.givenName} {participant.familyName}</span>
+      </div>
+      <div class="flex justify-between">
+        <span>อายุ</span>
+        <span>{participant.age} ปี</span>
+      </div>
+      <div class="flex justify-between">
+        <span>สถานะ</span>
+        <span>{participant.attendeeType}</span>
+      </div>
+      <div class="flex justify-between">
+        <span>ความต้องการพิเศษ</span>
+        <span>{participant.specialNeeds}</span>
+      </div>
+    </div>
   {/if}
 {/snippet}
 
