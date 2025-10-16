@@ -10,7 +10,7 @@
 
   const isTabActive = new IsDocumentVisible();
 
-  let consoleComponent: Console;
+  let consoleComponent: Console | undefined;
   let videoElement: HTMLVideoElement;
   let canvasElement: HTMLCanvasElement;
 
@@ -81,12 +81,13 @@
   }
 
   function startDecode(deviceId: string) {
+    videoElement.pause()
     reader.decodeFromVideoDevice(
       deviceId,
       untrack(() => videoElement),
       (result) => {
         if (result) {
-          consoleComponent.log(result);
+          consoleComponent?.log(result);
           if (enable && isTabActive.current) {
             onResult?.(result.getText());
           }
@@ -125,6 +126,7 @@
     context.drawImage(videoElement, 0, 0);
     context.setTransform(1, 0, 0, 1, 0, 0);
     // reader.decodeOnce(videoElement)
+    
     videoElement.pause();
     reader.reset();
   }
@@ -134,7 +136,7 @@
   });
 
   $effect(() => {
-    consoleComponent.log(enable && isTabActive.current);
+    consoleComponent?.log(enable && isTabActive.current);
     if (enable && isTabActive.current) {
       untrack(() => {
         if (activeInputDeviceId) {
