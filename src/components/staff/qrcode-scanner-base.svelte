@@ -85,11 +85,11 @@
     if (!videoElement || !context) {
       return;
     }
-
+    
+    const id = activeInputDeviceId;
+    onResult;
     if (enable && isTabActive.current) {
       // these are to track
-      onResult;
-      const id = activeInputDeviceId;
 
       const timeoutId = setTimeout(() => {
         reader.decodeFromVideoDevice(id, videoElement, (result) => {
