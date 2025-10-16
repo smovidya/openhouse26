@@ -2,7 +2,7 @@
   import { cn } from "@src/components/utils";
   import { BrowserMultiFormatReader } from "@zxing/library";
   import Renew from "carbon-icons-svelte/lib/Renew.svelte";
-  import { onMount, type Snippet } from "svelte";
+  import { onMount, untrack, type Snippet } from "svelte";
   import { Spring } from "svelte/motion";
   import { IsDocumentVisible } from "runed";
   import Console from "@src/components/dev/console.svelte";
@@ -10,9 +10,8 @@
   const isTabActive = new IsDocumentVisible();
 
   let consoleComponent: Console;
-  let videoElement = $state(null) as HTMLVideoElement | null;
-  let canvasElement = $state(null) as HTMLCanvasElement | null;
-  const context = $derived(canvasElement?.getContext("2d"));
+  let videoElement: HTMLVideoElement;
+  let canvasElement: HTMLCanvasElement;
 
   interface Props {
     bottomUi?: Snippet;
@@ -64,7 +63,7 @@
     const videoInputDevices = await reader.listVideoInputDevices();
     const before = activeInputDeviceId;
     const sorted = videoInputDevices.toSorted((a, b) =>
-      a.deviceId.localeCompare(b.deviceId),
+      a.label.localeCompare(b.label),
     );
 
     const index = sorted.findIndex((it) => it.deviceId === before);
@@ -73,69 +72,74 @@
     //   return;
     // }
 
-    const device = sorted.at(
-      (index + 1) % sorted.length,
-    )!;
+    const device = sorted.at((index + 1) % sorted.length)!;
     activeInputDeviceId = device.deviceId;
-    consoleComponent.log({ active: activeInputDeviceId, before });
+    startDecode(activeInputDeviceId);
   }
 
-  onMount(async () => {
+  function startDecode(deviceId: string) {
+    reader.decodeFromVideoDevice(
+      deviceId,
+      untrack(() => videoElement),
+      (result) => {
+        if (result) {
+          consoleComponent.log(result);
+          if (enable && isTabActive.current) {
+            onResult?.(result.getText());
+          }
+        }
+      },
+    );
+  }
+
+  function blurCamera() {
+    const context = canvasElement.getContext("2d")!;
+
+    const { width, height } = videoElement.getBoundingClientRect();
+    context.canvas.width = width;
+    context.canvas.height = height;
+
+    const videoWidth = videoElement.videoWidth;
+    const videoHeight = videoElement.videoHeight;
+
+    // we need diffrent cropping based on aspect ratio
+    const transform = computeCoverTransform(
+      videoWidth,
+      videoHeight,
+      width,
+      height,
+    );
+
+    if (!transform) {
+      return;
+    }
+
+    const { sx, sy, dx, dy } = transform;
+
+    context.setTransform(1, 0, 0, 1, 0, 0);
+    context.clearRect(0, 0, width, height);
+    context.setTransform(sx, 0, 0, sy, dx, dy);
+    context.drawImage(videoElement, 0, 0);
+    context.setTransform(1, 0, 0, 1, 0, 0);
+    // reader.decodeOnce(videoElement)
+    videoElement.pause();
+    reader.reset();
+  }
+
+  onMount(() => {
     switchDevice();
   });
 
   $effect(() => {
-    if (!videoElement || !context) {
-      return;
-    }
-
-    const id = activeInputDeviceId;
-    onResult;
+    consoleComponent.log(enable && isTabActive.current)
     if (enable && isTabActive.current) {
-      // these are to track
-
-      const timeoutId = setTimeout(() => {
-        reader.decodeFromVideoDevice(id, videoElement, (result) => {
-          if (result) {
-            consoleComponent.log(result);
-            if (enable && isTabActive.current) {
-              onResult?.(result.getText());
-            }
-          }
-        });
-      }, 0);
-
-      return () => clearTimeout(timeoutId);
+      untrack(() => {
+        if (activeInputDeviceId) {
+          startDecode(activeInputDeviceId);
+        }
+      });
     } else {
-      const { width, height } = videoElement.getBoundingClientRect();
-      context.canvas.width = width;
-      context.canvas.height = height;
-
-      const videoWidth = videoElement.videoWidth;
-      const videoHeight = videoElement.videoHeight;
-
-      // we need diffrent cropping based on aspect ratio
-      const transform = computeCoverTransform(
-        videoWidth,
-        videoHeight,
-        width,
-        height,
-      );
-
-      if (!transform) {
-        return;
-      }
-
-      const { sx, sy, dx, dy } = transform;
-
-      context.setTransform(1, 0, 0, 1, 0, 0);
-      context.clearRect(0, 0, width, height);
-      context.setTransform(sx, 0, 0, sy, dx, dy);
-      context.drawImage(videoElement, 0, 0);
-      context.setTransform(1, 0, 0, 1, 0, 0);
-      // reader.decodeOnce(videoElement)
-      videoElement.pause();
-      reader.reset();
+      blurCamera();
     }
 
     // return () => reader.stopContinuousDecode();
@@ -143,7 +147,8 @@
   });
 
   const videoBlur = new Spring(0);
-  $effect(() => {
+
+  $effect.pre(() => {
     if (!fancyDisabledAnimation) {
       videoBlur.set(0);
       return;
@@ -164,14 +169,14 @@
   <!-- svelte-ignore a11y_media_has_caption -->
   <video
     bind:this={videoElement}
-    class="object-cover w-full aspect-[3/4] p-0! m-0! bg-neutral-700"
+    class="object-cover w-full aspect-[9/16] sm:aspect-[3/4] p-0! m-0! bg-neutral-700"
     style="filter: blur({videoBlur.current}px);"
   >
   </video>
   <canvas
     bind:this={canvasElement}
     class={cn(
-      "absolute inset-0 w-full object-cover aspect-[3/4] bg-transparent",
+      "absolute inset-0 w-full object-cover aspect-[9/16] sm:aspect-[3/4] bg-transparent",
     )}
     style="filter: blur({videoBlur.current}px); opacity: {videoBlur.current /
       24};"
@@ -203,7 +208,7 @@
   </section>
 </div>
 
-<Console bind:this={consoleComponent} />
+<!-- <Console bind:this={consoleComponent} /> -->
 
 <style>
   .dim-overlay {
