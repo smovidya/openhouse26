@@ -13,7 +13,7 @@
   const scroll = new ScrollState({
     element: () => window,
   });
-  const isAtTop = $derived(scroll.y <= 60);
+  const isAtTop = $derived(scroll.y <= 120);
 
   let consoleComponent: Console | undefined;
   let videoElement: HTMLVideoElement;

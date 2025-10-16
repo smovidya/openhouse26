@@ -1,19 +1,11 @@
 <script lang="ts">
   import {
-    alert,
-    confirm,
+      alert,
+      confirm,
   } from "@src/components/common/drawer-alert-dialog.svelte";
-  import DrawerButton from "@src/components/common/drawer-button.svelte";
-  import Drawer from "@src/components/common/drawer.svelte";
-  import ChangeRoundButton from "@src/components/staff/change-round-button.svelte";
   import ManualIdDialog from "@src/components/staff/manual-id-dialog.svelte";
   import QrcodeScannerBase from "@src/components/staff/qrcode-scanner-base.svelte";
-  import {
-    boothCheckpoints,
-    isDepartmentStaffSelectable,
-  } from "@src/data/checkpoints";
   import { actions } from "astro:actions";
-  import WarningAltFilled from "carbon-icons-svelte/lib/WarningAltFilled.svelte";
   import { resource } from "runed";
 
   let isConfirmDialogOpen = $state(false);
@@ -35,6 +27,7 @@
         });
         return;
       }
+      // TODO: get other data?
       const { data, error } = await actions.getParticipantByIdOrQrCodeId({
         participantIdOrQrCodeId: currentQrId,
       });
@@ -57,7 +50,7 @@
 
     const p = user.refetch();
     const ok = await confirm({
-      title: "ยืนยันการเช็คอิน",
+      title: "รับของรางวัล",
       description: confirmDialogBody,
       blockConfirmUntil: p,
     });

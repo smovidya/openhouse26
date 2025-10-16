@@ -7,6 +7,7 @@
   import Drawer from "@src/components/common/drawer.svelte";
   import ChangeRoundButton from "@src/components/staff/change-round-button.svelte";
   import ManualIdDialog from "@src/components/staff/manual-id-dialog.svelte";
+  import BoothCheckinHistory from "@src/components/staff/pages/booth-checkin-history.svelte";
   import QrcodeScannerBase from "@src/components/staff/qrcode-scanner-base.svelte";
   import {
     boothCheckpoints,
@@ -151,6 +152,8 @@
     </button>
   </div>
 </section>
+
+<BoothCheckinHistory bind:boothId={selectedBoothId} />
 
 <Drawer bind:open={isBoothSelectorOpen}>
   {#snippet header()}
