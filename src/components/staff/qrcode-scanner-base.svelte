@@ -169,7 +169,7 @@
       return;
     }
 
-    if (enable && isTabActive.current) {
+    if (doEnable) {
       const id = setTimeout(() => videoBlur.set(0), 400);
       return () => clearTimeout(id);
     } else {
