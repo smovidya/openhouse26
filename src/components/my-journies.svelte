@@ -1,10 +1,9 @@
 <script lang="ts">
-  import { resource } from "runed";
-  import ResourceWrapper from "./common/resource-wrapper.svelte";
-  import { _ } from "../../dist/_worker.js/chunks/schemas_C0Er5qCK.mjs";
-  import { actions } from "astro:actions";
-  import { alert } from "./common/drawer-alert-dialog.svelte";
   import { Rewards } from "@src/data/rewards";
+  import { actions } from "astro:actions";
+  import { resource } from "runed";
+  import { alert } from "./common/drawer-alert-dialog.svelte";
+  import ResourceWrapper from "./common/resource-wrapper.svelte";
 
   interface Props {
     participantId: string;
@@ -30,7 +29,7 @@
 
 <ResourceWrapper resourceLoader={participantResource}>
   {#snippet children(data)}
-    {@const rewardsProgress = new Rewards(participantId, data.checkins)}
+    <!-- {@const rewardsProgress = new Rewards(participantId, data.checkins)} -->
     <div>
       {JSON.stringify(data)}
     </div>
