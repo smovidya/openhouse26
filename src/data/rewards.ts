@@ -40,15 +40,17 @@ const tierConditions = {
   },
 };
 
-const rewardsInfo = [
+export const rewardsInfo = [
   {
     id: 3,
+    level: 3,
     name: "เสือซีเคร็ท",
     description: "ลุ้นรับของรางวัลใหญ่สุดพิเศษ",
     requiredTier: 3,
   },
   {
     id: 2,
+    level: 2,
     name: "เสือผจญภัย",
     description: "รับของรางวัลสุดพิเศษ",
     requiredTier: 2,
@@ -56,15 +58,17 @@ const rewardsInfo = [
   {
     id: 1,
     name: "เสือฮอตเนิร์ด",
+    level: 1,
     description: "รับของรางวัลน่ารักๆ",
     requiredTier: 1,
   },
   {
     id: 0,
+    level: 0,
     name: "Tier 0",
     description: "รับทันที!! เมื่อเช็คอินเข้าหน้างาน",
     requiredTier: 0,
-  }
+  },
 ];
 
 export class Rewards {
@@ -73,10 +77,12 @@ export class Rewards {
 
   constructor(
     participantId: string,
-    checkins: Awaited<ReturnType<typeof checkinModel.getCheckinByParticipant>>,
+    checkins: Awaited<
+      ReturnType<typeof checkinModel.getCheckinByParticipant>
+    > = [],
   ) {
-    this.participantId = "";
-    this.checkins = [];
+    this.participantId = participantId;
+    this.checkins = checkins;
   }
 
   getCheckedInEntry() {
@@ -108,8 +114,12 @@ export class Rewards {
     return checkpoint?.checkpoints?.type || "";
   }
 
-  getRewardRedeemed(rewardId: string) {
+  getRewardRedeemed() {
     return this.checkins.filter((c) => c.checkpoints?.type === "reward");
+  }
+
+  isRedeemedReward() {
+    return this.getRewardRedeemed().length > 0;
   }
 
   getCheckedinAddYours() {
@@ -135,6 +145,11 @@ export class Rewards {
   getCurrentProgress() {
     const tier = this.getCurrentTier();
     return tier.progress;
+  }
+
+  getCurrentLevel() {
+    const tier = this.getCurrentTier();
+    return tier.level;
   }
 
   getCurrentTier() {
