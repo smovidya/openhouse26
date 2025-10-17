@@ -8,7 +8,9 @@
   import Drawer from "@src/components/common/drawer.svelte";
   import ChangeRoundButton from "@src/components/staff/change-round-button.svelte";
   import ManualIdDialog from "@src/components/staff/manual-id-dialog.svelte";
-  import BoothCheckinHistory from "@src/components/staff/pages/booth-checkin-history.svelte";
+  import BoothCheckinHistory, {
+    addToHistory,
+  } from "@src/components/staff/pages/booth-checkin-history.svelte";
   import QrcodeScannerBase from "@src/components/staff/qrcode-scanner-base.svelte";
   import {
     boothCheckpoints,
@@ -17,13 +19,19 @@
   import { actions } from "astro:actions";
   import WarningAltFilled from "carbon-icons-svelte/lib/WarningAltFilled.svelte";
   import { resource } from "runed";
+  import { toast } from "svelte-sonner";
 
   let isBoothSelectorOpen = $state(false);
   let isConfirmDialogOpen = $state(false);
   let isIdInputtingDialogOpen = $state(false);
 
   const scanning = $derived(
-    !(isBoothSelectorOpen || isConfirmDialogOpen || isIdInputtingDialogOpen || isDialogOpen.current),
+    !(
+      isBoothSelectorOpen ||
+      isConfirmDialogOpen ||
+      isIdInputtingDialogOpen ||
+      isDialogOpen.current
+    ),
   );
 
   // Workshop and timeslot selection ------------------------------------
@@ -100,9 +108,13 @@
         title: "ข้อผิดพลาด",
         description: "กรุณาสแกน QR Code หรือป้อน ID",
       });
+      // toast.error("เกิดข้อผิดพลาด", {
+      //   description: "กรุณาสแกน QR Code หรือป้อน ID",
+      // });
       return;
     }
-    const { data, error } = await actions.staffCheckin({
+
+    const { error } = await actions.staffCheckin({
       boothId: selectedBoothId,
       participantIdOrQrCodeId: currentQrId,
     });
@@ -111,13 +123,20 @@
         title: "เกิดข้อผิดพลาด",
         description: error.message,
       });
+      return;
     }
-    if (data) {
-      alert({
-        title: "เช็คอินแล้ว",
-        description: "เย่",
-      });
-    }
+
+    // data is void | undefined tho
+    addToHistory({
+      participant: {
+        age: user.current!.participant.age,
+        name: `${user.current!.participant.givenName} ${user.current!.participant.familyName}`,
+        status: user.current!.participant.attendeeType,
+      },
+      boothId: selectedBoothId,
+    });
+
+    toast.success("เช็คอินแล้ว");
   }
 
   function onSelfIdInputtingDialogDone(value: string) {
@@ -201,7 +220,7 @@
     </div>
   {/if}
   {#if user.current && !user.loading && !user.error}
-    <table class="table mx-6 mt-3 text-md">
+    <table class="table mt-3 text-md">
       <tbody>
         <tr>
           <th> ชื่อ </th>

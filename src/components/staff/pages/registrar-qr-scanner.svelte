@@ -1,5 +1,6 @@
 <script lang="ts">
-  import DrawerAlertDialog, {
+  import {
+    alert,
     confirm,
     isDialogOpen,
   } from "@src/components/common/drawer-alert-dialog.svelte";
@@ -7,9 +8,9 @@
   import QrcodeScannerBase from "@src/components/staff/qrcode-scanner-base.svelte";
   import { cn } from "@src/components/utils";
   import { actions } from "astro:actions";
+  import ErrorOutline from "carbon-icons-svelte/lib/ErrorOutline.svelte";
   import { resource } from "runed";
   import { Toaster, toast } from "svelte-sonner";
-  import ErrorOutline from "carbon-icons-svelte/lib/ErrorOutline.svelte";
 
   let isConfirmDialogOpen = $state(false);
   let isIdInputtingDialogOpen = $state(false);
@@ -66,12 +67,15 @@
       return;
     }
 
-    const { error } = await actions.checkinParticipant({
+    const { error } = await actions.addParticipantEntryCheckin({
       participantOrQrCodeId: currentQrId,
     });
 
     if (error) {
-      alert(`เกิดข้อผิดพลาด: ${error.message}`);
+      alert({
+        title: "เกิดข้อผิดพลาด",
+        description: error.message,
+      });
       return;
     }
 
@@ -154,7 +158,9 @@
         {@const participant = user.current.participant}
         <div class="flex justify-between">
           <span>ชื่อ</span>
-          <span class="text-2xl">{participant.givenName} {participant.familyName}</span>
+          <span class="text-2xl"
+            >{participant.givenName} {participant.familyName}</span
+          >
         </div>
         <div class="flex justify-between">
           <span>สถานะ</span>

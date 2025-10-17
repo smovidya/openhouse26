@@ -22,7 +22,12 @@
 
   let mode = $state("checkin" as "checkin" | "add");
   const scanning = $derived(
-    !(isWorkshopSelectorOpen || isConfirmDialogOpen || isIdInputtingDialogOpen || isDialogOpen.current),
+    !(
+      isWorkshopSelectorOpen ||
+      isConfirmDialogOpen ||
+      isIdInputtingDialogOpen ||
+      isDialogOpen.current
+    ),
   );
 
   // Workshop and timeslot selection ------------------------------------
@@ -57,9 +62,6 @@
 
   // Scanning ------------------------------------------------------------
 
-  // type User = NonNullable<
-  //   Awaited<ReturnType<typeof actions.getParticipantByIdOrQrCodeId>>["data"]
-  // >;
   let currentQrId: string | null = $state(null);
   const user = resource(
     () => [], // fuck this, we are doing manual refetching
@@ -131,14 +133,15 @@
         description: error.message,
       });
       workshopData.refetch();
+      return;
     }
-    if (data) {
-      alert({
-        title: "บันทึกข้อมูลเรียบร้อย",
-        description: "เย่",
-      });
-      workshopData.refetch();
-    }
+
+    // data is void | undefined
+    alert({
+      title: "บันทึกข้อมูลเรียบร้อย",
+      description: "เย่",
+    });
+    workshopData.refetch();
   }
 
   function openSelfIdInputtingDialog() {
