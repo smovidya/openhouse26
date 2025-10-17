@@ -23,7 +23,7 @@
   let isIdInputtingDialogOpen = $state(false);
 
   const scanning = $derived(
-    !(isBoothSelectorOpen || isConfirmDialogOpen || isIdInputtingDialogOpen || !isDialogOpen.current),
+    !(isBoothSelectorOpen || isConfirmDialogOpen || isIdInputtingDialogOpen || isDialogOpen.current),
   );
 
   // Workshop and timeslot selection ------------------------------------
