@@ -76,13 +76,6 @@ export const getParticipantByIdOrQrCodeId = defineAction({
       });
     }
 
-    try {
-      await checkinModel.updateParticipantQrId(ctx.locals.db, participant.id);
-    } catch (err) {
-      // Silent failed
-      console.log("Failed to update participant QR code ID:", err);
-    }
-
     return {
       participant,
       checkinForBooth: checkins,
@@ -730,7 +723,7 @@ export const staffRemoveOnSiteCheckinParticipant = defineAction({
   },
 });
 
-export const checkinParticipant = defineAction({
+export const addParticipantEntryCheckin = defineAction({
   input: z.object({
     participantOrQrCodeId: z.string(),
   }),
@@ -827,6 +820,13 @@ export const checkinParticipant = defineAction({
         code: "INTERNAL_SERVER_ERROR",
         message: "ไม่สามารถลงทะเบียนเข้างานได้: " + (err as Error).message,
       });
+    }
+
+    try {
+      await checkinModel.updateParticipantQrId(ctx.locals.db, participant.id);
+    } catch (err) {
+      // Silent failed
+      console.log("Failed to update participant QR code ID:", err);
     }
 
     await sendEvent(ctx.locals.runtime.env.SSE, participant.id, {
