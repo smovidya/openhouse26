@@ -22,7 +22,7 @@
       });
 
       if (error) {
-        alert({ title: "เกิดข้อผิดพลาด", description: error.message });
+        alert({ title: "เกิดข้อผิดพลาด", description: error });
       }
 
       return data;

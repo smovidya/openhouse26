@@ -14,7 +14,7 @@
   const scroll = new ScrollState({
     element: () => window,
   });
-  const isAtTop = $derived(scroll.y <= 120);
+  const isAtTop = $derived(scroll.y <= 400);
 
   let consoleComponent: Console | undefined;
   let videoElement: HTMLVideoElement;

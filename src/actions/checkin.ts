@@ -397,7 +397,7 @@ export const staffCheckinWorkshop = defineAction({
       throw new ActionError({
         code: "FORBIDDEN",
         message:
-          "ผู้เข้าร่วมกิจกรรมนี้ได้ลงทะเบียนเข้างานแล้ว",
+          "ผู้เข้าร่วมกิจกรรมนี้ได้เช็คอินเวิร์กช็อปนี้แล้ว",
       });
     }
 
