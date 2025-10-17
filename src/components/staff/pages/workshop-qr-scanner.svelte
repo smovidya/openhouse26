@@ -32,7 +32,6 @@
 
   // Workshop and timeslot selection ------------------------------------
 
-  // TODO: save this to localstorage
   const selectedWorkshopId = new PersistedState(
     "workshop-qr-scanner:selectedWorkshop",
     {
