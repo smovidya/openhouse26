@@ -23,7 +23,7 @@
     <a href="/workshops" class="underline underline-offset-2">ดูทั้งหมด →</a>
   </div>
 
-  <div class="mt-6">
+  <div class="mt-6 space-y-3">
     {#each selectedWorkshops as { roundNumber, workshopId }}
       {@const workshop = getWorkshopById(workshopId)!}
       {@const slot = workshop.slots.find((it) => it.round === roundNumber)!}
