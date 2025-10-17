@@ -68,9 +68,9 @@
               <p class="text-sm">รับของที่ระลึกทันทีเมื่อเข้างาน!</p>
               {#if rewards.getCurrentLevel() > -1}
                 <span class="mt-5 badge">คุณได้รับรางวัลนี้แล้ว </span>
-                {:else}
+              {:else}
                 <div class="alert alert-warning mt-5">
-                  โปรดมาเช็คอินที่จุดลงทะเบียนหน้างานเพื่อรับรางวัลนี้นะ!
+                  อย่าลืมมาเช็คอินที่จุดลงทะเบียนหน้างานเพื่อรับรางวัลนี้และได้สิทธิ์ในการรับเกียรติบัตรนะ!
                 </div>
               {/if}
             </div>
@@ -90,6 +90,18 @@
               <span class="italic text-sm">Tier 3</span>
               <h3 class="text-3xl font-black">เสือฮอตเนิร์ด</h3>
               <p class="text-sm">รับกระดาษโน้ต และปากกามูจิเมื่อครบเงื่อนไข</p>
+              <div class="mt-2 flex flex-row gap-4">
+                <img
+                  src="rewards/postit.png"
+                  alt="กระดาษโน้ต"
+                  class="max-w-52 w-full object-contain"
+                />
+                <img
+                  src="rewards/pen.png"
+                  alt="ปากกามูจิ"
+                  class="max-w-52 w-full object-contain"
+                />
+              </div>
               <div class="mt-2">
                 <span class="italic text-blue-300/85">เงื่อนไข</span>
                 <ul class="gap-1.5 flex flex-col">
@@ -131,6 +143,13 @@
                 กระบอกน้ำและหมวกสุดเอ็กคลูสีฟสำหรับ 50
                 คนแรกในแต่ละวันที่ตรงเงื่อนไขเท่านั้น!!!!
               </p>
+              <div>
+                <img
+                  src="rewards/cap.png"
+                  alt="หมวก"
+                  class="max-w-80 w-full object-contain"
+                />
+              </div>
               <div class="mt-2">
                 <span class="italic text-blue-300/85">เงื่อนไข</span>
                 <ul class="gap-1.5 flex flex-col">
@@ -190,6 +209,13 @@
                 กล่องจุ่มลับสุดคิวท์เฉพาะ 15 คนแรกของแต่ละวัน
                 ไม่เอาไม่ได้แล้วมั้ยยยย
               </p>
+              <div>
+                <img
+                  src="rewards/randombox.png"
+                  alt="กล่องจุ่มลับ"
+                  class="max-w-52 w-full object-contain"
+                />
+              </div>
               <div class="mt-2">
                 <span class="italic text-blue-300/85">เงื่อนไข</span>
                 <ul class="gap-1.5 flex flex-col">
