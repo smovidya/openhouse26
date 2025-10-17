@@ -23,12 +23,12 @@
     <a href="/workshops" class="underline underline-offset-2">ดูทั้งหมด →</a>
   </div>
 
-  <div class="mt-6 space-y-3">
+  <div class="mt-6">
     {#each selectedWorkshops as { roundNumber, workshopId }}
       {@const workshop = getWorkshopById(workshopId)!}
       {@const slot = workshop.slots.find((it) => it.round === roundNumber)!}
       <WorkshopCard
-        class="text-white"
+        class="text-white mb-3"
         selectedTimeSlotText="({slot.start.toString()} - {slot.end.toString()} น. แต่ต้องแสดงตัวเวลา {slot.start.add(
           { minute: -15 },
         )} - {slot.start.add({ minute: -10 }).toString()} น. เท่านั้น)"
