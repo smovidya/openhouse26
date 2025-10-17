@@ -55,32 +55,32 @@ export const getCheckinByCheckpoint = async (db: Db, checkpointId: string) => {
     );
 };
 
-export const getCheckinByParticipantAndCheckpoint = async (
-  db: Db,
-  participantIdOrQrCodeId: string,
-  checkpointId: string,
-) =>
-  db
-    .select()
-    .from(schema.checkins)
-    .leftJoin(
-      schema.participants,
-      eq(schema.participants.id, schema.checkins.participantId),
-    )
-    .leftJoin(
-      schema.checkpoints,
-      eq(schema.checkpoints.id, schema.checkins.checkpointId),
-    )
-    .where(
-      and(
-        isNull(schema.checkins.deletedAt),
-        or(
-          eq(schema.participants.id, participantIdOrQrCodeId),
-          eq(schema.participants.qrCodeId, participantIdOrQrCodeId),
-        ),
-        eq(schema.checkpoints.id, checkpointId),
-      ),
-    );
+// export const getCheckinByParticipantAndCheckpoint = async (
+//   db: Db,
+//   participantIdOrQrCodeId: string,
+//   checkpointId: string,
+// ) =>
+//   db
+//     .select()
+//     .from(schema.checkins)
+//     .leftJoin(
+//       schema.participants,
+//       eq(schema.participants.id, schema.checkins.participantId),
+//     )
+//     .leftJoin(
+//       schema.checkpoints,
+//       eq(schema.checkpoints.id, schema.checkins.checkpointId),
+//     )
+//     .where(
+//       and(
+//         isNull(schema.checkins.deletedAt),
+//         or(
+//           eq(schema.participants.id, participantIdOrQrCodeId),
+//           eq(schema.participants.qrCodeId, participantIdOrQrCodeId),
+//         ),
+//         eq(schema.checkpoints.id, checkpointId),
+//       ),
+//     );
 
 export const getCheckinByStaff = async (
   db: Db,

@@ -120,7 +120,7 @@ export const staffCheckin = defineAction({
       ReturnType<typeof participantModel.getParticipantByIdOrQrCodeId>
     >;
     let checkins: Awaited<
-      ReturnType<typeof checkinModel.getCheckinByParticipantAndCheckpoint>
+      ReturnType<typeof checkinModel.getCheckinByParticipant>
     >;
 
     try {
@@ -143,10 +143,9 @@ export const staffCheckin = defineAction({
     }
 
     try {
-      checkins = await checkinModel.getCheckinByParticipantAndCheckpoint(
+      checkins = await checkinModel.getCheckinByParticipant(
         ctx.locals.db,
         participant.id,
-        input.boothId,
       );
     } catch (err) {
       throw new ActionError({
