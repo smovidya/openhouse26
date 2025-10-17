@@ -8,6 +8,8 @@
   import { cn } from "@src/components/utils";
   import { actions } from "astro:actions";
   import { resource } from "runed";
+  import { Toaster, toast } from "svelte-sonner";
+  import ErrorOutline from "carbon-icons-svelte/lib/ErrorOutline.svelte";
 
   let isConfirmDialogOpen = $state(false);
   let isIdInputtingDialogOpen = $state(false);
@@ -45,10 +47,18 @@
 
     const p = user.refetch();
     isConfirmDialogOpen = true;
+
     const ok = await confirm({
       title: "ยืนยันการเช็คอิน",
       description: confirmDialogBody,
       blockConfirmUntil: p,
+      // Disabled the confirm button if participant has checked in
+      disableConfirmChecker: (data) => {
+        return (
+          data?.checkinForBooth?.some((v) => v.checkpoints?.type === "entry") ??
+          false
+        );
+      },
     });
     isConfirmDialogOpen = false;
 
@@ -64,6 +74,8 @@
       alert(`เกิดข้อผิดพลาด: ${error.message}`);
       return;
     }
+
+    toast.success("เช็คอินสำเร็จ");
   }
 
   function openSelfIdInputtingDialog() {
@@ -74,7 +86,16 @@
     isIdInputtingDialogOpen = false;
     onResult(qrId);
   }
+
+  const dtf = new Intl.DateTimeFormat("th-TH", {
+    day: "2-digit",
+    month: "narrow",
+    hour: "2-digit",
+    minute: "2-digit",
+  }).format;
 </script>
+
+<Toaster />
 
 <QrcodeScannerBase enable={scanning} {onResult}>
   {#snippet header()}
@@ -111,24 +132,43 @@
     </div>
   {/if}
   {#if user.current && !user.loading && !user.error}
-    {@const participant = user.current.participant}
-    <div class="flex flex-col p-2">
-      <div class="flex justify-between">
-        <span>ชื่อ</span>
-        <span>{participant.givenName} {participant.familyName}</span>
-      </div>
-      <div class="flex justify-between">
-        <span>อายุ</span>
-        <span>{participant.age} ปี</span>
-      </div>
-      <div class="flex justify-between">
-        <span>สถานะ</span>
-        <span>{participant.attendeeType}</span>
-      </div>
-      <div class="flex justify-between">
-        <span>ความต้องการพิเศษ</span>
-        <span>{participant.specialNeeds}</span>
-      </div>
+    <div class="flex flex-col p-2 font-medium">
+      {#if user.current.checkinForBooth?.some((v) => v.checkpoints?.type === "entry")}
+        {@const checkedInEntry = user.current.checkinForBooth.find(
+          (v) => v.checkpoints?.type === "entry",
+        )}
+        <div class="alert alert-warning py-10">
+          <ErrorOutline size={32} />
+          <div class="flex flex-col ml-4">
+            <span class="text-2xl"
+              >ผู้เข้าร่วมนี้ได้ทำการเช็คอินเข้าเรียบร้อยแล้ว</span
+            >
+            <div>
+              เมื่อ {checkedInEntry?.checkins.createdAt
+                ? dtf(checkedInEntry?.checkins.createdAt)
+                : "ไม่ทราบ"} โดย {checkedInEntry?.staffs?.name}
+            </div>
+          </div>
+        </div>
+      {:else}
+        {@const participant = user.current.participant}
+        <div class="flex justify-between">
+          <span>ชื่อ</span>
+          <span class="text-2xl">{participant.givenName} {participant.familyName}</span>
+        </div>
+        <div class="flex justify-between">
+          <span>สถานะ</span>
+          <span class="text-xl">{participant.attendeeType}</span>
+        </div>
+        <div class="flex justify-between">
+          <span>อายุ</span>
+          <span>{participant.age} ปี</span>
+        </div>
+        <div class="flex justify-between">
+          <span>ความต้องการพิเศษ</span>
+          <span>{participant.specialNeeds}</span>
+        </div>
+      {/if}
     </div>
   {/if}
 {/snippet}

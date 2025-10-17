@@ -1,4 +1,4 @@
-import { checkinModel, schema, type Db } from "@src/db";
+import { schema, type Db } from "@src/db";
 import { and, eq, isNull, or } from "drizzle-orm";
 import type { CheckinWorkshopData } from "@src/type";
 
@@ -17,6 +17,10 @@ export const getCheckinByParticipant = async (
     .leftJoin(
       schema.checkpoints,
       eq(schema.checkpoints.id, schema.checkins.checkpointId),
+    )
+    .leftJoin(
+      schema.staffs,
+      eq(schema.staffs.id, schema.checkins.checkedByStaffId),
     )
     .where(
       and(

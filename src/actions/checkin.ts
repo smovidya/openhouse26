@@ -60,13 +60,6 @@ export const getParticipantByIdOrQrCodeId = defineAction({
       });
     }
 
-    if (!input.boothId) {
-      return {
-        participant,
-        checkinForBooth: null,
-      };
-    }
-
     let checkins: Awaited<
       ReturnType<typeof checkinModel.getCheckinByParticipant>
     >;
@@ -820,12 +813,12 @@ export const checkinParticipant = defineAction({
       await checkinModel.addCheckinForParticipant(ctx.locals.db, {
         participantId: participant.id,
         staffId: staffId,
-        checkpointId: "entry",
+        checkpointId: "entry-register",
       });
     } catch (err) {
       throw new ActionError({
         code: "INTERNAL_SERVER_ERROR",
-        message: "ไม่สามารถลงทะเบียนเข้างานได้",
+        message: "ไม่สามารถลงทะเบียนเข้างานได้: " + (err as Error).message,
       });
     }
 

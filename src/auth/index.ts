@@ -135,7 +135,7 @@ function createAuth(env?: Env, cf?: IncomingRequestCfProperties) {
 
   return betterAuth({
     ...withCloudflareOptions,
-    ...betterAuthOptions,
+    // ...betterAuthOptions,
   });
 }
 

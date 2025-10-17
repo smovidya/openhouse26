@@ -34,15 +34,20 @@
     open = false;
   }
 
-  export async function confirm(options: {
+  export async function confirm<T>(options: {
     title: string;
     description: string | Snippet;
-    blockConfirmUntil?: Promise<any>;
+    blockConfirmUntil?: Promise<T>;
+    disableConfirmChecker?: (data: T) => boolean;
   }) {
     title = options.title;
     description = options.description;
     mode = "confirm";
     disabledConfirm = options.blockConfirmUntil !== undefined;
+    const disableConfirmChecker =
+      options.disableConfirmChecker !== undefined
+        ? options.disableConfirmChecker
+        : () => false;
     open = true;
 
     const { promise, resolve } = Promise.withResolvers<boolean>();
@@ -51,9 +56,9 @@
 
     if (options.blockConfirmUntil) {
       options.blockConfirmUntil
-        .then(() => {
+        .then((data) => {
           // console.log("Then");
-          disabledConfirm = false;
+          disabledConfirm = disableConfirmChecker(data)
         })
         .catch((e) => {
           // console.log("error");
@@ -77,7 +82,7 @@
 
   onMount(() => {
     instanceCount += 1;
-    console.log("Mounted alert dialog", instanceCount);
+    // console.log("Mounted alert dialog", instanceCount);
     return () => (instanceCount -= 1);
   });
 </script>
