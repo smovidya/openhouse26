@@ -51,14 +51,13 @@ const user = Astro.locals.user;
         }
         {
           hasOneOfRoleIn(user, ["admin", "rewardStaff"]) && (
-            <Button href="/staff/check-attendance">(WIP) ของที่ระลึก</Button>
+            <Button href="/staff/check-attendance">ของที่ระลึก</Button>
           )
         }
         {
           hasOneOfRoleIn(user, ["admin", "registarStaff"]) && (
             <Button href="/staff/check-attendance">
-              {" "}
-              (WIP) เช็คอินเข้าร่วมงาน{" "}
+              เช็คอินเข้าร่วมงาน
             </Button>
           )
         }

@@ -2,7 +2,6 @@
   import ResourceTable from "@src/components/common/resource-wrapper.svelte";
   import { resource } from "runed";
   import { authClientSvelte } from "@src/auth/client";
-  import { createForm } from "@tanstack/svelte-form";
 
   const {
     id,
@@ -25,6 +24,14 @@
     alert("อัปเดตยศผู้ใช้แล้ว");
     window.location.reload();
   }
+
+  async function revokeAllSessions() {
+    const { data, error } = await authClientSvelte.admin.revokeUserSessions({
+      userId: id,
+    });
+    if (error) return alert(error);
+    alert("ลบ session ทั้งหมดของผู้ใช้แล้ว");
+  }
 </script>
 
 <ResourceTable
@@ -38,7 +45,8 @@
         },
       });
 
-      dataState.roles = result.data.role;
+      // @ts-ignore
+      dataState.roles = result.data?.role;
 
       return result;
     },
@@ -68,7 +76,11 @@
           rewardStaff,
         </span>
       </label>
-      <!-- {"name":"Patsagorn Yuenyong","email":"manpatsagorny@gmail.com","emailVerified":true,"image":"https://lh3.googleusercontent.com/a/ACg8ocIswIKLBcIBeSkGgwegFLCgqsRm87RYSdGPewBxHNWYnAR4ejPv7g=s96-c","createdAt":"2025-10-03T19:05:05.423Z","updatedAt":"2025-10-04T16:45:39.995Z","role":"user,admin","banned":false,"banReason":null,"banExpires":null,"id":"VFwpYIvrPatAnkP68ycQ7mu92sXeL6QE"} -->
+      <div>
+        <button class="btn btn-error" onclick={revokeAllSessions}>
+          ลบ session ทั้งหมดของผู้ใช้
+        </button>
+      </div>
     </div>
   {/snippet}
 </ResourceTable>

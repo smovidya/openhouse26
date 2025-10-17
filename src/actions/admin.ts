@@ -22,7 +22,8 @@ export const adminAddStaff = defineAction({
 
     const { name, boothName, emails, phone, requestedRole, studentId } = input;
 
-    return await adminModel.addStaff(ctx.locals.db, {
+    console.log(input);
+    const staffAccount = await adminModel.addStaff(ctx.locals.db, {
       emails: JSON.stringify(emails),
       name: name,
       phone: phone,
@@ -30,5 +31,30 @@ export const adminAddStaff = defineAction({
       boothName: boothName,
       requestedRole: JSON.stringify(requestedRole),
     });
+
+    // update existed users to link to this staff
+    for (const email of emails) {
+      // find user by email
+      const userRecord = await authModel.getUserByEmail(ctx.locals.db, email);
+      if (!userRecord) continue;
+      // @ts-ignore
+      const user = await ctx.locals.auth.api.setRole({
+        headers: ctx.request.headers,
+        body: {
+          role: requestedRole as any[],
+          userId: userRecord.id,
+        },
+      });
+
+      await authModel.linkStaffToUser(
+        ctx.locals.db,
+        staffAccount.id,
+        userRecord.id,
+      );
+    }
+
+    return {
+      staffId: staffAccount.id,
+    };
   },
 });

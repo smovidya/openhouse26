@@ -44,12 +44,12 @@
       role: ["admin", "workshopStaff"],
     },
     {
-      label: "เช็คอินทะเบียน (WIP)",
+      label: "เช็คอินทะเบียน",
       href: "/staff/check-registration-attendance",
       role: ["admin", "registarStaff"],
     },
     {
-      label: "จุดแลกของที่ระลึก (WIP)",
+      label: "จุดแลกของที่ระลึก",
       href: "/staff/redeem",
       role: ["admin", "rewardStaff"],
     },
