@@ -36,7 +36,7 @@
     currentQrId = value;
     participantData.refetch();
 
-    attendeeDataSection.scrollIntoView();
+    attendeeDataSection.scrollIntoView({ behavior: "smooth" });
   }
 
   function openSelfIdInputtingDialog() {
