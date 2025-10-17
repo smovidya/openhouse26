@@ -58,7 +58,7 @@
       options.blockConfirmUntil
         .then((data) => {
           // console.log("Then");
-          disabledConfirm = disableConfirmChecker(data)
+          disabledConfirm = disableConfirmChecker(data);
         })
         .catch((e) => {
           // console.log("error");

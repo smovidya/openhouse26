@@ -5,8 +5,10 @@
     base: "px-4 py-3 rounded-full w-full focus:outline-2 outline-offset-2 disabled:opacity-50",
     variants: {
       variant: {
-        primary: "bg-yellow-500 active:bg-yellow-600 text-white outline-yellow-500",
-        neutral: "bg-neutral-200 active:bg-neutral-300 text-black outline-neutral-700",
+        primary:
+          "bg-yellow-500 active:bg-yellow-600 text-white outline-yellow-500",
+        neutral:
+          "bg-neutral-200 active:bg-neutral-300 text-black outline-neutral-700",
       },
     },
     defaultVariants: {

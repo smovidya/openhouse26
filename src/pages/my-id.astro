@@ -35,13 +35,13 @@ const showWorkshop =
 
 const selectedWorkshops = await workshopModel.getUserRegisteredSlots(
   Astro.locals.db,
-  uid
+  uid,
 );
 
 const wsUrl = Astro.locals.runtime.env.SSE_URL;
 const token = await getToken(
   Astro.locals.runtime.env.SSE_PRIVATE_KEY,
-  participant.id
+  participant.id,
 );
 ---
 

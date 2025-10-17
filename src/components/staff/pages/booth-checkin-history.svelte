@@ -67,7 +67,9 @@
             >{h.participant.age} ปี • {h.participant.status}</span
           >
         </div>
-        <span class="line-clamp-1 max-w-[55%]">{boothCheckpoints.find((it) => it.id === h.boothId)!.name}</span>
+        <span class="line-clamp-1 max-w-[55%]"
+          >{boothCheckpoints.find((it) => it.id === h.boothId)!.name}</span
+        >
       </div>
     {/each}
   </section>

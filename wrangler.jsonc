@@ -3,10 +3,7 @@
   "name": "openhouse26",
   "account_id": "4ec83c42527307cc087ab2207efb4297",
   "compatibility_date": "2025-09-20",
-  "compatibility_flags": [
-    "nodejs_compat",
-    "disable_nodejs_process_v2"
-  ],
+  "compatibility_flags": ["nodejs_compat", "disable_nodejs_process_v2"],
   "main": "./dist/_worker.js/index.js",
   "assets": {
     "binding": "ASSETS",
@@ -70,9 +67,7 @@
       "migrations": [
         {
           "tag": "sdcjuisu",
-          "deleted_classes": [
-            "WorkshopRegistrationHandler2"
-          ],
+          "deleted_classes": ["WorkshopRegistrationHandler2"],
         },
       ],
       "services": [

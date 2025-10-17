@@ -2,7 +2,7 @@
   import { roles } from "@src/auth/permissions";
   import { hasOneOfRoleIn } from "@src/auth/utils";
   import { prefetch } from "astro:prefetch";
-    import { onMount } from "svelte";
+  import { onMount } from "svelte";
 
   interface PageOption {
     label: string;
@@ -57,9 +57,9 @@
 
   onMount(() => {
     for (const { href } of pageOptions) {
-      prefetch(href)
+      prefetch(href);
     }
-  })
+  });
 
   const {
     currentPath,

@@ -2,7 +2,7 @@
   import { authClientSvelte } from "@src/auth/client";
   import Button from "./common/button.svelte";
   import type { Snippet } from "svelte";
-    import { cn } from './utils';
+  import { cn } from "./utils";
 
   const {
     children,

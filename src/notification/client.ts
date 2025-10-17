@@ -1,13 +1,13 @@
 interface WorkshopParticipantCheckinEvent {
   type: "workshop-checkin";
   workshopId: string;
-  roundNumber: number
+  roundNumber: number;
 }
 
 interface WorkshopOnsiteParticiationEvent {
   type: "workshop-onsite-participate";
   workshopId: string;
-  roundNumber: number
+  roundNumber: number;
 }
 
 interface BoothParticipantCheckinEvent {
@@ -24,7 +24,12 @@ interface RegistrarCheckinEvent {
   type: "registrar-checkin";
 }
 
-export type UserEvent = WorkshopParticipantCheckinEvent | BoothParticipantCheckinEvent | RedeemEvent | RegistrarCheckinEvent | WorkshopOnsiteParticiationEvent
+export type UserEvent =
+  | WorkshopParticipantCheckinEvent
+  | BoothParticipantCheckinEvent
+  | RedeemEvent
+  | RegistrarCheckinEvent
+  | WorkshopOnsiteParticiationEvent;
 
 export function onNotify(
   wsUrl: string,
@@ -32,7 +37,7 @@ export function onNotify(
   fn: (event: UserEvent) => unknown,
 ) {
   if (import.meta.env.SSR) {
-    return () => { };
+    return () => {};
   }
 
   let abortController = new AbortController();
@@ -43,7 +48,7 @@ export function onNotify(
       return;
     }
 
-    ws = new WebSocket(wsUrl)
+    ws = new WebSocket(wsUrl);
 
     ws.addEventListener(
       "open",
@@ -60,7 +65,7 @@ export function onNotify(
         try {
           const data = JSON.parse(event.data);
           fn(data);
-        } catch { }
+        } catch {}
       },
       {
         signal: abortController.signal,
@@ -68,11 +73,15 @@ export function onNotify(
     );
 
     // reconnect
-    ws.addEventListener("close", () => {
-      setTimeout(() => {
-        connect();
-      }, 1000);
-    }, { signal: abortController.signal });
+    ws.addEventListener(
+      "close",
+      () => {
+        setTimeout(() => {
+          connect();
+        }, 1000);
+      },
+      { signal: abortController.signal },
+    );
   }
 
   connect();
