@@ -50,7 +50,8 @@
         break;
       case "redeem":
         toast.success(`ยืนยันรับรางวัลสำเร็จ`, {
-          description: JSON.stringify(event),
+          // TODO: text for this
+          // description: JSON.stringify(event),
         });
         break;
     }
