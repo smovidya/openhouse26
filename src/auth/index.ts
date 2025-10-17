@@ -93,7 +93,20 @@ function createAuth(env?: Env, cf?: IncomingRequestCfProperties) {
                 user?.email,
               );
               if (!staffAccount) return;
+              const requestedRole = JSON.parse(
+                staffAccount.requestedRole || "[]",
+              ) as string[];
               await authModel.linkStaffToUser(db, staffAccount.id, user.id);
+              await db
+                .update(schema.users)
+                .set({
+                  role: requestedRole.join(","),
+                })
+                .where(eq(schema.users.id, user.id));
+              // remove sessions to force re-login
+              await db
+                .delete(schema.sessions)
+                .where(eq(schema.sessions.userId, user.id));
             } catch (error) {
               // quietly fail
               console.error("Error linking staff to user:", error);
