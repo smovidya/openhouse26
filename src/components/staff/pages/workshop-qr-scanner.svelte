@@ -115,7 +115,7 @@
     isConfirmDialogOpen = true;
     const p = user.refetch();
     const ok = await confirm({
-      title: "ยืนยันการเช็คอิน",
+      title: mode === "checkin" ? "ยืนยันการเช็คอิน" : "ยืนยันการเพิ่มคน",
       description: confirmDialogBody,
       blockConfirmUntil: p,
     });
@@ -126,27 +126,51 @@
       return;
     }
 
-    const { data, error } = await actions.staffCheckinWorkshop({
-      participantIdOrQrCodeId: currentQrId!,
-      workshopId: selectedWorkshopId.current.workshopId,
-      roundNumber: String(selectedWorkshopId.current.roundNumber),
-    });
+    if (mode === "checkin") {
+      const { data, error } = await actions.staffCheckinWorkshop({
+        participantIdOrQrCodeId: currentQrId!,
+        workshopId: selectedWorkshopId.current.workshopId,
+        roundNumber: String(selectedWorkshopId.current.roundNumber),
+      });
 
-    if (error) {
+      if (error) {
+        alert({
+          title: "เกิดข้อผิดพลาด",
+          description: error.message,
+        });
+        workshopData.refetch();
+        return;
+      }
+
+      // data is void | undefined
       alert({
-        title: "เกิดข้อผิดพลาด",
-        description: error.message,
+        title: "บันทึกข้อมูลเรียบร้อย",
+        description: "เย่",
       });
       workshopData.refetch();
-      return;
-    }
+    } else {
+      const { data, error } = await actions.staffAddOnSiteCheckinParticipant({
+        participantIdOrQrCodeId: currentQrId!,
+        workshopId: selectedWorkshopId.current.workshopId,
+        roundNumber: String(selectedWorkshopId.current.roundNumber),
+      });
 
-    // data is void | undefined
-    alert({
-      title: "บันทึกข้อมูลเรียบร้อย",
-      description: "เย่",
-    });
-    workshopData.refetch();
+      if (error) {
+        alert({
+          title: "เกิดข้อผิดพลาด",
+          description: error.message,
+        });
+        workshopData.refetch();
+        return;
+      }
+
+      // data is void | undefined
+      alert({
+        title: "บันทึกข้อมูลเรียบร้อย",
+        description: "เย่",
+      });
+      workshopData.refetch();
+    }
   }
 
   function openSelfIdInputtingDialog() {
