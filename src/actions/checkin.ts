@@ -643,6 +643,42 @@ export const staffAddOnSiteCheckinParticipant = defineAction({
       });
     }
 
+    let userRegisteredSlots: Awaited<
+      ReturnType<
+        (typeof workshopModel)["getTimeSlotRegistrationForParticipant"]
+      >
+    >;
+
+    try {
+      userRegisteredSlots =
+        await workshopModel.getTimeSlotRegistrationForParticipant(
+          ctx.locals.db,
+          participant.id,
+        );
+    } catch (err) {
+      throw new ActionError({
+        code: "INTERNAL_SERVER_ERROR",
+        message: "ไม่สามารถเข้าถึงข้อมูลการลงทะเบียนกิจกรรมได้",
+      });
+    }
+
+
+    const theSlot = userRegisteredSlots.find((v) => {
+      return (
+        v.timeSlot.roundNumber === +input.roundNumber &&
+        v.timeSlot.workshopId === input.workshopId
+      );
+    });
+
+    if (theSlot) {
+      throw new ActionError({
+        code: "FORBIDDEN",
+        message:
+          "ผู้เข้าร่วมกิจกรรมนี้ได้ลงทะเบียนล่วงหน้าไว้แล้ว",
+      });
+    }
+
+
     let staffId: Awaited<ReturnType<(typeof staffModel)["getStaffIdByUserId"]>>;
     try {
       staffId = await staffModel.getStaffIdByUserId(
