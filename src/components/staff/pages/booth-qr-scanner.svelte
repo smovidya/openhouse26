@@ -18,7 +18,7 @@
   } from "@src/data/checkpoints";
   import { actions } from "astro:actions";
   import WarningAltFilled from "carbon-icons-svelte/lib/WarningAltFilled.svelte";
-  import { resource } from "runed";
+  import { PersistedState, resource } from "runed";
   import { toast } from "svelte-sonner";
 
   let isBoothSelectorOpen = $state(false);
@@ -36,22 +36,24 @@
 
   // Workshop and timeslot selection ------------------------------------
 
-  // TODO: save this to localstorage
-  let selectedBoothId = $state("bsac");
+  const selectedBoothId = new PersistedState(
+    "booth-qr-scanner:selectedBoothId",
+    "bsac",
+  );
   const selectedBooth = $derived(
-    boothCheckpoints.find((it) => String(it.id) === selectedBoothId)!,
+    boothCheckpoints.find((it) => String(it.id) === selectedBoothId.current)!,
   );
 
   // svelte-ignore state_referenced_locally : I know
-  let dialogWorkshopId = $state($state.snapshot(selectedBoothId));
+  let dialogWorkshopId = $state($state.snapshot(selectedBoothId.current));
 
   function launchWorkshopSelector() {
-    dialogWorkshopId = $state.snapshot(selectedBoothId);
+    dialogWorkshopId = $state.snapshot(selectedBoothId.current);
     isBoothSelectorOpen = true;
   }
 
   function updateSelectedBooth() {
-    selectedBoothId = $state.snapshot(dialogWorkshopId);
+    selectedBoothId.current = $state.snapshot(dialogWorkshopId);
     isBoothSelectorOpen = false;
   }
 
@@ -70,7 +72,7 @@
         return;
       }
       const { data, error } = await actions.getParticipantByIdOrQrCodeId({
-        boothId: selectedBoothId,
+        boothId: selectedBoothId.current,
         participantIdOrQrCodeId: currentQrId,
       });
       if (error) {
@@ -115,7 +117,7 @@
     }
 
     const { error } = await actions.staffCheckin({
-      boothId: selectedBoothId,
+      boothId: selectedBoothId.current,
       participantIdOrQrCodeId: currentQrId,
     });
     if (error) {
@@ -133,7 +135,7 @@
         name: `${user.current!.participant.givenName} ${user.current!.participant.familyName}`,
         status: user.current!.participant.attendeeType,
       },
-      boothId: selectedBoothId,
+      boothId: selectedBoothId.current,
     });
 
     toast.success("เช็คอินแล้ว");
@@ -173,7 +175,7 @@
   </div>
 </section>
 
-<BoothCheckinHistory bind:boothId={selectedBoothId} />
+<BoothCheckinHistory bind:boothId={selectedBoothId.current} />
 
 <Drawer bind:open={isBoothSelectorOpen}>
   {#snippet header()}
