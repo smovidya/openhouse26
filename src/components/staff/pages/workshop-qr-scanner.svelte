@@ -15,6 +15,7 @@
   import { workshops } from "@src/data/workshops";
   import { actions } from "astro:actions";
   import { PersistedState, resource } from "runed";
+  import { toast } from "svelte-sonner";
 
   let isWorkshopSelectorOpen = $state(false);
   let isConfirmDialogOpen = $state(false);
@@ -142,11 +143,7 @@
         return;
       }
 
-      // data is void | undefined
-      alert({
-        title: "บันทึกข้อมูลเรียบร้อย",
-        description: "เย่",
-      });
+      toast.success("บันทึกข้อมูลเรียบร้อย");
       workshopData.refetch();
     } else {
       const { data, error } = await actions.staffAddOnSiteCheckinParticipant({
@@ -164,11 +161,7 @@
         return;
       }
 
-      // data is void | undefined
-      alert({
-        title: "บันทึกข้อมูลเรียบร้อย",
-        description: "เย่",
-      });
+      toast.success("บันทึกข้อมูลเรียบร้อย");
       workshopData.refetch();
     }
   }
