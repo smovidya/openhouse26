@@ -27,7 +27,7 @@ export function getUsableMediaDevices(mediaDevices: MediaDeviceInfo[]) {
     const front = sorted.find((it) => it.label.includes("front"));
     const back = sorted.find((it) => it.label.includes("back"));
 
-    return [front, back, ...other].filter((it) => it !== undefined);
+    return [back, front, ...other].filter((it) => it !== undefined);
   }
 
   // every devices is usable
