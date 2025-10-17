@@ -14,7 +14,7 @@
   import { cn } from "@src/components/utils";
   import { workshops } from "@src/data/workshops";
   import { actions } from "astro:actions";
-  import { resource } from "runed";
+  import { PersistedState, resource } from "runed";
 
   let isWorkshopSelectorOpen = $state(false);
   let isConfirmDialogOpen = $state(false);
@@ -33,30 +33,33 @@
   // Workshop and timeslot selection ------------------------------------
 
   // TODO: save this to localstorage
-  let selectedWorkshopId = $state({
-    workshopId: "foodtech-playground",
-    roundNumber: 1,
-  });
+  const selectedWorkshopId = new PersistedState(
+    "workshop-qr-scanner:selectedWorkshop",
+    {
+      workshopId: "foodtech-playground",
+      roundNumber: 1,
+    },
+  );
   const selectedWorkshop = $derived(
-    workshops.find((it) => it.id === selectedWorkshopId.workshopId)!,
+    workshops.find((it) => it.id === selectedWorkshopId.current.workshopId)!,
   );
   const selectedTimeSlot = $derived(
     selectedWorkshop?.slots.find(
-      (it) => it.round === selectedWorkshopId.roundNumber,
+      (it) => it.round === selectedWorkshopId.current.roundNumber,
     )!,
   );
 
   // svelte-ignore state_referenced_locally : I know
-  let dialogWorkshop = $state($state.snapshot(selectedWorkshopId));
+  let dialogWorkshop = $state($state.snapshot(selectedWorkshopId.current));
   // $inspect(dialogWorkshop)
 
   function launchWorkshopSelector() {
-    dialogWorkshop = $state.snapshot(selectedWorkshopId);
+    dialogWorkshop = $state.snapshot(selectedWorkshopId.current);
     isWorkshopSelectorOpen = true;
   }
 
   function updateSelectedWorkshop() {
-    selectedWorkshopId = $state.snapshot(dialogWorkshop);
+    selectedWorkshopId.current = $state.snapshot(dialogWorkshop);
     isWorkshopSelectorOpen = false;
   }
 
@@ -87,7 +90,10 @@
   );
 
   const workshopData = resource(
-    [() => selectedWorkshopId.workshopId, () => selectedWorkshopId.roundNumber],
+    [
+      () => selectedWorkshopId.current.workshopId,
+      () => selectedWorkshopId.current.roundNumber,
+    ],
     async ([workshopId, roundNumber], _, { signal }) => {
       const { data, error } = await actions.getWorkshopRegistrationByWorkshop({
         workshopId: workshopId,
@@ -123,8 +129,8 @@
 
     const { data, error } = await actions.staffCheckinWorkshop({
       participantIdOrQrCodeId: currentQrId!,
-      workshopId: selectedWorkshopId.workshopId,
-      roundNumber: String(selectedWorkshopId.roundNumber),
+      workshopId: selectedWorkshopId.current.workshopId,
+      roundNumber: String(selectedWorkshopId.current.roundNumber),
     });
 
     if (error) {
@@ -211,8 +217,8 @@
 </section>
 
 <WorkshopAttendeeList
-  bind:workshopId={selectedWorkshopId.workshopId}
-  bind:roundNumber={selectedWorkshopId.roundNumber}
+  bind:workshopId={selectedWorkshopId.current.workshopId}
+  bind:roundNumber={selectedWorkshopId.current.roundNumber}
   {workshopData}
 />
 
