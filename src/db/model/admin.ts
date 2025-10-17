@@ -12,7 +12,9 @@ export const addStaff = async (
   db: Db,
   data: typeof schema.staffs.$inferInsert,
 ) => {
-  for (const email of data.emails) {
+  const emails = JSON.parse(data.emails) as string[];
+
+  for (const email of emails) {
     const existingStaff = await getStaffByEmail(db, email);
     console.log("existingStaff", existingStaff);
     if (existingStaff) {
@@ -22,7 +24,16 @@ export const addStaff = async (
 
   return await db
     .insert(schema.staffs)
-    .values([data])
+    .values([
+      {
+        emails: JSON.stringify(emails),
+        name: data.name,
+        requestedRole: JSON.stringify(data.requestedRole),
+        phone: data.phone,
+        boothName: data.boothName,
+        studentId: data.studentId,
+      },
+    ])
     .returning({
       id: schema.staffs.id,
     })
