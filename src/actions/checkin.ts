@@ -76,6 +76,13 @@ export const getParticipantByIdOrQrCodeId = defineAction({
       });
     }
 
+    try {
+      await checkinModel.updateParticipantQrId(ctx.locals.db, participant.id);
+    } catch (err) {
+      // Silent failed
+      console.log("Failed to update participant QR code ID:", err);
+    }
+
     return {
       participant,
       checkinForBooth: checkins,

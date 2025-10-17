@@ -1,6 +1,7 @@
 import { schema, type Db } from "@src/db";
 import { and, eq, isNull, or } from "drizzle-orm";
 import type { CheckinWorkshopData } from "@src/type";
+import { init } from "@paralleldrive/cuid2";
 
 export const getCheckinByParticipant = async (
   db: Db,
@@ -373,4 +374,20 @@ export const removeCheckinWorkshopForOnsiteParticipant = async (
   }
 
   return checkin;
+};
+
+export const updateParticipantQrId = async (db: Db, participantId: string) => {
+  const newQrCodeId = init({
+    length: 5,
+  });
+  const updatedParticipant = await db
+    .update(schema.participants)
+    .set({
+      qrCodeId: newQrCodeId(),
+    })
+    .where(eq(schema.participants.id, participantId))
+    .returning()
+    .get();
+
+  return updatedParticipant;
 };

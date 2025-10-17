@@ -35,11 +35,14 @@ const showWorkshop =
 
 const selectedWorkshops = await workshopModel.getUserRegisteredSlots(
   Astro.locals.db,
-  uid,
+  uid
 );
 
 const wsUrl = Astro.locals.runtime.env.SSE_URL;
-const token = await getToken(Astro.locals.runtime.env.SSE_PRIVATE_KEY, participant.id);
+const token = await getToken(
+  Astro.locals.runtime.env.SSE_PRIVATE_KEY,
+  participant.id
+);
 ---
 
 <Layout title="หน้าหลัก">
@@ -76,13 +79,13 @@ const token = await getToken(Astro.locals.runtime.env.SSE_PRIVATE_KEY, participa
         class="qr-bg flex flex-col items-center p-10 pb-3 shadow-sm shadow-black/20"
       >
         <div
-          class="aspect-square w-58 p-2 overflow-clip rounded-md border border-slate-500 bg-white text-white shadow-inner shadow-black/20"
+          class="aspect-square w-58 overflow-clip rounded-md border border-slate-500 bg-white p-2 text-white shadow-inner shadow-black/20"
         >
           <QrId client:only content={id ?? "not-loggedin"} />
         </div>
         <h3 class="mt-2 text-xl font-medium text-white">{name}</h3>
         <h3
-          class="text-xs font-medium text-nowrap whitespace-nowrap text-slate-400"
+          class="font-mono text-xs font-medium text-nowrap whitespace-nowrap text-slate-400"
         >
           ID: {id}
         </h3>
