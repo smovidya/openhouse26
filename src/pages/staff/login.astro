@@ -1,0 +1,25 @@
+---
+import Layout from "@src/layouts/ManagementLayout.astro";
+import LoginButton from "@src/components/login-button.svelte";
+---
+
+<Layout
+  title="Staff Dashboard"
+  description="Staff dashboard for Open House 2024"
+>
+  <h1>เข้าสู่ระบบสำหรับสตาฟกิจกรรม</h1>
+  <p>
+    หากคุณระบุข้อมูลใน Google Sheet โครงการไว้หลายอีเมล
+    สามารถเลือกอีเมลใดก็ได้ที่แจ้งไว้
+  </p>
+  <p>
+    หากไม่ได้แจ้งอีเมลไว้กับฝ่าย IT โปรดกรอกข้อมูลของท่านใน Google Sheet
+    ที่ระบุไว้ใน Handbook และติดต่อฝ่าย IT ในพื้นที่
+  </p>
+
+  <div>
+    <LoginButton redirect="/staff" client:load
+      >เข้าสู่ระบบด้วยบัญชี Google</LoginButton
+    >
+  </div>
+</Layout>

@@ -49,9 +49,10 @@ export const onRequest = defineMiddleware(async (context, next) => {
       "registarStaff",
       "rewardStaff",
       "workshopStaff",
-    ])
+    ]) &&
+    pathname !== "/staff/login"
   ) {
-    return context.redirect("/");
+    return context.redirect("/staff/login");
   }
 
   return next();
