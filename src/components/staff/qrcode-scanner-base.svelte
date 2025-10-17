@@ -7,7 +7,8 @@
   import { IsDocumentVisible, ScrollState } from "runed";
   import Console from "@src/components/dev/console.svelte";
   import { getUsableMediaDevices } from "@src/utils/camera";
-    import DrawerAlertDialog from "@src/components/common/drawer-alert-dialog.svelte";
+  import DrawerAlertDialog from "@src/components/common/drawer-alert-dialog.svelte";
+  import { Toaster } from "svelte-sonner";
 
   const isTabActive = new IsDocumentVisible();
   const scroll = new ScrollState({
@@ -90,7 +91,7 @@
 
   function startDecode(deviceId: string) {
     if (!doEnable) {
-      return
+      return;
     }
     videoElement.pause();
     reader.decodeFromVideoDevice(
@@ -226,6 +227,12 @@
 
 <!-- <Console bind:this={consoleComponent} /> -->
 
+<!-- Temporary fix: astro is stupid, if i place this inside a layout some time its instance will be lost -->
+<DrawerAlertDialog />
+
+<!-- Same here -->
+<Toaster />
+
 <style>
   .dim-overlay {
     background: linear-gradient(
@@ -236,6 +243,3 @@
     );
   }
 </style>
-
-<!-- Temporary fix: astro is stupid, if i place this inside a layout some time its instance will be lost -->
-<DrawerAlertDialog/>
