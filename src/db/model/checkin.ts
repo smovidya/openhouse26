@@ -338,6 +338,33 @@ export const addCheckinWorkshopForOnsiteParticipant = async (
     .returning()
     .get();
 
+  const timeSlot = await db
+    .select()
+    .from(schema.workshopTimeSlots)
+    .where(
+      and(
+        eq(schema.workshopTimeSlots.roundNumber, roundNumber),
+        eq(schema.workshopTimeSlots.workshopId, workshopId),
+      ),
+    )
+    .get();
+
+  if (!timeSlot) {
+    throw new Error("ไม่พบรอบกิจกรรม");
+  }
+
+  await db
+    .update(schema.workshopRegistrations)
+    .set({
+      participatedAt: currentDateTime,
+    })
+    .where(
+      and(
+        eq(schema.workshopRegistrations.participantId, participantId),
+        eq(schema.workshopRegistrations.timeSlotId, timeSlot.id),
+      ),
+    );
+
   return checkin;
 };
 
