@@ -17,7 +17,7 @@ const tierProgressKeys = {
   stage: "กิจกรรมบนเวที",
 };
 
-const tierConditions = {
+export const tierConditions = {
   1: {
     departmentBooths: 5,
     tcasBooth: 1,
