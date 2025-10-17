@@ -148,3 +148,5 @@ export const isDepartmentStaffSelectable = (checkpointId: string) => {
     "hashtag",
   ].includes(checkpointId);
 };
+
+export const isDepartmentBooth = isDepartmentStaffSelectable;

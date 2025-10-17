@@ -1,8 +1,7 @@
 export interface Department {
   thName: string;
   enShortName: string;
-  id: number; // our id
-  // TODO: more later
+  id: number;
 }
 
 export const departments = [

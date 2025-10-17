@@ -11,6 +11,61 @@ import { boothCheckpoints } from "@src/data/checkpoints";
 import type { CheckinWorkshopData } from "@src/type";
 import { sendEvent } from "@src/notification/server";
 
+export const getMyParticipant = defineAction({
+  handler: async (_input, ctx) => {
+    if (!ctx.locals.user) {
+      throw new ActionError({
+        code: "UNAUTHORIZED",
+        message: "ผู้ใช้ไม่ได้เข้าสู่ระบบ",
+      });
+    }
+
+    let participant: Awaited<
+      ReturnType<typeof participantModel.getParticipantByUserId>
+    >;
+
+    try {
+      participant = await participantModel.getParticipantByUserId(
+        ctx.locals.db,
+        ctx.locals.user.id,
+      );
+    } catch (err) {
+      throw new ActionError({
+        code: "INTERNAL_SERVER_ERROR",
+        message: "ไม่สามารถเข้าถึงข้อมูลผู้เข้าร่วมกิจกรรมได้",
+      });
+    }
+
+    if (!participant) {
+      throw new ActionError({
+        code: "NOT_FOUND",
+        message: "ไม่พบผู้เข้าร่วมกิจกรรม",
+      });
+    }
+
+    let checkins: Awaited<
+      ReturnType<typeof checkinModel.getCheckinByParticipant>
+    >;
+
+    try {
+      checkins = await checkinModel.getCheckinByParticipant(
+        ctx.locals.db,
+        participant.id,
+      );
+    } catch (err) {
+      throw new ActionError({
+        code: "INTERNAL_SERVER_ERROR",
+        message: "ไม่สามารถเข้าถึงข้อมูลการเข้าร่วมกิจกรรมได้",
+      });
+    }
+
+    return {
+      participant,
+      checkins,
+    };
+  },
+});
+
 export const getParticipantByIdOrQrCodeId = defineAction({
   input: z.object({
     participantIdOrQrCodeId: z.string(),

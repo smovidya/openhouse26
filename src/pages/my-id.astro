@@ -3,6 +3,7 @@ import MyIdHeader from "@src/assets/my-id-header.png";
 import Countdown from "@src/components/countdown.svelte";
 import LogoutButton from "@src/components/logout-button.svelte";
 import MyWorkshop from "@src/components/my-workshop.svelte";
+import MyJournies from "@src/components/my-journies.svelte";
 import NotificationReceiver from "@src/components/notification-receiver.svelte";
 import QrId from "@src/components/qr-id.svelte";
 import { featureFlags, workshopRegistrationDate } from "@src/data/constants";
@@ -35,22 +36,20 @@ const showWorkshop =
 
 const selectedWorkshops = await workshopModel.getUserRegisteredSlots(
   Astro.locals.db,
-  uid,
+  uid
 );
 
 const wsUrl = Astro.locals.runtime.env.SSE_URL;
 const token = await getToken(
   Astro.locals.runtime.env.SSE_PRIVATE_KEY,
-  participant.id,
+  participant.id
 );
 ---
 
-<Layout title="หน้าหลัก">
-  <!-- TODO: nav -->
+<Layout title="MyID">
   <NavBar class="fixed! inset-x-0! top-3 z-50" />
 
   <main class="relative mt-12 w-full overflow-x-clip text-sm">
-    <!-- TODO: resize this -->
     <img
       src={MyIdHeader.src}
       alt="MyID Header"
@@ -99,6 +98,12 @@ const token = await getToken(
       </div>
     </section>
   </main>
+
+  <section>
+    <h2 class="mt-10 font-serif text-2xl">กิจกรรมของฉัน</h2>
+    <span class="text-blue-300/85">การเดินทางของฉันในกิจกรรม ติดตามความคืบหน้าและใช้แลกของรางวัล</span>
+    <MyJournies participantId={participant.id} class="mt-6" client:load />
+  </section>
 
   {
     !showWorkshop ? (

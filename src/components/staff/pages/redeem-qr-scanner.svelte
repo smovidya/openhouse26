@@ -30,7 +30,6 @@
         });
         return;
       }
-      // TODO: get other data?
       const { data, error } = await actions.getParticipantByIdOrQrCodeId({
         participantIdOrQrCodeId: currentQrId,
       });

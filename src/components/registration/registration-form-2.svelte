@@ -270,8 +270,6 @@
             onblur={field.handleBlur}
             class="select shadow-inner shadow-black/30 w-full p-2 rounded-lg outline-blue-500 outline-offset-2"
           >
-            <!-- TODO: report this issue -->
-            <!-- <button>เลือก</button> -->
             <option value="0" selected disabled hidden>เลือก</option>
             {#each provincesOptions as { label, value }}
               <option {value}>{label}</option>
