@@ -28,7 +28,7 @@ export const addStaff = async (
       {
         emails: JSON.stringify(emails),
         name: data.name,
-        requestedRole: JSON.stringify(data.requestedRole),
+        requestedRole: data.requestedRole,
         phone: data.phone,
         boothName: data.boothName,
         studentId: data.studentId,
