@@ -674,7 +674,7 @@ export const staffAddOnSiteCheckinParticipant = defineAction({
       throw new ActionError({
         code: "FORBIDDEN",
         message:
-          "ผู้เข้าร่วมกิจกรรมนี้ได้ลงทะเบียนล่วงหน้าไว้แล้ว",
+          "ผู้เข้าร่วมกิจกรรมนี้ได้ลงทะเบียนไว้แล้ว",
       });
     }
 
