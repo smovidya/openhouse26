@@ -56,7 +56,14 @@
       return;
     }
 
-    // TODO: actually submit it
+    const { error } = await actions.checkinParticipant({
+      participantOrQrCodeId: currentQrId,
+    });
+
+    if (error) {
+      alert(`เกิดข้อผิดพลาด: ${error.message}`);
+      return;
+    }
   }
 
   function openSelfIdInputtingDialog() {

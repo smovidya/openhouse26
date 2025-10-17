@@ -17,7 +17,7 @@ interface BoothParticipantCheckinEvent {
 
 interface RedeemEvent {
   type: "redeem";
-  // no data yet 🥹
+  // TODO(ptsgrn): no data yet 🥹
 }
 
 interface RegistrarCheckinEvent {

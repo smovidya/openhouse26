@@ -1,3 +1,5 @@
+import { schema } from "@src/db";
+
 // this interface should be in the api file
 export interface SelectedWorkshop {
   workshopId: string;
@@ -17,4 +19,15 @@ export interface CheckinWorkshopData {
   startTime: string;
   /** ISO string */
   endTime: string;
+}
+
+export interface RewardProgressSnapshot {
+  lastUpdate: Date;
+  checkins: (typeof schema.checkins.$inferSelect)[];
+}
+
+export interface RedeemedRewardData {
+  type: "redeemed-reward";
+  participantData: Record<string, string | number | Date>;
+  progressSnapshot: RewardProgressSnapshot;
 }

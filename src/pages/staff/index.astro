@@ -21,8 +21,7 @@ const user = Astro.locals.user;
         <div class="ml-4 flex flex-col justify-center">
           <span class="text-lg font-medium">{user?.name}</span>
           <span class="text-sm text-gray-500">{user?.email}</span>
-          <span
-            class="mt-2 flex flex-wrap gap-1 text-xs"
+          <span class="mt-2 flex flex-wrap gap-1 text-xs"
             >{
               user?.role
                 ?.split(",")
@@ -51,12 +50,12 @@ const user = Astro.locals.user;
         }
         {
           hasOneOfRoleIn(user, ["admin", "rewardStaff"]) && (
-            <Button href="/staff/check-attendance">ของที่ระลึก</Button>
+            <Button href="/staff/redeem">ของที่ระลึก</Button>
           )
         }
         {
           hasOneOfRoleIn(user, ["admin", "registarStaff"]) && (
-            <Button href="/staff/check-attendance">
+            <Button href="/staff/check-registration-attendance">
               เช็คอินเข้าร่วมงาน
             </Button>
           )

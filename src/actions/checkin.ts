@@ -387,7 +387,7 @@ export const staffCheckinWorkshop = defineAction({
     await sendEvent(ctx.locals.runtime.env.SSE, participant.id, {
       type: "workshop-checkin",
       workshopId: currentSlot.timeSlot.workshopId,
-      roundNumber: currentSlot.timeSlot.roundNumber
+      roundNumber: currentSlot.timeSlot.roundNumber,
     });
 
     return;
@@ -535,6 +535,32 @@ export const staffAddOnSiteCheckinParticipant = defineAction({
       });
     }
 
+    let participantCheckins: Awaited<
+      ReturnType<typeof checkinModel.getCheckinByParticipant>
+    >;
+
+    try {
+      participantCheckins = await checkinModel.getCheckinByParticipant(
+        ctx.locals.db,
+        participant.id,
+      );
+    } catch (err) {
+      throw new ActionError({
+        code: "INTERNAL_SERVER_ERROR",
+        message: "ไม่สามารถเข้าถึงข้อมูลการเข้าร่วมกิจกรรมได้",
+      });
+    }
+
+    if (
+      participantCheckins.some((v) => v.checkpoints?.type === "entry") === false
+    ) {
+      throw new ActionError({
+        code: "CONFLICT",
+        message:
+          "ผู้เข้าร่วมกิจกรรมนี้ยังไม่ได้ลงทะเบียนเข้างาน โปรดแจ้งให้ไปที่จุดลงทะเบียน",
+      });
+    }
+
     let staffId: Awaited<ReturnType<(typeof staffModel)["getStaffIdByUserId"]>>;
     try {
       staffId = await staffModel.getStaffIdByUserId(
@@ -547,6 +573,8 @@ export const staffAddOnSiteCheckinParticipant = defineAction({
         message: "ไม่สามารถเข้าถึงข้อมูลสตาฟได้",
       });
     }
+
+    console.log("staffId", staffId);
 
     if (!staffId) {
       throw new ActionError({
@@ -567,14 +595,14 @@ export const staffAddOnSiteCheckinParticipant = defineAction({
     } catch (err) {
       throw new ActionError({
         code: "INTERNAL_SERVER_ERROR",
-        message: "ไม่สามารถเข้าถึงข้อมูลรอบการทำงานได้",
+        message: "ไม่สามารถเข้าถึงข้อมูลรอบเวิร์กช็อปนี้ได้",
       });
     }
 
     if (!currentSlot) {
       throw new ActionError({
         code: "NOT_FOUND",
-        message: "ไม่พบรอบการทำงาน",
+        message: "ไม่พบรอบเวิร์กช็อปนี้",
       });
     }
 
@@ -623,11 +651,10 @@ export const staffAddOnSiteCheckinParticipant = defineAction({
       });
     }
 
-
     await sendEvent(ctx.locals.runtime.env.SSE, participant.id, {
       type: "workshop-onsite-participate",
       roundNumber: currentSlot.roundNumber,
-      workshopId: currentSlot.workshopId
+      workshopId: currentSlot.workshopId,
     });
 
     return;
@@ -698,6 +725,113 @@ export const staffRemoveOnSiteCheckinParticipant = defineAction({
         message: "ไม่สามารถลบข้อมูลการเข้าร่วมกิจกรรมได้",
       });
     }
+
+    return;
+  },
+});
+
+export const checkinParticipant = defineAction({
+  input: z.object({
+    participantOrQrCodeId: z.string(),
+  }),
+  handler: async (input, ctx) => {
+    if (!ctx.locals.user) {
+      throw new ActionError({
+        code: "UNAUTHORIZED",
+        message: "ผู้ใช้ไม่ได้เข้าสู่ระบบ",
+      });
+    }
+
+    if (!hasOneOfRoleIn(ctx.locals.user, ["admin", "registarStaff"])) {
+      throw new ActionError({
+        code: "FORBIDDEN",
+        message: "ไม่ได้รับอนุญาต คุณไม่มีสิทธิ์เข้าใช้งาน",
+      });
+    }
+
+    let participant: Awaited<
+      ReturnType<typeof participantModel.getParticipantByIdOrQrCodeId>
+    >;
+
+    try {
+      participant = await participantModel.getParticipantByIdOrQrCodeId(
+        ctx.locals.db,
+        input.participantOrQrCodeId,
+      );
+    } catch (err) {
+      throw new ActionError({
+        code: "INTERNAL_SERVER_ERROR",
+        message: "ไม่สามารถเข้าถึงข้อมูลผู้เข้าร่วมกิจกรรมได้",
+      });
+    }
+
+    if (!participant) {
+      throw new ActionError({
+        code: "NOT_FOUND",
+        message: "ไม่พบผู้เข้าร่วมกิจกรรม",
+      });
+    }
+
+    let checkins: Awaited<
+      ReturnType<typeof checkinModel.getCheckinByParticipant>
+    >;
+
+    try {
+      checkins = await checkinModel.getCheckinByParticipant(
+        ctx.locals.db,
+        participant.id,
+      );
+    } catch (err) {
+      throw new ActionError({
+        code: "INTERNAL_SERVER_ERROR",
+        message: "ไม่สามารถเข้าถึงข้อมูลการเข้าร่วมกิจกรรมได้",
+      });
+    }
+
+    if (checkins.some((v) => v.checkpoints?.type === "entry")) {
+      throw new ActionError({
+        code: "CONFLICT",
+        message: "ผู้เข้าร่วมกิจกรรมนี้ได้ลงทะเบียนเข้างานแล้ว",
+      });
+    }
+
+    let staffId: Awaited<ReturnType<typeof staffModel.getStaffIdByUserId>>;
+
+    try {
+      staffId = await staffModel.getStaffIdByUserId(
+        ctx.locals.db,
+        ctx.locals.user.id,
+      );
+    } catch (err) {
+      throw new ActionError({
+        code: "INTERNAL_SERVER_ERROR",
+        message: "ไม่สามารถเข้าถึงข้อมูลสตาฟได้",
+      });
+    }
+
+    if (!staffId) {
+      throw new ActionError({
+        code: "NOT_FOUND",
+        message: "ไม่พบสตาฟ",
+      });
+    }
+
+    try {
+      await checkinModel.addCheckinForParticipant(ctx.locals.db, {
+        participantId: participant.id,
+        staffId: staffId,
+        checkpointId: "entry",
+      });
+    } catch (err) {
+      throw new ActionError({
+        code: "INTERNAL_SERVER_ERROR",
+        message: "ไม่สามารถลงทะเบียนเข้างานได้",
+      });
+    }
+
+    await sendEvent(ctx.locals.runtime.env.SSE, participant.id, {
+      type: "registrar-checkin",
+    });
 
     return;
   },

@@ -51,6 +51,14 @@ export const adminAddStaff = defineAction({
         staffAccount.id,
         userRecord.id,
       );
+
+      // @ts-ignore
+      await ctx.locals.auth.api.revokeUserSessions({
+        headers: ctx.request.headers,
+        body: {
+          userId: userRecord.id,
+        },
+      });
     }
 
     return {

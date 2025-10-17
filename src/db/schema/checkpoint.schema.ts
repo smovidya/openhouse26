@@ -48,3 +48,26 @@ export const checkinRelations = relations(checkins, ({ one }) => ({
     references: [checkpoints.id],
   }),
 }));
+
+export const redeemedRewards = sqliteTable("redeemed_rewards", {
+  ...id,
+  participantId: t.text("participant_id").references(() => participants.id),
+  staffId: t.text("staff_id").references(() => staffs.id),
+  rewardData: t.text("reward_data", { mode: "json" }),
+  ...timestamps,
+  ...deletedAt,
+});
+
+export const redeemedRewardRelations = relations(
+  redeemedRewards,
+  ({ one }) => ({
+    participant: one(participants, {
+      fields: [redeemedRewards.participantId],
+      references: [participants.id],
+    }),
+    staff: one(staffs, {
+      fields: [redeemedRewards.staffId],
+      references: [staffs.id],
+    }),
+  }),
+);

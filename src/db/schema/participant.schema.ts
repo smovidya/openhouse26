@@ -5,6 +5,7 @@ import { users } from "./auth.schema";
 import { relations } from "drizzle-orm";
 import { workshopRegistrations } from "./workshop.schema";
 import { init } from "@paralleldrive/cuid2";
+import { redeemRewards } from "./reward.schema";
 
 const createId = init({
   length: 5,
@@ -46,5 +47,6 @@ export const participantsRelations = relations(
       references: [users.id],
     }),
     workshopRegistrations: many(workshopRegistrations),
+    redeemedRewards: many(redeemRewards),
   }),
 );
