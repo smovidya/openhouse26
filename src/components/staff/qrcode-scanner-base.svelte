@@ -237,5 +237,5 @@
   }
 </style>
 
-
+<!-- Temporary fix: astro is stupid, if i place this inside a layout some time its instance will be lost -->
 <DrawerAlertDialog/>
