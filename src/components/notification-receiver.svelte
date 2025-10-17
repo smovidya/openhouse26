@@ -20,7 +20,6 @@
     events.push(event);
     latestEvent = event;
 
-    // todo: map eventUserEventMap
     switch (event.type) {
       case "registrar-checkin":
         toast.success("เช็คอินเข้างานสำเร็จ");

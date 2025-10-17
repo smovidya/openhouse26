@@ -1,8 +1,9 @@
 <script lang="ts">
+  import { alert } from "@src/components/common/drawer-alert-dialog.svelte";
   import { cn } from "@src/components/utils";
   import { workshops } from "@src/data/workshops";
   import { actions, type Actions } from "astro:actions";
-  import { resource, type ResourceReturn } from "runed";
+  import { type ResourceReturn } from "runed";
 
   interface Props {
     workshopId?: string;
@@ -56,7 +57,10 @@
 
       if (error) {
         input.checked = false;
-        alert(error.message);
+        alert({
+          title: "เกิดข้อผิดพลาด",
+          description: error.message,
+        });
       } else {
         workshopData.refetch();
       }
@@ -69,7 +73,10 @@
         });
       if (error) {
         input.checked = true;
-        alert(error.message);
+        alert({
+          title: "เกิดข้อผิดพลาด",
+          description: error.message,
+        });
       } else {
         workshopData.refetch();
       }
