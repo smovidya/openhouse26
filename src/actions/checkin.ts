@@ -174,9 +174,6 @@ export const staffCheckin = defineAction({
     let participant: Awaited<
       ReturnType<typeof participantModel.getParticipantByIdOrQrCodeId>
     >;
-    let checkins: Awaited<
-      ReturnType<typeof checkinModel.getCheckinByParticipant>
-    >;
 
     try {
       participant = await participantModel.getParticipantByIdOrQrCodeId(
@@ -196,6 +193,10 @@ export const staffCheckin = defineAction({
         message: "ไม่พบผู้เข้าร่วมกิจกรรม",
       });
     }
+
+    let checkins: Awaited<
+      ReturnType<typeof checkinModel.getCheckinByParticipant>
+    >;
 
     try {
       checkins = await checkinModel.getCheckinByParticipant(
@@ -332,6 +333,32 @@ export const staffCheckinWorkshop = defineAction({
       });
     }
 
+
+    let checkins: Awaited<
+      ReturnType<typeof checkinModel.getCheckinByParticipant>
+    >;
+
+    try {
+      checkins = await checkinModel.getCheckinByParticipant(
+        ctx.locals.db,
+        participant.id,
+      );
+    } catch (err) {
+      throw new ActionError({
+        code: "INTERNAL_SERVER_ERROR",
+        message: "ไม่สามารถเข้าถึงข้อมูลการเข้าร่วมกิจกรรมได้",
+      });
+    }
+
+    // Does the attendee checkin at register?
+    if (!checkins.find((v) => v.checkpoints?.type === "entry")) {
+      throw new ActionError({
+        code: "CONFLICT",
+        message:
+          "ผู้เข้าร่วมกิจกรรมนี้ยังไม่ได้ลงทะเบียนเข้างาน โปรดแจ้งให้ไปที่จุดลงทะเบียน",
+      });
+    }
+
     let userRegisteredSlots: Awaited<
       ReturnType<
         (typeof workshopModel)["getTimeSlotRegistrationForParticipant"]
@@ -363,6 +390,14 @@ export const staffCheckinWorkshop = defineAction({
         code: "FORBIDDEN",
         message:
           "ผู้เข้าร่วมกิจกรรมนี้ไม่ได้ลงทะเบียนกิจกรรม Workshop ในรอบนี้ไว้",
+      });
+    }
+
+    if (currentSlot.participatedAt) {
+      throw new ActionError({
+        code: "FORBIDDEN",
+        message:
+          "ผู้เข้าร่วมกิจกรรมนี้ได้ลงทะเบียนเข้างานแล้ว",
       });
     }
 
