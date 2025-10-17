@@ -281,8 +281,25 @@
     </div>
   {/if}
   {#if user.current && !user.loading && !user.error}
-    {JSON.stringify(user.current)}
-    name, email, mission, workshop, รอบ
+    {@const participant = user.current.participant}
+    <div class="flex justify-between">
+      <span>ชื่อ</span>
+      <span class="text-2xl"
+        >{participant.givenName} {participant.familyName}</span
+      >
+    </div>
+    <div class="flex justify-between">
+      <span>สถานะ</span>
+      <span class="text-xl">{participant.attendeeType}</span>
+    </div>
+    <div class="flex justify-between">
+      <span>อายุ</span>
+      <span>{participant.age} ปี</span>
+    </div>
+    <div class="flex justify-between">
+      <span>ความต้องการพิเศษ</span>
+      <span>{participant.specialNeeds}</span>
+    </div>
   {/if}
 {/snippet}
 
