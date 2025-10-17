@@ -2,7 +2,7 @@ import type {
   D1Database,
   IncomingRequestCfProperties,
 } from "@cloudflare/workers-types";
-import { schema } from "@src/db";
+import { adminModel, authModel, schema, staffModel } from "@src/db";
 import { betterAuth, type BetterAuthOptions, type Prettify } from "better-auth";
 import { withCloudflare } from "better-auth-cloudflare";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
@@ -17,6 +17,7 @@ import {
   user,
   workshopStaff,
 } from "./permissions";
+import { eq } from "drizzle-orm";
 
 // Single auth configuration that handles both CLI and runtime scenarios
 function createAuth(env?: Env, cf?: IncomingRequestCfProperties) {
@@ -74,6 +75,31 @@ function createAuth(env?: Env, cf?: IncomingRequestCfProperties) {
         prompt: "select_account",
         clientId: env?.GOOGLE_CLIENT_ID ?? "",
         clientSecret: env?.GOOGLE_CLIENT_SECRET,
+      },
+    },
+    databaseHooks: {
+      session: {
+        create: {
+          async after(session, context) {
+            try {
+              const user = await db
+                .select()
+                .from(schema.users)
+                .where(eq(schema.users.id, session.userId))
+                .get();
+              if (!user) return;
+              const staffAccount = await adminModel.getStaffByEmail(
+                db,
+                user?.email,
+              );
+              if (!staffAccount) return;
+              await authModel.linkStaffToUser(db, staffAccount.id, user.id);
+            } catch (error) {
+              // quietly fail
+              console.error("Error linking staff to user:", error);
+            }
+          },
+        },
       },
     },
   } satisfies BetterAuthOptions;
