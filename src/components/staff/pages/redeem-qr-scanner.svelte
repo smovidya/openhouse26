@@ -142,7 +142,7 @@
     {#if currentTier.level <= 0}
       <div class="alert alert-error text-4xl">ยังแลกของที่ระลึกไม่ได้</div>
     {/if}
-    <table class="table mx-6 mt-3 text-md">
+    <table class="table mt-3 text-md">
       <tbody>
         <tr>
           <th> ชื่อ </th>
