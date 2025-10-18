@@ -43,8 +43,11 @@ export async function markAsRedeemed(db: Db, qrId: string, staffId: string) {
     }
 
     const checkins = await getCheckinByParticipant(db, qrId)
-
     const reward = new Rewards(participant.id, checkins)
+
+    if (reward.getCurrentTier().level <= 0) {
+        return "tier-too-low";
+    };
 
     await db.insert(schema.redeemedRewards).values({
         participantId: participant.id,

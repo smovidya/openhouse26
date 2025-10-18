@@ -62,6 +62,13 @@ export const redeem = defineAction({
                     message: "ผู้เข้าร่วมรับของที่ระลึกแล้ว",
                 });
             }
+
+            if (result === "tier-too-low") {
+                throw new ActionError({
+                    code: "CONFLICT",
+                    message: "ยังแลกของที่ระลึกไม่ได้",
+                });
+            }
         } catch {
             throw new ActionError({
                 code: "INTERNAL_SERVER_ERROR",

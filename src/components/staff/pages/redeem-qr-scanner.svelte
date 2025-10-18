@@ -57,11 +57,11 @@
       title: "รับของรางวัล",
       description: confirmDialogBody,
       blockConfirmUntil: p,
-      disableConfirmChecker: (data) =>
-        new Rewards(
-          currentQrId || "",
-          data?.checkinForBooth,
-        ).isRedeemedReward(),
+      disableConfirmChecker: (data) => {
+        const r = new Rewards(currentQrId || "", data?.checkinForBooth);
+
+        return r.isRedeemedReward() || r.getCurrentTier().level <= 0;
+      },
     });
 
     isConfirmDialogOpen = false;
@@ -137,7 +137,10 @@
   {/if}
   {#if user.current && !user.loading && !user.error}
     {#if currentReward.isRedeemedReward()}
-      <div class="alert alert-error text-4xl">รับของรางวัลไปแล้ว</div>
+      <div class="alert alert-error text-4xl">รับของที่ระลึกไปแล้ว</div>
+    {/if}
+    {#if currentTier.level <= 0}
+      <div class="alert alert-error text-4xl">ยังแลกของที่ระลึกไม่ได้</div>
     {/if}
     <table class="table mx-6 mt-3 text-md">
       <tbody>
