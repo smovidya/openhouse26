@@ -16,6 +16,7 @@ export default defineConfig({
     sessionKVBindingName: "openhouse26_kv",
     workerEntryPoint: {
       path: "src/workers/index.ts",
+      namedExports: ["syncGoogleSheetWithDatabase"],
     },
     imageService: "compile",
   }),
