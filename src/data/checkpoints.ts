@@ -34,7 +34,7 @@ export const checkpoints: Checkpoint[] = [
     id: "bsac",
     name: "บูธ BSAC",
     type: "booth",
-  },
+  },เวท
   {
     id: "bbtech",
     name: "บูธ BBTech",
@@ -133,9 +133,7 @@ export const checkpoints: Checkpoint[] = [
   ...workshopCheckpoints,
 ];
 
-export const boothCheckpoints = checkpoints.filter(
-  (checkpoint) => checkpoint.type === "booth",
-);
+export const boothCheckpoints = checkpoints
 
 export const isDepartmentStaffSelectable = (checkpointId: string) => {
   return ![
