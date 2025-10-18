@@ -12,7 +12,7 @@ const workshopCheckpoints = workshops.map((workshop) => ({
 export const checkpoints: Checkpoint[] = [
   {
     id: "entry-register",
-    name: "จุดลงทะเบียนเข้างาน",
+    name: "(งดใช้งาน)",
     type: "entry",
   },
   {
@@ -138,7 +138,7 @@ export const checkpoints: Checkpoint[] = [
   ...workshopCheckpoints,
 ];
 
-export const boothCheckpoints = checkpoints
+export const boothCheckpoints = checkpoints.filter((c) => c.id === "entry-register");
 
 export const isDepartmentStaffSelectable = (checkpointId: string) => {
   return ![
