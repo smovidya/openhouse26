@@ -165,9 +165,11 @@
         </tr>
         <tr>
           <th> เข้าร่วมกิจกรรมนิทรรศกลาง </th>
-          <td> {currentTier.progress?.sciPlayground === 1
+          <td>
+            {currentTier.progress?.sciPlayground === 1
               ? "เข้าร่วมแล้ว"
-              : "ยังไม่เข้าร่วม"}/ </td>
+              : "ยังไม่เข้าร่วม"}/
+          </td>
         </tr>
         <tr>
           <th> เข้าร่วมกิจกรรมเวที </th>
