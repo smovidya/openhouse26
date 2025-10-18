@@ -149,9 +149,13 @@
           </td>
         </tr>
         <tr>
-          <th> เข้าร่วมบูธภาควิชา </th>
-          <!-- <td> {currentTier.progress?.departmentBooths ?? 0}/ </td> -->
+          <th> ความคืบหน้าปัจจุบัน </th>
+          <td> {currentTier.tier} </td>
         </tr>
+        <!-- <tr>
+          <th> เข้าร่วมบูธภาควิชา </th>
+          <td> {currentTier.progress?.departmentBooths ?? 0}/ </td>
+        </tr> -->
       </tbody>
     </table>
   {/if}
