@@ -9,6 +9,7 @@
   import { Rewards } from "@src/data/rewards";
   import { actions } from "astro:actions";
   import { resource } from "runed";
+  import { toast } from "svelte-sonner";
 
   let isConfirmDialogOpen = $state(false);
   let isIdInputtingDialogOpen = $state(false);
@@ -78,6 +79,16 @@
     }
 
     // TODO: actually submitting it
+    const { error } = await actions.redeem({ qrId: value });
+    if (error) {
+      alert({
+        title: "ข้อผิดพลาด",
+        description: error.message,
+      });
+      return;
+    }
+
+    toast.success("แลกรับของที่ระลึกสำเร็จ");
   }
 
   function onSelfIdInputtingDialogDone(value: string) {
@@ -88,6 +99,7 @@
   const currentReward = $derived(
     new Rewards(currentQrId || "", user.current?.checkinForBooth),
   );
+  const currentTier = $derived(currentReward.getCurrentTier());
 </script>
 
 <QrcodeScannerBase enable={scanning} {onResult}>
@@ -137,8 +149,8 @@
           </td>
         </tr>
         <tr>
-          <th> ความคืบหน้าปัจจุบัน </th>
-          <td> </td>
+          <th> เข้าร่วมบูธภาควิชา </th>
+          <!-- <td> {currentTier.progress?.departmentBooths ?? 0}/ </td> -->
         </tr>
       </tbody>
     </table>
