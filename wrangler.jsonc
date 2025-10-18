@@ -113,6 +113,13 @@
           "service": "openhouse26-sse-production",
         },
       ],
+      "workflows": [
+        {
+          "name": "sync-google-sheet-with-database",
+          "binding": "SyncGoogleSheetWithDatabase",
+          "class_name": "syncGoogleSheetWithDatabase"
+        }
+      ],
     },
   },
   "workflows": [

@@ -11,6 +11,7 @@ export function createExports(manifest: SSRManifest) {
         return handle(manifest, app, request as any, env as any, ctx);
       },
       async scheduled(event, env, ctx) {
+        console.log("Scheduled event triggered:", event);
         await env.SyncGoogleSheetWithDatabase.create();
       },
     } satisfies ExportedHandler<Env>,
