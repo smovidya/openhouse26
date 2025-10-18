@@ -163,10 +163,16 @@
           <th> เข้าร่วมเวิร์กช็อป </th>
           <td> {currentTier.progress?.workshops ?? 0} </td>
         </tr>
-        <!-- <tr>
+        <tr>
+          <th> เข้าร่วมกิจกรรมนิทรรศกลาง </th>
+          <td> {currentTier.progress?.sciPlayground === 1
+              ? "เข้าร่วมแล้ว"
+              : "ยังไม่เข้าร่วม"}/ </td>
+        </tr>
+        <tr>
           <th> เข้าร่วมกิจกรรมเวที </th>
           <td> {currentTier.progress?.stage ?? 0}/ </td>
-        </tr> -->
+        </tr>
         <tr>
           <th> เข้าร่วมบูธ TCAS </th>
           <td>
@@ -175,12 +181,12 @@
               : "ยังไม่เข้าร่วม"}
           </td>
         </tr>
-        <!-- <tr>
-          <th> addYour </th>
+        <tr>
+          <th> Add Your Story </th>
           <td>
             {currentTier.progress?.addYour === 1 ? "ทำแล้ว" : "ยังไม่ทำ"}
           </td>
-        </tr> -->
+        </tr>
       </tbody>
     </table>
   {/if}
