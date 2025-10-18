@@ -92,7 +92,7 @@ export const redeem = defineAction({
             }
 
         } catch (error) {
-            const e = e as Error;
+            const e = error as Error;
             throw new ActionError({
                 code: "INTERNAL_SERVER_ERROR",
                 message: e.message ?? String(e.message) ?? "เกิดข้อผิดพลาดไม่ทราบสาเหตุ",
