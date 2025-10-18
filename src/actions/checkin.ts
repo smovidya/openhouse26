@@ -246,6 +246,14 @@ export const staffCheckin = defineAction({
       }
     }
 
+    if (checkins.some((v) => v.checkpoints?.type === "reward")) {
+      throw new ActionError({
+        code: "CONFLICT",
+        message:
+          "ผู้เข้าร่วมกิจกรรมนี้ได้แลกรางวัลเรียบร้อยแล้ว ไม่สามารถเข้าร่วมกิจกรรมอื่นได้",
+      });
+    }
+
     let staffId: Awaited<ReturnType<typeof staffModel.getStaffIdByUserId>>;
 
     try {
@@ -333,7 +341,6 @@ export const staffCheckinWorkshop = defineAction({
       });
     }
 
-
     let checkins: Awaited<
       ReturnType<typeof checkinModel.getCheckinByParticipant>
     >;
@@ -396,8 +403,7 @@ export const staffCheckinWorkshop = defineAction({
     if (currentSlot.participatedAt) {
       throw new ActionError({
         code: "FORBIDDEN",
-        message:
-          "ผู้เข้าร่วมกิจกรรมนี้ได้เช็คอินเวิร์กช็อปนี้แล้ว",
+        message: "ผู้เข้าร่วมกิจกรรมนี้ได้เช็คอินเวิร์กช็อปนี้แล้ว",
       });
     }
 
@@ -662,7 +668,6 @@ export const staffAddOnSiteCheckinParticipant = defineAction({
       });
     }
 
-
     const theSlot = userRegisteredSlots.find((v) => {
       return (
         v.timeSlot.roundNumber === +input.roundNumber &&
@@ -673,11 +678,9 @@ export const staffAddOnSiteCheckinParticipant = defineAction({
     if (theSlot) {
       throw new ActionError({
         code: "FORBIDDEN",
-        message:
-          "ผู้เข้าร่วมกิจกรรมนี้ได้ลงทะเบียนไว้แล้ว",
+        message: "ผู้เข้าร่วมกิจกรรมนี้ได้ลงทะเบียนไว้แล้ว",
       });
     }
-
 
     let staffId: Awaited<ReturnType<(typeof staffModel)["getStaffIdByUserId"]>>;
     try {
