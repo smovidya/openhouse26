@@ -41,7 +41,7 @@ export async function markAsRedeemed(db: Db, qrId: string, staffId: string) {
 
     const redeemed = await db.select().from(schema.redeemedRewards).where(eq(schema.redeemedRewards.participantId, participant!.id))
 
-    if (redeemed) {
+    if (redeemed.length > 0) {
         return "redeemed"
     }
 
