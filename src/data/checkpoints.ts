@@ -138,7 +138,7 @@ export const checkpoints: Checkpoint[] = [
   ...workshopCheckpoints,
 ];
 
-export const boothCheckpoints = checkpoints.filter((c) => c.id === "entry-register");
+export const boothCheckpoints = checkpoints
 
 export const isDepartmentStaffSelectable = (checkpointId: string) => {
   return ![
