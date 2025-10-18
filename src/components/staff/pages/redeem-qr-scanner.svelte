@@ -157,11 +157,11 @@
         </tr>
         <tr>
           <th> เข้าร่วมบูธภาควิชา </th>
-          <td> {currentTier.progress?.departmentBooths ?? 0}/ </td>
+          <td> {currentTier.progress?.departmentBooths ?? 0} </td>
         </tr>
         <tr>
           <th> เข้าร่วมเวิร์กช็อป </th>
-          <td> {currentTier.progress?.workshops ?? 0}/ </td>
+          <td> {currentTier.progress?.workshops ?? 0} </td>
         </tr>
         <!-- <tr>
           <th> เข้าร่วมกิจกรรมเวที </th>
