@@ -40,7 +40,7 @@
     registeredOnsiteParticipants?.length ?? 0,
   );
   let totalParticipantsCount = $derived(
-    preRegisteredParticipantsCount + registeredOnsiteParticipantsCount,
+    preRegisteredAttendeesCheckedCount + registeredOnsiteParticipantsCount,
   );
 
   async function onToggleChange(participantId: string, event: Event) {
