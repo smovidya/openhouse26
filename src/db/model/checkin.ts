@@ -2,6 +2,7 @@ import { schema, type Db } from "@src/db";
 import { and, eq, isNull, or } from "drizzle-orm";
 import type { CheckinWorkshopData } from "@src/type";
 import { init } from "@paralleldrive/cuid2";
+import { getParticipantByIdOrQrCodeId } from "@src/db/model/participant";
 
 export const getCheckinByParticipant = async (
   db: Db,
@@ -404,6 +405,11 @@ export const removeCheckinWorkshopForOnsiteParticipant = async (
 };
 
 export const updateParticipantQrId = async (db: Db, participantId: string) => {
+  const participant = await getParticipantByIdOrQrCodeId(db, participantId)
+  if (participant?.qrCodeId?.length === 5) {
+    return participant.qrCodeId;
+  }
+
   const newQrCodeId = init({
     length: 5,
   });
