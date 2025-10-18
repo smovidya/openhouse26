@@ -39,9 +39,7 @@ export async function markAsRedeemed(db: Db, qrId: string, staffId: string) {
         return "user-not-exist";
     }
 
-    const redeemed = await db.query.redeemedRewards.findFirst({
-        where: eq(schema.redeemedRewards.participantId, participant!.id)
-    })
+    const redeemed = await db.select().from(schema.redeemedRewards).where(eq(schema.redeemedRewards.participantId, participant!.id))
 
     if (redeemed) {
         return "redeemed"
