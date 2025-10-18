@@ -1,0 +1,43 @@
+---
+import Layout from "@src/layouts/ContentLayout.astro";
+import QrId from "@src/components/qr-id.svelte";
+import Button from "@src/components/common/button.svelte";
+import { getParticipantByUserId } from "@src/db/model/participant";
+
+const uid = Astro.locals.user?.id;
+if (!uid || !Astro.locals.user) {
+  return Astro.redirect("/");
+}
+
+const participant = await getParticipantByUserId(Astro.locals.db, uid);
+if (!participant) {
+  return Astro.redirect("/register");
+}
+
+const id = participant.qrCodeId || participant.id;
+const name = participant.givenName;
+---
+
+<Layout title="Redeem">
+  <article class="prose mx-auto my-8">
+    <h1>อ่านก่อนแลกของรางวัลน้า</h1>
+    <ol>
+      <li>เมื่อแลกของรางวัล จะไม่สามารถเก็บกิจกรรมเพิ่มเติมได้</li>
+      <li>
+        คุณจะได้รับรางวัลสูงสุด ณ ขณะที่คุณเก็บกิจกรรมได้เท่านั้น เช่น
+        หากเก็บจนได้ Tier เสือนักผจญภัย จะได้หมวกเพียงรางวัลเดียว
+      </li>
+      <li>หากมีข้อสงสัย สามารถสอบถามสตาฟได้ที่บูธแลกของที่ระลึก</li>
+    </ol>
+
+    <div class="mt-8 flex justify-center flex-col items-center gap-4">
+      <QrId client:only content={id ?? "not-loggedin"} />
+      <span class="text-xl">แสดง QR Code นี้ให้กับสตาฟฝ่ายของที่ระลึกเพื่อแลกของ</span>
+    </div>
+    <div class="flex justify-center mt-40">
+      <a href="/my-id" class="btn btn-ghost">
+        ยกเลิก และกลับไปที่หน้า MyID
+      </a>
+    </div>
+  </article>
+</Layout>
