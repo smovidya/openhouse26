@@ -69,10 +69,33 @@ export const redeem = defineAction({
                     message: "ยังแลกของที่ระลึกไม่ได้",
                 });
             }
-        } catch {
+
+            if (result === "fail-to-get-chechkin") {
+                throw new ActionError({
+                    code: "CONFLICT",
+                    message: "ไม่พบการเข้าร่วม",
+                });
+            }
+
+            if (result === "fail-to-get-participant") {
+                throw new ActionError({
+                    code: "CONFLICT",
+                    message: "ไม่พบผู้เข้าร่วม",
+                });
+            }
+
+            if (result === "fail-to-insert-redeemedrewards") {
+                throw new ActionError({
+                    code: "CONFLICT",
+                    message: "ไม่สามารถบันทึกการแลกได้",
+                });
+            }
+
+        } catch (error) {
+            const e = e as Error;
             throw new ActionError({
                 code: "INTERNAL_SERVER_ERROR",
-                message: "เกิดข้อผิดพลาดไม่ทราบสาเหตุ",
+                message: e.message ?? String(e.message) ?? "เกิดข้อผิดพลาดไม่ทราบสาเหตุ",
             });
         }
 

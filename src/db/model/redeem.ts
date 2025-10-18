@@ -29,7 +29,12 @@ export async function getRewardInfo(db: Db, qrId: string) {
 }
 
 export async function markAsRedeemed(db: Db, qrId: string, staffId: string) {
-    const participant = await getParticipantByIdOrQrCodeId(db, qrId)
+    let participant: Awaited<ReturnType<typeof getParticipantByIdOrQrCodeId>>
+    try {
+        participant = await getParticipantByIdOrQrCodeId(db, qrId)
+    } catch (e) {
+        return "fail-to-get-participant"
+    }
     if (!participant) {
         return "user-not-exist";
     }
@@ -42,16 +47,25 @@ export async function markAsRedeemed(db: Db, qrId: string, staffId: string) {
         return "redeemed"
     }
 
-    const checkins = await getCheckinByParticipant(db, qrId)
-    const reward = new Rewards(participant.id, checkins)
+    let checkins: Awaited<ReturnType<typeof getCheckinByParticipant>>
+    try {
+        checkins = await getCheckinByParticipant(db, qrId)
+    } catch {
+        return "fail-to-get-chechkin"
+    }
 
+    const reward = new Rewards(participant.id, checkins)
     if (reward.getCurrentTier().level <= 0) {
         return "tier-too-low";
     };
 
-    await db.insert(schema.redeemedRewards).values({
-        participantId: participant.id,
-        staffId: staffId,
-        rewardData: JSON.stringify(reward)
-    })
+    try {
+        await db.insert(schema.redeemedRewards).values({
+            participantId: participant.id,
+            staffId: staffId,
+            rewardData: JSON.stringify(reward)
+        })
+    } catch {
+        return "fail-to-insert-redeemedrewards"
+    }
 }

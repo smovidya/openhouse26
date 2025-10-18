@@ -171,7 +171,7 @@
         </tr>
         <tr>
           <th> เข้าร่วมกิจกรรมเวที </th>
-          <td> {currentTier.progress?.stage ?? 0}/ </td>
+          <td> {currentTier.progress?.stage ?? 0} </td>
         </tr>
         <tr>
           <th> เข้าร่วมบูธ TCAS </th>
