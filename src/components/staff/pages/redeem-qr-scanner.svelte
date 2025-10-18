@@ -186,7 +186,7 @@
         <tr>
           <th> Add Your Story </th>
           <td>
-            {currentTier.progress?.addYour === 1 ? "ทำแล้ว" : "ยังไม่ทำ"}
+            {(currentTier.progress?.addYour ?? 0) > 0 ? "ทำแล้ว" : "ยังไม่ทำ"}
           </td>
         </tr>
       </tbody>
