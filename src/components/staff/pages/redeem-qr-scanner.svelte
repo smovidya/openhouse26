@@ -6,6 +6,7 @@
   } from "@src/components/common/drawer-alert-dialog.svelte";
   import ManualIdDialog from "@src/components/staff/manual-id-dialog.svelte";
   import QrcodeScannerBase from "@src/components/staff/qrcode-scanner-base.svelte";
+  import { Rewards } from "@src/data/rewards";
   import { actions } from "astro:actions";
   import { resource } from "runed";
 
@@ -55,6 +56,11 @@
       title: "รับของรางวัล",
       description: confirmDialogBody,
       blockConfirmUntil: p,
+      disableConfirmChecker: (data) =>
+        new Rewards(
+          currentQrId || "",
+          data?.checkinForBooth,
+        ).isRedeemedReward(),
     });
 
     isConfirmDialogOpen = false;
@@ -78,6 +84,10 @@
     isIdInputtingDialogOpen = false;
     onResult(value);
   }
+
+  const currentReward = $derived(
+    new Rewards(currentQrId || "", user.current?.checkinForBooth),
+  );
 </script>
 
 <QrcodeScannerBase enable={scanning} {onResult}>
@@ -114,6 +124,9 @@
     </div>
   {/if}
   {#if user.current && !user.loading && !user.error}
+    {#if currentReward.isRedeemedReward()}
+      <div class="alert alert-error text-4xl">รับของรางวัลไปแล้ว</div>
+    {/if}
     <table class="table mx-6 mt-3 text-md">
       <tbody>
         <tr>
@@ -125,10 +138,7 @@
         </tr>
         <tr>
           <th> ความคืบหน้าปัจจุบัน </th>
-          <td>
-            WIP
-            <!-- TODO(ptsgrn): participant progress -->
-          </td>
+          <td> </td>
         </tr>
       </tbody>
     </table>

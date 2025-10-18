@@ -16,6 +16,7 @@
     boothCheckpoints,
     isDepartmentStaffSelectable,
   } from "@src/data/checkpoints";
+  import { Rewards } from "@src/data/rewards";
   import { actions } from "astro:actions";
   import WarningAltFilled from "carbon-icons-svelte/lib/WarningAltFilled.svelte";
   import { PersistedState, resource } from "runed";
@@ -97,6 +98,10 @@
       title: "ยืนยันการเช็คอิน",
       description: confirmDialogBody,
       blockConfirmUntil: p,
+      disableConfirmChecker: (data) =>
+        !!data?.checkinForBooth.some(
+          (it) => it.checkpoints?.id === selectedBoothId.current,
+        ),
     });
 
     isConfirmDialogOpen = false;
@@ -145,6 +150,10 @@
     isIdInputtingDialogOpen = false;
     onResult(value);
   }
+
+  const currentReward = $derived(
+    new Rewards(currentQrId || "", user.current?.checkinForBooth),
+  );
 </script>
 
 <QrcodeScannerBase enable={scanning} {onResult}>
@@ -222,6 +231,12 @@
     </div>
   {/if}
   {#if user.current && !user.loading && !user.error}
+    {@const participated = user.current.checkinForBooth.some(
+      (it) => it.checkpoints?.id === selectedBoothId.current,
+    )}
+    {#if participated}
+      <div class="alert alert-info text-4xl">เคยเช็คอินที่บูธนี้แล้ว</div>
+    {/if}
     <table class="table mt-3 text-md">
       <tbody>
         <tr>
@@ -234,8 +249,7 @@
         <tr>
           <th> ความคืบหน้าปัจจุบัน </th>
           <td>
-            WIP
-            <!-- TODO(ptsgrn): participant progress -->
+            {currentReward.getCurrentTier().tier}
           </td>
         </tr>
       </tbody>
