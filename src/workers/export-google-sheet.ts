@@ -8,6 +8,7 @@ import {
   type WorkflowEvent,
   type WorkflowStep,
 } from "cloudflare:workers";
+import { id } from "zod/v4/locales";
 
 function createDatabaseConnection(env: Env) {
   return drizzle(env.openhouse26_db, { schema, logger: true });
@@ -112,7 +113,7 @@ export class syncGoogleSheetWithDatabase extends WorkflowEntrypoint<Env, {}> {
         "data",
       ]);
       await checkinsSheet.addRows(
-        checkinRecords?.map((c) => ({
+        checkinRecords.map((c) => ({
           id: c.id,
           participant_id: c.participantId,
           checked_by_staff_id: c.checkedByStaffId,
