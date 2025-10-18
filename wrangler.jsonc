@@ -106,32 +106,7 @@
           "database_id": "62624ef6-24a7-45e9-94d5-a955b19e7609",
           "migrations_dir": "drizzle",
         },
-      ],
-      "services": [
-        {
-          "binding": "SSE",
-          "service": "openhouse26-sse-production",
-        },
-      ],
-      "workflows": [
-        {
-          "name": "sync-google-sheet-with-database",
-          "binding": "SyncGoogleSheetWithDatabase",
-          "class_name": "syncGoogleSheetWithDatabase"
-        }
-      ],
+      ]
     },
-  },
-  "workflows": [
-    {
-      "name": "sync-google-sheet-with-database",
-      "binding": "SyncGoogleSheetWithDatabase",
-      "class_name": "syncGoogleSheetWithDatabase"
-    }
-  ],
-  "triggers": {
-    "crons": [
-      "*/5 * * * *"
-    ]
   }
 }
