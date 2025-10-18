@@ -187,7 +187,7 @@
 {/snippet}
 
 <ManualIdDialog
-  headerText="กรอกโค้ดเช็คอิน"
+  headerText="กรอกโค้ดผู้เข้าร่วม"
   subText="ผู้เข้าร่วมสามารถดูได้ใต้ Qr Code ในหน้า MyID"
   bind:open={isIdInputtingDialogOpen}
   onDone={onSelfIdInputtingDialogDone}
