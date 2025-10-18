@@ -34,7 +34,7 @@ export const checkpoints: Checkpoint[] = [
     id: "bsac",
     name: "บูธ BSAC",
     type: "booth",
-  },เวท
+  },
   {
     id: "bbtech",
     name: "บูธ BBTech",
@@ -130,6 +130,11 @@ export const checkpoints: Checkpoint[] = [
     name: "จุดรับของรางวัล",
     type: "reward",
   },
+  {
+    id: "graduated",
+    name: "บูธบัณฑิตศึกษา",
+    type: "booth",
+  },
   ...workshopCheckpoints,
 ];
 
@@ -144,6 +149,7 @@ export const isDepartmentStaffSelectable = (checkpointId: string) => {
     "sci-playground",
     "stage",
     "hashtag",
+    "graduated",
   ].includes(checkpointId);
 };
 
