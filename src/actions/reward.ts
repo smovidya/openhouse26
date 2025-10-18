@@ -125,7 +125,7 @@ export const getParticipantRewardLevel = defineAction({
                 });
             }
 
-            return result.getCurrentLevel();
+            return result.getCurrentTier();
         } catch {
             throw new ActionError({
                 code: "INTERNAL_SERVER_ERROR",
