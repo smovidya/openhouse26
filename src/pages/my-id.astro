@@ -2,16 +2,16 @@
 import MyIdHeader from "@src/assets/my-id-header.png";
 import Countdown from "@src/components/countdown.svelte";
 import LogoutButton from "@src/components/logout-button.svelte";
-import MyWorkshop from "@src/components/my-workshop.svelte";
 import MyJournies from "@src/components/my-journies.svelte";
+import MyWorkshop from "@src/components/my-workshop.svelte";
 import NotificationReceiver from "@src/components/notification-receiver.svelte";
 import QrId from "@src/components/qr-id.svelte";
 import { featureFlags, workshopRegistrationDate } from "@src/data/constants";
-import { staffModel, workshopModel } from "@src/db";
+import { workshopModel } from "@src/db";
 import { getParticipantByUserId } from "@src/db/model/participant";
+import { getToken } from "@src/notification/server";
 import NavBar from "../components/navbar.svelte";
 import Layout from "../layouts/ContentLayout.astro";
-import { getToken } from "@src/notification/server";
 
 const uid = Astro.locals.user?.id;
 if (!uid || !Astro.locals.user) {
@@ -36,13 +36,13 @@ const showWorkshop =
 
 const selectedWorkshops = await workshopModel.getUserRegisteredSlots(
   Astro.locals.db,
-  uid
+  uid,
 );
 
 const wsUrl = Astro.locals.runtime.env.SSE_URL;
 const token = await getToken(
   Astro.locals.runtime.env.SSE_PRIVATE_KEY,
-  participant.id
+  participant.id,
 );
 ---
 
@@ -89,17 +89,13 @@ const token = await getToken(
           ID: {id}
         </h3>
       </div>
-      <div class="p-6">
-        <!-- <button
-          class="block text-center mx-auto py-2 rounded-lg w-48 bg-red-50"
-        >
-          แก้ไขข้อมูล
-        </button> -->
-      </div>
+      <p class="px-2 py-2.5 text-center leading-5 text-amber-900/60">
+        สามารถรับของที่ระลึกได้แค่จากเทียร์ที่สูงที่สุดในขณะนั้นเทียร์เดียวเพียงครั้งเดียวเท่านั้น
+      </p>
     </section>
   </main>
 
-  <section class="flex flex-col mt-10">
+  <section class="mt-10 flex flex-col">
     <h2 class="mt-10 font-serif text-2xl">กิจกรรมของฉัน</h2>
     <span class="text-blue-300/85"
       >การเดินทางของฉันในกิจกรรม ติดตามความคืบหน้าและใช้แลกของรางวัล</span
