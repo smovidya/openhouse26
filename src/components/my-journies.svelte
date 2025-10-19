@@ -10,6 +10,7 @@
   import Checkmark from "carbon-icons-svelte/lib/Checkmark.svelte";
   import Information from "carbon-icons-svelte/lib/Information.svelte";
   import { cn } from "./utils";
+  import type { Snippet } from "svelte";
 
   interface Props {
     participantId: string;
@@ -34,30 +35,86 @@
 {#snippet conditionRow(
   text: string,
   isMet: boolean,
-  isUpdated: boolean = false,
+  accordianContent?: Snippet,
 )}
-  <div
-    class={cn(
-      "bg-white/10 rounded-md px-2 [*_svg]:shrink-0 py-1 flex flex-row justify-between items-center",
-      isMet ? "bg-white/95 text-base-100" : "",
-    )}
-  >
-    <span class="flex justify-between flex-row items-center gap-2">
-      <span>
-        {text}
-      </span>
-      <span class="shrink-0 size-5">
-        {#if isMet}<Checkmark size={20} class="shrink-0" />{:else}<CloseLarge
-            size={20}
-          />{/if}
-      </span>
-    </span>
-  </div>
+  {#if accordianContent}
+    <label
+      class={cn(
+        "bg-white/10 collapse collapse-arrow [*_svg]:shrink-0 py-1 ",
+        isMet ? "bg-white/95 text-base-100" : "",
+      )}
+    >
+      <input type="checkbox" />
+      <div
+        class="collapse-title py-0 font-semibold flex justify-between flex-row items-center gap-2"
+      >
+        <span>
+          {text}
+        </span>
+        <span class="shrink-0 size-5">
+          {#if isMet}<Checkmark size={20} class="shrink-0" />{:else}<CloseLarge
+              size={20}
+            />{/if}
+        </span>
+      </div>
+      <div class="collapse-content text-sm">
+        {@render accordianContent?.()}
+      </div>
+    </label>
+  {:else}
+    <div
+      class={cn(
+        "bg-white/10 [*_svg]:shrink-0 py-1 rounded-lg",
+        isMet ? "bg-white/95 text-base-100" : "",
+      )}
+    >
+      <div
+        class="collapse-title py-0 font-semibold flex justify-between flex-row items-center gap-2"
+      >
+        <span>
+          {text}
+        </span>
+        <span class="shrink-0 size-5">
+          {#if isMet}<Checkmark size={20} class="shrink-0" />{:else}<CloseLarge
+              size={20}
+            />{/if}
+        </span>
+      </div>
+    </div>
+  {/if}
+{/snippet}
+
+{#snippet addYoursContent()}
+  ลงโพสต์บรรยากาศในงาน จากไอจีของงานใน x หรือ Facebook พร้อมติด
+  #ScienceChulaOpenhouse2026 แล้วแสดงที่จุดรับของที่ระลึกเล้ย
 {/snippet}
 
 <ResourceWrapper resourceLoader={participantResource}>
   {#snippet children(data)}
     {@const rewards = new Rewards(participantId, data.checkins)}
+
+    {#snippet departmentCheckedin()}
+      <div class="">
+        <p>
+          เข้าทำกิจกรรมของภาควิชาต่าง ๆ แล้วให้สตาฟของภาควิชาสแกน MyID ของคุณ
+        </p>
+        <div class="flex flex-wrap gap-1 mt-2">
+          {#each rewards.getDepartmentAndBoothCheckins() as dept}
+            <span
+              class={cn(
+                "badge badge-sm text-sm py-1",
+                !dept.isCheckin && "badge-dash bg-base-100/30",
+                dept.isCheckin && "bg-white/95 text-base-100",
+              )}
+            >
+              {dept.name}
+              {dept.isCheckin ? "✓" : "✗"}
+            </span>
+          {/each}
+        </div>
+      </div>
+    {/snippet}
+
     {#if !!data}
       {#if rewards.getCurrentLevel() > -1}
         <div class="alert mt-4 mb-2 bg-base-100">
@@ -139,6 +196,7 @@
                       rewards.getCheckedInDepartmentBooth().length
                     }/5) เช็คอินบูธภาควิชา 5 บูธ`,
                     rewards.getCheckedInDepartmentBooth().length >= 5,
+                    departmentCheckedin,
                   )}
                   {@render conditionRow(
                     `(${
@@ -147,8 +205,9 @@
                     rewards.getCheckedinTcasBooth().length > 0,
                   )}
                   {@render conditionRow(
-                    `(${rewards.getCheckedinAddYours().length}/1) ภารกิจ Add your ลงโพสต์บรรยากาศในงาน จากไอจีของงานใน x หรือ Facebook พร้อมติด #ScienceChulaOpenhouse2026 แล้วแสดงที่จุดรับของที่ระลึกเล้ย`,
+                    `(${rewards.getCheckedinAddYours().length}/1) ภารกิจ Add your`,
                     rewards.getCheckedinAddYours().length > 0,
+                    addYoursContent,
                   )}
                 </ul>
               </div>
@@ -191,7 +250,8 @@
                     `(${
                       rewards.getCheckedInDepartmentBooth().length
                     }/8) เช็คอินบูธภาควิชา 8 บูธ`,
-                    rewards.getCheckedInDepartmentBooth().length >= 10,
+                    rewards.getCheckedInDepartmentBooth().length >= 8,
+                    departmentCheckedin,
                   )}
                   {@render conditionRow(
                     `(${
@@ -200,8 +260,9 @@
                     rewards.getCheckedinTcasBooth().length > 0,
                   )}
                   {@render conditionRow(
-                    `(${rewards.getCheckedinAddYours().length}/1) ภารกิจ Add your ลงโพสต์บรรยากาศในงาน จากไอจีของงานใน x หรือ Facebook พร้อมติด #ScienceChulaOpenhouse2026 แล้วแสดงที่จุดรับของที่ระลึกเล้ย`,
+                    `(${rewards.getCheckedinAddYours().length}/1) ภารกิจ Add your`,
                     rewards.getCheckedinAddYours().length > 0,
+                    addYoursContent,
                   )}
                   {@render conditionRow(
                     `(${
@@ -252,6 +313,7 @@
                       rewards.getCheckedInDepartmentBooth().length
                     }/15) เช็คอินบูธภาควิชา 15 บูธ`,
                     rewards.getCheckedInDepartmentBooth().length >= 15,
+                    departmentCheckedin,
                   )}
                   {@render conditionRow(
                     `(${
@@ -260,8 +322,9 @@
                     rewards.getCheckedinTcasBooth().length > 0,
                   )}
                   {@render conditionRow(
-                    `(${rewards.getCheckedinAddYours().length}/1) ภารกิจ Add your ลงโพสต์บรรยากาศในงาน จากไอจีของงานใน x หรือ Facebook พร้อมติด #ScienceChulaOpenhouse2026 แล้วแสดงที่จุดรับของที่ระลึกเล้ย`,
+                    `(${rewards.getCheckedinAddYours().length}/1) ภารกิจ Add your`,
                     rewards.getCheckedinAddYours().length > 0,
+                    addYoursContent,
                   )}
                   {@render conditionRow(
                     `(${

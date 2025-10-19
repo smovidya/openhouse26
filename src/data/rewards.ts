@@ -1,5 +1,5 @@
 import type { checkinModel, schema } from "@src/db";
-import { isDepartmentBooth } from "./checkpoints";
+import { departmentBooths, isDepartmentBooth } from "./checkpoints";
 
 const tierLevels = {
   0: "Tier 0",
@@ -226,5 +226,20 @@ export class Rewards {
         tier: "ยังไม่ได้เช็คอินเข้าร่วมกิจกรรมที่ทะเบียน",
       };
     }
+  }
+
+  getDepartmentAndBoothCheckins() {
+    const isCheckin = (checkpointId: string) => {
+      return this.checkins.some((c) => c.checkpoints?.id === checkpointId);
+    };
+    return departmentBooths.map((booth) => ({
+      ...booth,
+      isCheckin: isCheckin(booth?.id || ""),
+    })).toSorted((a, b) => {
+      if (a.isCheckin === b.isCheckin) {
+        return (a.name || "").localeCompare(b.name || "");
+      }
+      return a.isCheckin ? -1 : 1;
+    });
   }
 }

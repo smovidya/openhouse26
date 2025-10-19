@@ -150,7 +150,11 @@ export const isDepartmentStaffSelectable = (checkpointId: string) => {
     "stage",
     "hashtag",
     "graduated",
-  ].includes(checkpointId);
+  ].includes(checkpointId) && !checkpointId.startsWith("workshop-");
 };
 
 export const isDepartmentBooth = isDepartmentStaffSelectable;
+
+export const departmentBooths = checkpoints.filter((c) =>
+  isDepartmentBooth(c.id),
+);
