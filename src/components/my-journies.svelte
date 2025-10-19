@@ -42,11 +42,15 @@
       isMet ? "bg-white/95 text-base-100" : "",
     )}
   >
-    <span class="flex flex-row items-center gap-2">
-      {text}
-      {#if isMet}<Checkmark size={20} class="shrink-0" />{:else}<CloseLarge
-          size={20}
-        />{/if}
+    <span class="flex justify-between flex-row items-center gap-2">
+      <span>
+        {text}
+      </span>
+      <span class="shrink-0 size-5">
+        {#if isMet}<Checkmark size={20} class="shrink-0" />{:else}<CloseLarge
+            size={20}
+          />{/if}
+      </span>
     </span>
   </div>
 {/snippet}
@@ -122,7 +126,7 @@
                   class="max-w-52 w-full object-contain"
                 />
                 <img
-                  src="rewards/pen.png"
+                  src="rewards/pen.webp"
                   alt="ปากกามูจิ"
                   class="max-w-52 w-full object-contain"
                 />
@@ -168,11 +172,16 @@
                 กระบอกน้ำและหมวกสุดเอ็กคลูสีฟสำหรับ 50
                 คนแรกในแต่ละวันที่ตรงเงื่อนไขเท่านั้น!!!!
               </p>
-              <div>
+              <div class="max-w-full flex flex-row gap-4">
                 <img
                   src="rewards/cap.png"
                   alt="หมวก"
                   class="max-w-80 w-full object-contain"
+                />
+                <img
+                  src="rewards/bottle.png"
+                  alt="กระบอกน้ำ"
+                  class="max-w-24 w-full object-contain"
                 />
               </div>
               <div class="mt-2">
