@@ -138,23 +138,25 @@ export const checkpoints: Checkpoint[] = [
   ...workshopCheckpoints,
 ];
 
-export const boothCheckpoints = checkpoints
+export const boothCheckpoints = checkpoints;
 
 export const isDepartmentStaffSelectable = (checkpointId: string) => {
-  return ![
-    "entry-register",
-    "add-your",
-    "recive-reward",
-    "tcas",
-    "sci-playground",
-    "stage",
-    "hashtag",
-    "graduated",
-  ].includes(checkpointId) && !checkpointId.startsWith("workshop-");
+  return (
+    ![
+      "entry-register",
+      "add-your",
+      "recive-reward",
+      "tcas",
+      "sci-playground",
+      "stage",
+      "hashtag",
+      "graduated",
+    ].includes(checkpointId) && !checkpointId.startsWith("workshop-")
+  );
 };
 
 export const isDepartmentBooth = isDepartmentStaffSelectable;
 
 export const departmentBooths = checkpoints.filter((c) =>
-  isDepartmentBooth(c.id),
+  isDepartmentBooth(c?.id || ""),
 );
