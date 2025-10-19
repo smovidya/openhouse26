@@ -36,13 +36,13 @@ const showWorkshop =
 
 const selectedWorkshops = await workshopModel.getUserRegisteredSlots(
   Astro.locals.db,
-  uid,
+  uid
 );
 
 const wsUrl = Astro.locals.runtime.env.SSE_URL;
 const token = await getToken(
   Astro.locals.runtime.env.SSE_PRIVATE_KEY,
-  participant.id,
+  participant.id
 );
 ---
 
@@ -100,9 +100,6 @@ const token = await getToken(
     <span class="text-blue-300/85"
       >การเดินทางของฉันในกิจกรรม ติดตามความคืบหน้าและใช้แลกของรางวัล</span
     >
-    <a href="/redeem" class="btn btn-primary mt-4">
-      ไปที่หน้าแลกของรางวัล 🎁
-    </a>
     <MyJournies participantId={participant.id} class="mt-6" client:load />
   </section>
 

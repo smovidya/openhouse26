@@ -8,6 +8,7 @@
   import ResourceWrapper from "./common/resource-wrapper.svelte";
   import CloseLarge from "carbon-icons-svelte/lib/CloseLarge.svelte";
   import Checkmark from "carbon-icons-svelte/lib/Checkmark.svelte";
+  import Information from "carbon-icons-svelte/lib/Information.svelte";
   import { cn } from "./utils";
 
   interface Props {
@@ -30,10 +31,14 @@
   });
 </script>
 
-{#snippet conditionRow(text: string, isMet: boolean)}
+{#snippet conditionRow(
+  text: string,
+  isMet: boolean,
+  isUpdated: boolean = false,
+)}
   <div
     class={cn(
-      "bg-white/10 rounded-md px-2",
+      "bg-white/10 rounded-md px-2 [*_svg]:shrink-0 py-1 flex flex-row justify-between items-center",
       isMet ? "bg-white/95 text-base-100" : "",
     )}
   >
@@ -50,6 +55,26 @@
   {#snippet children(data)}
     {@const rewards = new Rewards(participantId, data.checkins)}
     {#if !!data}
+      {#if rewards.getCurrentLevel() > -1}
+        <div class="alert mt-4 mb-2 bg-base-100">
+          <Information size={32} class="shrink-0" />
+          <div>
+            <span class="text-2xl"> หมายเหตุในการแลกรับของรางวัล</span>
+            <ul class="list-disc pl-5">
+              <li>
+                ผู้เข้าร่วมงานสามารถแลกรับของรางวัลได้เพียงครั้งเดียวตาม Tier
+                ที่ตัวเองมีสิทธิ์ เพียงรายการเดียวเท่านั้น เช่นหากเก็บจนได้ระดับ
+                เสือนักผจญภัย จะได้หมวกและกระบอกน้ำรายการเดียว
+              </li>
+              <li>เมื่อแลกรับของรางวัลแล้ว จะไม่สามารถเล่นกิจกรรมต่อได้</li>
+              <li>
+                หากมีข้อสงสัย สามารถสอบถามข้อมูลเพิ่มเติมที่จุดแลกของที่ระลึก
+                ข้างจุดลงทะเบียน
+              </li>
+            </ul>
+          </div>
+        </div>
+      {/if}
       <ul
         class="timeline timeline-snap-icon max-md:timeline-compact timeline-vertical not-prose"
       >
@@ -156,7 +181,7 @@
                   {@render conditionRow(
                     `(${
                       rewards.getCheckedInDepartmentBooth().length
-                    }/10) เช็คอินบูธภาควิชา 10 บูธ`,
+                    }/8) เช็คอินบูธภาควิชา 8 บูธ`,
                     rewards.getCheckedInDepartmentBooth().length >= 10,
                   )}
                   {@render conditionRow(
@@ -168,12 +193,6 @@
                   {@render conditionRow(
                     `(${rewards.getCheckedinAddYours().length}/1) ภารกิจ Add your ลงโพสต์บรรยากาศในงาน จากไอจีของงานใน x หรือ Facebook พร้อมติด #ScienceChulaOpenhouse2026 แล้วแสดงที่จุดรับของที่ระลึกเล้ย`,
                     rewards.getCheckedinAddYours().length > 0,
-                  )}
-                  {@render conditionRow(
-                    `(${
-                      rewards.getCheckedinWorkshop().length
-                    }/1) เข้าร่วมเวิร์กช็อปอย่างน้อย 1 ครั้ง`,
-                    rewards.getCheckedinWorkshop().length > 0,
                   )}
                   {@render conditionRow(
                     `(${
@@ -222,7 +241,7 @@
                   {@render conditionRow(
                     `(${
                       rewards.getCheckedInDepartmentBooth().length
-                    }/17) เช็คอินบูธภาควิชา 17 บูธ`,
+                    }/15) เช็คอินบูธภาควิชา 15 บูธ`,
                     rewards.getCheckedInDepartmentBooth().length >= 15,
                   )}
                   {@render conditionRow(

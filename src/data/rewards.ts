@@ -24,14 +24,13 @@ export const tierConditions = {
     addYour: 1,
   },
   2: {
-    departmentBooths: 10,
+    departmentBooths: 8,
     tcasBooth: 1,
     addYour: 1,
-    workshops: 1,
     sciPlayground: 1,
   },
   3: {
-    departmentBooths: 17,
+    departmentBooths: 15,
     tcasBooth: 1,
     addYour: 1,
     workshops: 1,
@@ -164,7 +163,7 @@ export class Rewards {
     const stageCount = this.getCheckedinStage().length;
 
     if (
-      departmentBoothCount >= 17 &&
+      departmentBoothCount >= 15 &&
       tcasBoothCheckedIn &&
       addYourCheckedIn &&
       hashtagCheckedIn &&
@@ -185,10 +184,9 @@ export class Rewards {
         },
       };
     } else if (
-      departmentBoothCount >= 10 &&
+      departmentBoothCount >= 8 &&
       tcasBoothCheckedIn &&
       addYourCheckedIn &&
-      workshopCount >= 1 &&
       sciPlaygroundCount >= 1 &&
       hashtagCheckedIn
     ) {
