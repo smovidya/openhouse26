@@ -4,6 +4,7 @@ import * as devActions from "./dev";
 import * as checkinActions from "./checkin";
 import * as adminActions from "./admin";
 import * as rewardActions from "./reward";
+import * as surveyActions from "./survey";
 
 export const server = {
   ...participantActions,
@@ -11,5 +12,6 @@ export const server = {
   ...devActions,
   ...checkinActions,
   ...adminActions,
-  ...rewardActions
+  ...rewardActions,
+  ...surveyActions,
 };

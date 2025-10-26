@@ -5,3 +5,4 @@ export * as checkinModel from "./checkin";
 export * as adminModel from "./admin";
 export * as staffModel from "./staff";
 export * as redeemModel from "./redeem";
+export * as surveyModel from "./survey";
