@@ -25,3 +25,6 @@ pnpm-debug.log*
 .idea/
 
 .wrangler/
+
+# Lol you can't have this
+cert-final.png
