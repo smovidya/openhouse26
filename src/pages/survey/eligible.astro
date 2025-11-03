@@ -15,6 +15,7 @@ const { data: checkEligibility } = await Astro.callAction(
 switch (checkEligibility?.status) {
   case "not_checked_in":
     return Astro.redirect("/survey/ineligible", 302);
+  case "name_confirmed":
   case "survey_submitted":
     return Astro.redirect("/cert", 302);
   case "can_submit_survey":
