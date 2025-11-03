@@ -156,3 +156,41 @@ export const registerParticipant = defineAction({
     };
   },
 });
+
+export const updateParticipantName = defineAction({
+  input: z.object({
+    givenName: z.string(),
+    familyName: z.string(),
+  }),
+  async handler(input, context) {
+    if (!context.locals.user) {
+      throw new ActionError({
+        code: "UNAUTHORIZED",
+        message: "ผู้ใช้ไม่ได้เข้าสู่ระบบ",
+      });
+    }
+
+    let participant: Awaited<
+      ReturnType<typeof participantModel.getParticipantByUserId>
+    >;
+
+    try {
+      participant = await participantModel.getParticipantByUserId(
+        context.locals.db,
+        context.locals.user.id,
+      );
+    } catch (err) {
+      throw new ActionError({
+        code: "INTERNAL_SERVER_ERROR",
+        message: "ไม่สามารถเข้าถึงข้อมูลผู้เข้าร่วมได้",
+      });
+    }
+
+    if (!participant) {
+      throw new ActionError({
+        code: "NOT_FOUND",
+        message: "ไม่พบข้อมูลผู้เข้าร่วม",
+      });
+    }
+  },
+});
