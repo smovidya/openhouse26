@@ -405,7 +405,7 @@ export const removeCheckinWorkshopForOnsiteParticipant = async (
 };
 
 export const updateParticipantQrId = async (db: Db, participantId: string) => {
-  const participant = await getParticipantByIdOrQrCodeId(db, participantId)
+  const participant = await getParticipantByIdOrQrCodeId(db, participantId);
   if (participant?.qrCodeId?.length === 5) {
     return participant.qrCodeId;
   }

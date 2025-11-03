@@ -35,3 +35,18 @@ export async function insertParticipant(
     })
     .get();
 }
+
+export async function updateParticipantName(
+  db: Db,
+  participantId: string,
+  givenName: string,
+  familyName: string,
+) {
+  return await db
+    .update(schema.participants)
+    .set({
+      givenName,
+      familyName,
+    })
+    .where(eq(schema.participants.id, participantId));
+}
