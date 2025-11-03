@@ -232,14 +232,16 @@ export class Rewards {
     const isCheckin = (checkpointId: string) => {
       return this.checkins.some((c) => c.checkpoints?.id === checkpointId);
     };
-    return departmentBooths.map((booth) => ({
-      ...booth,
-      isCheckin: isCheckin(booth?.id || ""),
-    })).toSorted((a, b) => {
-      if (a.isCheckin === b.isCheckin) {
-        return (a.name || "").localeCompare(b.name || "");
-      }
-      return a.isCheckin ? -1 : 1;
-    });
+    return departmentBooths
+      .map((booth) => ({
+        ...booth,
+        isCheckin: isCheckin(booth?.id || ""),
+      }))
+      .toSorted((a, b) => {
+        if (a.isCheckin === b.isCheckin) {
+          return (a.name || "").localeCompare(b.name || "");
+        }
+        return a.isCheckin ? -1 : 1;
+      });
   }
 }

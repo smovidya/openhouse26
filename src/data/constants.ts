@@ -16,6 +16,8 @@ export const featureFlags = {
   showMission: true,
 };
 
+export const certificatePdfKvKey = (certId: string) => `certificates/${certId}`;
+
 export const howDidYouKnowUsOptions = [
   {
     value: "friend",
