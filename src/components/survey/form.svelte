@@ -1,12 +1,8 @@
 <script lang="ts">
   import { departments } from "@src/data/departments";
-  import {
-    createForm,
-    FieldApi,
-    type AnyFieldApi,
-  } from "@tanstack/svelte-form";
+  import { createForm, type AnyFieldApi } from "@tanstack/svelte-form";
   import { actions } from "astro:actions";
-  import z, { map } from "zod";
+  import z from "zod";
   import Fieldset from "./fieldset.svelte";
   import FieldStarRating from "./field-star-rating.svelte";
 
@@ -105,7 +101,7 @@
         },
       },
     },
-    onSubmitInvalid({ formApi }) {
+    onSubmitInvalid() {
       document.querySelector("[aria-invalid='true']")?.scrollIntoView({
         behavior: "smooth",
         block: "center",
@@ -113,11 +109,10 @@
     },
     onSubmit: async ({ value }) => {
       await actions.submitSurvey(value);
-      // TODO: redirect to certificate page & guarding this page
+      window.location.href = "/cert";
     },
   }));
 
-  const formErrorMap = form.useStore((state) => state.errorMap);
   const formValues = form.useStore((state) => state.values);
 </script>
 
