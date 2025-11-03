@@ -34,6 +34,7 @@ export const updateParticipantName = async (
     .update(schema.surveys)
     .set({
       isNameConfirmed: true,
+      nameInCert: `${data.givenName} ${data.familyName}`,
     })
     .where(eq(schema.surveys.participantId, participantId));
   await db
