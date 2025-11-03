@@ -19,6 +19,9 @@
   "observability": {
     "enabled": true,
   },
+  "browser": {
+    "binding": "BROWSER",
+  },
   "kv_namespaces": [
     {
       "binding": "openhouse26_kv",
@@ -46,6 +49,9 @@
       "vars": {
         "ENVIRONMENT": "staging",
         "SSE_URL": "https://isei.scichulaopenhouse.com",
+      },
+      "browser": {
+        "binding": "BROWSER",
       },
       "d1_databases": [
         {
@@ -83,6 +89,9 @@
       ],
     },
     "production": {
+      "browser": {
+        "binding": "BROWSER",
+      },
       "routes": [
         {
           "pattern": "scichulaopenhouse.com",
@@ -106,7 +115,7 @@
           "database_id": "62624ef6-24a7-45e9-94d5-a955b19e7609",
           "migrations_dir": "drizzle",
         },
-      ]
+      ],
     },
-  }
+  },
 }
