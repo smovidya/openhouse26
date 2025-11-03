@@ -4,10 +4,7 @@ import Layout from "@src/layouts/ManagementLayout.astro";
 import Navbar from "@src/components/staff/navbar.svelte";
 ---
 
-<Layout
-  title="ของที่ระลึก"
-  description="Staff dashboard for Open House 2026"
->
+<Layout title="ของที่ระลึก" description="Staff dashboard for Open House 2026">
   <Navbar
     client:load
     currentPath={Astro.url.pathname}

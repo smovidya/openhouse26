@@ -2,7 +2,6 @@
 import RegistrationForm from "@src/components/registration/registration-form-2.svelte";
 import Layout from "../../layouts/ContentLayout.astro";
 import { actions } from "astro:actions";
-import { staffModel } from "@src/db";
 
 if (!Astro.locals.user) {
   return Astro.redirect("/");

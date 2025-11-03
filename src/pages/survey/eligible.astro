@@ -1,0 +1,32 @@
+---
+import Layout from "@src/layouts/ContentLayout.astro";
+import Form from "@src/components/survey/form.svelte";
+import { actions } from "astro:actions";
+
+if (!Astro.locals.user) {
+  return Astro.redirect("/", 302);
+}
+
+const { data: checkEligibility } = await Astro.callAction(
+  actions.checkSurveyEligibility,
+  {},
+);
+
+switch (checkEligibility?.status) {
+  case "not_checked_in":
+    return Astro.redirect("/survey/ineligible", 302);
+  case "survey_submitted":
+    return Astro.redirect("/cert", 302);
+  case "can_submit_survey":
+    break;
+  default:
+    return Astro.redirect("/survey/ineligible", 302);
+}
+---
+
+<Layout
+  showNavBar={true}
+  title="แบบสอบความความพึงพอใจและข้อเสนอแนะสำหรับงาน Sci Chula Openhouse 2026"
+>
+  <Form client:load />
+</Layout>

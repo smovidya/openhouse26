@@ -30,14 +30,14 @@ const name = participant.givenName;
       <li>หากมีข้อสงสัย สามารถสอบถามสตาฟได้ที่บูธแลกของที่ระลึก</li>
     </ol>
 
-    <div class="mt-8 flex justify-center flex-col items-center gap-4">
+    <div class="mt-8 flex flex-col items-center justify-center gap-4">
       <QrId client:only content={id ?? "not-loggedin"} />
-      <span class="text-xl">แสดง QR Code นี้ให้กับสตาฟฝ่ายของที่ระลึกเพื่อแลกของ</span>
+      <span class="text-xl"
+        >แสดง QR Code นี้ให้กับสตาฟฝ่ายของที่ระลึกเพื่อแลกของ</span
+      >
     </div>
-    <div class="flex justify-center mt-40">
-      <a href="/my-id" class="btn btn-ghost">
-        ยกเลิก และกลับไปที่หน้า MyID
-      </a>
+    <div class="mt-40 flex justify-center">
+      <a href="/my-id" class="btn btn-ghost"> ยกเลิก และกลับไปที่หน้า MyID </a>
     </div>
   </article>
 </Layout>

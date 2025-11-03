@@ -1,0 +1,21 @@
+---
+import Layout from "@src/layouts/ContentLayout.astro";
+---
+
+<Layout title="คุณไม่เข้าเงื่อนไขในการรับเกียรติบัตร">
+  <div
+    class="prose mx-auto mt-10 flex flex-col items-center justify-center text-center"
+  >
+    <h1 class="">คุณไม่เข้าเงื่อนไขในการรับเกียรติบัตร :(</h1>
+    <p>
+      เนื่องจากไม่ได้ทำการเช็คอินในวันงานอย่างน้อย 1 วัน
+      โปรดติดต่อสตาฟหากคิดว่าคุณมีสิทธิ์ในการรับเกียรติบัตร
+    </p>
+    <p>
+      หรือลองเช็คดูว่าคุณเข้าถูกบัญชี คณะนี้คุณใช้อีเมล {
+        Astro.locals.user?.email
+      }
+    </p>
+    <a href="/my-id" class="btn btn-primary">กลับไปที่ MyID</a>
+  </div>
+</Layout>

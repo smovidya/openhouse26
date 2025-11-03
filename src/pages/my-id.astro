@@ -12,6 +12,7 @@ import { getParticipantByUserId } from "@src/db/model/participant";
 import { getToken } from "@src/notification/server";
 import NavBar from "../components/navbar.svelte";
 import Layout from "../layouts/ContentLayout.astro";
+import { actions } from "astro:actions";
 
 const uid = Astro.locals.user?.id;
 if (!uid || !Astro.locals.user) {
@@ -36,13 +37,18 @@ const showWorkshop =
 
 const selectedWorkshops = await workshopModel.getUserRegisteredSlots(
   Astro.locals.db,
-  uid
+  uid,
 );
 
 const wsUrl = Astro.locals.runtime.env.SSE_URL;
 const token = await getToken(
   Astro.locals.runtime.env.SSE_PRIVATE_KEY,
-  participant.id
+  participant.id,
+);
+
+const { data: checkEligibility, error } = await Astro.callAction(
+  actions.checkSurveyEligibility,
+  {},
 );
 ---
 
@@ -93,6 +99,23 @@ const token = await getToken(
         สามารถรับของที่ระลึกได้แค่จากเทียร์ที่สูงที่สุดในขณะนั้นเทียร์เดียวเพียงครั้งเดียวเท่านั้น
       </p>
     </section>
+    {
+      checkEligibility?.eligible ? (
+        <section class="mt-5 flex flex-col items-center">
+          <span>น้องมีสิทธิ์ในการรับเกียรติบัตร</span>
+          <a href="/survey/eligible" class="btn btn-accent">
+            รับเกียรติบัตร
+          </a>
+        </section>
+      ) : (
+        <section class="mt-5 flex flex-col items-center">
+          <span>น้องยังไม่มีสิทธิ์ในการรับเกียรติบัตร</span>
+          {checkEligibility?.status === "not_checked_in" ? (
+            <span>เนื่องจากยังไม่ได้เช็คอินในวันงาน</span>
+          ) : null}
+        </section>
+      )
+    }
   </main>
 
   <section class="mt-10 flex flex-col">

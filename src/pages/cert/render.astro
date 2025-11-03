@@ -1,0 +1,74 @@
+---
+import "@src/styles/global.css";
+import { toSVG } from "@bwip-js/node";
+import { timingSafeEqual } from "node:crypto";
+
+const url = new URL(Astro.url);
+
+const name = url.searchParams.get("name");
+const qrCodeContent = url.searchParams.get("code");
+const token = url.searchParams.get("token");
+
+if (!name || !qrCodeContent || !token) {
+  return Astro.redirect("/");
+}
+
+if (
+  !timingSafeEqual(
+    Buffer.from(token),
+    Buffer.from(Astro.locals.runtime.env.BETTER_AUTH_SECRET),
+  )
+) {
+  return Astro.redirect("/");
+}
+
+const certVerifyUrl = `https://v.vidyachula.org//${qrCodeContent}`;
+
+const qrCodeSvg = toSVG({
+  text: certVerifyUrl,
+  bcid: "qrcode",
+  scale: 3,
+  includetext: true,
+});
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="robots" content="noindex, nofollow" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/png" href="/logo.png" />
+    <meta name="generator" content={Astro.generator} />
+    <title>เกียรติบัตรสำหรับ {name} - Sci Chula Openhouse 2025</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Sarabun:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body class="flex items-center bg-white">
+    <div
+      class="relative m-auto h-full w-[210mm] overflow-hidden"
+      style="font-family: 'Sarabun', sans-serif;"
+    >
+      <img src="/cert-final.png" class="-z-10 h-auto w-full" />
+      <span
+        class="absolute top-[58mm] left-0 w-full text-center text-2xl font-light text-black"
+      >
+        {name}
+      </span>
+      <div
+        class="absolute top-[107mm] left-[26.7mm] flex size-16 flex-col items-center justify-center gap-[1px]"
+      >
+        <span class="size-14">
+          <Fragment set:html={qrCodeSvg} />
+        </span>
+        <a href={certVerifyUrl} class="text-center text-[4px] text-gray-900">
+          {qrCodeContent}
+        </a>
+      </div>
+    </div>
+  </body>
+</html>
