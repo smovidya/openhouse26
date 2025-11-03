@@ -87,7 +87,7 @@ export const getCertificatePdf = async (
     format: "A4",
   });
 
-  await page.close();
+  await puppetBrowser.close();
 
   const uint8 = new Uint8Array(pdf);
 
