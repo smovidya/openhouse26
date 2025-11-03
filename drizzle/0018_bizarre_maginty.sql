@@ -1,0 +1,1 @@
+ALTER TABLE `surveys` ADD `name_in_cert` text;

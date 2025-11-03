@@ -1,0 +1,1 @@
+ALTER TABLE `surveys` ADD `is_name_confirmed` integer DEFAULT false NOT NULL;
