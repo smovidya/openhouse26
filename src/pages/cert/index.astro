@@ -9,7 +9,7 @@ if (!Astro.locals.user) {
 
 const { data: checkEligibility, error } = await Astro.callAction(
   actions.checkSurveyEligibility,
-  {}
+  {},
 );
 
 switch (checkEligibility?.status) {

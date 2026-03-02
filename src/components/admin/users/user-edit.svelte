@@ -6,7 +6,7 @@
   const {
     id,
   }: {
-    id: string;
+    id: string | undefined;
   } = $props();
 
   let dataState = $state({

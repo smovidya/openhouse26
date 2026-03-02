@@ -66,10 +66,7 @@
     user,
   }: {
     currentPath: string;
-    user: {
-      role: string;
-      image: string;
-    };
+    user: User | null;
   } = $props();
 </script>
 
@@ -105,7 +102,7 @@
   </div>
   <div class="avatar">
     <div class="rounded-full w-10">
-      <img src={user.image} alt="User Avatar" />
+      <img src={user?.image || "/default-avatar.png"} alt="User Avatar" />
     </div>
   </div>
 </div>
