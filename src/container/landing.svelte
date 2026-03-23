@@ -13,29 +13,29 @@
         <div class="z-20 flex gap-4 items-center mt-10">
             <div class=" flex flex-col items-end gap-4">
                 <a href="/">
-                    <img src="/nowath/stamps/departmentStamp.svg" alt="">
+                    <img src="/nowath/stamps/departmentStamp.svg" alt="departmentStamp">
                 </a>
                 <a href="/">
-                    <img src="/nowath/stamps/recheckStamp.svg" alt="">
+                    <img src="/nowath/stamps/recheckStamp.svg" alt="recheckStamp">
                 </a>
                 <a href="/">
-                    <img src="/nowath/stamps/merchStamp.svg" alt="">
+                    <img src="/nowath/stamps/merchStamp.svg" alt="merchStamp">
                 </a>
             </div>
             <div class=" flex flex-col items-start gap-2">
                 <a href="/">
-                    <img src="/nowath/stamps/workshopStamp.svg" alt="">
+                    <img src="/nowath/stamps/workshopStamp.svg" alt="workshopStamp">
                 </a>
                 <a href="/">
-                    <img src="/nowath/stamps/redeemStamp.svg" alt="">
+                    <img src="/nowath/stamps/redeemStamp.svg" alt="redeemStamp">
                 </a>
             </div>
         </div>
         <div class="absolute top-0 left-0 z-1">
-            <img src="/nowath/assets/backdropHotal.svg" class="w-500 max-w-none -translate-y-50 -translate-x-60 blur-xs" alt="">
+            <img src="/nowath/assets/backdropHotal.svg" class="w-500 max-w-none -translate-y-50 -translate-x-60 blur-xs" alt="backdropHotal">
         </div>
         <div class="absolute bottom-0 left-1/2 -translate-x-1/2 z-1">
-            <img src="/nowath/assets/hotal.svg" class="w-140 max-w-none translate-y-30 brightness-80" alt="">
+            <img src="/nowath/assets/hotal.svg" class="w-140 max-w-none translate-y-30 brightness-80" alt="hotal">
         </div>
     </div>
     <div class="z-20 flex flex-col items-center">
