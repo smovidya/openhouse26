@@ -52,6 +52,18 @@
   /* effects */
   --depth: 1;
   --noise: 1;
+
+  /*New color 2026*/
+  --primary: #EA83B5;
+  --background: #04183C;
+  --text-dark: #04183C;
+  --text-white: #F7F5EA;
+  --color-1: #15BEBB;
+  --color-2: #F7F5EA;
+  --color-3: #F7BDD9;
+  --color-4: #14674A;
+  --border-1: #B3875C;
+  --header-card: #F6E6E0;
 }
 
 @import "./fonts.css";
@@ -68,14 +80,23 @@
 }
 
 @layer base {
-  body {
-    background-color: #1f3776;
-    min-height: 100vh;
-    font-family: var(--font-sans);
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    overflow-x: hidden;
-  }
+    body {
+        background-color:   red;
+        min-height: 100vh;
+        font-family: var(--font-sans);
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        overflow-x: hidden;
+        display: flex;
+        justify-content:center;
+        align-items: flex-start;
+    }
+}
+
+.MainContainer{
+    max-width: 500px;
+    min-width: 300px;
+    height: 100dvh;
 }
 
 .oph-soft-white {
