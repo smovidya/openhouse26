@@ -1,6 +1,6 @@
 import { sendEvent } from "@src/notification/server";
 import { defineAction } from "astro:actions";
-import { z } from "zod";
+import { z } from "astro/zod";
 import { env } from "cloudflare:workers";
 
 export const sentStuff = defineAction({
