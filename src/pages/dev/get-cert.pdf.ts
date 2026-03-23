@@ -34,7 +34,7 @@ import type { APIRoute } from "astro";
 //   const uint8 = new Uint8Array(pdf);
 
 //   // save to kv
-//   await locals.runtime.env.openhouse26_kv.put("certificates/123456789", uint8);
+//   await locals.runtime.env.openhouse26_2_kv.put("certificates/123456789", uint8);
 
 //   return new Response(uint8, {
 //     headers: {

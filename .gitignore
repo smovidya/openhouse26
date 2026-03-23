@@ -28,3 +28,5 @@ pnpm-debug.log*
 
 # Lol you can't have this
 cert-final.png
+# Localflare generated files
+.localflare/

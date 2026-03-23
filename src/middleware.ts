@@ -9,7 +9,7 @@ export const onRequest = defineMiddleware(async (context, next) => {
     context.locals.runtime.env,
     context.locals.runtime.cf,
   );
-  const db = drizzle(context.locals.runtime.env.openhouse26_db, {
+  const db = drizzle(context.locals.runtime.env.openhouse26_2_db, {
     schema,
     logger: import.meta.env.DB_QUERY_DEBUG === "true",
   });

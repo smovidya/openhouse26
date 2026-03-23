@@ -13,7 +13,7 @@ export default defineConfig({
       enabled: true,
     },
 
-    sessionKVBindingName: "openhouse26_kv",
+    sessionKVBindingName: "openhouse26_2_kv",
     workerEntryPoint: {
       path: "src/workers/index.ts",
       namedExports: ["syncGoogleSheetWithDatabase"],

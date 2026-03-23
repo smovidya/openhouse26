@@ -23,7 +23,7 @@ import { eq } from "drizzle-orm";
 function createAuth(env?: Env, cf?: IncomingRequestCfProperties) {
   // Use actual DB for runtime, empty object for CLI
   const db = (
-    env ? drizzle(env.openhouse26_db, { schema, logger: true }) : ({} as any)
+    env ? drizzle(env.openhouse26_2_db, { schema, logger: true }) : ({} as any)
   ) as DrizzleD1Database<typeof schema>;
 
   const betterAuthOptions = {
@@ -133,16 +133,16 @@ function createAuth(env?: Env, cf?: IncomingRequestCfProperties) {
           }
         : undefined,
       // @ts-ignore
-      kv: env?.openhouse26_kv
+      kv: env?.openhouse26_2_kv
         ? {
             delete: async (key: string) => {
-              return env?.openhouse26_kv.delete(key);
+              return env?.openhouse26_2_kv.delete(key);
             },
             get: async (key: string) => {
-              return env?.openhouse26_kv.get(key);
+              return env?.openhouse26_2_kv.get(key);
             },
             put(key, value, options) {
-              return env.openhouse26_kv.put(key, value as any, {
+              return env.openhouse26_2_kv.put(key, value as any, {
                 ...options,
                 expirationTtl: Math.max(options?.expirationTtl ?? 120, 120),
               });

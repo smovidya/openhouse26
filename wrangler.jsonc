@@ -1,9 +1,12 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "openhouse26",
-  "account_id": "4ec83c42527307cc087ab2207efb4297",
+  "account_id": "e2069f9cc14d2fe64afc9d04ed6576bd",
   "compatibility_date": "2025-09-20",
-  "compatibility_flags": ["nodejs_compat", "disable_nodejs_process_v2"],
+  "compatibility_flags": [
+    "nodejs_compat",
+    "disable_nodejs_process_v2"
+  ],
   "main": "./dist/_worker.js/index.js",
   "assets": {
     "binding": "ASSETS",
@@ -21,19 +24,17 @@
   },
   "kv_namespaces": [
     {
-      "binding": "openhouse26_kv",
-      // Cloudflare say top level binding shuold for be dev
-      "id": "54eff58aa403471087e573a3e61fc320",
+      "binding": "openhouse26_2_kv",
+      "id": "3e9895cd8af84b719d3372631c094e60"
     },
   ],
   "d1_databases": [
     {
-      "binding": "openhouse26_db",
-      "database_name": "openhouse26-db",
-      // Cloudflare say top level binding shuold for be dev
-      "database_id": "62624ef6-24a7-45e9-94d5-a955b19e7609",
+      "binding": "openhouse26_2_db",
+      "database_name": "openhouse26-2-db",
+      "database_id": "2079e48e-8986-4bdd-a610-954ff3649d31",
       "migrations_dir": "drizzle",
-    },
+    }
   ],
   "services": [
     {
@@ -42,47 +43,6 @@
     },
   ],
   "env": {
-    "staging": {
-      "vars": {
-        "ENVIRONMENT": "staging",
-        "SSE_URL": "https://isei.scichulaopenhouse.com",
-      },
-      "browser": {
-        "binding": "BROWSER",
-      },
-      "d1_databases": [
-        {
-          "binding": "openhouse26_db",
-          "database_name": "openhouse26_db_staging",
-          "database_id": "df51e549-c836-416a-ba87-5168facb8aff",
-          "migrations_dir": "drizzle",
-        },
-      ],
-      "kv_namespaces": [
-        {
-          "binding": "openhouse26_kv",
-          "id": "da15ec6100f84cd4b0b37b3d9039b4c9",
-        },
-      ],
-      "routes": [
-        {
-          "pattern": "ena.scichulaopenhouse.com",
-          "custom_domain": true,
-        },
-      ],
-      "migrations": [
-        {
-          "tag": "sdcjuisu",
-          "deleted_classes": ["WorkshopRegistrationHandler2"],
-        },
-      ],
-      "services": [
-        {
-          "binding": "SSE",
-          "service": "openhouse26-sse-staging",
-        },
-      ],
-    },
     "production": {
       "browser": {
         "binding": "BROWSER",
@@ -99,15 +59,15 @@
       },
       "kv_namespaces": [
         {
-          "binding": "openhouse26_kv",
-          "id": "54eff58aa403471087e573a3e61fc320",
+          "binding": "openhouse26_2_kv",
+          "id": "3e9895cd8af84b719d3372631c094e60",
         },
       ],
       "d1_databases": [
         {
-          "binding": "openhouse26_db",
-          "database_name": "openhouse26-db",
-          "database_id": "62624ef6-24a7-45e9-94d5-a955b19e7609",
+          "binding": "openhouse26_2_db",
+          "database_name": "openhouse26-2-db",
+          "database_id": "2079e48e-8986-4bdd-a610-954ff3649d31",
           "migrations_dir": "drizzle",
         },
       ],

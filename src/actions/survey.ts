@@ -387,7 +387,7 @@ export const getCertificatePDF = defineAction({
     try {
       pdfUint8 = await surveyModel.getCertificatePdf(
         context.locals.runtime.env.BROWSER,
-        context.locals.runtime.env.openhouse26_kv,
+        context.locals.runtime.env.openhouse26_2_kv,
         cacheKvKey,
         context.request.url,
         `${participant.givenName} ${participant.familyName}`,
