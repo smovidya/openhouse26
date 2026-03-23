@@ -3,6 +3,7 @@ import { certificatePdfKvKey } from "@src/data/constants";
 import { checkinModel, participantModel, surveyModel } from "@src/db";
 import { z } from "astro/zod";
 import { ActionError, defineAction } from "astro:actions";
+import { env } from "cloudflare:workers";
 
 export const checkSurveyEligibility = defineAction({
   async handler(_, context) {
@@ -386,13 +387,13 @@ export const getCertificatePDF = defineAction({
 
     try {
       pdfUint8 = await surveyModel.getCertificatePdf(
-        context.locals.runtime.env.BROWSER,
-        context.locals.runtime.env.openhouse26_2_kv,
+        env.BROWSER,
+        env.openhouse26_2_kv,
         cacheKvKey,
         context.request.url,
         `${participant.givenName} ${participant.familyName}`,
         certId,
-        context.locals.runtime.env.BETTER_AUTH_SECRET,
+        env.BETTER_AUTH_SECRET,
       );
     } catch (err) {
       throw new ActionError({

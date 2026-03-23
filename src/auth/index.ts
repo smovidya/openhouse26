@@ -20,7 +20,7 @@ import {
 import { eq } from "drizzle-orm";
 
 // Single auth configuration that handles both CLI and runtime scenarios
-function createAuth(env?: Env, cf?: IncomingRequestCfProperties) {
+function createAuth(env?: Env, cf?: CfProperties) {
   // Use actual DB for runtime, empty object for CLI
   const db = (
     env ? drizzle(env.openhouse26_2_db, { schema, logger: true }) : ({} as any)
@@ -64,6 +64,7 @@ function createAuth(env?: Env, cf?: IncomingRequestCfProperties) {
       window: 120,
     },
     trustedOrigins: (request) => {
+      if (!request) return [];
       if (import.meta.env.DEV) return [new URL(request.url).origin];
       return [env?.BETTER_AUTH_URL || ""];
     },
@@ -117,10 +118,15 @@ function createAuth(env?: Env, cf?: IncomingRequestCfProperties) {
     },
   } satisfies BetterAuthOptions;
 
+  console.log("BetterAuth Config:", {
+    ...betterAuthOptions,
+  });
+
   const withCloudflareOptions = withCloudflare(
     {
       autoDetectIpAddress: true,
       geolocationTracking: true,
+      // @ts-ignore
       cf: cf || {},
       // @ts-ignore
       d1: env

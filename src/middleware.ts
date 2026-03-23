@@ -3,13 +3,11 @@ import { defineMiddleware } from "astro:middleware";
 import { drizzle } from "drizzle-orm/d1";
 import { schema } from "@src/db";
 import { hasOneOfRoleIn } from "./auth/utils";
+import { env } from "cloudflare:workers";
 
 export const onRequest = defineMiddleware(async (context, next) => {
-  const auth = createAuth(
-    context.locals.runtime.env,
-    context.locals.runtime.cf,
-  );
-  const db = drizzle(context.locals.runtime.env.openhouse26_2_db, {
+  const auth = createAuth(env, context.request.cf);
+  const db = drizzle(env.openhouse26_2_db, {
     schema,
     logger: import.meta.env.DB_QUERY_DEBUG === "true",
   });
@@ -22,7 +20,6 @@ export const onRequest = defineMiddleware(async (context, next) => {
   context.locals.auth = auth;
 
   if (isAuthed) {
-    // @ts-ignore pinky swear this is correct - ptsgrn
     context.locals.user = isAuthed.user;
     context.locals.session = isAuthed.session;
   } else {
@@ -34,7 +31,6 @@ export const onRequest = defineMiddleware(async (context, next) => {
 
   if (
     pathname === "/admin" &&
-    // @ts-ignore pinky swear this is correct - ptsgrn
     !hasOneOfRoleIn(context.locals.user, ["admin"])
   ) {
     return context.redirect("/");
@@ -42,7 +38,6 @@ export const onRequest = defineMiddleware(async (context, next) => {
 
   if (
     pathname.startsWith("/staff") &&
-    // @ts-ignore pinky swear this is correct - ptsgrn
     !hasOneOfRoleIn(context.locals.user, [
       "admin",
       "majorBoothStaff",

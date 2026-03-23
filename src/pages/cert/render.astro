@@ -2,6 +2,7 @@
 import "@src/styles/global.css";
 import { toSVG } from "@bwip-js/node";
 import { timingSafeEqual } from "node:crypto";
+import { env } from "cloudflare:workers";
 
 const url = new URL(Astro.url);
 
@@ -13,12 +14,7 @@ if (!name || !qrCodeContent || !token) {
   return Astro.redirect("/");
 }
 
-if (
-  !timingSafeEqual(
-    Buffer.from(token),
-    Buffer.from(Astro.locals.runtime.env.BETTER_AUTH_SECRET),
-  )
-) {
+if (!timingSafeEqual(Buffer.from(token), Buffer.from(env.BETTER_AUTH_SECRET))) {
   return Astro.redirect("/");
 }
 

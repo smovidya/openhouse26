@@ -13,6 +13,7 @@ import { getToken } from "@src/notification/server";
 import NavBar from "../components/navbar.svelte";
 import Layout from "../layouts/ContentLayout.astro";
 import { actions } from "astro:actions";
+import { env } from "cloudflare:workers";
 
 const uid = Astro.locals.user?.id;
 if (!uid || !Astro.locals.user) {
@@ -31,18 +32,17 @@ if (!participant) {
 const id = participant.qrCodeId || participant.id;
 const name = participant.givenName;
 
-const staging = Astro.locals.runtime.env.ENVIRONMENT === "staging";
-const showWorkshop =
-  staging || import.meta.env.DEV || featureFlags.workshopRegistration;
+const staging = false;
+const showWorkshop = staging || featureFlags.workshopRegistration;
 
 const selectedWorkshops = await workshopModel.getUserRegisteredSlots(
   Astro.locals.db,
   uid,
 );
 
-const wsUrl = Astro.locals.runtime.env.SSE_URL;
+const wsUrl = env.SSE_URL;
 const token = await getToken(
-  Astro.locals.runtime.env.SSE_PRIVATE_KEY,
+  env.SSE_PRIVATE_KEY,
   participant.id,
 );
 
@@ -63,7 +63,7 @@ const { data: checkEligibility, error } = await Astro.callAction(
     />
     <section
       id="my-id-card"
-      class="shadow-base-100/40 mx-auto mt-7 flex max-w-78 [transform-origin:_center_-100px] flex-col rounded-xl bg-[#FBB84B] shadow-md transition-transform duration-75 ease-in-out"
+      class="shadow-base-100/40 mx-auto mt-7 flex max-w-78 origin-[center_-100px] flex-col rounded-xl bg-[#FBB84B] shadow-md transition-transform duration-75 ease-in-out"
     >
       <div>
         <div class="relative flex flex-col items-center">

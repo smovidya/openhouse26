@@ -1,6 +1,6 @@
 import { z } from "astro/zod";
 import { ActionError, defineAction } from "astro:actions";
-import { authModel, participantModel, checkinModel, adminModel } from "@src/db";
+import { authModel, adminModel } from "@src/db";
 import { hasOneOfRoleIn } from "@src/auth/utils";
 
 export const adminAddStaff = defineAction({

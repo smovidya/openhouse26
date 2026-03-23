@@ -7,7 +7,7 @@
     "nodejs_compat",
     "disable_nodejs_process_v2"
   ],
-  "main": "./dist/_worker.js/index.js",
+  "main": "@astrojs/cloudflare/entrypoints/server",
   "assets": {
     "binding": "ASSETS",
     "directory": "./dist",
@@ -36,12 +36,12 @@
       "migrations_dir": "drizzle",
     }
   ],
-  "services": [
-    {
-      "binding": "SSE",
-      "service": "openhouse26-sse",
-    },
-  ],
+  // "services": [
+  //   {
+  //     "binding": "SSE",
+  //     "service": "openhouse26-sse",
+  //   },
+  // ],
   "env": {
     "production": {
       "browser": {

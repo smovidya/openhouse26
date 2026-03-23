@@ -8,6 +8,7 @@ import {
   getRegisteredParticipantCount,
 } from "@src/db/model/workshop";
 import { featureFlags } from "@src/data/constants";
+import { env } from 'cloudflare:workers';
 
 // We still need to load user registration data on the server side
 // so we cannot prerender this page.
@@ -21,7 +22,7 @@ export const getStaticPaths: GetStaticPaths = () =>
 const { id } = Astro.params;
 const workshop = workshops.find((it) => it.id === id)!;
 
-const staging = Astro.locals.runtime.env.ENVIRONMENT === "staging";
+const staging = false; // env.STAGING === "true"
 
 if (
   !workshop ||

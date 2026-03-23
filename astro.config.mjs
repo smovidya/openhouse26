@@ -9,15 +9,7 @@ import toolbarApp from "./toolbar-app/my-integration";
 export default defineConfig({
   prefetch: true,
   adapter: cloudflare({
-    platformProxy: {
-      enabled: true,
-    },
-
     sessionKVBindingName: "openhouse26_2_kv",
-    workerEntryPoint: {
-      path: "src/workers/index.ts",
-      namedExports: ["syncGoogleSheetWithDatabase"],
-    },
     imageService: "compile",
   }),
   integrations: [

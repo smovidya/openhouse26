@@ -3,13 +3,11 @@
 import Sender from "@src/components/dev/notification-sender.svelte";
 import Layout from "../../layouts/Base.astro";
 
-if (
-  !(import.meta.env.DEV || Astro.locals.runtime.env.ENVIRONMENT === "staging")
-) {
+if (!(import.meta.env.DEV)) {
   Astro.redirect("/");
 }
 
-// const wsUrl = Astro.locals.runtime.env.SSE_URL;
+// const wsUrl = env.SSE_URL;
 ---
 
 <Layout title="หน้าหลัก">

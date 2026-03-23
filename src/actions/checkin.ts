@@ -289,10 +289,10 @@ export const staffCheckin = defineAction({
       });
     }
 
-    await sendEvent(ctx.locals.runtime.env.SSE, participant.id, {
-      type: "booth-checkin",
-      boothId: input.boothId,
-    });
+    // await sendEvent(ctx.locals.runtime.env.SSE, participant.id, {
+    //   type: "booth-checkin",
+    //   boothId: input.boothId,
+    // });
 
     return;
   },
@@ -472,11 +472,11 @@ export const staffCheckinWorkshop = defineAction({
       });
     }
 
-    await sendEvent(ctx.locals.runtime.env.SSE, participant.id, {
-      type: "workshop-checkin",
-      workshopId: currentSlot.timeSlot.workshopId,
-      roundNumber: currentSlot.timeSlot.roundNumber,
-    });
+    // await sendEvent(ctx.locals.runtime.env.SSE, participant.id, {
+    //   type: "workshop-checkin",
+    //   workshopId: currentSlot.timeSlot.workshopId,
+    //   roundNumber: currentSlot.timeSlot.roundNumber,
+    // });
 
     return;
   },
@@ -772,11 +772,11 @@ export const staffAddOnSiteCheckinParticipant = defineAction({
       });
     }
 
-    await sendEvent(ctx.locals.runtime.env.SSE, participant.id, {
-      type: "workshop-onsite-participate",
-      roundNumber: currentSlot.roundNumber,
-      workshopId: currentSlot.workshopId,
-    });
+    // await sendEvent(ctx.locals.runtime.env.SSE, participant.id, {
+    //   type: "workshop-onsite-participate",
+    //   roundNumber: currentSlot.roundNumber,
+    //   workshopId: currentSlot.workshopId,
+    // });
 
     return;
   },
@@ -957,9 +957,9 @@ export const addParticipantEntryCheckin = defineAction({
       console.log("Failed to update participant QR code ID:", err);
     }
 
-    await sendEvent(ctx.locals.runtime.env.SSE, participant.id, {
-      type: "registrar-checkin",
-    });
+    // await sendEvent(ctx.locals.runtime.env.SSE, participant.id, {
+    //   type: "registrar-checkin",
+    // });
 
     return;
   },
