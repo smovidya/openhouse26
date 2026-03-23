@@ -32,10 +32,10 @@
             </div>
         </div>
         <div class="absolute top-0 left-0 z-1">
-            <img src="/nowath/assets/backdropHotal.svg" class="w-500 max-w-none -translate-y-50 -translate-x-60 blur-xs" alt="backdropHotal">
+            <img src="/nowath/assets/backdropHotel.svg" class="w-500 max-w-none -translate-y-50 -translate-x-60 blur-xs" alt="backdropHotal">
         </div>
         <div class="absolute bottom-0 left-1/2 -translate-x-1/2 z-1">
-            <img src="/nowath/assets/hotal.svg" class="w-140 max-w-none translate-y-30 brightness-80" alt="hotal">
+            <img src="/nowath/assets/hotel.svg" class="w-140 max-w-none translate-y-30 brightness-80" alt="hotal">
         </div>
     </div>
     <div class="z-20 flex flex-col items-center">

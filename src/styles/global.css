@@ -16,7 +16,7 @@
   color-scheme: light;
   /* color of browser-provided UI */
 
-  --color-base-100: oklch(0.34 0.112 265.4);
+  --color-base-100: #1A2B4C;
   --color-base-200: oklch(0.539 0.123 260.6);
   --color-base-300: oklch(0.824 0.112 265.4);
   --color-base-content: oklch(98% 0.003 247.858);
@@ -56,6 +56,7 @@
   /*New color 2026*/
   --primary: #EA83B5;
   --background: #04183C;
+  --background-light: #1A2B4C;
   --text-dark: #04183C;
   --text-white: #F7F5EA;
   --color-1: #15BEBB;
@@ -81,15 +82,20 @@
 
 @layer base {
     body {
-        background-color:   red;
+        background-color: red;
         min-height: 100vh;
         font-family: var(--font-sans);
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
         overflow-x: hidden;
         display: flex;
-        justify-content:center;
+        justify-content: center;
         align-items: flex-start;
+        background-image: url('../../public/nowath/assets/backdropHotel.svg');
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        background-position: center;
     }
 }
 
