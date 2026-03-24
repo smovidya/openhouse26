@@ -12,7 +12,7 @@
         </div>
         <div class="z-20 flex gap-4 items-center mt-10">
             <div class=" flex flex-col items-end gap-4">
-                <a href="/">
+                <a href="/websites">
                     <img src="/nowath/stamps/departmentStamp.svg" alt="departmentStamp">
                 </a>
                 <a href="/">

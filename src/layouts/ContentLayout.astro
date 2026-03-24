@@ -34,7 +34,9 @@ function onCLcik(){
         </div>
         <div class="grow flex overflow-x-hidden overflow-y-auto flex-col">
             <div class="grow">
-                <slot />
+                <div class="h-full overflow-auto w-full">
+                    <slot />
+                </div>
             </div>
             <Footer />
         </div>

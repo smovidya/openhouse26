@@ -112,3 +112,11 @@
 .oph-soft-white ::placeholder {
   text-shadow: 0.02em 0.035em 0.02em rgba(50, 50, 50, 0.2);
 }
+
+/*.pageBackground{
+    background-image: url('/public/nowath/assets/backdropHotel.svg');
+    background-repeat: no-repeat;
+    background-size: 150%;
+    background-attachment: fixed;
+    background-position-x: 16rem ;
+}*/

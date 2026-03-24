@@ -11,11 +11,11 @@
 
     let menuOpen = $state(false);
     const menuList = [
-        {title:"LOBBY",icon:"/nowath/icon/hotel.svg"},
-        {title:"WEBSITES",icon:"/nowath/icon/globe.svg"},
-        {title:"WORKSHOPS",icon:"/nowath/icon/flask-round.svg"},
-        {title:"RECHECK",icon:"/nowath/icon/redeem.svg"},
-        {title:"REDEEM",icon:"/nowath/icon/file-badge.svg"},
+        {title:"LOBBY",icon:"/nowath/icon/hotel.svg", path:"/"},
+        {title:"WEBSITES",icon:"/nowath/icon/globe.svg", path:"/websites"},
+        {title:"WORKSHOPS",icon:"/nowath/icon/flask-round.svg", path:"/"},
+        {title:"RECHECK",icon:"/nowath/icon/redeem.svg", path:"/"},
+        {title:"REDEEM",icon:"/nowath/icon/file-badge.svg", path:"/"},
     ]
 </script>
 
@@ -33,7 +33,7 @@
 {#if menuOpen}
     <div class="fixed w-full max-w-125 z-99">
         {#each menuList as item}
-            <a href="/" class="flex gap-2 px-4 h-20 items-center bg-(--color-2) group hover:bg-(--background) transition-all">
+            <a href={item.path} class="flex gap-2 px-4 h-20 items-center bg-(--color-2) group hover:bg-(--background) transition-all">
                 <img
                     src={item.icon}
                     class=" transition-all"
