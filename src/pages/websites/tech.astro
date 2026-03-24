@@ -1,12 +1,15 @@
 ---
-    import Layout from "@src/layouts/ContentLayout.astro"
-    import TechContainer from "@src/container/website/child.svelte"
-    import { websitesData } from "@src/variable/website"
-    import PageLayout from "@src/layouts/Pagelayout.astro"
+import Layout from "@src/layouts/ContentLayout.astro";
+import TechContainer from "@src/container/website/child.svelte";
+import { websitesData } from "@src/variable/website";
+import PageLayout from "@src/layouts/Pagelayout.astro";
 ---
 
 <Layout>
-    <PageLayout>
-        <TechContainer client:load data={websitesData.filter(item => item.key === "tech")} />
-    </PageLayout>
+  <PageLayout>
+    <TechContainer
+      client:load
+      data={websitesData.filter((item) => item.key === "tech")}
+    />
+  </PageLayout>
 </Layout>

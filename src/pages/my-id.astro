@@ -41,10 +41,7 @@ const selectedWorkshops = await workshopModel.getUserRegisteredSlots(
 );
 
 const wsUrl = env.SSE_URL;
-const token = await getToken(
-  env.SSE_PRIVATE_KEY,
-  participant.id,
-);
+const token = await getToken(env.SSE_PRIVATE_KEY, participant.id);
 
 const { data: checkEligibility, error } = await Astro.callAction(
   actions.checkSurveyEligibility,

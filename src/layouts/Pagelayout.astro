@@ -1,9 +1,19 @@
-<div class="w-full h-auto relative min-h-[calc(100dvh-5rem)] flex flex-col overflow-x-hidden overflow-hidden pageBackground">
-    <div class="relative w-full h-46 overflow-hidden z-20">
-        <img src="/nowath/assets/halfHotel.svg" class="w-140 max-w-none absolute left-1/2 bottom-0 -translate-x-1/2 brightness-80" alt="hotel">
-    </div>
-    <div class="py-10 z-20">
-        <slot/>
-    </div>
-    <img src="/nowath/assets/backdropHotel.svg" class="w-460 max-w-none absolute -left-40 -bottom-40  brightness-75 blur-xs" alt="hotel">
+<div
+  class="pageBackground relative flex h-auto min-h-[calc(100dvh-5rem)] w-full flex-col overflow-hidden overflow-x-hidden"
+>
+  <div class="relative z-20 h-46 w-full overflow-hidden">
+    <img
+      src="/nowath/assets/halfHotel.svg"
+      class="absolute bottom-0 left-1/2 w-140 max-w-none -translate-x-1/2 brightness-80"
+      alt="hotel"
+    />
+  </div>
+  <div class="z-20 py-10">
+    <slot />
+  </div>
+  <img
+    src="/nowath/assets/backdropHotel.svg"
+    class="absolute -bottom-40 -left-40 w-460 max-w-none blur-xs brightness-75"
+    alt="hotel"
+  />
 </div>

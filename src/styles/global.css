@@ -16,7 +16,7 @@
   color-scheme: light;
   /* color of browser-provided UI */
 
-  --color-base-100: #1A2B4C;
+  --color-base-100: #1a2b4c;
   --color-base-200: oklch(0.539 0.123 260.6);
   --color-base-300: oklch(0.824 0.112 265.4);
   --color-base-content: oklch(98% 0.003 247.858);
@@ -54,18 +54,18 @@
   --noise: 1;
 
   /*New color 2026*/
-  --primary: #EA83B5;
-  --background: #04183C;
-  --background-light: #1A2B4C;
-  --text-dark: #04183C;
-  --text-white: #F7F5EA;
-  --color-1: #15BEBB;
-  --color-2: #F7F5EA;
-  --color-3: #F7BDD9;
-  --color-4: #14674A;
-  --color-5: #E6B3B0;
-  --border-1: #B3875C;
-  --header-card: #F6E6E0;
+  --primary: #ea83b5;
+  --background: #04183c;
+  --background-light: #1a2b4c;
+  --text-dark: #04183c;
+  --text-white: #f7f5ea;
+  --color-1: #15bebb;
+  --color-2: #f7f5ea;
+  --color-3: #f7bdd9;
+  --color-4: #14674a;
+  --color-5: #e6b3b0;
+  --border-1: #b3875c;
+  --header-card: #f6e6e0;
 }
 
 @import "./fonts.css";
@@ -92,7 +92,7 @@
     display: flex;
     justify-content: center;
     align-items: flex-start;
-    background-image: url('/nowath/assets/backdropHotel.svg');
+    background-image: url("/nowath/assets/backdropHotel.svg");
     background-size: cover;
     background-repeat: no-repeat;
     background-attachment: fixed;

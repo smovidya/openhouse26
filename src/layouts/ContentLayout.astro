@@ -2,7 +2,7 @@
 import { cn } from "@src/components/utils";
 import Base from "./Base.astro";
 import NavBar from "@src/components/navbar.svelte";
-import Footer from "@src/components/footer.svelte"
+import Footer from "@src/components/footer.svelte";
 
 interface Props {
   title?: string;
@@ -24,17 +24,19 @@ const {
 ---
 
 <Base title={title} description={description} image={image} theme={theme}>
-    <div class="flex flex-col h-full MainContainer w-full shadow-xl overflow-hidden">
-        <div class="shrink-0">
-            <NavBar client:load />
-        </div>
-        <div class="grow flex overflow-x-hidden overflow-y-auto flex-col">
-            <div class="grow">
-                <div class="h-full overflow-auto w-full">
-                    <slot />
-                </div>
-            </div>
-            <Footer />
-        </div>
+  <div
+    class="MainContainer flex h-full w-full flex-col overflow-hidden shadow-xl"
+  >
+    <div class="shrink-0">
+      <NavBar client:load />
     </div>
+    <div class="flex grow flex-col overflow-x-hidden overflow-y-auto">
+      <div class="grow">
+        <div class="h-full w-full overflow-auto">
+          <slot />
+        </div>
+      </div>
+      <Footer />
+    </div>
+  </div>
 </Base>

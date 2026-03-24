@@ -3,7 +3,7 @@
 import Sender from "@src/components/dev/notification-sender.svelte";
 import Layout from "../../layouts/Base.astro";
 
-if (!(import.meta.env.DEV)) {
+if (!import.meta.env.DEV) {
   Astro.redirect("/");
 }
 

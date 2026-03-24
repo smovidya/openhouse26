@@ -1,12 +1,15 @@
 ---
-    import Layout from "@src/layouts/ContentLayout.astro"
-    import InterContainer from "@src/container/website/child.svelte"
-    import { websitesData } from "@src/variable/website"
-    import PageLayout from "@src/layouts/Pagelayout.astro"
+import Layout from "@src/layouts/ContentLayout.astro";
+import InterContainer from "@src/container/website/child.svelte";
+import { websitesData } from "@src/variable/website";
+import PageLayout from "@src/layouts/Pagelayout.astro";
 ---
 
 <Layout>
-    <PageLayout>
-        <InterContainer client:load data={websitesData.filter(item => item.key === "inter")} />
-    </PageLayout>
+  <PageLayout>
+    <InterContainer
+      client:load
+      data={websitesData.filter((item) => item.key === "inter")}
+    />
+  </PageLayout>
 </Layout>
