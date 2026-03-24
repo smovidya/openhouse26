@@ -92,7 +92,7 @@
     display: flex;
     justify-content: center;
     align-items: flex-start;
-    background-image: url('../../public/nowath/assets/backdropHotel.svg');
+    background-image: url('/nowath/assets/backdropHotel.svg');
     background-size: cover;
     background-repeat: no-repeat;
     background-attachment: fixed;
