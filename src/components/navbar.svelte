@@ -13,7 +13,7 @@
     const menuList = [
         {title:"LOBBY",icon:"/nowath/icon/hotel.svg", path:"/"},
         {title:"WEBSITES",icon:"/nowath/icon/globe.svg", path:"/websites"},
-        {title:"WORKSHOPS",icon:"/nowath/icon/flask-round.svg", path:"/"},
+        {title:"WORKSHOPS",icon:"/nowath/icon/flask-round.svg", path:"/workshops"},
         {title:"RECHECK",icon:"/nowath/icon/redeem.svg", path:"/"},
         {title:"REDEEM",icon:"/nowath/icon/file-badge.svg", path:"/"},
     ]

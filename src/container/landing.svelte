@@ -23,7 +23,7 @@
                 </a>
             </div>
             <div class=" flex flex-col items-start gap-2">
-                <a href="/">
+                <a href="/workshops">
                     <img src="/nowath/stamps/workshopStamp.svg" alt="workshopStamp">
                 </a>
                 <a href="/">
