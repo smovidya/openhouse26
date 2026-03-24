@@ -16,7 +16,7 @@
   color-scheme: light;
   /* color of browser-provided UI */
 
-  --color-base-100: oklch(0.34 0.112 265.4);
+  --color-base-100: #1A2B4C;
   --color-base-200: oklch(0.539 0.123 260.6);
   --color-base-300: oklch(0.824 0.112 265.4);
   --color-base-content: oklch(98% 0.003 247.858);
@@ -52,6 +52,20 @@
   /* effects */
   --depth: 1;
   --noise: 1;
+
+  /*New color 2026*/
+  --primary: #EA83B5;
+  --background: #04183C;
+  --background-light: #1A2B4C;
+  --text-dark: #04183C;
+  --text-white: #F7F5EA;
+  --color-1: #15BEBB;
+  --color-2: #F7F5EA;
+  --color-3: #F7BDD9;
+  --color-4: #14674A;
+  --color-5: #E6B3B0;
+  --border-1: #B3875C;
+  --header-card: #F6E6E0;
 }
 
 @import "./fonts.css";
@@ -68,14 +82,28 @@
 }
 
 @layer base {
-  body {
-    background-color: #1f3776;
-    min-height: 100vh;
-    font-family: var(--font-sans);
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    overflow-x: hidden;
-  }
+    body {
+        background-color: red;
+        min-height: 100vh;
+        font-family: var(--font-sans);
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        overflow-x: hidden;
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        background-image: url('../../public/nowath/assets/backdropHotel.svg');
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        background-position: center;
+    }
+}
+
+.MainContainer{
+    max-width: 500px;
+    min-width: 300px;
+    height: 100dvh;
 }
 
 .oph-soft-white {
@@ -85,3 +113,10 @@
 .oph-soft-white ::placeholder {
   text-shadow: 0.02em 0.035em 0.02em rgba(50, 50, 50, 0.2);
 }
+/*.pageBackground{
+    background-image: url('/public/nowath/assets/backdropHotel.svg');
+    background-repeat: no-repeat;
+    background-size: 150%;
+    background-attachment: fixed;
+    background-position-x: 16rem ;
+}*/

@@ -1,12 +1,11 @@
 ---
     import Layout from "@src/layouts/ContentLayout.astro"
-    import WorkShopsContainer from "@src/container/workshops.svelte"
+    import WebsitesContainer from "@src/container/website/websites.svelte"
     import PageLayout from "@src/layouts/Pagelayout.astro"
-    import { cardData } from "@src/variable/card"
 ---
 
 <Layout>
     <PageLayout>
-        <WorkShopsContainer client:load data={cardData} />
+        <WebsitesContainer />
     </PageLayout>
 </Layout>

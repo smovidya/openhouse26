@@ -1,0 +1,12 @@
+---
+    import Layout from "@src/layouts/ContentLayout.astro"
+    import EnviContainer from "@src/container/website/child.svelte"
+    import { websitesData } from "@src/variable/website"
+    import PageLayout from "@src/layouts/Pagelayout.astro"
+---
+
+<Layout>
+    <PageLayout>
+        <EnviContainer client:load data={websitesData.filter(item => item.key === "envi")} />
+    </PageLayout>
+</Layout>
