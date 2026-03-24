@@ -73,7 +73,7 @@
 @theme {
   /* content */
   --font-sans:
-    "Genty", "Cloud Soft", ui-sans-serif, system-ui, sans-serif,
+    "Archer", "CHULALONGKORN", ui-sans-serif, system-ui, sans-serif,
     "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   /* heading */
   --font-serif:
@@ -82,28 +82,28 @@
 }
 
 @layer base {
-    body {
-        background-color: red;
-        min-height: 100vh;
-        font-family: var(--font-sans);
-        -webkit-font-smoothing: antialiased;
-        -moz-osx-font-smoothing: grayscale;
-        overflow-x: hidden;
-        display: flex;
-        justify-content: center;
-        align-items: flex-start;
-        background-image: url('../../public/nowath/assets/backdropHotel.svg');
-        background-size: cover;
-        background-repeat: no-repeat;
-        background-attachment: fixed;
-        background-position: center;
-    }
+  body {
+    background-color: red;
+    min-height: 100vh;
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    background-image: url('../../public/nowath/assets/backdropHotel.svg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: center;
+  }
 }
 
-.MainContainer{
-    max-width: 500px;
-    min-width: 300px;
-    height: 100dvh;
+.MainContainer {
+  max-width: 500px;
+  min-width: 300px;
+  height: 100dvh;
 }
 
 .oph-soft-white {
@@ -113,6 +113,7 @@
 .oph-soft-white ::placeholder {
   text-shadow: 0.02em 0.035em 0.02em rgba(50, 50, 50, 0.2);
 }
+
 /*.pageBackground{
     background-image: url('/public/nowath/assets/backdropHotel.svg');
     background-repeat: no-repeat;

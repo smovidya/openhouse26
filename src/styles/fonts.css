@@ -1,62 +1,39 @@
-/* cloud-soft-bold */
+/* archer-bold */
 @font-face {
-  font-family: "Cloud Soft";
-  font-style: bold;
+  font-family: "Archer";
+  font-style: normal;
   font-weight: 700;
   font-stretch: 100%;
-  src:
-    local("Cloud Soft Bold"),
-    local("CloudSoft-Bold"),
-    url(/fonts/cloud-soft-bold.woff2) format("woff2");
+  src: local("Archer Bold"), local("Archer-Bold"), url(/fonts/archer/archer-bold.woff2) format("woff2"), url(/fonts/archer/archer-bold.woff) format("woff");
   font-display: swap;
 }
 
-/* 
-cloud-soft-light
+/* archer-medium */
 @font-face {
-  font-family: "Cloud Soft";
+  font-family: "Archer";
   font-style: normal;
-  font-weight: 300;
+  font-weight: 500;
   font-stretch: 100%;
-  src: local("Cloud Soft Light"), local("CloudSoft-Light"), url(/fonts/cloud-soft-light.woff2) format("woff2");
+  src: local("Archer Medium"), local("Archer-Medium"), url(/fonts/archer/archer-medium.woff2) format("woff2"), url(/fonts/archer/archer-medium.woff) format("woff");
   font-display: swap;
-} */
+}
 
-/* futura-pt-book */
+/* chulalongkorn-bold */
 @font-face {
-  font-family: "Futura PT";
+  font-family: "CHULALONGKORN";
+  font-style: normal;
+  font-weight: 700;
+  font-stretch: 100%;
+  src: local("CHULALONGKORN Bold"), local("CHULALONGKORN-Bold"), url(/fonts/chulalongkorn/chulalongkorn-bold.woff2) format("woff2"), url(/fonts/chulalongkorn/chulalongkorn-bold.woff) format("woff");
+  font-display: swap;
+}
+
+/* chulalongkorn */
+@font-face {
+  font-family: "CHULALONGKORN";
   font-style: normal;
   font-weight: 400;
   font-stretch: 100%;
-  src:
-    local("Futura Cyrillic Book"),
-    local("FuturaCyrillicBook"),
-    url(/fonts/futura-pt-book.woff2) format("woff2");
-  font-display: swap;
-}
-
-/* genty-sans */
-@font-face {
-  font-family: "Genty";
-  font-style: normal;
-  font-weight: 400;
-  font-stretch: 100%;
-  src:
-    local("Genty Sans"),
-    local("GentySans-Regular"),
-    url(/fonts/genty-sans.woff2) format("woff2");
-  font-display: swap;
-}
-
-/* mitr-light */
-@font-face {
-  font-family: "Mitr";
-  font-style: normal;
-  font-weight: 300;
-  font-stretch: 100%;
-  src:
-    local("Mitr Light"),
-    local("Mitr-Light"),
-    url(/fonts/mitr-light.woff2) format("woff2");
+  src: local("CHULALONGKORN Regular"), local("CHULALONGKORN-Regular"), url(/fonts/chulalongkorn/chulalongkorn.woff2) format("woff2"), url(/fonts/chulalongkorn/chulalongkorn.woff) format("woff");
   font-display: swap;
 }
