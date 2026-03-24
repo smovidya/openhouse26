@@ -1,0 +1,12 @@
+---
+    import Layout from "@src/layouts/ContentLayout.astro"
+    import PhysContainer from "@src/container/website/child.svelte"
+    import { websitesData } from "@src/variable/website"
+    import PageLayout from "@src/layouts/Pagelayout.astro"
+---
+
+<Layout>
+    <PageLayout>
+        <PhysContainer client:load data={websitesData.filter(item => item.key === "phys")} />
+    </PageLayout>
+</Layout>

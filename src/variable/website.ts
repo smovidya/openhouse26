@@ -6,19 +6,19 @@ export const websitesData = [
             {
                 titleEng: "Bachelor of Science in Applied Chemistry (BSAC)",
                 titleTH: "หลักสูตรเคมีประยุกต์ (นานาชาติ)",
-                img: "",
+                img: "/nowath/website/inter/inter_bsac.png",
                 path: "/"
             },
             {
                 titleEng: "Bachelor of Science in Biotechnology (BBTech)",
                 titleTH: "หลักสูตรเทคโนโลยีชีวภาพ (นานาชาติ)",
-                img: "",
+                img: "/nowath/website/inter/inter_bbtech.png",
                 path: "/"
             },
             {
                 titleEng: "Bachelor of Science in Industrial Science and Technology (BISTech)",
                 titleTH: "หลักสูตรวิทยาศาสตร์และเทคโนโลยีอุตสาหการ (นานาชาติ)",
-                img: "",
+                img: "/nowath/website/inter/inter_bistech.png",
                 path: "/"
             },
         ]
@@ -30,19 +30,25 @@ export const websitesData = [
             {
                 titleEng: "Department of Chemical Technology",
                 titleTH: "ภาควิชาเคมีเทคนิค",
-                img: "",
+                img: "/nowath/website/tech/tech_chemtech.png",
                 path: "/"
             },
             {
                 titleEng: "Department of Materials Science",
                 titleTH: "ภาควิชาวัสดุศาสตร์",
-                img: "",
+                img: "/nowath/website/tech/tech_mat.png",
+                path: "/"
+            },
+            {
+                titleEng: "Department of Imaging and Printing Technology",
+                titleTH: "ภาควิชาเทคโนโลยีทางภาพและการพิมพ์",
+                img: "/nowath/website/tech/tech_imprint.png",
                 path: "/"
             },
             {
                 titleEng: "Department of Food Technology",
                 titleTH: "ภาควิชาเทคโนโลยีทางอาหาร",
-                img: "",
+                img: "/nowath/website/tech/tech_food.png",
                 path: "/"
             },
         ]
@@ -54,19 +60,19 @@ export const websitesData = [
             {
                 titleEng: "Department of Mathematics and Computer Science",
                 titleTH: "ภาควิชาคณิตศาสตร์และวิทยาการคอมพิวเตอร์",
-                img: "",
+                img: "/nowath/website/phys/phys_mathcom.png",
                 path: "/"
             },
             {
                 titleEng: "Department of Chemistry",
                 titleTH: "ภาควิชาเคมี",
-                img: "",
+                img: "/nowath/website/phys/phys_chem.png",
                 path: "/"
             },
             {
                 titleEng: "Department of Physics",
                 titleTH: "ภาควิชาฟิสิกส์",
-                img: "",
+                img: "/nowath/website/phys/phys_phys.png",
                 path: "/"
             },
         ]
@@ -78,19 +84,19 @@ export const websitesData = [
             {
                 titleEng: "Department of Geology",
                 titleTH: "ภาควิชาธรณีวิทยา",
-                img: "",
+                img: "/nowath/website/envi/envi_geo.png",
                 path: "/"
             },
             {
                 titleEng: "Department of Environmental Science",
                 titleTH: "ภาควิชาวิทยาศาสตร์สิ่งแวดล้อม",
-                img: "",
+                img: "/nowath/website/envi/envi_envi.png",
                 path: "/"
             },
             {
                 titleEng: "Department of Marine Science",
                 titleTH: "ภาควิชาวิทยาศาสตร์ทางทะเล",
-                img: "",
+                img: "/nowath/website/envi/envi_marine.png",
                 path: "/"
             },
         ]
@@ -102,25 +108,25 @@ export const websitesData = [
             {
                 titleEng: "Department of Biology",
                 titleTH: "ภาควิชาชีววิทยา",
-                img: "",
+                img: "/nowath/website/bio/bio_bio.png",
                 path: "/"
             },
             {
                 titleEng: "Department of Botany",
                 titleTH: "ภาควิชาพฤกษศาสตร์",
-                img: "",
+                img: "/nowath/website/bio/bio_botany.png",
                 path: "/"
             },
             {
                 titleEng: "Department of Biochemistry",
                 titleTH: "ภาควิชาชีวเคมี",
-                img: "",
+                img: "/nowath/website/bio/bio_biochem.png",
                 path: "/"
             },
             {
                 titleEng: "Department of Microbiology",
                 titleTH: "ภาควิชาจุลชีววิทยา",
-                img: "",
+                img: "/nowath/website/bio/bio_micro.png",
                 path: "/"
             },
         ]
