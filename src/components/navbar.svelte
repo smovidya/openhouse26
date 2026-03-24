@@ -31,7 +31,7 @@
 </nav>
 
 {#if menuOpen}
-    <div class="fixed w-full max-w-[500px] z-99">
+    <div class="fixed w-full max-w-125 z-99">
         {#each menuList as item}
             <a href="/" class="flex gap-2 px-4 h-20 items-center bg-(--color-2) group hover:bg-(--background) transition-all">
                 <img
@@ -44,3 +44,10 @@
         {/each}
     </div>
 {/if}
+
+
+<style>
+.group:hover img {
+    filter: brightness(0) invert(1);
+}
+</style>
