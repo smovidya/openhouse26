@@ -1,6 +1,27 @@
-<script>
+<script lang="ts">
   import Card from "@src/components/card.svelte";
 </script>
+
+{#snippet stampImageLink(
+  src: string,
+  href: string,
+  alt: string,
+  disabled = false,
+)}
+  {#if disabled}
+    <div aria-disabled="true" class="relative">
+      <img {src} {alt} class="grayscale-100" draggable="false" />
+      <span
+        class="absolute px-1 rounded-md top-1/2 left-1/2 text-nowrap -rotate-25 bg-white text-dark -translate-1/2"
+        >Coming Soon!</span
+      >
+    </div>
+  {:else}
+    <a {href} class="hover:scale-105 transition-transform active:scale-95">
+      <img {src} {alt} draggable="false" />
+    </a>
+  {/if}
+{/snippet}
 
 <div
   class="w-full h-auto relative flex flex-col overflow-x-hidden overflow-y-auto"
@@ -11,30 +32,43 @@
     <img src="/nowath/logo/logo2.svg" class="w-80 z-2" alt="" />
     <div class="z-2">
       <Card>
-        <p class=" text-base md:text-[20px]">
+        <p class="text-base md:text-[20px] font-bold">
           28 - 29 March 2026 | 8.00 - 17.00
         </p>
       </Card>
     </div>
     <div class="z-20 flex gap-4 items-center mt-10">
-      <div class=" flex flex-col items-end gap-4">
-        <a href="/websites">
-          <img src="/nowath/stamps/departmentStamp.svg" alt="departmentStamp" />
-        </a>
-        <a href="/">
-          <img src="/nowath/stamps/recheckStamp.svg" alt="recheckStamp" />
-        </a>
-        <a href="/">
-          <img src="/nowath/stamps/merchStamp.svg" alt="merchStamp" />
-        </a>
+      <div class="flex flex-col items-end gap-4">
+        {@render stampImageLink(
+          "/nowath/stamps/departmentStamp.svg",
+          "/websites",
+          "departmentStamp",
+        )}
+        {@render stampImageLink(
+          "/nowath/stamps/recheckStamp.svg",
+          "/",
+          "recheckStamp",
+          true,
+        )}
+        {@render stampImageLink(
+          "/nowath/stamps/merchStamp.svg",
+          "/",
+          "merchStamp",
+          true,
+        )}
       </div>
       <div class=" flex flex-col items-start gap-2">
-        <a href="/workshops">
-          <img src="/nowath/stamps/workshopStamp.svg" alt="workshopStamp" />
-        </a>
-        <a href="/">
-          <img src="/nowath/stamps/redeemStamp.svg" alt="redeemStamp" />
-        </a>
+        {@render stampImageLink(
+          "/nowath/stamps/workshopStamp.svg",
+          "/workshops",
+          "workshopStamp",
+        )}
+        {@render stampImageLink(
+          "/nowath/stamps/redeemStamp.svg",
+          "/",
+          "redeemStamp",
+          true,
+        )}
       </div>
     </div>
     <div class="absolute top-0 left-0 z-1">
@@ -49,15 +83,16 @@
         src="/nowath/assets/hotel.svg"
         class="w-140 max-w-none translate-y-30 brightness-80"
         alt="hotal"
+        draggable="false"
       />
     </div>
   </div>
   <div class="z-20 flex flex-col items-center">
-    <Card className="w-150!">
+    <Card class="w-[calc(100%+2rem)]">
       <p class="text-2xl">Find us here!</p>
     </Card>
     <div
-      class=" py-10 px-10 w-full bg-(--color-3) flex flex-col items-center justify-center gap-4"
+      class="py-10 px-10 w-full bg-token-3 flex flex-col items-center justify-center gap-4"
     >
       <div class="border-4 border-white">
         <iframe
@@ -65,13 +100,13 @@
           width="300"
           height="250"
           style="border:0;"
-          allowfullscreen=""
+          allow="fullscreen"
           loading="lazy"
           referrerpolicy="no-referrer-when-downgrade"
           title="Google Maps"
         ></iframe>
       </div>
-      <span class=" text-center text-(--text-dark)"
+      <span class="text-center text-dark"
         >Mahamakut Building, Faculty of Science, Chulalongkorn University
         Phayathai Road, Wang Mai, Pathumwan Bangkok 10330, Thailand</span
       >

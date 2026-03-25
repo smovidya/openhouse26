@@ -1,5 +1,5 @@
 <div
-  class="w-full h-15 shrink-0 p-4 bg-(--background) flex justify-between items-center"
+  class="w-full h-15 shrink-0 p-4 bg-background flex justify-between items-center"
 >
   <div class=" flex gap-4">
     <a href="/"><img src="/nowath/icon/instagram.svg" alt="instagram" /></a>

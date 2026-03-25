@@ -23,27 +23,27 @@
 </script>
 
 <div class="flex flex-col items-center">
-  <Header className="-translate-y-17 w-80!">
+  <Header class="-translate-y-17 w-80!">
     <span class="text-lg text-center">Workshop Schedule</span>
   </Header>
 
   <div class="flex gap-2 -translate-y-12 mb-4 w-full px-4">
     <select
       bind:value={selectedDay}
-      class="px-3 py-2 rounded-full bg-(--color-5) text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-(--border-1)"
+      class="select px-3 py-2 rounded-full bg-token-5 text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-border-1"
     >
       {#each days as day}
-        <option class="text-(--text-white)" value={day}>
+        <option class="text-white" value={day}>
           {day === "all" ? "All Days" : `Day ${day}`}
         </option>
       {/each}
     </select>
     <select
       bind:value={selectedWing}
-      class="px-3 py-2 grow w-full rounded-full bg-(--color-5) text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-(--border-1)"
+      class="select px-3 py-2 grow w-full rounded-full bg-token-5 text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-border-1"
     >
       {#each wings as wing}
-        <option class="text-(--text-white)" value={wing}>
+        <option class="text-white" value={wing}>
           {wing === "all"
             ? "All Wings"
             : wing.charAt(0).toUpperCase() + wing.slice(1)}

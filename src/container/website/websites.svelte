@@ -25,12 +25,12 @@
 </script>
 
 <div class="flex flex-col items-center">
-  <Header className=" -translate-y-17 ">
+  <Header class=" -translate-y-17 ">
     <span class="text-lg text-center">Department Website Compilation</span>
   </Header>
   <div class=" flex flex-wrap justify-center gap-2 -translate-y-8">
     {#each stamps as item}
-      <a href={item.path}>
+      <a href={item.path} class="hover:scale-105 transition-transform active:scale-95">
         <img class="w-42" src={item.img} alt={item.img} />
       </a>
     {/each}

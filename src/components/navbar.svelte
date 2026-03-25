@@ -1,9 +1,7 @@
 <script lang="ts">
-  import QrIcon from "@src/assets/icons/qrcode.svg";
-  import LogoNoCircle from "@src/assets/logo-no-circle.png";
   import clsx from "clsx";
   import { Hamburger } from "svelte-hamburgers";
-  import { fly, slide } from "svelte/transition";
+  import { slide } from "svelte/transition";
 
   interface Props {
     class?: string;
@@ -26,7 +24,7 @@
 
 <nav
   class={clsx(
-    "w-full z-100 h-20 relative shadow-md shadow-black/30 bg-(--background)",
+    "w-full z-100 h-20 shadow-md shadow-black/30 bg-background",
     className,
   )}
 >
@@ -41,28 +39,21 @@
 </nav>
 
 {#if menuOpen}
-  <div class="fixed w-full max-w-125 z-99" transition:slide={{ duration: 300 }}>
+  <div class="fixed w-full max-w-lg z-50" transition:slide={{ duration: 300 }}>
     {#each menuList as item}
       <a
         href={item.path}
-        class="flex gap-2 px-4 h-20 items-center bg-(--color-2) group hover:bg-(--background) transition-all"
+        class="flex gap-2 px-4 h-20 items-center bg-token-2 group hover:bg-background transition-all"
       >
         <img
           src={item.icon}
-          class="transition-all"
+          class="transition-all group-hover:brightness-0 group-hover:invert"
           alt={item.icon.split("/")[-1]}
         />
-        <span
-          class="group-hover:text-(--text-white) text-(--text-dark) transition-all font-bold"
+        <span class="group-hover:text-white text-dark transition-all font-bold"
           >{item.title}</span
         >
       </a>
     {/each}
   </div>
 {/if}
-
-<style>
-  .group:hover img {
-    filter: brightness(0) invert(1);
-  }
-</style>
