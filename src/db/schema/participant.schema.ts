@@ -7,10 +7,6 @@ import { workshopRegistrations } from "./workshop.schema";
 import { init } from "@paralleldrive/cuid2";
 import { redeemRewards } from "./reward.schema";
 
-const createId = init({
-  length: 5,
-});
-
 export const participants = sqliteTable(
   "participants",
   {
@@ -19,7 +15,7 @@ export const participants = sqliteTable(
       .text("user_id")
       .notNull()
       .references(() => users.id),
-    qrCodeId: t.text("qr_code_id").$defaultFn(() => createId()),
+    qrCodeId: t.text("qr_code_id"),
     givenName: t.text("given_name").notNull(),
     familyName: t.text("family_name").notNull(),
     age: t.int("age").notNull(),
