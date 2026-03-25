@@ -7,7 +7,7 @@
     "start": "wrangler types && astro dev",
     "build": "wrangler types && astro check && astro build",
     "preview": "wrangler types && astro preview",
-    "deploy": "bun x wrangler deploy --env=\"\"",
+    "deploy": "bun run build && bun x wrangler deploy --env=\"\"",
     "astro": "astro",
     "cf-types": "wrangler types",
     "db:generate": "bun drizzle-kit generate",
@@ -43,6 +43,7 @@
     "carbon-icons-svelte": "^13.9.1",
     "clsx": "^2.1.1",
     "devalue": "^5.6.4",
+    "dotenv": "^17.3.1",
     "drizzle-orm": "^0.45.1",
     "formsnap": "^2.0.1",
     "google-auth-library": "^10.6.2",
@@ -61,6 +62,7 @@
     "tailwindcss": "^4.2.2",
     "typescript": "^5.9.3",
     "vaul-svelte": "0.3.2",
+    "wrangler": "^4.77.0",
     "zod": "^4.3.6"
   },
   "devDependencies": {
@@ -70,9 +72,6 @@
     "daisyui": "^5.5.19",
     "drizzle-kit": "^0.31.10",
     "svelte-hamburgers": "^5.0.0"
-  },
-  "patchedDependencies": {
-    "better-auth-cloudflare@0.2.5": "patches/better-auth-cloudflare@0.2.5.patch"
   },
   "trustedDependencies": [
     "@prisma/client",

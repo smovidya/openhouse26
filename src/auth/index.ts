@@ -1,7 +1,4 @@
-import type {
-  D1Database,
-  IncomingRequestCfProperties,
-} from "@cloudflare/workers-types";
+import type { D1Database } from "@cloudflare/workers-types";
 import { adminModel, authModel, schema, staffModel } from "@src/db";
 import { betterAuth, type BetterAuthOptions, type Prettify } from "better-auth";
 import { withCloudflare } from "better-auth-cloudflare";
@@ -19,12 +16,11 @@ import {
 } from "./permissions";
 import { eq } from "drizzle-orm";
 
-// Single auth configuration that handles both CLI and runtime scenarios
-function createAuth(env?: Env, cf?: CfProperties) {
+function createAuth(env?: Env, cf?: IncomingRequestCfProperties) {
   // Use actual DB for runtime, empty object for CLI
-  const db = (
-    env ? drizzle(env.openhouse26_2_db, { schema, logger: true }) : ({} as any)
-  ) as DrizzleD1Database<typeof schema>;
+  const db = env
+    ? drizzle(env.openhouse26_2_db, { schema, logger: true })
+    : ({} as any);
 
   const betterAuthOptions = {
     ...(env
@@ -118,73 +114,39 @@ function createAuth(env?: Env, cf?: CfProperties) {
     },
   } satisfies BetterAuthOptions;
 
-  console.log("BetterAuth Config:", {
-    ...betterAuthOptions,
-  });
-
-  const withCloudflareOptions = withCloudflare(
-    {
-      autoDetectIpAddress: true,
-      geolocationTracking: true,
-      // @ts-ignore
-      cf: cf || {},
-      // @ts-ignore
-      d1: env
-        ? {
-            db,
-            options: {
-              usePlural: true,
-              debugLogs: false,
-            },
-          }
-        : undefined,
-      // @ts-ignore
-      kv: env?.openhouse26_2_kv
-        ? {
-            delete: async (key: string) => {
-              return env?.openhouse26_2_kv.delete(key);
-            },
-            get: async (key: string) => {
-              return env?.openhouse26_2_kv.get(key);
-            },
-            put(key, value, options) {
-              return env.openhouse26_2_kv.put(key, value as any, {
-                ...options,
-                expirationTtl: Math.max(options?.expirationTtl ?? 120, 120),
-              });
-            },
-          }
-        : undefined,
-      // Optional: Enable R2 file storage
-      // r2: {
-      //   bucket: env.R2_BUCKET,
-      //   maxFileSize: 10 * 1024 * 1024, // 10MB
-      //   allowedTypes: [
-      //     ".jpg",
-      //     ".jpeg",
-      //     ".png",
-      //     ".gif",
-      //     ".pdf",
-      //     ".doc",
-      //     ".docx",
-      //   ],
-      //   additionalFields: {
-      //     category: { type: "string", required: false },
-      //     isPublic: { type: "boolean", required: false },
-      //     description: { type: "string", required: false },
-      //   },
-      // },
-    },
-    betterAuthOptions,
-  );
-
   return betterAuth({
-    ...withCloudflareOptions,
-    // ...betterAuthOptions,
+    ...withCloudflare(
+      {
+        autoDetectIpAddress: true,
+        geolocationTracking: true,
+        cf: cf || {},
+        d1: env
+          ? {
+              db,
+              options: {
+                usePlural: true,
+                debugLogs: true,
+              },
+            }
+          : undefined,
+        // @ts-ignore
+        kv: env?.openhouse26_2_kv,
+      },
+      betterAuthOptions,
+    ),
+    // Only add database adapter for CLI schema generation
+    ...(env
+      ? {}
+      : {
+          database: drizzleAdapter({} as D1Database, {
+            provider: "sqlite",
+            usePlural: true,
+            debugLogs: true,
+          }),
+        }),
   });
 }
 
-// Export for CLI schema generation
 // export const auth = createAuth();
 
 // Export for runtime usage
