@@ -1,3 +1,26 @@
+export const wings = [
+  {
+    id: "phys",
+    name: "Physical Wing",
+  },
+  {
+    id: "bio",
+    name: "Biological Wing",
+  },
+  {
+    id: "envi",
+    name: "Environmental Wing",
+  },
+  {
+    id: "tech",
+    name: "Technological Wing",
+  },
+  {
+    id: "inter",
+    name: "International Wing",
+  },
+];
+
 export const cardData = [
   {
     img: "/nowath/card/mathcom.svg",
@@ -36,7 +59,7 @@ export const cardData = [
   },
   {
     img: "/nowath/card/foodtech.svg",
-    wing: ["bio"],
+    wing: ["tech"],
     day: [28],
   },
   {
