@@ -4,7 +4,6 @@ import { id, timestamps } from "./helper";
 import { users } from "./auth.schema";
 import { relations } from "drizzle-orm";
 import { workshopRegistrations } from "./workshop.schema";
-import { init } from "@paralleldrive/cuid2";
 import { redeemRewards } from "./reward.schema";
 
 export const participants = sqliteTable(
