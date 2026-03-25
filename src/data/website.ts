@@ -74,7 +74,7 @@ export const websitesData = [
         titleEng: "Department of Physics",
         titleTH: "ภาควิชาฟิสิกส์",
         img: "/nowath/website/phys/phys_phys.png",
-        path: "https://www.phys.sc.chula.ac.th",
+        path: "https://www.frontier.phys.sc.chula.ac.th",
       },
     ],
   },
