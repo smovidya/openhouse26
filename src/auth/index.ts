@@ -3,7 +3,7 @@ import { adminModel, authModel, schema } from "@src/db";
 import { betterAuth, type BetterAuthOptions } from "better-auth";
 import { withCloudflare } from "better-auth-cloudflare";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
-import { admin, jwt, oneTap } from "better-auth/plugins";
+import { admin, anonymous, jwt, oneTap } from "better-auth/plugins";
 import { drizzle } from "drizzle-orm/d1";
 import {
   ac,
@@ -46,6 +46,9 @@ function createAuth(env?: Env, cf?: CfProperties) {
       }),
       oneTap(),
       jwt(),
+      anonymous({
+        emailDomainName: "anon.scichulaopenhouse.com",
+      }),
     ],
     appName: "Sci Chula Open House 26",
     logger: {
@@ -65,14 +68,22 @@ function createAuth(env?: Env, cf?: CfProperties) {
       if (import.meta.env.DEV) return [new URL(request.url).origin];
       return [env?.BETTER_AUTH_URL || ""];
     },
-    // disabledPaths: [
-    //   import.meta.env.DEV ? null : "/sign-in/anonymous",
-    // ].filter(Boolean),
     socialProviders: {
       google: {
         prompt: "select_account",
         clientId: env?.GOOGLE_CLIENT_ID ?? "",
         clientSecret: env?.GOOGLE_CLIENT_SECRET,
+      },
+    },
+    user: {
+      additionalFields: {
+        staffId: {
+          type: "string",
+          returned: true,
+        },
+        attendeeTicketCode: {
+          type: "string",
+        },
       },
     },
     databaseHooks: {

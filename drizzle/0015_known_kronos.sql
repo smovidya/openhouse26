@@ -1,1 +1,0 @@
-ALTER TABLE `checkins` ADD `data` text DEFAULT '{}';

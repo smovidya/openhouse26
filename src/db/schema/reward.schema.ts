@@ -7,7 +7,9 @@ import { relations } from "drizzle-orm";
 
 export const redeemRewards = sqliteTable("redeem_rewards", {
   ...id,
-  participantId: t.text("participant_id").references(() => participants.id),
+  participantId: t
+    .text("participant_id")
+    .references(() => participants.ticketId),
   redeemedByStaffId: t.text("redeemed_by_staff_id").references(() => staffs.id),
   rewardData: t
     .text("reward_data", {
@@ -21,7 +23,7 @@ export const redeemRewards = sqliteTable("redeem_rewards", {
 export const redeemRewardRelations = relations(redeemRewards, ({ one }) => ({
   participant: one(participants, {
     fields: [redeemRewards.participantId],
-    references: [participants.id],
+    references: [participants.ticketId],
   }),
   staff: one(staffs, {
     fields: [redeemRewards.redeemedByStaffId],

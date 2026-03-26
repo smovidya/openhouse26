@@ -7,11 +7,9 @@ import { staffs } from "./staff.schema";
 
 export const checkpoints = sqliteTable("checkpoints", {
   ...id,
-  name: t.text(),
-  note: t.text(),
-  type: t.text({
-    enum: ["entry", "booth", "reward", "stage", "workshop"],
-  }),
+  name: t.text("name"),
+  note: t.text("note"),
+  type: t.text("type"),
   ...timestamps,
   ...deletedAt,
 });
@@ -22,7 +20,9 @@ export const checkpointRelations = relations(checkpoints, ({ many }) => ({
 
 export const checkins = sqliteTable("checkins", {
   ...id,
-  participantId: t.text("participant_id").references(() => participants.id),
+  participantTicketId: t
+    .text("participant_id")
+    .references(() => participants.ticketId),
   checkedByStaffId: t.text("checked_by_staff_id").references(() => staffs.id),
   checkpointId: t.text("checkpoint_id").references(() => checkpoints.id),
   data: t
@@ -36,8 +36,8 @@ export const checkins = sqliteTable("checkins", {
 
 export const checkinRelations = relations(checkins, ({ one }) => ({
   participant: one(participants, {
-    fields: [checkins.participantId],
-    references: [participants.id],
+    fields: [checkins.participantTicketId],
+    references: [participants.ticketId],
   }),
   staff: one(staffs, {
     fields: [checkins.checkedByStaffId],
@@ -51,7 +51,9 @@ export const checkinRelations = relations(checkins, ({ one }) => ({
 
 export const redeemedRewards = sqliteTable("redeemed_rewards", {
   ...id,
-  participantId: t.text("participant_id").references(() => participants.id),
+  participantTicketId: t
+    .text("participant_ticket_id")
+    .references(() => participants.ticketId),
   staffId: t.text("staff_id").references(() => staffs.id),
   rewardData: t.text("reward_data", { mode: "json" }),
   ...timestamps,
@@ -62,8 +64,8 @@ export const redeemedRewardRelations = relations(
   redeemedRewards,
   ({ one }) => ({
     participant: one(participants, {
-      fields: [redeemedRewards.participantId],
-      references: [participants.id],
+      fields: [redeemedRewards.participantTicketId],
+      references: [participants.ticketId],
     }),
     staff: one(staffs, {
       fields: [redeemedRewards.staffId],

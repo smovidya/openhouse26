@@ -1,1 +1,0 @@
-ALTER TABLE `staffs` RENAME COLUMN "email" TO "emails";

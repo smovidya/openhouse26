@@ -1,1 +1,0 @@
-ALTER TABLE `workshop_time_slots` ADD `round_number` integer NOT NULL;
