@@ -6,6 +6,7 @@
     "dev": "wrangler types && astro dev",
     "start": "wrangler types && astro dev",
     "build": "wrangler types && astro check && astro build",
+    "check": "wrangler types && astro check",
     "preview": "wrangler types && astro preview",
     "deploy": "bun run build && bun x wrangler deploy --env=\"\"",
     "astro": "astro",

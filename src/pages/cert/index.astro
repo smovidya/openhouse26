@@ -7,7 +7,7 @@ if (!Astro.locals.user) {
   return Astro.redirect("/?redirectedFrom=/cert", 302);
 }
 
-const { data: checkEligibility, error } = await Astro.callAction(
+const { data: checkEligibility } = await Astro.callAction(
   actions.checkSurveyEligibility,
   {},
 );
