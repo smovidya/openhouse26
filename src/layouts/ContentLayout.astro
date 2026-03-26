@@ -23,8 +23,8 @@ const {
 ---
 
 <Base title={title} description={description} image={image} theme={theme}>
-  <div class="sticky top-0 flex h-full w-full max-w-lg flex-col shadow-xl">
-    <div class="shrink-0">
+  <div class="flex h-full w-full max-w-lg flex-col shadow-xl">
+    <div class="sticky top-0 w-full max-w-lg shrink-0 z-40">
       <NavBar client:load />
     </div>
     <div class="flex grow flex-col overflow-x-hidden overflow-y-auto">
