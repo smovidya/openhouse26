@@ -1,72 +1,88 @@
-import { departmentBooths, isDepartmentBooth } from "./checkpoints";
+import {
+  checkpoints,
+  isDepartmentBooth,
+  type CheckpointType,
+} from "./checkpoints";
+import { schema } from "@src/db/schema";
+import { type Checkpoint } from "@src/data/checkpoints";
 
-const tierLevels = {
-  0: "Tier 0",
-  1: "Tier 3 เสือฮอตเนิร์ด",
-  2: "Tier 2 เสือผจญภัย",
-  3: "Tier 1 เสือซีเคร็ท",
+type Checkin = Required<typeof schema.checkins.$inferSelect>;
+type CheckpointWithCheckin = Checkpoint & {
+  checkin: Checkin;
 };
 
-const tierProgressKeys = {
-  departmentBooths: "บูธภาควิชา",
-  tcasBooth: "บูธ TCAS",
-  addYour: 'ภารกิจ "Add Your"',
-  workshops: "ทำกิจกรรม Workshop",
-  sciPlayground: " Sci Playground",
-  stage: "กิจกรรมบนเวที",
-};
-
-export const tierConditions = {
-  1: {
-    departmentBooths: 5,
-    tcasBooth: 1,
-    addYour: 1,
+const minimumConditionsForTiers = {
+  tier1: {
+    booth: 5,
+    tcas: 1,
+    "central-exhibition": 1,
   },
-  2: {
-    departmentBooths: 8,
-    tcasBooth: 1,
-    addYour: 1,
-    sciPlayground: 1,
+  tier2: {
+    booth: 8,
+    workshop: 1,
+    tcas: 1,
+    "central-exhibition": 1,
   },
-  3: {
-    departmentBooths: 15,
-    tcasBooth: 1,
-    addYour: 1,
-    workshops: 1,
-    sciPlayground: 1,
-    stage: 1,
+  tier3: {
+    booth: 12,
+    workshop: 1,
+    tcas: 1,
+    "central-exhibition": 1,
+    challenge: 1,
   },
 };
 
-export const rewardsInfo = [
-  {
-    id: 3,
-    level: 3,
-    name: "เสือซีเคร็ท",
-    description: "ลุ้นรับของรางวัลใหญ่สุดพิเศษ",
-    requiredTier: 3,
-  },
-  {
-    id: 2,
-    level: 2,
-    name: "เสือผจญภัย",
-    description: "รับของรางวัลสุดพิเศษ",
-    requiredTier: 2,
-  },
-  {
-    id: 1,
-    name: "เสือฮอตเนิร์ด",
-    level: 1,
-    description: "รับของรางวัลน่ารักๆ",
-    requiredTier: 1,
-  },
-  {
-    id: 0,
-    level: 0,
-    name: "Tier 0",
-    description: "รับทันที!! เมื่อเช็คอินเข้าหน้างาน",
-    requiredTier: 0,
-  },
-];
+export class Rewards {
+  checkins: CheckpointWithCheckin[];
 
-export class Rewards {}
+  constructor(checkins: Checkin[]) {
+    this.checkins = checkins.map((checkin) => {
+      const checkpoint = checkpoints.find((c) => c.id === checkin.checkpointId);
+      if (!checkpoint) {
+        throw new Error(`Checkpoint with id ${checkin.checkpointId} not found`);
+      }
+      return {
+        ...checkpoint,
+        checkin,
+      };
+    });
+  }
+
+  groupByTypeCount(checkins: CheckpointWithCheckin[]) {
+    return checkins.reduce(
+      (acc, checkin) => {
+        acc[checkin.type] = (acc[checkin.type] || 0) + 1;
+        return acc;
+      },
+      {} as Record<CheckpointType, number>,
+    );
+  }
+
+  isPassTier1() {
+    const typeCount = this.groupByTypeCount(this.checkins);
+    const conditions = minimumConditionsForTiers.tier1;
+    return Object.entries(conditions).every(
+      ([type, count]) => (typeCount[type as CheckpointType] || 0) >= count,
+    );
+  }
+
+  isPassTier2() {
+    const typeCount = this.groupByTypeCount(this.checkins);
+    const conditions = minimumConditionsForTiers.tier2;
+    return Object.entries(conditions).every(
+      ([type, count]) => (typeCount[type as CheckpointType] || 0) >= count,
+    );
+  }
+
+  isPassTier3() {
+    const typeCount = this.groupByTypeCount(this.checkins);
+    const conditions = minimumConditionsForTiers.tier3;
+    return Object.entries(conditions).every(
+      ([type, count]) => (typeCount[type as CheckpointType] || 0) >= count,
+    );
+  }
+
+  isRewardRedeemable() {
+    return !this.checkins.some((checkin) => checkin.type === "reward-redeem");
+  }
+}

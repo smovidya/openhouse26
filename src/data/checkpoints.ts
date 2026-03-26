@@ -1,14 +1,17 @@
 import { workshops } from "./workshops";
 
-interface Checkpoint {
+export type CheckpointType =
+  | "booth"
+  | "reward-redeem"
+  | "challenge"
+  | "workshop"
+  | "central-exhibition"
+  | "tcas";
+
+export interface Checkpoint {
   id: string;
   name: string;
-  type:
-    | "booth"
-    | "reward-redeem"
-    | "challenge"
-    | "workshop"
-    | "central-exhibition";
+  type: CheckpointType;
 }
 
 const workshopCheckpoints = workshops.map((workshop) => ({
@@ -111,35 +114,25 @@ export const checkpoints: Checkpoint[] = [
   {
     id: "tcas",
     name: "TCAS",
-    type: "booth",
+    type: "tcas",
   },
   {
     id: "redeem-reward",
     name: "รับของรางวัล",
     type: "reward-redeem",
   },
+  {
+    id: "challenge",
+    name: "ถ่ายรูปบรรยากาศงาน ลง IG ติด #Sciencechulaopenhouse2026",
+    type: "challenge",
+  },
   ...workshopCheckpoints,
 ];
 
-export const boothCheckpoints = checkpoints;
-
-export const isDepartmentStaffSelectable = (checkpointId: string) => {
-  return (
-    ![
-      "entry-register",
-      "add-your",
-      "recive-reward",
-      "tcas",
-      "sci-playground",
-      "stage",
-      "hashtag",
-      "graduated",
-    ].includes(checkpointId) && !checkpointId.startsWith("workshop-")
-  );
-};
-
-export const isDepartmentBooth = isDepartmentStaffSelectable;
-
-export const departmentBooths = checkpoints.filter((c) =>
-  isDepartmentBooth(c?.id || ""),
+export const boothCheckpoints = checkpoints.filter(
+  (c) =>
+    c.type === "booth" || c.type === "central-exhibition" || c.type === "tcas",
 );
+
+export const isDepartmentBooth = (checkpointId: string) =>
+  checkpoints.some((c) => c.id === checkpointId && c.type === "booth");
