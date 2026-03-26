@@ -1,7 +1,15 @@
-import { checkpoints as checkpointSchema } from "@src/db/schema/checkpoint.schema";
 import { workshops } from "./workshops";
 
-type Checkpoint = typeof checkpointSchema.$inferInsert;
+interface Checkpoint {
+  id: string;
+  name: string;
+  type:
+    | "booth"
+    | "reward-redeem"
+    | "challenge"
+    | "workshop"
+    | "central-exhibition";
+}
 
 const workshopCheckpoints = workshops.map((workshop) => ({
   id: `workshop-${workshop.id}`,
@@ -11,129 +19,104 @@ const workshopCheckpoints = workshops.map((workshop) => ({
 
 export const checkpoints: Checkpoint[] = [
   {
-    id: "entry-register",
-    name: "(งดใช้งาน)",
-    type: "entry",
-  },
-  {
-    id: "add-your",
-    name: 'ภารกิจ "Add Your"',
+    id: "checkpoint-botany",
+    name: "พฤกษศาสตร์",
     type: "booth",
   },
   {
-    id: "hashtag",
-    name: "ภารกิจ ติดแท็ก #ScienceChulaOpenhouse2026",
+    id: "checkpoint-microbiology",
+    name: "จุลชีววิทยา",
     type: "booth",
   },
   {
-    id: "stage",
-    name: "ภารกิจกิจกรรมบนเวที",
-    type: "stage",
-  },
-  {
-    id: "bsac",
-    name: "บูธ BSAC",
+    id: "checkpoint-biology",
+    name: "ชีววิทยา",
     type: "booth",
   },
   {
-    id: "bbtech",
-    name: "บูธ BBTech",
+    id: "checkpoint-chemistry",
+    name: "เคมี",
     type: "booth",
   },
   {
-    id: "bistech",
-    name: "บูธ BISTech",
+    id: "checkpoint-marine",
+    name: "วิทยาศาสตร์ทางทะเล",
     type: "booth",
   },
   {
-    id: "imprint",
-    name: "บูธ Imaging & Printing",
+    id: "checkpoint-environmental",
+    name: "วิทยาศาสตร์สิ่งแวดล้อม",
     type: "booth",
   },
   {
-    id: "foodtech",
-    name: "บูธ Food Technology",
+    id: "checkpoint-geology",
+    name: "ธรณีวิทยา",
     type: "booth",
   },
   {
-    id: "chemtech",
-    name: "บูธ ChemTech",
+    id: "checkpoint-foodtech",
+    name: "เทคโนโลยีทางอาหาร",
     type: "booth",
   },
   {
-    id: "matsci",
-    name: "บูธ Materials Science",
+    id: "checkpoint-imprint",
+    name: "เทคโนโลยีทางภาพและการพิมพ์",
     type: "booth",
   },
   {
-    id: "chem",
-    name: "บูธ Chemistry",
+    id: "checkpoint-materials",
+    name: "วัสดุศาสตร์",
     type: "booth",
   },
   {
-    id: "mathcom",
-    name: "บูธ Mathematics & Computer Science",
+    id: "checkpoint-chemtech",
+    name: "เคมีเทคนิค",
     type: "booth",
   },
   {
-    id: "physics",
-    name: "บูธ Physics",
+    id: "checkpoint-bsac",
+    name: "หลักสูตรเคมีประยุกต์ (BSAC)",
     type: "booth",
   },
   {
-    id: "geo",
-    name: "บูธ Geology",
+    id: "checkpoint-bbtech",
+    name: "หลักสูตรเทคโนโลยีชีวภาพ",
     type: "booth",
   },
   {
-    id: "envi",
-    name: "บูธ Environmental Science",
+    id: "checkpoint-bistech",
+    name: "หลักสูตรวิทยาศาสตร์และเทคโนโลยีอุตสาหการ",
     type: "booth",
   },
   {
-    id: "marine",
-    name: "บูธ Marine Science",
+    id: "checkpoint-mathcom",
+    name: "คณิตศาสตร์และวิทยาการคอมพิวเตอร์",
     type: "booth",
   },
   {
-    id: "biochem",
-    name: "บูธ Biochemistry",
+    id: "checkpoint-physics",
+    name: "ฟิสิกส์",
     type: "booth",
   },
   {
-    id: "microbio",
-    name: "บูธ Microbiology",
+    id: "checkpoint-chemistry",
+    name: "เคมี",
     type: "booth",
   },
   {
-    id: "botany",
-    name: "บูธ Botany",
-    type: "booth",
-  },
-  {
-    id: "biology",
-    name: "บูธ Biology",
-    type: "booth",
-  },
-  {
-    id: "sci-playground",
-    name: 'นิทรรศการกลาง "Sci Playground"',
-    type: "booth",
+    id: "central-exhibitions",
+    name: "นิทรรศการกลาง",
+    type: "central-exhibition",
   },
   {
     id: "tcas",
-    name: 'บูธ "TCAS & Admission"',
+    name: "TCAS",
     type: "booth",
   },
   {
-    id: "recive-reward",
-    name: "จุดรับของรางวัล",
-    type: "reward",
-  },
-  {
-    id: "graduated",
-    name: "บูธบัณฑิตศึกษา",
-    type: "booth",
+    id: "redeem-reward",
+    name: "รับของรางวัล",
+    type: "reward-redeem",
   },
   ...workshopCheckpoints,
 ];

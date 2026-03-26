@@ -5,26 +5,13 @@ import { relations } from "drizzle-orm";
 import { participants } from "./participant.schema";
 import { staffs } from "./staff.schema";
 
-export const checkpoints = sqliteTable("checkpoints", {
-  ...id,
-  name: t.text("name"),
-  note: t.text("note"),
-  type: t.text("type"),
-  ...timestamps,
-  ...deletedAt,
-});
-
-export const checkpointRelations = relations(checkpoints, ({ many }) => ({
-  checkins: many(checkins),
-}));
-
 export const checkins = sqliteTable("checkins", {
   ...id,
   participantTicketId: t
     .text("participant_id")
     .references(() => participants.ticketId),
   checkedByStaffId: t.text("checked_by_staff_id").references(() => staffs.id),
-  checkpointId: t.text("checkpoint_id").references(() => checkpoints.id),
+  checkpointId: t.text("checkpoint_id"),
   data: t
     .text("data", {
       mode: "json",
@@ -42,10 +29,6 @@ export const checkinRelations = relations(checkins, ({ one }) => ({
   staff: one(staffs, {
     fields: [checkins.checkedByStaffId],
     references: [staffs.id],
-  }),
-  checkpoint: one(checkpoints, {
-    fields: [checkins.checkpointId],
-    references: [checkpoints.id],
   }),
 }));
 

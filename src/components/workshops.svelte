@@ -21,7 +21,7 @@
 
 <div class="flex flex-col items-center">
   <Header class="-translate-y-17 w-80!">
-    <span class="text-lg text-center">Workshop Schedule</span>
+    <span class="text-xl font-bold text-center">Workshop Schedule</span>
   </Header>
 
   <div class="flex gap-2 -translate-y-12 mb-4 w-full px-4">

@@ -18,7 +18,6 @@ const { frontmatter, title, description } = Astro.props;
   description={description || frontmatter?.description || ""}
   image="/og-image.png"
   theme="emerald"
-  blueBg={false}
 >
   <Fragment slot="head">
     <meta name="robots" content="noindex,nofollow" />

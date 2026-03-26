@@ -3,7 +3,7 @@ import * as t from "drizzle-orm/sqlite-core";
 import { id, timestamps } from "./helper";
 import { relations } from "drizzle-orm";
 import { users } from "./auth.schema";
-import { checkins } from "./checkpoint.schema";
+import { checkins } from "./checkin.schema";
 
 export const staffs = sqliteTable("staffs", {
   ...id,
