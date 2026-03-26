@@ -1,10 +1,10 @@
 import type { D1Database } from "@cloudflare/workers-types";
-import { adminModel, authModel, schema } from "@src/db";
 import { betterAuth, type BetterAuthOptions } from "better-auth";
 import { withCloudflare } from "better-auth-cloudflare";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { admin, anonymous, jwt, oneTap } from "better-auth/plugins";
 import { drizzle } from "drizzle-orm/d1";
+import { schema } from "@src/db";
 import {
   ac,
   admin as adminRole,
@@ -88,40 +88,7 @@ function createAuth(env?: Env, cf?: CfProperties) {
     },
     databaseHooks: {
       session: {
-        create: {
-          async after(session, _context) {
-            try {
-              const user = await db
-                .select()
-                .from(schema.users)
-                .where(eq(schema.users.id, session.userId))
-                .get();
-              if (!user) return;
-              const staffAccount = await adminModel.getStaffByEmail(
-                db,
-                user?.email,
-              );
-              if (!staffAccount) return;
-              const requestedRole = JSON.parse(
-                staffAccount.requestedRole || "[]",
-              ) as string[];
-              await authModel.linkStaffToUser(db, staffAccount.id, user.id);
-              await db
-                .update(schema.users)
-                .set({
-                  role: requestedRole.join(","),
-                })
-                .where(eq(schema.users.id, user.id));
-              // remove sessions to force re-login
-              await db
-                .delete(schema.sessions)
-                .where(eq(schema.sessions.userId, user.id));
-            } catch (error) {
-              // quietly fail
-              console.error("Error linking staff to user:", error);
-            }
-          },
-        },
+        create: {},
       },
     },
   } satisfies BetterAuthOptions;
