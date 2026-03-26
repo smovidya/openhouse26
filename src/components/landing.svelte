@@ -52,9 +52,9 @@
         )}
         {@render stampImageLink(
           "/nowath/stamps/merchStamp.svg",
-          "/",
+          "/merchs",
           "merchStamp",
-          true,
+          false,
         )}
       </div>
       <div class=" flex flex-col items-start gap-2">
