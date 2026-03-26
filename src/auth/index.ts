@@ -1,10 +1,10 @@
 import type { D1Database } from "@cloudflare/workers-types";
-import { adminModel, authModel, schema, staffModel } from "@src/db";
-import { betterAuth, type BetterAuthOptions, type Prettify } from "better-auth";
+import { adminModel, authModel, schema } from "@src/db";
+import { betterAuth, type BetterAuthOptions } from "better-auth";
 import { withCloudflare } from "better-auth-cloudflare";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { admin, jwt, oneTap } from "better-auth/plugins";
-import { drizzle, DrizzleD1Database } from "drizzle-orm/d1";
+import { drizzle } from "drizzle-orm/d1";
 import {
   ac,
   admin as adminRole,
@@ -16,7 +16,7 @@ import {
 } from "./permissions";
 import { eq } from "drizzle-orm";
 
-function createAuth(env?: Env, cf?: IncomingRequestCfProperties) {
+function createAuth(env?: Env, cf?: CfProperties) {
   // Use actual DB for runtime, empty object for CLI
   const db = env
     ? drizzle(env.openhouse26_2_db, { schema, logger: true })
@@ -47,6 +47,7 @@ function createAuth(env?: Env, cf?: IncomingRequestCfProperties) {
       oneTap(),
       jwt(),
     ],
+    appName: "Sci Chula Open House 26",
     logger: {
       level: "error", // =-= แม่นหยัง
     },
@@ -77,7 +78,7 @@ function createAuth(env?: Env, cf?: IncomingRequestCfProperties) {
     databaseHooks: {
       session: {
         create: {
-          async after(session, context) {
+          async after(session, _context) {
             try {
               const user = await db
                 .select()
@@ -119,6 +120,7 @@ function createAuth(env?: Env, cf?: IncomingRequestCfProperties) {
       {
         autoDetectIpAddress: true,
         geolocationTracking: true,
+        // @ts-ignore
         cf: cf || {},
         d1: env
           ? {

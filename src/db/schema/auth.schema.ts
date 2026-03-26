@@ -1,5 +1,7 @@
 import { relations, sql } from "drizzle-orm";
 import { sqliteTable, text, integer, index } from "drizzle-orm/sqlite-core";
+import { participants } from "./participant.schema";
+import { staffs } from "./staff.schema";
 
 export const users = sqliteTable("users", {
   id: text("id").primaryKey(),
@@ -20,6 +22,8 @@ export const users = sqliteTable("users", {
   banned: integer("banned", { mode: "boolean" }).default(false),
   banReason: text("ban_reason"),
   banExpires: integer("ban_expires", { mode: "timestamp_ms" }),
+  participantAccountId: text("participant_account_id"),
+  staffAccountId: text("staff_account_id"),
 });
 
 export const sessions = sqliteTable(
@@ -108,9 +112,18 @@ export const jwkss = sqliteTable("jwkss", {
   expiresAt: integer("expires_at", { mode: "timestamp_ms" }),
 });
 
-export const usersRelations = relations(users, ({ many }) => ({
+export const usersRelations = relations(users, ({ one, many }) => ({
   sessions: many(sessions),
   accounts: many(accounts),
+  participantAccount: one(participants, {
+    fields: [users.participantAccountId],
+    references: [participants.userId],
+    relationName: "participant_account",
+  }),
+  staffAccount: one(staffs, {
+    fields: [users.staffAccountId],
+    references: [staffs.id],
+  }),
 }));
 
 export const sessionsRelations = relations(sessions, ({ one }) => ({

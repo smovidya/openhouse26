@@ -1,4 +1,4 @@
-import puppeteer from "@cloudflare/puppeteer";
+// import puppeteer from "@cloudflare/puppeteer";
 import { certificatePdfKvKey } from "@src/data/constants";
 import { checkinModel, participantModel, surveyModel } from "@src/db";
 import { z } from "astro/zod";

@@ -3,7 +3,7 @@ import { Rewards } from "@src/data/rewards";
 import {
   checkinModel,
   participantModel,
-  redeemModel,
+  // redeemModel,
   staffModel,
 } from "@src/db";
 import { ActionError, defineAction } from "astro:actions";
@@ -68,7 +68,7 @@ export const redeem = defineAction({
     }
 
     const reward = new Rewards(participant.id, checkins);
-    const currentTier = reward.getCurrentTier();
+    // const currentTier = reward.getCurrentTier();
 
     if (reward.isRedeemedReward()) {
       throw new ActionError({

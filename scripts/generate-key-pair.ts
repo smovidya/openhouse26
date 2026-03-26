@@ -18,12 +18,10 @@ async function generateKey() {
 }
 
 async function main() {
-  const { privateKey, publicKey } = await generateKey();
-
-  const data = "david";
-  const encoded = new TextEncoder().encode(data);
+  // const { privateKey, publicKey } = await generateKey();
+  // const data = "david";
+  // const encoded = new TextEncoder().encode(data);
   // const signature = await crypto.subtle.sign("ed25519", privateKey, encoded)
-
   // console.log(signature)
   // console.log(await crypto.subtle.verify("ed25519", publicKey, signature, encoded))
 }

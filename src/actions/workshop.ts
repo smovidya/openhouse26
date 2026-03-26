@@ -230,7 +230,7 @@ export const registerMeToSlot = defineAction({
     }
 
     const currentTimeSlotCount = currentRegistrationCount.find(
-      (count, index) =>
+      (_count, index) =>
         workshop.timeSlots[index].roundNumber === input.roundNumber,
     )!;
 

@@ -9,7 +9,7 @@ import {
 } from "@src/db";
 import { boothCheckpoints } from "@src/data/checkpoints";
 import type { CheckinWorkshopData } from "@src/type";
-import { sendEvent } from "@src/notification/server";
+// import { sendEvent } from "@src/notification/server";
 
 export const getMyParticipant = defineAction({
   handler: async (_input, ctx) => {

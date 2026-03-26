@@ -38,13 +38,13 @@ export const adminAddStaff = defineAction({
       const userRecord = await authModel.getUserByEmail(ctx.locals.db, email);
       if (!userRecord) continue;
       // @ts-ignore
-      const user = await ctx.locals.auth.api.setRole({
-        headers: ctx.request.headers,
-        body: {
-          role: requestedRole as any[],
-          userId: userRecord.id,
-        },
-      });
+      // const user = await ctx.locals.auth.api.setRole({
+      //   headers: ctx.request.headers,
+      //   body: {
+      //     role: requestedRole as any[],
+      //     userId: userRecord.id,
+      //   },
+      // });
 
       await authModel.linkStaffToUser(
         ctx.locals.db,

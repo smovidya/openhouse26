@@ -162,7 +162,7 @@ export const updateParticipantName = defineAction({
     givenName: z.string(),
     familyName: z.string(),
   }),
-  async handler(input, context) {
+  async handler(_input, context) {
     if (!context.locals.user) {
       throw new ActionError({
         code: "UNAUTHORIZED",
