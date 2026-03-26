@@ -11,6 +11,11 @@
   let menuOpen = $state(false);
   const menuList = [
     { title: "LOBBY", icon: "/nowath/icon/hotel.svg", path: "/" },
+    {
+      title: "MERCHANDISE",
+      icon: "/nowath/icon/shopping-cart.svg",
+      path: "/merchs",
+    },
     { title: "WEBSITES", icon: "/nowath/icon/globe.svg", path: "/websites" },
     {
       title: "WORKSHOPS",
@@ -50,7 +55,8 @@
           class="transition-all group-hover:brightness-0 group-hover:invert"
           alt={item.icon.split("/")[-1]}
         />
-        <span class="group-hover:text-white text-dark transition-all font-bold"
+        <span
+          class="group-hover:text-white text-xl text-dark transition-all font-bold"
           >{item.title}</span
         >
       </a>
