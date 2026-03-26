@@ -21,7 +21,13 @@ export const wings = [
   },
 ];
 
-export const cardData = [
+interface Card {
+  img: string;
+  wing: string[];
+  day: number[];
+}
+
+export const cardData: Card[] = [
   {
     img: "/nowath/card/mathcom.svg",
     wing: ["phys"],
@@ -55,6 +61,11 @@ export const cardData = [
   {
     img: "/nowath/card/matsci.svg",
     wing: ["tech"],
+    day: [28, 29],
+  },
+  {
+    img: "/nowath/card/micro.svg",
+    wing: ["bio"],
     day: [28, 29],
   },
   {
