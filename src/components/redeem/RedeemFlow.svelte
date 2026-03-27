@@ -2,6 +2,7 @@
   import { actions } from "astro:actions";
   import Card from "../card.svelte";
   import Button from "../common/button.svelte";
+  import SurveyForm from "../survey/SurveyForm.svelte";
 
   interface Props {
     ticketId: string;
@@ -22,6 +23,18 @@
   let isLoading = $state(false);
   let errorMsg = $state("");
   let certUrl = $state("");
+
+  let isSurveyValid = $state(false);
+  let showSurveyErrors = $state(false);
+  let surveyResponses = $state<any>({
+    purposes: [],
+    interestedDepartments: [],
+    recommendRank1: "",
+    recommendRank2: "",
+    recommendRank3: "",
+    recommendReason: "",
+  });
+  let confirmedAccuracy = $state(false);
 
   async function handleCheckEligibility() {
     if (!ticketId) return;
@@ -48,14 +61,23 @@
   }
 
   async function handleSubmitSurvey() {
+    showSurveyErrors = true;
+    if (!isSurveyValid) {
+      errorMsg = "โปรดกรอกแบบประเมินให้ครบถ้วน";
+      return;
+    }
     if (!name) {
       errorMsg = "โปรดกรอกชื่อและนามสกุล";
+      return;
+    }
+    if (!confirmedAccuracy) {
+      errorMsg = "โปรดยืนยันความถูกต้องของข้อมูล (ติ๊กเครื่องหมายถูกด้านล่าง)";
       return;
     }
     isLoading = true;
     errorMsg = "";
     try {
-      const res = await actions.redeem.submitSurveyAndName({ ticketId, name });
+      const res = await actions.redeem.submitSurveyAndName({ ticketId, name, responses: surveyResponses });
       if (res.error) {
         errorMsg = res.error.message;
       } else {
@@ -172,13 +194,9 @@
     {:else if step === "survey_and_name"}
       <h2 class="card-title text-2xl mb-4">ทำแบบประเมินและยืนยันชื่อ</h2>
 
-      <div class="bg-base-200 p-4 rounded-box mb-6 text-center">
-        <p class="text-base-content/70 italic">
-          [พื้นที่สำหรับแบบประเมิน - TODO]
-        </p>
-      </div>
+      <SurveyForm bind:responses={surveyResponses} bind:isValid={isSurveyValid} bind:showErrors={showSurveyErrors} />
 
-      <div class="divider">กรอกข้อมูลเกียรติบัตร</div>
+      <div class="divider text-xl font-bold text-primary mt-8">ตอนที่ 3: กรอกข้อมูลเกียรติบัตร</div>
 
       <div class="alert mb-4">
         <svg
@@ -212,6 +230,13 @@
           class="border-token-6 text-lg border invalid:border-2 shadow-md shadow-black/20 text-center rounded-2xl p-2"
           disabled={isLoading}
         />
+      </div>
+
+      <div class="form-control mt-4">
+        <label class="label cursor-pointer justify-start gap-4 p-4 border border-base-300 rounded-xl bg-base-100 hover:bg-base-200 transition-colors">
+          <input type="checkbox" class="checkbox checkbox-primary" bind:checked={confirmedAccuracy} disabled={isLoading} />
+          <span class="label-text text-base font-medium">ข้าพเจ้ายืนยันว่าชื่อ-นามสกุลที่กรอกถูกต้อง (จะไม่สามารถกลับมาแก้ไขได้อีกในภายหลัง)</span>
+        </label>
       </div>
 
       <div class="card-actions justify-end mt-6 flex gap-2">

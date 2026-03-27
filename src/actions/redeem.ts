@@ -46,8 +46,9 @@ export const submitSurveyAndName = defineAction({
   input: z.object({
     ticketId: z.string(),
     name: z.string(),
+    responses: z.record(z.string(), z.any()).optional(),
   }),
-  handler: async ({ ticketId, name }, ctx) => {
+  handler: async ({ ticketId, name, responses }, ctx) => {
     if (!validateTicketCode(ticketId)) {
        throw new ActionError({ code: "BAD_REQUEST", message: "Invalid CU Ticket code" })
     }
@@ -68,6 +69,7 @@ export const submitSurveyAndName = defineAction({
     await model.survey.createSurvey(ctx.locals.db, {
       ticketId,
       nameInCert: name,
+      responses,
     });
 
     return { success: true };
