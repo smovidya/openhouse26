@@ -33,7 +33,7 @@ export const addStaff = defineAction({
       const userRecord = await model.auth.getUserByEmail(ctx.locals.db, email);
       if (!userRecord) continue;
       // @ts-ignore
-      const user = await ctx.locals.auth.api.setRole({
+      await ctx.locals.auth.api.setRole({
         headers: ctx.request.headers,
         body: {
           role: staffAccount.requestedRole.split(",") as string[],

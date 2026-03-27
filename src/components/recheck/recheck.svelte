@@ -122,7 +122,7 @@
     <summary
       class="py-2 px-0 flex flex-row gap-2 items-center collapse-title font-semibold w-full"
     >
-      {#if rewards.isCheckinConditionPass(conditionKey, count, tier)}
+      {#if rewards.isCheckinConditionPass(conditionKey, count)}
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="24"

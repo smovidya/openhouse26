@@ -1,6 +1,5 @@
 import {
   checkpoints,
-  isDepartmentBooth,
   type CheckpointType,
 } from "./checkpoints";
 import { schema } from "@src/db/schema";
@@ -137,7 +136,6 @@ export class Rewards {
   isCheckinConditionPass(
     conditionKey: CheckpointType,
     count: number,
-    tier: keyof MinimumConditionsForTiers,
   ) {
     const typeCount = this.groupByTypeCount(this.checkins);
     return (typeCount[conditionKey] || 0) >= count;
