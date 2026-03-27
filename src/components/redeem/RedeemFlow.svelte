@@ -33,6 +33,13 @@
     recommendRank2: "",
     recommendRank3: "",
     recommendReason: "",
+    venueLost: "",
+    venueCrowded: "",
+    venueCleanliness: null,
+    activityFirstImpression: "",
+    activityMissedWorkshop: "",
+    activityMissedDepartments: [],
+    activityWorkshopRating: null,
   });
   let confirmedAccuracy = $state(false);
 

@@ -12,7 +12,7 @@
 </script>
 
 <div class="form-control w-full my-4">
-  <div class="label justify-start gap-1 pb-1">
+  <div class="label text-wrap justify-start gap-1 pb-1">
     <span class="label-text font-bold text-base md:text-lg">{label}</span>
     {#if required}
       <span class="text-error font-bold">*</span>

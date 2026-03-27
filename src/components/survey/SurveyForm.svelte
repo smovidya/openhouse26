@@ -2,7 +2,10 @@
   import CheckboxGroup from "./CheckboxGroup.svelte";
   import SelectGroup from "./SelectGroup.svelte";
   import TextInput from "./TextInput.svelte";
+  import RadioGroup from "./RadioGroup.svelte";
+  import RatingScale from "./RatingScale.svelte";
   import { departments } from "../../data/departments";
+  import { workshops } from "@src/data/workshops";
 
   interface SurveyResponses {
     purposes: string[];
@@ -11,12 +14,20 @@
     recommendRank2: string;
     recommendRank3: string;
     recommendReason: string;
+    venueLost: string;
+    venueCrowded: string;
+    venueCleanliness: number | null;
+    activityFirstImpression: string;
+    activityMissedWorkshop: string;
+    activityMissedDepartments: string[];
+    activityWorkshopRating: number | null;
   }
 
   interface Props {
     responses: SurveyResponses;
     isValid: boolean;
     showErrors: boolean;
+    hasWorkshopCheckin?: boolean;
   }
 
   let {
@@ -27,9 +38,17 @@
       recommendRank2: "",
       recommendRank3: "",
       recommendReason: "",
+      venueLost: "",
+      venueCrowded: "",
+      venueCleanliness: null,
+      activityFirstImpression: "",
+      activityMissedWorkshop: "",
+      activityMissedDepartments: [],
+      activityWorkshopRating: null,
     }),
     isValid = $bindable(false),
     showErrors = $bindable(false),
+    hasWorkshopCheckin = false,
   }: Props = $props();
 
   const purposeOptions = [
@@ -48,10 +67,31 @@
   const departmentOptions = [
     ...departments.map((d) => ({ label: d.thName, value: d.enShortName })),
   ];
+  const workshopOptions = [
+    ...workshops.map((w) => ({ label: w.title, value: w.title })),
+  ];
 
   const interestedDepartmentOptions = [
     ...departmentOptions,
     { label: "ยังไม่มี / ลังเล", value: "ยังไม่มี / ลังเล" },
+  ];
+
+  const lostOptions = [
+    { label: "หลง", value: "หลง" },
+    { label: "ไม่หลง", value: "ไม่หลง" },
+  ];
+
+  const firstImpressionOptions = [
+    { label: "บูธน่าสนใจมาก", value: "บูธน่าสนใจมาก" },
+    { label: "Workshop ปังเว่อร์", value: "Workshop ปังเว่อร์" },
+    { label: "อาหารกินแซ่บ", value: "อาหารกินแซ่บ" },
+    { label: "พี่ๆหล่อๆสวยๆจึ้ง", value: "พี่ๆหล่อๆสวยๆจึ้ง" },
+    { label: "สถานที่เดินสะดวก", value: "สถานที่เดินสะดวก" },
+  ];
+
+  const yesNoOptions = [
+    { label: "มี", value: "มี" },
+    { label: "ไม่มี", value: "ไม่มี" },
   ];
 
   let errors = $derived.by(() => {
@@ -66,6 +106,23 @@
       e.recommendRank2 = "โปรดเลือกภาควิชาที่แนะนำอันดับ 2";
     if (!responses.recommendRank3)
       e.recommendRank3 = "โปรดเลือกภาควิชาที่แนะนำอันดับ 3";
+
+    if (!responses.venueLost) e.venueLost = "โปรดระบุ";
+    if (!responses.venueCleanliness) e.venueCleanliness = "โปรดให้คะแนน";
+
+    if (!responses.activityFirstImpression)
+      e.activityFirstImpression = "โปรดระบุ";
+    if (!responses.activityMissedWorkshop)
+      e.activityMissedWorkshop = "โปรดระบุ";
+    if (
+      responses.activityMissedWorkshop === "มี" &&
+      responses.activityMissedDepartments.length === 0
+    ) {
+      e.activityMissedDepartments = "โปรดเลือกอย่างน้อย 1 ภาควิชา";
+    }
+    if (hasWorkshopCheckin && !responses.activityWorkshopRating) {
+      e.activityWorkshopRating = "โปรดให้คะแนน";
+    }
 
     // Optional: check uniqueness of ranked recommendations
     let ranks = [
@@ -153,4 +210,61 @@
       placeholder="พิมพ์เหตุผลของคุณที่นี่..."
     />
   </div>
+
+  <div class="divider text-xl font-bold text-token-6 text-shadow-2xs mt-8">
+    ตอนที่ 3: สถานที่จัดงาน
+  </div>
+  <RadioGroup
+    label="เดินในงาน 'หลงมั้ย' 😅"
+    options={lostOptions}
+    bind:value={responses.venueLost}
+    required
+    error={showErrors ? errors.venueLost : ""}
+  />
+  <TextInput
+    label="น้องๆคิดว่าบริเวณไหนของงานที่รู้สึกว่าค่อนข้างแออัด เช่น เวิร์คชอป บูธ อื่นๆ (ไม่บังคับ)"
+    bind:value={responses.venueCrowded}
+    placeholder="พิมพ์บริเวณที่แออัดที่นี่..."
+  />
+  <RatingScale
+    label="ความสะอาดภายในงานและจุดทิ้งขยะ"
+    bind:value={responses.venueCleanliness}
+    required
+    error={showErrors ? errors.venueCleanliness : ""}
+  />
+
+  <div class="divider text-xl font-bold text-token-6 text-shadow-2xs mt-8">
+    ตอนที่ 4: กิจกรรม
+  </div>
+  <RadioGroup
+    label="ความรู้สึกแรกที่เดินเข้ามาในงาน น้องๆรู้สึกเป็นอย่างไรบ้าง"
+    options={firstImpressionOptions}
+    bind:value={responses.activityFirstImpression}
+    required
+    error={showErrors ? errors.activityFirstImpression : ""}
+  />
+  <RadioGroup
+    label="มีเวิร์กช็อปที่อยากเข้าแต่ไม่ได้เข้าหรือไม่"
+    options={yesNoOptions}
+    bind:value={responses.activityMissedWorkshop}
+    required
+    error={showErrors ? errors.activityMissedWorkshop : ""}
+  />
+  {#if responses.activityMissedWorkshop === "มี"}
+    <CheckboxGroup
+      label="ถ้ามี เป็นเวิร์กช็อปอะไร"
+      options={workshopOptions}
+      bind:value={responses.activityMissedDepartments}
+      required
+      error={showErrors ? errors.activityMissedDepartments : ""}
+    />
+  {/if}
+  {#if hasWorkshopCheckin}
+    <RatingScale
+      label="workshop ที่เข้าไป ให้คะแนนความ “สนุก” เท่าไหร่ (1-5)"
+      bind:value={responses.activityWorkshopRating}
+      required
+      error={showErrors ? errors.activityWorkshopRating : ""}
+    />
+  {/if}
 </div>
