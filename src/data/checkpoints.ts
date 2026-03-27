@@ -119,7 +119,7 @@ export const checkpoints: Checkpoint[] = [
 ];
 
 export const boothCheckpoints = checkpoints.filter(
-  (c) => c.type === "booth" || c.type === "tcas",
+  (c) => c.type === "booth" || c.type === "tcas" || c.type === "challenge",
 );
 
 export const departmentBoothCheckpoints = checkpoints.filter(

@@ -69,8 +69,6 @@
           เข้าร่วมเวิร์กช็อปอย่างน้อย {count} เวิร์กช็อป
         {:else if conditionKey === "tcas"}
           เข้าชมบูธ TCAS
-        {:else if conditionKey === "central-exhibition"}
-          เข้าชมงานนิทรรศการกลาง
         {:else if conditionKey === "challenge"}
           ถ่ายรูปกับบรรยากาศงาน ลง IG Story ติด #sciencechulaopenhouse2026
         {/if}
@@ -119,8 +117,6 @@
         </ul>
       {:else if conditionKey === "tcas"}
         เดินชมบูธ TCAS แล้วให้สตาฟ TCAS แสกนเพื่อรับเช็คอิน
-      {:else if conditionKey === "central-exhibition"}
-        เดินชมนิทรรศการกลางแล้วให้สตาฟนิทรรศการแสกนเพื่อรับเช็คอิน
       {:else if conditionKey === "challenge"}
         ทำเสร็จแล้วเอามาให้พี่ ๆ ดูที่บูธแลกของรางวัลได้เลย!
       {/if}
@@ -269,7 +265,10 @@
         </p>
       {:else if rewards.isEligibleForCertificate()}
         <p>คุณมีสิทธิได้รับเกียรติบัตร</p>
-        <Button href="/redeem" class="mx-auto mt-2">ดาวน์โหลด</Button>
+        <Button
+          href={`/redeem?ticketId=${currentTicketId}`}
+          class="mx-auto mt-2">รับเกียรติบัตร</Button
+        >
       {:else}
         <p class="text-balance">
           กรุณากรอกและค้นหา CU Ticket ID ของคุณเพื่อดูสิทธิในการรับเกียรติบัตร
