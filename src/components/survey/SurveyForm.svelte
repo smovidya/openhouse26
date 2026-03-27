@@ -31,6 +31,7 @@
     boothUnderstandingRating: number | null;
     feedbackMessage: string;
     feedbackImprovement: string;
+    closingAcknowledge: string;
   }
 
   interface Props {
@@ -65,6 +66,7 @@
       boothUnderstandingRating: null,
       feedbackMessage: "",
       feedbackImprovement: "",
+      closingAcknowledge: "",
     }),
     isValid = $bindable(false),
     showErrors = $bindable(false),
@@ -175,6 +177,8 @@
     if (!responses.boothPresentationRating) e.boothPresentationRating = "โปรดให้คะแนน";
     if (!responses.boothUnansweredQuestions) e.boothUnansweredQuestions = "โปรดระบุ";
     if (!responses.boothUnderstandingRating) e.boothUnderstandingRating = "โปรดให้คะแนน";
+
+    if (!responses.closingAcknowledge) e.closingAcknowledge = "โปรดยืนยันการรับทราบ";
 
     // Optional: check uniqueness of ranked recommendations
     let ranks = [
@@ -386,4 +390,14 @@
     bind:value={responses.feedbackImprovement}
     placeholder="พิมพ์ข้อเสนอแนะของคุณที่นี่..."
   />
+
+  <div class="mt-8">
+    <RadioGroup
+      label="สุดท้ายนี้ พี่ขออวยพรให้น้อง ๆ ที่ตั้งใจตอบแบบสอบถามตามความเป็นจริงทุกคน สอบติดคณะที่ใช่ มหาลัยที่ชอบ สมหวังทุกประการเลยนะครับ/คะ!"
+      options={[{ label: "รับทราบ", value: "รับทราบ" }]}
+      bind:value={responses.closingAcknowledge}
+      required
+      error={showErrors ? errors.closingAcknowledge : ""}
+    />
+  </div>
 </div>
