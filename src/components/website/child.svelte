@@ -16,10 +16,10 @@
       <Header class=" w-full h-60">
         <div class="flex flex-col justify-between items-center w-full h-full">
           <div class="flex flex-col p-2">
-            <span class="text-base text-center font-normal"
+            <span class="text-base text-center"
               >{item.titleEng}</span
             >
-            <span class="text-base text-center font-normal">{item.titleTH}</span
+            <span class="text-base text-center">{item.titleTH}</span
             >
           </div>
           <img src={item.img} class="max-w-30" alt="" />

@@ -103,7 +103,7 @@
 
 <QrcodeScannerBase enable={scanning} {onResult}>
   {#snippet header()}
-    <h2 class={cn("text-4xl bg-base-200/80 font-normal mt-9 p-4 px-9")}>
+    <h2 class={cn("text-4xl bg-base-200/80 mt-9 p-4 px-9")}>
       <span class="font-bold">เช็คอินเข้างาน</span>
     </h2>
   {/snippet}
@@ -185,5 +185,3 @@
   bind:open={isIdInputtingDialogOpen}
   onDone={onSelfIdInputtingDialogDone}
 />
-
-asdasddsasd

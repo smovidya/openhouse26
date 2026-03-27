@@ -1,9 +1,7 @@
-import {
-  checkpoints,
-  type CheckpointType,
-} from "./checkpoints";
+import { checkpoints, type CheckpointType } from "./checkpoints";
 import { schema } from "@src/db/schema";
 import { type Checkpoint } from "@src/data/checkpoints";
+import { check } from "astro:schema";
 
 type Checkin = Required<typeof schema.checkins.$inferSelect>;
 type CheckpointWithCheckin = Checkpoint & {
@@ -14,19 +12,16 @@ const minimumConditionsForTiers = {
   tier3: {
     booth: 5,
     tcas: 1,
-    "central-exhibition": 1,
   },
   tier2: {
     booth: 8,
     workshop: 1,
     tcas: 1,
-    "central-exhibition": 1,
   },
   tier1: {
     booth: 12,
     workshop: 1,
     tcas: 1,
-    "central-exhibition": 1,
     challenge: 1,
   },
 };
@@ -67,13 +62,25 @@ export class Rewards {
     );
   }
 
+  isAlreadyRedeemedReward() {
+    return this.checkins.some((checkin) => checkin.type === "reward-redeem");
+  }
+
   isRewardRedeemable() {
     return (
-      !this.checkins.some((checkin) => checkin.type === "reward-redeem") &&
+      !this.isAlreadyRedeemedReward() &&
       (this.isPassConditionForTier("tier1") ||
         this.isPassConditionForTier("tier2") ||
         this.isPassConditionForTier("tier3"))
     );
+  }
+
+  getCondition(
+    tier: keyof MinimumConditionsForTiers,
+    conditionKey: CheckpointType,
+  ) {
+    const conditions = minimumConditionsForTiers[tier] || {};
+    return (conditions as Record<CheckpointType, number>)[conditionKey] || 0;
   }
 
   serialize() {
@@ -129,14 +136,12 @@ export class Rewards {
     });
   }
 
-  countCheckinByType(type: CheckpointType) {
-    return this.checkins.filter((checkin) => checkin.type === type).length;
+  countCheckinByType(checkpointType: CheckpointType) {
+    return this.checkins.filter((checkin) => checkin.type === checkpointType)
+      .length;
   }
 
-  isCheckinConditionPass(
-    conditionKey: CheckpointType,
-    count: number,
-  ) {
+  isCheckinConditionPass(conditionKey: CheckpointType, count: number) {
     const typeCount = this.groupByTypeCount(this.checkins);
     return (typeCount[conditionKey] || 0) >= count;
   }
@@ -156,5 +161,38 @@ export class Rewards {
     } else {
       return null;
     }
+  }
+
+  isCanCheckinCheckpoint(checkpointId: string) {
+    const checkpoint = checkpoints.find((c) => c.id === checkpointId);
+    if (!checkpoint) {
+      throw new Error(`Checkpoint with id ${checkpointId} not found`);
+    }
+
+    if (this.checkins.some((checkin) => checkin.type === "reward-redeem")) {
+      return {
+        canCheckin: false,
+        reason: "แลกของรางวัลไปแล้ว ไม่สามารถเช็คอินเพิ่มได้",
+      };
+    }
+
+    if (
+      this.checkins.some(
+        (checkin) => checkin.checkin.checkpointId === checkpointId,
+      )
+    ) {
+      return {
+        canCheckin: false,
+        reason: "เช็คอินจุดนี้ไปแล้ว ไม่สามารถเช็คอินซ้ำได้",
+      };
+    }
+
+    return {
+      canCheckin: true,
+    };
+  }
+
+  listWorkshopCheckin() {
+    return this.checkins.filter((checkin) => checkin.type === "workshop");
   }
 }

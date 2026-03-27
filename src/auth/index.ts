@@ -1,4 +1,3 @@
-import type { D1Database } from "@cloudflare/workers-types";
 import { betterAuth, type BetterAuthOptions } from "better-auth";
 import { withCloudflare } from "better-auth-cloudflare";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
@@ -97,19 +96,19 @@ function createAuth(env?: Env, cf?: CfProperties) {
                 .from(schema.users)
                 .where(eq(schema.users.id, session.userId))
                 .get();
-                console.log("user", user)
+              console.log("user", user);
               if (!user) return;
               const staffAccount = await model.staff.getStaffByEmail(
                 db,
                 user.email,
               );
 
-              console.log("staffAccount", staffAccount)
+              console.log("staffAccount", staffAccount);
 
               if (!staffAccount) return;
 
               const requestedRole = staffAccount.requestedRole;
-              console.log("requestedRole", requestedRole)
+              console.log("requestedRole", requestedRole);
               if (!requestedRole) return;
 
               await db
@@ -145,7 +144,7 @@ function createAuth(env?: Env, cf?: CfProperties) {
               db,
               options: {
                 usePlural: true,
-                debugLogs: true,
+                debugLogs: false,
               },
             }
           : undefined,
@@ -161,7 +160,7 @@ function createAuth(env?: Env, cf?: CfProperties) {
           database: drizzleAdapter({} as D1Database, {
             provider: "sqlite",
             usePlural: true,
-            debugLogs: true,
+            debugLogs: false,
           }),
         }),
   });

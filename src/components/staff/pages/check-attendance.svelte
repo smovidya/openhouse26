@@ -17,12 +17,13 @@
   const participantData = resource(
     [() => currentQrId],
     async ([participantIdOrQrCodeId], _, { signal }) => {
-      const { data, error } = await actions.getParticipantByIdOrQrCodeId({
-        participantIdOrQrCodeId: participantIdOrQrCodeId!,
-      });
+      const { data, error } =
+        await actions.checkin.listAttendancesProgressWithStaff({
+          ticketId: participantIdOrQrCodeId!,
+        });
 
       if (error) {
-        alert({ title: "เกิดข้อผิดพลาด", description: error });
+        alert({ title: "เกิดข้อผิดพลาด", description: error.message });
       }
 
       return data;
@@ -52,7 +53,7 @@
 
 <QrcodeScannerBase enable={scanning} {onResult}>
   {#snippet header()}
-    <h2 class={cn("text-4xl bg-base-200/80 font-normal mt-9 p-4 px-9")}>
+    <h2 class={cn("text-4xl bg-base-200/80 mt-9 p-4 px-9")}>
       <span class="font-bold"> ตรวจสอบข้อมูลผู้เข้าร่วมงาน</span>
     </h2>
   {/snippet}
@@ -60,10 +61,7 @@
     {#if !participantData.loading && !participantData.error && participantData.current}
       <div class="pl-3 mt-3 font-serif">
         <div class="flex flex-col items-center">
-          <span class="text-xl leading-5"
-            >พบผู้เข้าร่วม: {participantData.current?.participant.givenName}
-            {participantData.current?.participant.familyName}</span
-          >
+          <span class="text-xl leading-5">พบผู้เข้าร่วม: {currentQrId}</span>
           <span class="text-sm">(เลื่อนลงเพื่อดูรายละเอียด)</span>
         </div>
       </div>
@@ -91,7 +89,7 @@
 </section>
 
 <section bind:this={attendeeDataSection}>
-  <DebugAttendedData {participantData} />
+  <DebugAttendedData progressData={participantData} />
 </section>
 
 <ManualIdDialog

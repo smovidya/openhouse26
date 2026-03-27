@@ -15,7 +15,10 @@ type User = {
   role?: string | null | undefined;
   banReason?: string | null | undefined;
   banExpires?: Date | null | undefined;
+  staffId?: string | null | undefined;
+  attendeeTicketCode: string | null | undefined;
 };
+
 declare namespace App {
   interface Locals extends Runtime {
     db: import("drizzle-orm/d1").DrizzleD1Database<

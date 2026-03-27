@@ -4,9 +4,7 @@
 
   type HistoryEntry = {
     participant: {
-      name: string;
-      age: number;
-      status: string;
+      ticketId: string;
     };
     boothId: string;
     createdAt: Date;
@@ -62,10 +60,7 @@
         class="flex py-2 justify-between items-center not-last:border-b border-neutral-300"
       >
         <div class="flex flex-col leading-4">
-          <span>{h.participant.name}</span>
-          <span class="text-sm opacity-60"
-            >{h.participant.age} ปี • {h.participant.status}</span
-          >
+          <span>{h.participant.ticketId}</span>
         </div>
         <span class="line-clamp-1 max-w-[55%]"
           >{boothCheckpoints.find((it) => it.id === h.boothId)!.name}</span

@@ -9,7 +9,6 @@
   import ChangeRoundButton from "@src/components/staff/change-round-button.svelte";
   import ManualIdDialog from "@src/components/staff/manual-id-dialog.svelte";
   import NavigationRails from "@src/components/staff/navigation-rails.svelte";
-  import WorkshopAttendeeList from "@src/components/staff/pages/workshop-attendee-list.svelte";
   import QrcodeScannerBase from "@src/components/staff/qrcode-scanner-base.svelte";
   import { cn } from "@src/components/utils";
   import { workshops } from "@src/data/workshops";
@@ -21,7 +20,6 @@
   let isConfirmDialogOpen = $state(false);
   let isIdInputtingDialogOpen = $state(false);
 
-  let mode = $state("checkin" as "checkin" | "add");
   const scanning = $derived(
     !(
       isWorkshopSelectorOpen ||
@@ -34,19 +32,13 @@
   // Workshop and timeslot selection ------------------------------------
 
   const selectedWorkshopId = new PersistedState(
-    "workshop-qr-scanner:selectedWorkshop",
+    "workshop-qr-scanner:selectedWorkshop2",
     {
-      workshopId: "foodtech-playground",
-      roundNumber: 1,
+      checkpointId: "workshop-secret-code",
     },
   );
   const selectedWorkshop = $derived(
-    workshops.find((it) => it.id === selectedWorkshopId.current.workshopId)!,
-  );
-  const selectedTimeSlot = $derived(
-    selectedWorkshop?.slots.find(
-      (it) => it.round === selectedWorkshopId.current.roundNumber,
-    )!,
+    workshops.find((it) => it.id === selectedWorkshopId.current.checkpointId)!,
   );
 
   // svelte-ignore state_referenced_locally : I know
@@ -63,8 +55,6 @@
     isWorkshopSelectorOpen = false;
   }
 
-  // Scanning ------------------------------------------------------------
-
   let currentQrId: string | null = $state(null);
   const user = resource(
     () => [], // fuck this, we are doing manual refetching
@@ -72,14 +62,11 @@
       if (!currentQrId) {
         return;
       }
-      const { data, error } = await actions.getParticipantByIdOrQrCodeId({
-        participantIdOrQrCodeId: currentQrId,
+      const { data, error } = await actions.checkin.listAttendancesProgress({
+        ticketId: currentQrId,
       });
       if (error) {
         throw new Error(error.message);
-      }
-      if (!data) {
-        throw new Error("No user found");
       }
 
       return data;
@@ -90,14 +77,10 @@
   );
 
   const workshopData = resource(
-    [
-      () => selectedWorkshopId.current.workshopId,
-      () => selectedWorkshopId.current.roundNumber,
-    ],
-    async ([workshopId, roundNumber], _, { signal }) => {
-      const { data, error } = await actions.getWorkshopRegistrationByWorkshop({
-        workshopId: workshopId,
-        workshopRoundNumber: roundNumber,
+    [() => selectedWorkshopId.current.checkpointId],
+    async ([checkpointId], _, { signal }) => {
+      const { data, error } = await actions.checkin.listCheckinsByCheckpoint({
+        checkpointId,
       });
 
       if (error) {
@@ -116,7 +99,7 @@
     isConfirmDialogOpen = true;
     const p = user.refetch();
     const ok = await confirm({
-      title: mode === "checkin" ? "ยืนยันการเช็คอิน" : "ยืนยันการเพิ่มคน",
+      title: "ยืนยันการเช็คอิน",
       description: confirmDialogBody,
       blockConfirmUntil: p,
     });
@@ -127,43 +110,22 @@
       return;
     }
 
-    if (mode === "checkin") {
-      const { data, error } = await actions.staffCheckinWorkshop({
-        participantIdOrQrCodeId: currentQrId!,
-        workshopId: selectedWorkshopId.current.workshopId,
-        roundNumber: String(selectedWorkshopId.current.roundNumber),
+    const { data, error } = await actions.checkin.checkinCheckpoint({
+      checkpointId: selectedWorkshopId.current.checkpointId,
+      ticketId: currentQrId,
+    });
+
+    if (error) {
+      alert({
+        title: "เกิดข้อผิดพลาด",
+        description: error.message,
       });
-
-      if (error) {
-        alert({
-          title: "เกิดข้อผิดพลาด",
-          description: error.message,
-        });
-        workshopData.refetch();
-        return;
-      }
-
-      toast.success("บันทึกข้อมูลเรียบร้อย");
       workshopData.refetch();
-    } else {
-      const { data, error } = await actions.staffAddOnSiteCheckinParticipant({
-        participantIdOrQrCodeId: currentQrId!,
-        workshopId: selectedWorkshopId.current.workshopId,
-        roundNumber: String(selectedWorkshopId.current.roundNumber),
-      });
-
-      if (error) {
-        alert({
-          title: "เกิดข้อผิดพลาด",
-          description: error.message,
-        });
-        workshopData.refetch();
-        return;
-      }
-
-      toast.success("บันทึกข้อมูลเรียบร้อย");
-      workshopData.refetch();
+      return;
     }
+
+    toast.success("บันทึกข้อมูลเรียบร้อย");
+    workshopData.refetch();
   }
 
   function openSelfIdInputtingDialog() {
@@ -178,43 +140,18 @@
 
 <QrcodeScannerBase enable={scanning} {onResult}>
   {#snippet header()}
-    <h2
-      class={cn(
-        "text-4xl bg-base-200/80 font-normal mt-9 p-4 px-9",
-        mode === "add" ? "bg-error text-base-100" : "",
-      )}
-    >
-      <span class="font-bold"
-        >{mode === "checkin" ? "เช็คอิน" : "เพิ่มคนเข้า"}</span
-      >
-      <span class="text-lg">
+    <h2 class={cn("text-3xl bg-base-200/80 mt-9 p-4 px-9")}>
+      <span class="font-bold">เช็คอิน</span>
+      <span class="">
         {selectedWorkshop.title}
       </span>
-      <span class="font-mono font-bold">
-        {selectedTimeSlot.start}
-      </span>
     </h2>
-  {/snippet}
-  {#snippet notSoBottomUi()}
-    <NavigationRails
-      bind:selected={mode}
-      items={[
-        {
-          label: "เช็คอิน",
-          value: "checkin",
-        },
-        {
-          label: "เพิ่มคน",
-          value: "add",
-        },
-      ]}
-    />
   {/snippet}
   {#snippet bottomUi()}
     <ChangeRoundButton
       onclick={launchWorkshopSelector}
-      title="{selectedWorkshop.title} ({selectedWorkshop.hostDepartmentAbbr})"
-      subtitle="รอบ {selectedTimeSlot.start} - {selectedTimeSlot.end}"
+      title={selectedWorkshop.title}
+      subtitle={selectedWorkshop.department}
     />
   {/snippet}
 </QrcodeScannerBase>
@@ -232,15 +169,9 @@
   </div>
 </section>
 
-<WorkshopAttendeeList
-  bind:workshopId={selectedWorkshopId.current.workshopId}
-  bind:roundNumber={selectedWorkshopId.current.roundNumber}
-  {workshopData}
-/>
-
 <Drawer bind:open={isWorkshopSelectorOpen}>
   {#snippet header()}
-    <h2 class="text-3xl">เปลี่ยนเวิร์กช็อปและรอบ</h2>
+    <h2 class="text-3xl">เปลี่ยนเวิร์กช็อป</h2>
   {/snippet}
   <section class="mx-6 flex flex-col gap-3">
     <label class="flex flex-col gap-1">
@@ -248,33 +179,15 @@
       <select
         class="select"
         bind:value={
-          () => dialogWorkshop.workshopId,
+          () => dialogWorkshop.checkpointId,
           (value) => {
-            dialogWorkshop.workshopId = value;
-            dialogWorkshop.roundNumber = 1;
+            dialogWorkshop.checkpointId = value;
           }
         }
       >
         {#each workshops as workshop}
           <option value={workshop.id}
-            >{workshop.title} ({workshop.hostDepartmentAbbr})</option
-          >
-        {/each}
-      </select>
-    </label>
-
-    <label class="flex flex-col gap-1">
-      <span>รอบ</span>
-      <select
-        class="select"
-        bind:value={
-          () => String(dialogWorkshop.roundNumber),
-          (value) => (dialogWorkshop.roundNumber = parseInt(value))
-        }
-      >
-        {#each workshops.find((it) => it.id === dialogWorkshop.workshopId)?.slots ?? [] as slot}
-          <option value={String(slot.round)}
-            >รอบ {slot.start.toString()} - {slot.end.toString()}</option
+            >{workshop.title} ({workshop.department})</option
           >
         {/each}
       </select>
@@ -298,31 +211,16 @@
     </div>
   {/if}
   {#if user.current && !user.loading && !user.error}
-    {@const participant = user.current.participant}
-    <div class="flex justify-between">
-      <span>ชื่อ</span>
-      <span class="text-2xl"
-        >{participant.givenName} {participant.familyName}</span
-      >
-    </div>
-    <div class="flex justify-between">
-      <span>สถานะ</span>
-      <span class="text-xl">{participant.attendeeType}</span>
-    </div>
-    <div class="flex justify-between">
-      <span>อายุ</span>
-      <span>{participant.age} ปี</span>
-    </div>
-    <div class="flex justify-between">
-      <span>ความต้องการพิเศษ</span>
-      <span>{participant.specialNeeds}</span>
+    <div class="flex flex-col item-center w-full text-center gap-2">
+      <span> CU Ticket Code </span>
+      <span class="text-2xl font-bold font-mono">{currentQrId}</span>
     </div>
   {/if}
 {/snippet}
 
 <ManualIdDialog
-  headerText="กรอกโค้ด{mode === 'checkin' ? 'เช็คอิน' : 'เพิ่มคน'}"
-  subText="ผู้เข้าร่วมสามารถดูได้ใต้ Qr Code ในหน้า MyID"
+  headerText="กรอกโค้ดเพื่อเช็คอิน"
+  subText="ผู้เข้าร่วมสามารถดูได้ใต้ Qr Code ในหน้า CU Ticket ของผู้เข้าร่วม"
   bind:open={isIdInputtingDialogOpen}
   onDone={onSelfIdInputtingDialogDone}
 />

@@ -12,9 +12,7 @@
     addToHistory,
   } from "@src/components/staff/pages/booth-checkin-history.svelte";
   import QrcodeScannerBase from "@src/components/staff/qrcode-scanner-base.svelte";
-  import {
-    boothCheckpoints,
-  } from "@src/data/checkpoints";
+  import { boothCheckpoints, isDepartmentBooth } from "@src/data/checkpoints";
   import { Rewards } from "@src/data/rewards";
   import { actions } from "astro:actions";
   import WarningAltFilled from "carbon-icons-svelte/lib/WarningAltFilled.svelte";
@@ -37,8 +35,8 @@
   // Workshop and timeslot selection ------------------------------------
 
   const selectedBoothId = new PersistedState(
-    "booth-qr-scanner:selectedBoothId",
-    "bsac",
+    "booth-qr-scanner:selectedBoothId2",
+    "checkpoint-mathcom",
   );
   const selectedBooth = $derived(
     boothCheckpoints.find((it) => String(it.id) === selectedBoothId.current)!,
@@ -71,15 +69,11 @@
         });
         return;
       }
-      const { data, error } = await actions.getParticipantByIdOrQrCodeId({
-        boothId: selectedBoothId.current,
-        participantIdOrQrCodeId: currentQrId,
+      const { data, error } = await actions.checkin.listAttendancesProgress({
+        ticketId: currentQrId,
       });
       if (error) {
         throw new Error(error.message);
-      }
-      if (!data) {
-        throw new Error("No user found");
       }
       return data;
     },
@@ -98,9 +92,8 @@
       description: confirmDialogBody,
       blockConfirmUntil: p,
       disableConfirmChecker: (data) =>
-        !!data?.checkinForBooth.some(
-          (it) => it.checkpoints?.id === selectedBoothId.current,
-        ),
+        !currentReward.isCanCheckinCheckpoint(selectedBoothId.current)
+          .canCheckin,
     });
 
     isConfirmDialogOpen = false;
@@ -120,10 +113,13 @@
       return;
     }
 
-    const { error } = await actions.staffCheckin({
-      boothId: selectedBoothId.current,
-      participantIdOrQrCodeId: currentQrId,
+    const { error } = await actions.checkin.checkinCheckpoint({
+      // boothId: selectedBoothId.current,
+      // participantIdOrQrCodeId: currentQrId,
+      checkpointId: selectedBoothId.current,
+      ticketId: currentQrId,
     });
+
     if (error) {
       alert({
         title: "เกิดข้อผิดพลาด",
@@ -135,9 +131,7 @@
     // data is void | undefined tho
     addToHistory({
       participant: {
-        age: user.current!.participant.age,
-        name: `${user.current!.participant.givenName} ${user.current!.participant.familyName}`,
-        status: user.current!.participant.attendeeType,
+        ticketId: currentQrId || "???",
       },
       boothId: selectedBoothId.current,
     });
@@ -150,14 +144,12 @@
     onResult(value);
   }
 
-  const currentReward = $derived(
-    new Rewards(currentQrId || "", user.current?.checkinForBooth),
-  );
+  const currentReward = $derived(new Rewards(user.current?.checkins));
 </script>
 
-<!-- <QrcodeScannerBase enable={scanning} {onResult}>
+<QrcodeScannerBase enable={scanning} {onResult}>
   {#snippet header()}
-    <h2 class="text-3xl mt-9 bg-base-200/80 text-base-content px-9">
+    <h2 class="text-xl font-sans mt-9 bg-base-200/80 text-base-content px-9">
       กำลัง<span class="font-bold">เช็คอิน</span>{selectedBooth?.name || "???"}
     </h2>
   {/snippet}
@@ -198,7 +190,7 @@
         {/each}
       </select>
     </label>
-    {#if !isDepartmentStaffSelectable(dialogWorkshopId)}
+    {#if !isDepartmentBooth(dialogWorkshopId)}
       <div class="alert alert-warning">
         <WarningAltFilled />
         <div>
@@ -230,25 +222,30 @@
     </div>
   {/if}
   {#if user.current && !user.loading && !user.error}
-    {@const participated = user.current.checkinForBooth.some(
-      (it) => it.checkpoints?.id === selectedBoothId.current,
+    {@const canCheckin = currentReward.isCanCheckinCheckpoint(
+      selectedBoothId.current,
     )}
-    {#if participated}
-      <div class="alert alert-info text-4xl">เคยเช็คอินที่บูธนี้แล้ว</div>
+    {#if !canCheckin.canCheckin}
+      <div class="alert alert-info text-4xl">{canCheckin.reason}</div>
     {/if}
     <table class="table mt-3 text-md">
       <tbody>
         <tr>
-          <th> ชื่อ </th>
-          <td class="text-xl">
-            {user.current?.participant?.givenName}
-            {user.current?.participant?.familyName}
+          <th> CU Ticket Code </th>
+          <td class="text-xl font-mono">
+            {currentQrId}
+          </td>
+        </tr>
+        <tr>
+          <th> บูธ </th>
+          <td class="text-xl font-mono">
+            {selectedBooth?.name || "ไม่พบบูธ"}
           </td>
         </tr>
         <tr>
           <th> ความคืบหน้าปัจจุบัน </th>
-          <td>
-            {currentReward.getCurrentTier().tier}
+          <td class="text-xl font-mono font-bold uppercase">
+            {currentReward.currentRewardTier() || "-ยังไม่มีสิทธิ์รับรางวัล-"}
           </td>
         </tr>
       </tbody>
@@ -258,7 +255,7 @@
 
 <ManualIdDialog
   headerText="กรอกโค้ดเช็คอิน"
-  subText="ผู้เข้าร่วมสามารถดูได้ใต้ Qr Code ในหน้า MyID"
+  subText="ผู้เข้าร่วมสามารถดูได้ใต้ Qr Code ในหน้า CU Ticket ของผู้เข้าร่วม"
   bind:open={isIdInputtingDialogOpen}
   onDone={onSelfIdInputtingDialogDone}
-/> -->
+/>

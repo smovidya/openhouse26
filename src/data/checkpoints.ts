@@ -5,7 +5,6 @@ export type CheckpointType =
   | "reward-redeem"
   | "challenge"
   | "workshop"
-  | "central-exhibition"
   | "tcas";
 
 export interface Checkpoint {
@@ -15,7 +14,7 @@ export interface Checkpoint {
 }
 
 const workshopCheckpoints = workshops.map((workshop) => ({
-  id: `workshop-${workshop.id}`,
+  id: workshop.id,
   name: `กิจกรรม Workshop: ${workshop.title}`,
   type: "workshop" as const,
 }));
@@ -102,11 +101,6 @@ export const checkpoints: Checkpoint[] = [
     type: "booth",
   },
   {
-    id: "central-exhibitions",
-    name: "นิทรรศการกลาง",
-    type: "central-exhibition",
-  },
-  {
     id: "tcas",
     name: "TCAS",
     type: "tcas",
@@ -125,8 +119,7 @@ export const checkpoints: Checkpoint[] = [
 ];
 
 export const boothCheckpoints = checkpoints.filter(
-  (c) =>
-    c.type === "booth" || c.type === "central-exhibition" || c.type === "tcas",
+  (c) => c.type === "booth" || c.type === "tcas",
 );
 
 export const departmentBoothCheckpoints = checkpoints.filter(

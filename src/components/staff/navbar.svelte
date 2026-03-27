@@ -32,7 +32,7 @@
       ],
     },
     {
-      label: "สตาฟบูธ / จุดสะสมคะแนน",
+      label: "สตาฟบูธ",
       href: "/staff/check-booth-attendance",
       role: ["admin", "majorBoothStaff"],
     },
@@ -41,11 +41,11 @@
       href: "/staff/check-workshop-attendance",
       role: ["admin", "workshopStaff"],
     },
-    {
-      label: "เช็คอินทะเบียน",
-      href: "/staff/check-registration-attendance",
-      role: ["admin", "registarStaff"],
-    },
+    // {
+    //   label: "เช็คอินทะเบียน",
+    //   href: "/staff/check-registration-attendance",
+    //   role: ["admin", "registarStaff"],
+    // },
     {
       label: "จุดแลกของที่ระลึก",
       href: "/staff/redeem",

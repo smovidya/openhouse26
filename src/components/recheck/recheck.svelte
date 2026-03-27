@@ -16,96 +16,19 @@
       if (!ticketId) {
         return null;
       }
-      await new Promise((resolve) => setTimeout(resolve, 3000)); // Simulate loading delay
-      // const { data, error } = await actions.checkin.listAttendancesProgress({
-      //   ticketId,
-      // });
 
-      // if (error) {
-      //   console.error("Failed to fetch rewards data:", error);
-      // }
+      const { data, error } = await actions.checkin.listAttendancesProgress({
+        ticketId,
+      });
 
-      // return data;
+      if (error) {
+        alert("เกิดข้อผิดพลาดในการโหลดข้อมูล โปรดลองใหม่อีกครั้ง");
+        console.error("Failed to fetch rewards data:", error);
+      }
 
-      return {
-        checkins: [
-          {
-            checkedByStaffId: "staff123",
-            checkpointId: "checkpoint-mathcom",
-            createdAt: new Date("2023-01-01T00:00:00Z"),
-            data: {},
-            id: "checkin123",
-            deletedAt: null,
-            participantTicketId: ticketId,
-            updatedAt: new Date("2023-01-01T00:00:00Z"),
-          },
-          {
-            checkedByStaffId: "staff456",
-            checkpointId: "checkpoint-physics",
-            createdAt: new Date("2023-01-02T00:00:00Z"),
-            data: {},
-            id: "checkin456",
-            deletedAt: null,
-            participantTicketId: ticketId,
-            updatedAt: new Date("2023-01-02T00:00:00Z"),
-          },
-          {
-            checkedByStaffId: "staff789",
-            checkpointId: "checkpoint-chemistry",
-            createdAt: new Date("2023-01-03T00:00:00Z"),
-            data: {},
-            id: "checkin789",
-            deletedAt: null,
-            participantTicketId: ticketId,
-            updatedAt: new Date("2023-01-03T00:00:00Z"),
-          },
-          {
-            checkedByStaffId: "staff101",
-            checkpointId: "checkpoint-bbtech",
-            createdAt: new Date("2023-01-04T00:00:00Z"),
-            data: {},
-            id: "checkin101",
-            deletedAt: null,
-            participantTicketId: ticketId,
-            updatedAt: new Date("2023-01-04T00:00:00Z"),
-          },
-          {
-            checkedByStaffId: "staff102",
-            checkpointId: "checkpoint-bistech",
-            createdAt: new Date("2023-01-05T00:00:00Z"),
-            data: {},
-            id: "checkin102",
-            deletedAt: null,
-            participantTicketId: ticketId,
-            updatedAt: new Date("2023-01-05T00:00:00Z"),
-          },
-          {
-            checkedByStaffId: "staff103",
-            checkpointId: "tcas",
-            createdAt: new Date("2023-01-06T00:00:00Z"),
-            data: {},
-            id: "checkin103",
-            deletedAt: null,
-            participantTicketId: ticketId,
-            updatedAt: new Date("2023-01-06T00:00:00Z"),
-          },
-          {
-            checkedByStaffId: "staff103",
-            checkpointId: "central-exhibitions",
-            createdAt: new Date("2023-01-06T00:00:00Z"),
-            data: {},
-            id: "checkin104",
-            deletedAt: null,
-            participantTicketId: ticketId,
-            updatedAt: new Date("2023-01-06T00:00:00Z"),
-          },
-        ],
-      } as Awaited<
-        ReturnType<typeof actions.checkin.listAttendancesProgress>
-      >["data"];
+      return data;
     },
     {
-      debounce: 500,
       lazy: true,
     },
   );
@@ -175,9 +98,25 @@
           {/each}
         </ul>
       {:else if conditionKey === "workshop"}
-        ติดตามตารางกิจกรรมเวิร์กช็อปได้ที่ <a href="/workshops"
-          >หน้าร่วมตารางเวิร์กช็อป</a
-        > ลงทะเบียนที่บริเวณใต้ตึกแถบ นีลนิธี เมื่อเสร็จกิจกรรมแล้ว ให้สตาฟสแกนเพื่อรับเช็คอิน
+        <p>
+          ติดตามตารางกิจกรรมเวิร์กช็อปได้ที่ <a
+            class="underline link"
+            href="/workshops">หน้าร่วมตารางเวิร์กช็อป</a
+          > ลงทะเบียนที่บริเวณใต้ตึกแถบ นีลนิธี เมื่อเสร็จกิจกรรมแล้ว ให้สตาฟสแกนเพื่อรับเช็คอิน
+        </p>
+        <ul class="flex flex-wrap gap-1 mt-1">
+          {#each rewards.listWorkshopCheckin() as chpt}
+            <li
+              class={cn(
+                "border border-token-6 rounded-sm px-2 py-1",
+                chpt.checkin && "bg-token-6 text-white",
+              )}
+            >
+              {chpt.name}
+              {chpt.checkin ? "(✓)" : ""}
+            </li>
+          {/each}
+        </ul>
       {:else if conditionKey === "tcas"}
         เดินชมบูธ TCAS แล้วให้สตาฟ TCAS แสกนเพื่อรับเช็คอิน
       {:else if conditionKey === "central-exhibition"}
@@ -281,10 +220,19 @@
     </div>
     <Button
       class="w-auto"
+      disabled={!recheckInput.match(/^[SPEAT]\d{6}$/) ||
+        rewardsResource.loading}
       onclick={() => {
         currentTicketId = recheckInput;
-      }}>Search</Button
+        rewardsResource.refetch();
+      }}
     >
+      {#if rewardsResource.loading}
+        <span class="loading loading-spinner"></span>
+      {:else}
+        Search
+      {/if}
+    </Button>
   </div>
 </Card>
 
@@ -300,7 +248,7 @@
       {#if !currentTicketId}
         <p class="text-balance">
           กรุณากรอก CU Ticket ID ของคุณแล้วกด Search
-          เพื่อดูสิทธิในการรับเกียรติบัตร
+          เพื่อดูสิทธิในการรับเกียรติบัตรและของที่ระลึก
         </p>
       {:else if rewardsResource.loading}
         <p class="italic">กำลังโหลดข้อมูล...</p>
