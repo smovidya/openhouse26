@@ -40,6 +40,16 @@
     activityMissedWorkshop: "",
     activityMissedDepartments: [],
     activityWorkshopRating: null,
+    overviewRating: null,
+    overview3Words: "",
+    overviewFeeling: "",
+    overviewImpression: "",
+    boothStaffAnswer: "",
+    boothPresentationRating: null,
+    boothUnansweredQuestions: "",
+    boothUnderstandingRating: null,
+    feedbackMessage: "",
+    feedbackImprovement: "",
   });
   let confirmedAccuracy = $state(false);
 

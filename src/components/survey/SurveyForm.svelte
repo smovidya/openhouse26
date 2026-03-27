@@ -21,6 +21,16 @@
     activityMissedWorkshop: string;
     activityMissedDepartments: string[];
     activityWorkshopRating: number | null;
+    overviewRating: number | null;
+    overview3Words: string;
+    overviewFeeling: string;
+    overviewImpression: string;
+    boothStaffAnswer: string;
+    boothPresentationRating: number | null;
+    boothUnansweredQuestions: string;
+    boothUnderstandingRating: number | null;
+    feedbackMessage: string;
+    feedbackImprovement: string;
   }
 
   interface Props {
@@ -45,6 +55,16 @@
       activityMissedWorkshop: "",
       activityMissedDepartments: [],
       activityWorkshopRating: null,
+      overviewRating: null,
+      overview3Words: "",
+      overviewFeeling: "",
+      overviewImpression: "",
+      boothStaffAnswer: "",
+      boothPresentationRating: null,
+      boothUnansweredQuestions: "",
+      boothUnderstandingRating: null,
+      feedbackMessage: "",
+      feedbackImprovement: "",
     }),
     isValid = $bindable(false),
     showErrors = $bindable(false),
@@ -94,6 +114,29 @@
     { label: "ไม่มี", value: "ไม่มี" },
   ];
 
+  const feelingOptions = [
+    { label: "สนใจศึกษาต่อมากขึ้น", value: "สนใจศึกษาต่อมากขึ้น" },
+    { label: "ขอพิจารณาก่อน", value: "ขอพิจารณาก่อน" },
+    { label: "ไม่สนใจมีในใจอยู่แล้ว", value: "ไม่สนใจมีในใจอยู่แล้ว" },
+  ];
+
+  const impressionOptions = [
+    { label: "คน (พี่/อาจารย์)", value: "คน (พี่/อาจารย์)" },
+    { label: "กิจกรรมวันนี้", value: "กิจกรรมวันนี้" },
+    { label: "บรรยากาศในงาน", value: "บรรยากาศในงาน" },
+    { label: "บรรยากาศในม.", value: "บรรยากาศในม." },
+    { label: "อาหาร", value: "อาหาร" },
+    { label: "สถานที่", value: "สถานที่" },
+  ];
+
+  const staffAnswerOptions = [
+    { label: "ตอบเคลียร์มาก", value: "ตอบเคลียร์มาก" },
+    { label: "พอเข้าใจ", value: "พอเข้าใจ" },
+    { label: "ยังงงนิดหน่อย", value: "ยังงงนิดหน่อย" },
+    { label: "งงเหมือนเดิม", value: "งงเหมือนเดิม" },
+    { label: "แทบไม่ได้คุยกับพี่ๆเลย", value: "แทบไม่ได้คุยกับพี่ๆเลย" },
+  ];
+
   let errors = $derived.by(() => {
     let e: Record<string, string> = {};
     if (responses.purposes.length === 0)
@@ -123,6 +166,15 @@
     if (hasWorkshopCheckin && !responses.activityWorkshopRating) {
       e.activityWorkshopRating = "โปรดให้คะแนน";
     }
+
+    if (!responses.overviewRating) e.overviewRating = "โปรดให้คะแนน";
+    if (!responses.overviewFeeling) e.overviewFeeling = "โปรดระบุ";
+    if (!responses.overviewImpression) e.overviewImpression = "โปรดระบุ";
+
+    if (!responses.boothStaffAnswer) e.boothStaffAnswer = "โปรดระบุ";
+    if (!responses.boothPresentationRating) e.boothPresentationRating = "โปรดให้คะแนน";
+    if (!responses.boothUnansweredQuestions) e.boothUnansweredQuestions = "โปรดระบุ";
+    if (!responses.boothUnderstandingRating) e.boothUnderstandingRating = "โปรดให้คะแนน";
 
     // Optional: check uniqueness of ranked recommendations
     let ranks = [
@@ -267,4 +319,71 @@
       error={showErrors ? errors.activityWorkshopRating : ""}
     />
   {/if}
+
+  <div class="divider text-xl font-bold text-token-6 text-shadow-2xs mt-8">ตอนที่ 5: ภาพรวมงาน</div>
+  <RatingScale
+    label="ความพึงพอใจต่องานโดยรวม"
+    bind:value={responses.overviewRating}
+    required
+    error={showErrors ? errors.overviewRating : ""}
+  />
+  <TextInput
+    label="ให้รีวิว Open House แล้วรู้สึกยังไงบ้าง ขอ 3 คำ (ไม่บังคับ)"
+    bind:value={responses.overview3Words}
+    placeholder="สนุก มาก เลย..."
+  />
+  <RadioGroup
+    label="ความรู้สึกหลังจากเข้าร่วมงาน / รู้สึกอย่างไรบ้างหลังจากเข้าร่วมงาน"
+    options={feelingOptions}
+    bind:value={responses.overviewFeeling}
+    required
+    error={showErrors ? errors.overviewFeeling : ""}
+  />
+  <RadioGroup
+    label="อะไรคือความประทับใจเมื่อน้องเข้าร่วมงานนี้"
+    options={impressionOptions}
+    bind:value={responses.overviewImpression}
+    required
+    error={showErrors ? errors.overviewImpression : ""}
+  />
+
+  <div class="divider text-xl font-bold text-token-6 text-shadow-2xs mt-8">ตอนที่ 6: บูธภาควิชา</div>
+  <RadioGroup
+    label="เมื่อน้องถามสต๊าฟแล้ว ได้คำตอบที่สามารถตอบข้อสงสัยของน้องๆได้มั้ย"
+    options={staffAnswerOptions}
+    bind:value={responses.boothStaffAnswer}
+    required
+    error={showErrors ? errors.boothStaffAnswer : ""}
+  />
+  <RatingScale
+    label="ความน่าสนใจของภาควิชาในการนำเสนอ และได้ความรู้หลังจากได้ฟังบรรยาย"
+    bind:value={responses.boothPresentationRating}
+    required
+    error={showErrors ? errors.boothPresentationRating : ""}
+  />
+  <RadioGroup
+    label="ท่านมีคำถามที่อยากรู้แต่ไม่มีโอกาสได้รู้หรือไม่ (ถ้ามีสามารถทักมาสอบถามข้อมูลภาคได้ที่ IG ส่วนตัวของภาควิชาได้เลย)"
+    options={yesNoOptions}
+    bind:value={responses.boothUnansweredQuestions}
+    required
+    error={showErrors ? errors.boothUnansweredQuestions : ""}
+  />
+  <RatingScale
+    label="เมื่อเทียบกับข้อมูลจากอินเทอร์เน็ต การมางานนี้ช่วยให้เข้าใจภาควิชามากขึ้นแค่ไหน"
+    bind:value={responses.boothUnderstandingRating}
+    required
+    error={showErrors ? errors.boothUnderstandingRating : ""}
+  />
+
+  <div class="divider text-xl font-bold text-token-6 text-shadow-2xs mt-8">ตอนที่ 7: ข้อเสนอแนะ/ติชม</div>
+  <TextInput
+    label="มีอะไรอยากบอกทีมจัดงานไหม รวมๆหรือพี่คนไหนก็ได้ เดี๋ยวไปบอกต่อให้ (ไม่บังคับ)"
+    bind:value={responses.feedbackMessage}
+    placeholder="พิมพ์ข้อความของคุณที่นี่..."
+  />
+  <TextInput
+    label="ถ้าน้องเป็นคนจัดงาน น้องจะแก้ตรงไหนเป็นพิเศษไหม (ไม่บังคับ)"
+    bind:value={responses.feedbackImprovement}
+    placeholder="พิมพ์ข้อเสนอแนะของคุณที่นี่..."
+  />
 </div>
