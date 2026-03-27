@@ -11,11 +11,6 @@
   let menuOpen = $state(false);
   const menuList = [
     { title: "LOBBY", icon: "/nowath/icon/hotel.svg", path: "/" },
-    {
-      title: "MERCHANDISE",
-      icon: "/nowath/icon/shopping-cart.svg",
-      path: "/merchs",
-    },
     { title: "WEBSITES", icon: "/nowath/icon/globe.svg", path: "/websites" },
     {
       title: "WORKSHOPS",
@@ -24,6 +19,11 @@
     },
     { title: "RECHECK", icon: "/nowath/icon/redeem.svg", path: "/" },
     { title: "REDEEM", icon: "/nowath/icon/file-badge.svg", path: "/" },
+    {
+      title: "MERCHANDISE",
+      icon: "/nowath/icon/shopping-cart.svg",
+      path: "/merchs",
+    },
   ];
 </script>
 

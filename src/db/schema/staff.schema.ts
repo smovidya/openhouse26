@@ -2,7 +2,6 @@ import { sqliteTable } from "drizzle-orm/sqlite-core";
 import * as t from "drizzle-orm/sqlite-core";
 import { id, timestamps } from "./helper";
 import { relations } from "drizzle-orm";
-import { users } from "./auth.schema";
 import { checkins } from "./checkin.schema";
 
 export const staffs = sqliteTable("staffs", {
@@ -17,6 +16,5 @@ export const staffs = sqliteTable("staffs", {
 });
 
 export const staffRelations = relations(staffs, ({ many }) => ({
-  users: many(users),
   checkins: many(checkins),
 }));

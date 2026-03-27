@@ -37,10 +37,13 @@ const user = Astro.locals.user;
       <h2>สำหรับคุณ</h2>
       <div class="flex flex-col gap-2">
         {
+          hasOneOfRoleIn(user, ["admin"]) && (
+            <Button href="/admin">Admin</Button>
+          )
+        }
+        {
           hasOneOfRoleIn(user, ["admin", "majorBoothStaff"]) && (
-            <Button href="/staff/check-booth-attendance">
-              กิจกรรมภาควิชา / บูธต่าง ๆ / เวที
-            </Button>
+            <Button href="/staff/check-booth-attendance">บูธต่าง ๆ</Button>
           )
         }
         {
@@ -51,13 +54,6 @@ const user = Astro.locals.user;
         {
           hasOneOfRoleIn(user, ["admin", "rewardStaff"]) && (
             <Button href="/staff/redeem">ของที่ระลึก</Button>
-          )
-        }
-        {
-          hasOneOfRoleIn(user, ["admin", "registarStaff"]) && (
-            <Button href="/staff/check-registration-attendance">
-              เช็คอินเข้าร่วมงาน
-            </Button>
           )
         }
         <Logout client:load class="btn btn-xl"> ออกจากระบบ </Logout>

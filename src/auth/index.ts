@@ -3,8 +3,9 @@ import { betterAuth, type BetterAuthOptions } from "better-auth";
 import { withCloudflare } from "better-auth-cloudflare";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { admin, anonymous, jwt, oneTap } from "better-auth/plugins";
-import { drizzle } from "drizzle-orm/d1";
+import { drizzle, DrizzleD1Database } from "drizzle-orm/d1";
 import { schema } from "@src/db";
+import * as model from "@src/db/model";
 import {
   ac,
   admin as adminRole,
@@ -20,7 +21,7 @@ function createAuth(env?: Env, cf?: CfProperties) {
   // Use actual DB for runtime, empty object for CLI
   const db = env
     ? drizzle(env.openhouse26_2_db, { schema, logger: true })
-    : ({} as any);
+    : ({} as any as DrizzleD1Database<typeof schema>);
 
   const betterAuthOptions = {
     ...(env
@@ -88,7 +89,45 @@ function createAuth(env?: Env, cf?: CfProperties) {
     },
     databaseHooks: {
       session: {
-        create: {},
+        create: {
+          after: async (session, ctx) => {
+            try {
+              const user = await db
+                .select()
+                .from(schema.users)
+                .where(eq(schema.users.id, session.userId))
+                .get();
+                console.log("user", user)
+              if (!user) return;
+              const staffAccount = await model.staff.getStaffByEmail(
+                db,
+                user.email,
+              );
+
+              console.log("staffAccount", staffAccount)
+
+              if (!staffAccount) return;
+
+              const requestedRole = staffAccount.requestedRole;
+              console.log("requestedRole", requestedRole)
+              if (!requestedRole) return;
+
+              await db
+                .update(schema.users)
+                .set({
+                  staffId: staffAccount.id,
+                  role: requestedRole,
+                })
+                .where(eq(schema.users.id, session.userId));
+
+              await db
+                .delete(schema.sessions)
+                .where(eq(schema.sessions.userId, user.id));
+            } catch (error) {
+              console.error("Error in session create hook:", error);
+            }
+          },
+        },
       },
     },
   } satisfies BetterAuthOptions;
@@ -100,6 +139,7 @@ function createAuth(env?: Env, cf?: CfProperties) {
         geolocationTracking: true,
         // @ts-ignore
         cf: cf || {},
+        // @ts-ignore
         d1: env
           ? {
               db,

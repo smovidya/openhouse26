@@ -37,11 +37,6 @@ export const checkpoints: Checkpoint[] = [
     type: "booth",
   },
   {
-    id: "checkpoint-chemistry",
-    name: "เคมี",
-    type: "booth",
-  },
-  {
     id: "checkpoint-marine",
     name: "วิทยาศาสตร์ทางทะเล",
     type: "booth",
@@ -83,12 +78,12 @@ export const checkpoints: Checkpoint[] = [
   },
   {
     id: "checkpoint-bbtech",
-    name: "หลักสูตรเทคโนโลยีชีวภาพ",
+    name: "หลักสูตรเทคโนโลยีชีวภาพ (BBTech)",
     type: "booth",
   },
   {
     id: "checkpoint-bistech",
-    name: "หลักสูตรวิทยาศาสตร์และเทคโนโลยีอุตสาหการ",
+    name: "หลักสูตรวิทยาศาสตร์และเทคโนโลยีอุตสาหการ (BISTech)",
     type: "booth",
   },
   {
@@ -132,6 +127,10 @@ export const checkpoints: Checkpoint[] = [
 export const boothCheckpoints = checkpoints.filter(
   (c) =>
     c.type === "booth" || c.type === "central-exhibition" || c.type === "tcas",
+);
+
+export const departmentBoothCheckpoints = checkpoints.filter(
+  (c) => c.type === "booth",
 );
 
 export const isDepartmentBooth = (checkpointId: string) =>

@@ -1,9 +1,7 @@
 <script lang="ts">
   import { roles } from "@src/auth/permissions";
   import { hasOneOfRoleIn } from "@src/auth/utils";
-  import { prefetch } from "astro:prefetch";
-  import { onMount } from "svelte";
-
+  
   interface PageOption {
     label: string;
     href: string;
@@ -54,12 +52,6 @@
       role: ["admin", "rewardStaff"],
     },
   ];
-
-  onMount(() => {
-    for (const { href } of pageOptions) {
-      prefetch(href);
-    }
-  });
 
   const {
     currentPath,

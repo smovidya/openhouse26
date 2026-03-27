@@ -20,7 +20,7 @@
 >
   <div
     class={cn(
-      "w-full h-full flex items-center ring-border-1 ring-2 text-center rounded-xl p-2 justify-center px-4 shadow-md",
+      "w-full h-full ring-token-6 ring-2 text-center rounded-xl p-2 justify-center px-4 shadow-md",
       widthMode === "full" && "rounded-none",
     )}
   >

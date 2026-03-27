@@ -14,7 +14,6 @@
   import QrcodeScannerBase from "@src/components/staff/qrcode-scanner-base.svelte";
   import {
     boothCheckpoints,
-    isDepartmentStaffSelectable,
   } from "@src/data/checkpoints";
   import { Rewards } from "@src/data/rewards";
   import { actions } from "astro:actions";
@@ -156,7 +155,7 @@
   );
 </script>
 
-<QrcodeScannerBase enable={scanning} {onResult}>
+<!-- <QrcodeScannerBase enable={scanning} {onResult}>
   {#snippet header()}
     <h2 class="text-3xl mt-9 bg-base-200/80 text-base-content px-9">
       กำลัง<span class="font-bold">เช็คอิน</span>{selectedBooth?.name || "???"}
@@ -262,4 +261,4 @@
   subText="ผู้เข้าร่วมสามารถดูได้ใต้ Qr Code ในหน้า MyID"
   bind:open={isIdInputtingDialogOpen}
   onDone={onSelfIdInputtingDialogDone}
-/>
+/> -->

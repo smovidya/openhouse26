@@ -15,12 +15,12 @@
       requestedRole: ["user"] as string[],
     },
     onSubmit: async ({ value }) => {
-      const { data, error } = await actions.adminAddStaff({
-        boothName: value.booth,
+      const { data, error } = await actions.staff.addStaff({
+        booth: value.booth,
         emails: value.email.split("\n").map((it) => it.trim()),
         name: value.name,
         phone: value.phone,
-        requestedRole: value.requestedRole,
+        roles: value.requestedRole,
         studentId: value.studentId,
       });
       if (error) return alert(error);

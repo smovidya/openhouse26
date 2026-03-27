@@ -1,11 +1,11 @@
 <script>
   import { authClientSvelte } from "@src/auth/client";
-  import Button from "./common/button.svelte";
 
   const { children, redirect = "/register" } = $props();
 </script>
 
-<Button
+<button
+  class="btn btn-xl"
   onclick={async () => {
     await authClientSvelte.signIn.social({
       provider: "google",
@@ -14,4 +14,4 @@
   }}
 >
   {@render children?.()}
-</Button>
+</button>

@@ -1,5 +1,5 @@
 <script lang="ts">
-  import clsx from "clsx";
+  import { cn } from "../utils";
   import type { Snippet } from "svelte";
   import type { HTMLButtonAttributes } from "svelte/elements";
 
@@ -9,6 +9,7 @@
      */
     children?: Snippet;
     href?: string;
+    class?: string;
     color?: "yellow";
   }
 
@@ -26,56 +27,34 @@
   <a
     {href}
     {disabled}
-    class={clsx(
-      "w-full text-shadow-2xs text-center py-3 rounded-xl border border-[#fff4da64] shadow-xs shadow-black/30 cursor-pointer",
-      color,
+    class={cn(
+      "bg-token-5 block w-fit group shadow-md p-1 min-w-40 rounded-2xl font-bold uppercase",
+      "active:shadow-xs duration-100 active:translate-y-0.5",
       clazz,
     )}
     {...props as any}
   >
-    {@render children?.()}
+    <span
+      class="shadow-md border-2 border-white block rounded-xl py-1 group-hover:shadow-sm duration-100 group-active:shadow-none"
+    >
+      {@render children?.()}
+    </span>
   </a>
 {:else}
   <button
     {disabled}
     type="button"
-    class={clsx(
-      "w-full text-center py-3 rounded-xl border border-[#fff4da64] shadow-xs shadow-black/30 cursor-pointer",
-      color,
+    class={cn(
+      "bg-token-5 group shadow-md p-1 min-w-40 rounded-2xl font-bold uppercase",
+      "active:shadow-xs duration-100 active:translate-y-0.5",
       clazz,
     )}
     {...props}
   >
-    {@render children?.()}
+    <span
+      class="shadow-md w-full border-2 border-white block rounded-xl py-1 group-hover:shadow-sm duration-100 group-active:shadow-none"
+    >
+      {@render children?.()}
+    </span>
   </button>
 {/if}
-
-<style>
-  .yellow {
-    background: linear-gradient(
-      180deg,
-      #ffb843 0%,
-      #e99100 37%,
-      #dd8900 52%,
-      #ec9300 70%,
-      #ffb53d 100%
-    );
-
-    &:hover:not(:disabled),
-    &:active:not(:disabled) {
-      background: linear-gradient(
-        180deg,
-        #ea9200 1.58%,
-        #d26c00 29.98%,
-        #c06c06 51.86%,
-        #e17400 69.55%,
-        #e99100 98.42%
-      );
-    }
-  }
-
-  button:disabled {
-    filter: grayscale();
-    cursor: not-allowed;
-  }
-</style>

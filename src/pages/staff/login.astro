@@ -7,15 +7,18 @@ import LoginButton from "@src/components/login-button.svelte";
   title="Staff Dashboard"
   description="Staff dashboard for Open House 2024"
 >
+  <img
+    src="/nowath/logo/logo2.svg"
+    alt="Open House 2024 Logo"
+    class="mb-4 w-full max-w-xs"
+  />
   <h1>เข้าสู่ระบบสำหรับสตาฟกิจกรรม</h1>
+  <p>โครงการ Science Chula Openhouse 2026 | 28 - 29 มีนาคม 2569</p>
   <p>
     หากคุณระบุข้อมูลใน Google Sheet โครงการไว้หลายอีเมล
     สามารถเลือกอีเมลใดก็ได้ที่แจ้งไว้
   </p>
-  <p>
-    หากไม่ได้แจ้งอีเมลไว้กับฝ่าย IT โปรดกรอกข้อมูลของท่านใน Google Sheet
-    ที่ระบุไว้ใน Handbook และติดต่อฝ่าย IT ในพื้นที่
-  </p>
+  <p>หากไม่ได้แจ้งอีเมลไว้กับฝ่าย IT โปรดติดต่อฝ่าย IT ในพื้นที่</p>
 
   <div>
     <LoginButton redirect="/staff" client:load

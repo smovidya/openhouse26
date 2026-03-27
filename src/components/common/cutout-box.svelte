@@ -12,7 +12,7 @@
 
 <div
   class={cn(
-    "border-neutral-400 text-black border-1 rounded-xl bg-white p-4 shadow-inner shadow-black/30",
+    "border-neutral-400 text-black token-6 rounded-xl bg-white p-4 shadow-inner shadow-black/30",
     clazz,
   )}
 >
