@@ -181,6 +181,7 @@
         {#each rewards.getConditionForTier(tier) as [tierCondKey, count]}
           {@render conditionInfo(tierCondKey as CheckpointType, count, tier)}
         {/each}
+        {@render conditionInfo("challenge", 1, tier)}
       </div>
     </div>
     {#if index !== 2}

@@ -12,19 +12,16 @@ const minimumConditionsForTiers = {
   tier3: {
     booth: 5,
     tcas: 1,
-    challenge: 1,
   },
   tier2: {
     booth: 8,
     workshop: 1,
     tcas: 1,
-    challenge: 1,
   },
   tier1: {
     booth: 12,
     workshop: 1,
     tcas: 1,
-    challenge: 1,
   },
 };
 
