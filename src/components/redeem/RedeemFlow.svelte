@@ -225,7 +225,6 @@
       <div
         class="divider before:bg-token-6 after:bg-token-6 mt-8 text-xl font-bold text-token-6 text-shadow-2xs"
       >
-      
         กรอกข้อมูลเกียรติบัตร
       </div>
 
@@ -250,15 +249,13 @@
 
       <div class="form-control w-full">
         <label class="label" for="name">
-          <span class="label-text font-medium"
-            >ชื่อ-นามสกุล (สำหรับพิมพ์ลงเกียรติบัตร)</span
-          >
+          <span class="label-text font-medium">ชื่อ-นามสกุล (ภาษาอังกฤษ)</span>
         </label>
         <input
           id="name"
           type="text"
           bind:value={name}
-          placeholder="นายเรียนดี รักสงบ"
+          placeholder="Riendee Rakdee"
           class="border-token-6 text-lg border invalid:border-2 shadow-md shadow-black/20 text-center rounded-2xl p-2"
           disabled={isLoading}
         />
