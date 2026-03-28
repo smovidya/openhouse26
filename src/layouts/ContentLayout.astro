@@ -15,7 +15,7 @@ const { title, description, image, theme } = Astro.props;
 
 <Base title={title} description={description} image={image} theme={theme}>
   <div class="flex h-full w-full max-w-lg flex-col shadow-xl">
-    <div class="sticky top-0 z-40 w-full max-w-lg shrink-0">
+    <div class="fixed top-0 z-40 w-full max-w-lg shrink-0">
       <NavBar client:load />
     </div>
     <div class="flex grow flex-col overflow-x-hidden overflow-y-auto">
