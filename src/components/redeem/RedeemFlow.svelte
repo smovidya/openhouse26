@@ -349,15 +349,15 @@
         </div>
         <h2 class="text-2xl font-bold mb-2">เรียบร้อย!</h2>
         <p class="text-base-content/70 mb-8">
-          คุณสามารถดาวน์โหลดหรือดูเกียรติบัตรของคุณได้แล้ว
+          คุณสามารถดาวน์โหลดหรือดูเกียรติบัตรของคุณได้หลัง 12:00 น.
         </p>
-        <a
+        <!-- <a
           href={certUrl}
           target="_blank"
           class="btn btn-primary btn-lg w-full sm:w-auto"
         >
           ดาวน์โหลดเกียรติบัตร
-        </a>
+        </a> -->
       </div>
     {/if}
   </div>

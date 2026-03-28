@@ -266,10 +266,11 @@
         </p>
       {:else if rewards.isEligibleForCertificate()}
         <p>คุณมีสิทธิได้รับเกียรติบัตร</p>
-        <Button
+        <p>มากดรับได้ตั้งแต่เวลา 12:00 เป็นต้นไป</p>
+        <!-- <Button
           href={`/redeem?ticketId=${currentTicketId}`}
           class="mx-auto mt-2">รับเกียรติบัตร</Button
-        >
+        > -->
       {:else}
         <p class="text-balance">
           กรุณากรอกและค้นหา CU Ticket ID ของคุณเพื่อดูสิทธิในการรับเกียรติบัตร

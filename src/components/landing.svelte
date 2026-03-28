@@ -48,7 +48,7 @@
           "/nowath/stamps/recheckStamp.svg",
           "/",
           "recheckStamp",
-          true,
+          false,
         )}
         {@render stampImageLink(
           "/nowath/stamps/merchStamp.svg",
