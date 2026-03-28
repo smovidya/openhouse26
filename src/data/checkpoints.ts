@@ -31,6 +31,11 @@ export const checkpoints: Checkpoint[] = [
     type: "booth",
   },
   {
+    id: "checkpoint-biochemistry",
+    name: "ชีวเคมี",
+    type: "booth",
+  },
+  {
     id: "checkpoint-biology",
     name: "ชีววิทยา",
     type: "booth",
