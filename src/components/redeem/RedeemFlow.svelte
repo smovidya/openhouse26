@@ -222,8 +222,11 @@
         bind:showErrors={showSurveyErrors}
       />
 
-      <div class="divider text-xl font-bold text-primary mt-8">
-        ตอนที่ 3: กรอกข้อมูลเกียรติบัตร
+      <div
+        class="divider before:bg-token-6 after:bg-token-6 mt-8 text-xl font-bold text-token-6 text-shadow-2xs"
+      >
+      
+        กรอกข้อมูลเกียรติบัตร
       </div>
 
       <div class="alert mb-4">

@@ -174,11 +174,15 @@
     if (!responses.overviewImpression) e.overviewImpression = "โปรดระบุ";
 
     if (!responses.boothStaffAnswer) e.boothStaffAnswer = "โปรดระบุ";
-    if (!responses.boothPresentationRating) e.boothPresentationRating = "โปรดให้คะแนน";
-    if (!responses.boothUnansweredQuestions) e.boothUnansweredQuestions = "โปรดระบุ";
-    if (!responses.boothUnderstandingRating) e.boothUnderstandingRating = "โปรดให้คะแนน";
+    if (!responses.boothPresentationRating)
+      e.boothPresentationRating = "โปรดให้คะแนน";
+    if (!responses.boothUnansweredQuestions)
+      e.boothUnansweredQuestions = "โปรดระบุ";
+    if (!responses.boothUnderstandingRating)
+      e.boothUnderstandingRating = "โปรดให้คะแนน";
 
-    if (!responses.closingAcknowledge) e.closingAcknowledge = "โปรดยืนยันการรับทราบ";
+    if (!responses.closingAcknowledge)
+      e.closingAcknowledge = "โปรดยืนยันการรับทราบ";
 
     // Optional: check uniqueness of ranked recommendations
     let ranks = [
@@ -209,7 +213,9 @@
 </script>
 
 <div class="text-left w-full">
-  <div class="divider text-xl font-bold text-token-6 text-shadow-2xs mt-8">
+  <div
+    class="divider before:bg-token-6 after:bg-token-6 mt-8 text-xl font-bold text-token-6 text-shadow-2xs"
+  >
     ตอนที่ 1: จุดประสงค์การเข้าร่วม
   </div>
   <CheckboxGroup
@@ -227,7 +233,9 @@
     error={showErrors ? errors.interestedDepartments : ""}
   />
 
-  <div class="divider text-xl font-bold text-token-6 text-shadow-2xs mt-8">
+  <div
+    class="divider before:bg-token-6 after:bg-token-6 mt-8 text-xl font-bold text-token-6 text-shadow-2xs"
+  >
     ตอนที่ 2: ภาควิชา
   </div>
   <div class="mb-2 text-base md:text-lg font-bold">
@@ -267,7 +275,9 @@
     />
   </div>
 
-  <div class="divider text-xl font-bold text-token-6 text-shadow-2xs mt-8">
+  <div
+    class="divider before:bg-token-6 after:bg-token-6 mt-8 text-xl font-bold text-token-6 text-shadow-2xs"
+  >
     ตอนที่ 3: สถานที่จัดงาน
   </div>
   <RadioGroup
@@ -289,7 +299,9 @@
     error={showErrors ? errors.venueCleanliness : ""}
   />
 
-  <div class="divider text-xl font-bold text-token-6 text-shadow-2xs mt-8">
+  <div
+    class="divider before:bg-token-6 after:bg-token-6 mt-8 text-xl font-bold text-token-6 text-shadow-2xs"
+  >
     ตอนที่ 4: กิจกรรม
   </div>
   <RadioGroup
@@ -324,7 +336,11 @@
     />
   {/if}
 
-  <div class="divider text-xl font-bold text-token-6 text-shadow-2xs mt-8">ตอนที่ 5: ภาพรวมงาน</div>
+  <div
+    class="divider before:bg-token-6 after:bg-token-6 mt-8 text-xl font-bold text-token-6 text-shadow-2xs"
+  >
+    ตอนที่ 5: ภาพรวมงาน
+  </div>
   <RatingScale
     label="ความพึงพอใจต่องานโดยรวม"
     bind:value={responses.overviewRating}
@@ -351,7 +367,11 @@
     error={showErrors ? errors.overviewImpression : ""}
   />
 
-  <div class="divider text-xl font-bold text-token-6 text-shadow-2xs mt-8">ตอนที่ 6: บูธภาควิชา</div>
+  <div
+    class="divider before:bg-token-6 after:bg-token-6 mt-8 text-xl font-bold text-token-6 text-shadow-2xs"
+  >
+    ตอนที่ 6: บูธภาควิชา
+  </div>
   <RadioGroup
     label="เมื่อน้องถามสต๊าฟแล้ว ได้คำตอบที่สามารถตอบข้อสงสัยของน้องๆได้มั้ย"
     options={staffAnswerOptions}
@@ -379,7 +399,11 @@
     error={showErrors ? errors.boothUnderstandingRating : ""}
   />
 
-  <div class="divider text-xl font-bold text-token-6 text-shadow-2xs mt-8">ตอนที่ 7: ข้อเสนอแนะ/ติชม</div>
+  <div
+    class="divider before:bg-token-6 after:bg-token-6 mb-6 text-xl font-bold text-token-6 text-shadow-2xs"
+  >
+    ตอนที่ 7: ข้อเสนอแนะ/ติชม
+  </div>
   <TextInput
     label="มีอะไรอยากบอกทีมจัดงานไหม รวมๆหรือพี่คนไหนก็ได้ เดี๋ยวไปบอกต่อให้ (ไม่บังคับ)"
     bind:value={responses.feedbackMessage}
