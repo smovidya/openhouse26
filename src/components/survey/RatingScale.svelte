@@ -19,11 +19,11 @@
 </script>
 
 <FieldWrapper {label} {required} {error}>
-  <div class="flex items-center gap-2 mt-2 w-full justify-between sm:justify-start sm:gap-4 flex-wrap">
+  <div class="grid grid-cols-4 xs:grid-cols-5 gap-2">
     {#each ratings as r}
       <button
         type="button"
-        class="btn btn-square {value === r ? 'btn-primary' : 'btn-outline border-base-300'} w-14 h-14"
+        class="btn btn-square {value === r ? 'btn-primary' : 'btn-outline border-base-300'} w-full h-14"
         onclick={() => (value = r)}
       >
         <span class="text-xl font-bold">{r}</span>
