@@ -46,7 +46,7 @@
         )}
         {@render stampImageLink(
           "/nowath/stamps/recheckStamp.svg",
-          "/",
+          "/recheck",
           "recheckStamp",
           false,
         )}
@@ -65,7 +65,7 @@
         )}
         {@render stampImageLink(
           "/nowath/stamps/redeemStamp.svg",
-          "/",
+          "/redeem",
           "redeemStamp",
           true,
         )}
