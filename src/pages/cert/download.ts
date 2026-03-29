@@ -48,8 +48,7 @@ export const GET: APIRoute = async ({ callAction, url, locals }) => {
     },
     pdfOptions: {
       landscape: true,
-      width: 795,
-      height: 560,
+      format: "a4",
       printBackground: true,
       scale: 1.35,
     },
