@@ -18,7 +18,7 @@
       path: "/workshops",
     },
     { title: "RECHECK", icon: "/nowath/icon/redeem.svg", path: "/recheck" },
-    // { title: "REDEEM", icon: "/nowath/icon/file-badge.svg", path: "/" },
+    { title: "REDEEM", icon: "/nowath/icon/file-badge.svg", path: "/" },
     {
       title: "MERCHANDISE",
       icon: "/nowath/icon/shopping-cart.svg",

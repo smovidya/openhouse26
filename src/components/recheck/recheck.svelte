@@ -266,7 +266,7 @@
         </p>
       {:else if rewards.isEligibleForCertificate()}
         <p>คุณมีสิทธิได้รับเกียรติบัตร</p>
-        <p>มากดรับได้ตั้งแต่เวลา 14:00 เป็นต้นไป</p>
+        <p>รับเกียรติบัตรได้ทันที</p>
         <Button
           href={`/redeem?ticketId=${currentTicketId}`}
           class="mx-auto mt-2">รับเกียรติบัตร</Button
