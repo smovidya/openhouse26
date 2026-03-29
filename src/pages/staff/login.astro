@@ -20,9 +20,33 @@ import LoginButton from "@src/components/login-button.svelte";
   </p>
   <p>หากไม่ได้แจ้งอีเมลไว้กับฝ่าย IT โปรดติดต่อฝ่าย IT ในพื้นที่</p>
 
-  <div>
+  <div class="hidden" id="lineAlert">
+    <p class="text-center text-2xl text-balance text-red-500">
+      ※ โปรดเปิดลิงก์นี้ในเบราว์เซอร์อื่น เช่น Chrome หรือ Safari เปิดในแอป Line
+      จะไม่สามารถเข้าสู่ระบบได้
+    </p>
+  </div>
+  <div id="loginButton">
     <LoginButton redirect="/staff" client:load
       >เข้าสู่ระบบด้วยบัญชี Google</LoginButton
     >
   </div>
 </Layout>
+
+<script>
+  const userAgent = navigator.userAgent;
+
+  if (/Line\//.test(userAgent)) {
+    const loginButton = document.getElementById("loginButton");
+    if (loginButton) {
+      loginButton.style.display = "none";
+    }
+    const lineAlert = document.getElementById("lineAlert");
+    if (lineAlert) {
+      lineAlert.style.display = "block";
+    }
+    alert(
+      "※ โปรดเปิดลิงก์นี้ในเบราว์เซอร์อื่น ※ เช่น Chrome หรือ Safari เปิดในแอป Line จะไม่สามารถเข้าสู่ระบบได้",
+    );
+  }
+</script>

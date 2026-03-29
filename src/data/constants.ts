@@ -16,7 +16,7 @@ export const featureFlags = {
   showMission: true,
 };
 
-export const certificatePdfKvKey = (certId: string) => `certificates/${certId}`;
+export const certificatePdfKvKey = (certId: number) => `certificates/${certId}`;
 
 export const howDidYouKnowUsOptions = [
   {

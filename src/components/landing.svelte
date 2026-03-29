@@ -67,7 +67,7 @@
           "/nowath/stamps/redeemStamp.svg",
           "/redeem",
           "redeemStamp",
-          true,
+          false,
         )}
       </div>
     </div>

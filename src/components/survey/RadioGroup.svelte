@@ -27,7 +27,10 @@
   <div class="grid grid-cols-1 md:grid-cols-2 gap-2 mt-1">
     {#each options as option (option.value)}
       <label
-        class="cursor-pointer justify-start gap-4 p-2 rounded-lg hover:bg-primary/10 transition-colors flex items-center {value === option.value ? 'bg-primary/20' : ''}"
+        class="cursor-pointer justify-start gap-4 p-2 rounded-lg hover:bg-primary/10 transition-colors flex items-center {value ===
+        option.value
+          ? 'bg-primary/20'
+          : ''}"
       >
         <input
           type="radio"

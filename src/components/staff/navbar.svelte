@@ -1,7 +1,7 @@
 <script lang="ts">
   import { roles } from "@src/auth/permissions";
   import { hasOneOfRoleIn } from "@src/auth/utils";
-  
+
   interface PageOption {
     label: string;
     href: string;

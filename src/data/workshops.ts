@@ -1,4 +1,3 @@
-
 export interface Workshop {
   id: string;
   title: string;
@@ -38,8 +37,13 @@ export const workshops: Workshop[] = [
   },
   {
     id: "workshop-magnetic",
+    title: "The Microbial Room Service",
+    department: "MicroBio",
+  },
+  {
+    id: "workshop-microbial",
     title: "The Magnetic Masquerade",
-    department: "Micro",
+    department: "MatSci",
   },
   {
     id: "workshop-foodtech",

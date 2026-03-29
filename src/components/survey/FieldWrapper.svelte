@@ -1,6 +1,6 @@
 <script lang="ts">
   import type { Snippet } from "svelte";
-  
+
   interface Props {
     label: string;
     required?: boolean;
@@ -18,7 +18,7 @@
       <span class="text-error font-bold">*</span>
     {/if}
   </div>
-  
+
   <div class="mt-1">
     {@render children()}
   </div>

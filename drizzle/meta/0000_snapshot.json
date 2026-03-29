@@ -103,9 +103,7 @@
       "indexes": {
         "accounts_userId_idx": {
           "name": "accounts_userId_idx",
-          "columns": [
-            "user_id"
-          ],
+          "columns": ["user_id"],
           "isUnique": false
         }
       },
@@ -114,12 +112,8 @@
           "name": "accounts_user_id_users_id_fk",
           "tableFrom": "accounts",
           "tableTo": "users",
-          "columnsFrom": [
-            "user_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["user_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -300,16 +294,12 @@
       "indexes": {
         "sessions_token_unique": {
           "name": "sessions_token_unique",
-          "columns": [
-            "token"
-          ],
+          "columns": ["token"],
           "isUnique": true
         },
         "sessions_userId_idx": {
           "name": "sessions_userId_idx",
-          "columns": [
-            "user_id"
-          ],
+          "columns": ["user_id"],
           "isUnique": false
         }
       },
@@ -318,12 +308,8 @@
           "name": "sessions_user_id_users_id_fk",
           "tableFrom": "sessions",
           "tableTo": "users",
-          "columnsFrom": [
-            "user_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["user_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -442,9 +428,7 @@
       "indexes": {
         "users_email_unique": {
           "name": "users_email_unique",
-          "columns": [
-            "email"
-          ],
+          "columns": ["email"],
           "isUnique": true
         }
       },
@@ -504,9 +488,7 @@
       "indexes": {
         "verifications_identifier_idx": {
           "name": "verifications_identifier_idx",
-          "columns": [
-            "identifier"
-          ],
+          "columns": ["identifier"],
           "isUnique": false
         }
       },
@@ -582,12 +564,8 @@
           "name": "checkins_participant_id_participants_ticket_id_fk",
           "tableFrom": "checkins",
           "tableTo": "participants",
-          "columnsFrom": [
-            "participant_id"
-          ],
-          "columnsTo": [
-            "ticket_id"
-          ],
+          "columnsFrom": ["participant_id"],
+          "columnsTo": ["ticket_id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         },
@@ -595,12 +573,8 @@
           "name": "checkins_checked_by_staff_id_staffs_id_fk",
           "tableFrom": "checkins",
           "tableTo": "staffs",
-          "columnsFrom": [
-            "checked_by_staff_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["checked_by_staff_id"],
+          "columnsTo": ["id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         },
@@ -608,12 +582,8 @@
           "name": "checkins_checkpoint_id_checkpoints_id_fk",
           "tableFrom": "checkins",
           "tableTo": "checkpoints",
-          "columnsFrom": [
-            "checkpoint_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["checkpoint_id"],
+          "columnsTo": ["id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
@@ -740,12 +710,8 @@
           "name": "redeemed_rewards_participant_ticket_id_participants_ticket_id_fk",
           "tableFrom": "redeemed_rewards",
           "tableTo": "participants",
-          "columnsFrom": [
-            "participant_ticket_id"
-          ],
-          "columnsTo": [
-            "ticket_id"
-          ],
+          "columnsFrom": ["participant_ticket_id"],
+          "columnsTo": ["ticket_id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         },
@@ -753,12 +719,8 @@
           "name": "redeemed_rewards_staff_id_staffs_id_fk",
           "tableFrom": "redeemed_rewards",
           "tableTo": "staffs",
-          "columnsFrom": [
-            "staff_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["staff_id"],
+          "columnsTo": ["id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
@@ -795,9 +757,7 @@
       "indexes": {
         "participants_ticket_id_unique": {
           "name": "participants_ticket_id_unique",
-          "columns": [
-            "ticket_id"
-          ],
+          "columns": ["ticket_id"],
           "isUnique": true
         }
       },
@@ -865,12 +825,8 @@
           "name": "redeem_rewards_participant_id_participants_ticket_id_fk",
           "tableFrom": "redeem_rewards",
           "tableTo": "participants",
-          "columnsFrom": [
-            "participant_id"
-          ],
-          "columnsTo": [
-            "ticket_id"
-          ],
+          "columnsFrom": ["participant_id"],
+          "columnsTo": ["ticket_id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         },
@@ -878,12 +834,8 @@
           "name": "redeem_rewards_redeemed_by_staff_id_staffs_id_fk",
           "tableFrom": "redeem_rewards",
           "tableTo": "staffs",
-          "columnsFrom": [
-            "redeemed_by_staff_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["redeemed_by_staff_id"],
+          "columnsTo": ["id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         }

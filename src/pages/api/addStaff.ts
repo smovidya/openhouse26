@@ -1,14 +1,15 @@
 import { createAuth } from "@src/auth";
-import { hasOneOfRoleIn } from '@src/auth/utils';
+import { hasOneOfRoleIn } from "@src/auth/utils";
 import type { APIRoute } from "astro";
 import { env } from "cloudflare:workers";
-import * as model from "@src/db/model"
+import * as model from "@src/db/model";
 
 export const prerender = false;
 
 export const GET: APIRoute = async (ctx) => {
   if (!ctx.locals.user) return new Response("Unauthorized", { status: 401 });
-  if (!hasOneOfRoleIn(ctx.locals.user, ["admin"])) return new Response("Unauthorized", { status: 401 });
+  if (!hasOneOfRoleIn(ctx.locals.user, ["admin"]))
+    return new Response("Unauthorized", { status: 401 });
 
   const booth = ctx.url.searchParams.get("booth");
   const email = ctx.url.searchParams.get("email");
@@ -28,7 +29,7 @@ export const GET: APIRoute = async (ctx) => {
     phone,
     roles,
     studentId,
-  })
+  });
 
   return new Response(JSON.stringify(result), { status: 200 });
 };

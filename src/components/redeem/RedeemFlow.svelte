@@ -100,14 +100,11 @@
         name,
         responses: surveyResponses,
       });
-      if (res.error) {
-        errorMsg = res.error.message;
+      if (res.data && res.data.cert_url) {
+        certUrl = res.data.cert_url;
+        step = "success";
       } else {
-        const urlRes = await actions.redeem.getCertUrl({ ticketId, name });
-        if (urlRes.data && urlRes.data.url) {
-          certUrl = urlRes.data.url;
-          step = "success";
-        }
+        errorMsg = "เกิดข้อผิดพลาดในการสร้างเกียรติบัตร";
       }
     } catch (e: any) {
       errorMsg = e.message || "An error occurred";
@@ -125,16 +122,11 @@
     errorMsg = "";
     try {
       const res = await actions.redeem.verifyName({ ticketId, name });
-      if (res.error) {
-        errorMsg = res.error.message;
-      } else if (res.data?.success === false) {
-        errorMsg = res.data.error || "Name does not match";
+      if (res.data && res.data.cert_url) {
+        certUrl = res.data.cert_url;
+        step = "success";
       } else {
-        const urlRes = await actions.redeem.getCertUrl({ ticketId, name });
-        if (urlRes.data && urlRes.data.url) {
-          certUrl = urlRes.data.url;
-          step = "success";
-        }
+        errorMsg = "เกิดข้อผิดพลาดในการสร้างเกียรติบัตร";
       }
     } catch (e: any) {
       errorMsg = e.message || "An error occurred";
@@ -272,7 +264,7 @@
             disabled={isLoading}
           />
           <span class="label-text text-base font-medium"
-            >ข้าพเจ้ายืนยันว่าชื่อ-นามสกุลที่กรอกถูกต้อง
+            >ข้าพเจ้ายืนยันว่าชื่อ-นามสกุลที่กรอกเป็นภาษาอังกฤษถูกต้อง
             (จะไม่สามารถกลับมาแก้ไขได้อีกในภายหลัง)</span
           >
         </label>
@@ -292,40 +284,39 @@
         </Button>
       </div>
     {:else if step === "verify_name"}
-      <h2 class="card-title text-2xl mb-4">ยืนยันตัวตน</h2>
+      <h2 class="card-title text-center text-2xl mb-4">ยืนยันตัวตน</h2>
       <p class="mb-4">
         คุณได้ทำแบบประเมินไปแล้ว
-        กรุณากรอกชื่อ-นามสกุลที่เคยลงทะเบียนไว้เพื่อยืนยันตัวตนและรับเกียรติบัตร
+        กรุณากรอกชื่อ-นามสกุล (ภาษาอังกฤษ) ที่เคยลงทะเบียนไว้เพื่อยืนยันตัวตนและรับเกียรติบัตร
       </p>
 
-      <div class="form-control w-full">
+      <div class="form-control w-full flex flex-col gap-2 items-center">
         <label class="label" for="verifyName">
-          <span class="label-text font-medium">ชื่อ-นามสกุล</span>
+          <span class="label-text font-medium">ชื่อ-นามสกุล (ภาษาอังกฤษ)</span>
         </label>
         <input
           id="verifyName"
           type="text"
           bind:value={name}
-          placeholder="นายเรียนดี รักสงบ"
+          placeholder="Riendee Rakdee"
           class="border-token-6 text-lg border invalid:border-2 shadow-md shadow-black/20 text-center rounded-2xl p-2"
           disabled={isLoading}
         />
       </div>
 
-      <div class="card-actions justify-end mt-6 flex gap-2">
+      <div class="card-actions justify-center mt-6 flex gap-2">
         <button
-          class="btn btn-ghost"
+          class="btn btn-link"
           onclick={() => (step = "enter_ticket")}
           disabled={isLoading}>ย้อนกลับ</button
         >
-        <button
-          class="btn btn-primary"
+        <Button
           onclick={handleVerifyName}
           disabled={isLoading}
         >
           {#if isLoading}<span class="loading loading-spinner"></span>{/if}
           ยืนยันตัวตน
-        </button>
+        </Button>
       </div>
     {:else if step === "success"}
       <div class="text-center py-8">
@@ -348,16 +339,16 @@
           </svg>
         </div>
         <h2 class="text-2xl font-bold mb-2">เรียบร้อย!</h2>
-        <p class="text-base-content/70 mb-8">
-          คุณสามารถดาวน์โหลดหรือดูเกียรติบัตรของคุณได้หลัง 12:00 น.
+        <p class="mb-8">
+          คุณสามารถดาวน์โหลดหรือดูเกียรติบัตรของคุณได้เลย
         </p>
-        <!-- <a
+        <a
           href={certUrl}
           target="_blank"
           class="btn btn-primary btn-lg w-full sm:w-auto"
         >
           ดาวน์โหลดเกียรติบัตร
-        </a> -->
+        </a>
       </div>
     {/if}
   </div>
