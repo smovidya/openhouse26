@@ -146,8 +146,13 @@ export class Rewards {
   }
 
   isEligibleForCertificate() {
-    // At least 1 checkin in any checkpoint
-    return this.checkins.length > 0;
+    // At least 3 checkins in any checkpoint
+    const boothCheckinCount = this.countCheckinByType("booth");
+    const workshopCheckinCount = this.countCheckinByType("workshop");
+    const tcasCheckinCount = this.countCheckinByType("tcas");
+    return (
+      boothCheckinCount + tcasCheckinCount >= 3 || workshopCheckinCount >= 1
+    );
   }
 
   currentRewardTier() {

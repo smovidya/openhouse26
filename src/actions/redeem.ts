@@ -87,7 +87,8 @@ export const submitSurveyAndName = defineAction({
     if (!rewards.isEligibleForCertificate()) {
       throw new ActionError({
         code: "FORBIDDEN",
-        message: "Not eligible for certificate",
+        message:
+          "ขออภัย แต่คุณยังไม่ผ่านเกณฑ์การรับใบประกาศนียบัตร / Sorry, you are not eligible for a certificate yet.",
       });
     }
 

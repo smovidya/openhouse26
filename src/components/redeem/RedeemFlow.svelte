@@ -170,8 +170,10 @@
           class="mt-2 w-auto"
         >
           {#if isLoading}<span class="loading loading-sm loading-spinner"
-            ></span>{/if}
-          Check
+            ></span>
+          {:else}
+            Check
+          {/if}
         </Button>
       </div>
     {:else if step === "not_eligible"}
@@ -284,10 +286,10 @@
         </Button>
       </div>
     {:else if step === "verify_name"}
-      <h2 class="card-title text-center text-2xl mb-4">ยืนยันตัวตน</h2>
+      <h2 class="w-full text-center font-bold text-2xl mb-4">ยืนยันตัวตน</h2>
       <p class="mb-4">
-        คุณได้ทำแบบประเมินไปแล้ว
-        กรุณากรอกชื่อ-นามสกุล (ภาษาอังกฤษ) ที่เคยลงทะเบียนไว้เพื่อยืนยันตัวตนและรับเกียรติบัตร
+        คุณได้ทำแบบประเมินไปแล้ว กรุณากรอกชื่อ-นามสกุล (ภาษาอังกฤษ)
+        ที่เคยลงทะเบียนไว้เพื่อยืนยันตัวตนและรับเกียรติบัตร
       </p>
 
       <div class="form-control w-full flex flex-col gap-2 items-center">
@@ -310,12 +312,11 @@
           onclick={() => (step = "enter_ticket")}
           disabled={isLoading}>ย้อนกลับ</button
         >
-        <Button
-          onclick={handleVerifyName}
-          disabled={isLoading}
-        >
-          {#if isLoading}<span class="loading loading-spinner"></span>{/if}
-          ยืนยันตัวตน
+        <Button onclick={handleVerifyName} disabled={isLoading}>
+          {#if isLoading}<span class="loading loading-spinner"></span>
+          {:else}
+            ยืนยันตัวตน
+          {/if}
         </Button>
       </div>
     {:else if step === "success"}
@@ -339,16 +340,8 @@
           </svg>
         </div>
         <h2 class="text-2xl font-bold mb-2">เรียบร้อย!</h2>
-        <p class="mb-8">
-          คุณสามารถดาวน์โหลดหรือดูเกียรติบัตรของคุณได้เลย
-        </p>
-        <a
-          href={certUrl}
-          target="_blank"
-          class="btn btn-primary btn-lg w-full sm:w-auto"
-        >
-          ดาวน์โหลดเกียรติบัตร
-        </a>
+        <p class="mb-8">คุณสามารถดาวน์โหลดหรือดูเกียรติบัตรของคุณได้เลย</p>
+        <Button href={certUrl} class="mx-auto">ดาวน์โหลดเกียรติบัตร</Button>
       </div>
     {/if}
   </div>
