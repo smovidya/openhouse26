@@ -51,3 +51,22 @@ All commands are run from the root of the project, from a terminal:
 ## 👀 Want to learn more?
 
 Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+
+## Useful SQL Queries
+
+```sql
+-- นับจำนวนคนมีสิทธิรับเกียรติบัตร
+
+SELECT
+  participant_ticket_code AS participantTicketId,
+  SUM(CASE WHEN checkpoint_id LIKE 'workshop-%' THEN 1 ELSE 0 END) AS workshop_checkin_count,
+  SUM(CASE WHEN checkpoint_id NOT LIKE 'workshop-%'
+            AND checkpoint_id != 'redeem-reward'
+      THEN 1 ELSE 0 END) AS booth_checkin_count
+FROM checkins
+WHERE deleted_at IS NULL
+  AND participant_ticket_code NOT LIKE 'T%'
+GROUP BY participant_ticket_code
+HAVING workshop_checkin_count >= 1
+    OR booth_checkin_count >= 3;
+```
