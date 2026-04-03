@@ -15,6 +15,18 @@ const parseNames = (raw: string) =>
     .map((name) => name.trim())
     .filter(Boolean);
 
+const normalizeOnlineRoundScore = (input: number) => {
+  const scaled = Math.round(input * 10);
+  if (Math.abs(input * 10 - scaled) > Number.EPSILON) {
+    throw new ActionError({
+      code: "BAD_REQUEST",
+      message: "คะแนนรอบออนไลน์ต้องมีทศนิยมไม่เกิน 1 ตำแหน่ง",
+    });
+  }
+
+  return scaled;
+};
+
 const assertAdmin = (user: { role?: string | null } | null) => {
   if (!hasOneOfRoleIn(user, ["admin"])) {
     throw new ActionError({
@@ -155,7 +167,7 @@ export const getCertificate = defineAction({
 export const listCompetitorsAdmin = defineAction({
   input: z.object({
     page: z.number().int().min(1).default(1),
-    limit: z.number().int().min(1).max(100).default(20),
+    limit: z.number().int().min(1).max(500).default(20),
     searchQuery: z.string().optional(),
     tier: competitorTierEnum.optional(),
   }),
@@ -185,7 +197,7 @@ const mutableCompetitorInput = z.object({
   phone: z.string().trim().min(1),
   namesText: z.string().trim().min(1),
   tier: competitorTierEnum,
-  onlineRoundScore: z.number().int(),
+  onlineRoundScore: z.number().min(0).refine(Number.isFinite),
 });
 
 export const createCompetitorAdmin = defineAction({
@@ -201,9 +213,14 @@ export const createCompetitorAdmin = defineAction({
       });
     }
 
+    const normalizedOnlineRoundScore = normalizeOnlineRoundScore(
+      input.onlineRoundScore,
+    );
+
     const competitor = await model.competition.createCompetitor(ctx.locals.db, {
       ...input,
       names,
+      onlineRoundScore: normalizedOnlineRoundScore,
     });
 
     return { competitor };
@@ -225,12 +242,17 @@ export const updateCompetitorAdmin = defineAction({
       });
     }
 
+    const normalizedOnlineRoundScore = normalizeOnlineRoundScore(
+      input.onlineRoundScore,
+    );
+
     const competitor = await model.competition.updateCompetitorById(
       ctx.locals.db,
       {
         id,
         ...input,
         names,
+        onlineRoundScore: normalizedOnlineRoundScore,
       },
     );
 

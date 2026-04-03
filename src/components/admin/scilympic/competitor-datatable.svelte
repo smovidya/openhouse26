@@ -98,6 +98,11 @@
     onlineRoundScore: Number(draft.onlineRoundScore),
   });
 
+  const toDisplayScore = (storedScore: number | null | undefined) => {
+    if (storedScore === null || storedScore === undefined) return null;
+    return storedScore / 10;
+  };
+
   const startEdit = (row: Competitor) => {
     editingId = row.id;
     editDraft = {
@@ -106,7 +111,7 @@
       phone: row.phone ?? "",
       namesText: toNamesText(row.names),
       tier: row.tier ?? competitorTiers[0],
-      onlineRoundScore: row.onlineRoundScore ?? 0,
+      onlineRoundScore: toDisplayScore(row.onlineRoundScore) ?? 0,
     };
   };
 
@@ -271,6 +276,7 @@
             type="number"
             class="input input-sm w-28"
             bind:value={createDraft.onlineRoundScore}
+            step="0.1"
             disabled={mutationPending}
           />
         </td>
@@ -340,6 +346,7 @@
                 type="number"
                 class="input input-sm w-28"
                 bind:value={editDraft.onlineRoundScore}
+                step="0.1"
                 disabled={mutationPending}
               />
             </td>
@@ -371,7 +378,7 @@
               </div>
             </td>
             <td>{row.tier || "-"}</td>
-            <td>{row.onlineRoundScore ?? "-"}</td>
+            <td>{toDisplayScore(row.onlineRoundScore) ?? "-"}</td>
             <td>
               <div class="flex gap-2">
                 <button
