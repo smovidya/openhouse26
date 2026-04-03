@@ -36,3 +36,6 @@ export const addNewTeam = async (
     ])
     .returning()
     .get();
+
+export const getTeamByTeamId = async (db: Db, teamId: string) =>
+  db.select().from(competitors).where(eq(competitors.teamId, teamId)).get();

@@ -45,42 +45,4 @@ export const GET: APIRoute = async ({ callAction, url, locals }) => {
       "Content-Disposition": `attachment; filename="sci-chula-openhouse-2026.pdf"`,
     },
   });
-
-  // const header = new Headers();
-  // header.set(
-  //   "Authorization",
-  //   `Basic ${btoa(`${env.GBA_USERNAME}:${env.GBA_PASSWORD}`)}`,
-  // );
-  // const formData = new FormData();
-  // formData.append(
-  //   "url",
-  //   `https://scichulaopenhouse.com/cert/render?name=${encodeURIComponent(
-  //     name,
-  //   )}&certId=${encodeURIComponent(sub)}&token=${encodeURIComponent(token)}`,
-  // );
-
-  // const fetchResult = await fetch(
-  //   "https://gotenberg.ptsgrn.dev/forms/chromium/convert/url",
-  //   {
-  //     method: "POST",
-  //     body: formData,
-  //     headers: header,
-  //   },
-  // );
-
-  // console.log("Fetch result", fetchResult);
-
-  // if (!fetchResult.ok) {
-  //   console.log("Failed to fetch certificate PDF", await fetchResult.text());
-  //   return new Response("Failed to generate certificate", { status: 500 });
-  // }
-
-  // const blob = await fetchResult.blob();
-
-  // return new Response(blob, {
-  //   headers: {
-  //     "Content-Type": "application/pdf",
-  //     "Content-Disposition": `attachment; filename="certificate-${sub}.pdf"`,
-  //   },
-  // });
 };

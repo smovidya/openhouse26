@@ -3,8 +3,11 @@
   "name": "openhouse26",
   "account_id": "e2069f9cc14d2fe64afc9d04ed6576bd",
   "compatibility_date": "2026-03-17",
-  "compatibility_flags": ["nodejs_compat", "disable_nodejs_process_v2"],
-  "main": "@astrojs/cloudflare/entrypoints/server",
+  "compatibility_flags": [
+    "nodejs_compat",
+    "disable_nodejs_process_v2"
+  ],
+  "main": "./src/workers/index.ts",
   "assets": {
     "binding": "ASSETS",
     "directory": "./dist",

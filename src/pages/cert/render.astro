@@ -9,7 +9,12 @@ const token = url.searchParams.get("token");
 const name = url.searchParams.get("name");
 const certId = +(url.searchParams.get("certId") || NaN);
 
-if (!timingSafeEqual(Buffer.from(token || "?"), Buffer.from(env.BETTER_AUTH_SECRET))) {
+if (
+  !timingSafeEqual(
+    Buffer.from(token || "?"),
+    Buffer.from(env.BETTER_AUTH_SECRET),
+  )
+) {
   Astro.redirect("/404");
 }
 ---
