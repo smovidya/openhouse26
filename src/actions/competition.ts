@@ -6,6 +6,7 @@ import { competitorTiers } from "@src/data/scilympic";
 import { env } from "cloudflare:workers";
 import jwt from "@tsndr/cloudflare-worker-jwt";
 import stringComparison from "string-comparison";
+import { message } from "sveltekit-superforms";
 
 const competitorTierEnum = z.enum(competitorTiers);
 
@@ -82,6 +83,7 @@ export const getCertificate = defineAction({
           registeredEmail: team.email,
           registeredPhone: team.phone,
           providedContactInfo: contactInfo,
+          message: "ข้อมูลการติดต่อไม่ตรงกับที่ลงทะเบียนไว้",
         });
 
         throw new ActionError({
@@ -103,6 +105,7 @@ export const getCertificate = defineAction({
           registeredEmail: team.email,
           registeredPhone: team.phone,
           providedContactInfo: contactInfo,
+          message: "ข้อมูลการติดต่อไม่ตรงกับที่ลงทะเบียนไว้",
         });
 
         throw new ActionError({
@@ -141,6 +144,8 @@ export const getCertificate = defineAction({
         input: inputNoPrefix,
         candidates: namesNoPrefix,
         ratings: matchedRating,
+        message:
+          "ชื่อที่ใช้ในการพิมพ์มีความคล้ายคลึงกับชื่อสมาชิกในทีมต่ำเกินไป",
       });
       throw new ActionError({
         code: "BAD_REQUEST",
