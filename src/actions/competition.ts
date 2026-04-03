@@ -6,7 +6,6 @@ import { competitorTiers } from "@src/data/scilympic";
 import { env } from "cloudflare:workers";
 import jwt from "@tsndr/cloudflare-worker-jwt";
 import stringComparison from "string-comparison";
-import { message } from "sveltekit-superforms";
 
 const competitorTierEnum = z.enum(competitorTiers);
 
