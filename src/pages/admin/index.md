@@ -8,3 +8,4 @@ Back to [Staff Dashboard](/staff)
 
 - [รายชื่อผู้ใช้](/admin/users)
 - [เพิ่มสตาฟจากชีต](/admin/staffs/add)
+- [จัดการทีม Scilympic](/admin/scilympic)

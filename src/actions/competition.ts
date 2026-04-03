@@ -1,9 +1,28 @@
 import { defineAction, ActionError } from "astro:actions";
 import { z } from "astro/zod";
 import * as model from "@src/db/model";
+import { hasOneOfRoleIn } from "@src/auth/utils";
+import { competitorTiers } from "@src/data/scilympic";
 import { env } from "cloudflare:workers";
 import jwt from "@tsndr/cloudflare-worker-jwt";
 import stringComparison from "string-comparison";
+
+const competitorTierEnum = z.enum(competitorTiers);
+
+const parseNames = (raw: string) =>
+  raw
+    .split("\n")
+    .map((name) => name.trim())
+    .filter(Boolean);
+
+const assertAdmin = (user: { role?: string | null } | null) => {
+  if (!hasOneOfRoleIn(user, ["admin"])) {
+    throw new ActionError({
+      code: "UNAUTHORIZED",
+      message: "คุณไม่มีสิทธิ์ดำเนินการนี้",
+    });
+  }
+};
 
 export const getCertificate = defineAction({
   input: z.object({
@@ -130,5 +149,121 @@ export const getCertificate = defineAction({
       team,
       certUrl: "/scilympic/download?token=" + certToken,
     };
+  },
+});
+
+export const listCompetitorsAdmin = defineAction({
+  input: z.object({
+    page: z.number().int().min(1).default(1),
+    limit: z.number().int().min(1).max(100).default(20),
+    searchQuery: z.string().optional(),
+    tier: competitorTierEnum.optional(),
+  }),
+  handler: async ({ page, limit, searchQuery, tier }, ctx) => {
+    assertAdmin(ctx.locals.user);
+    const { items, total } = await model.competition.listCompetitors(
+      ctx.locals.db,
+      {
+        page,
+        limit,
+        searchQuery,
+        tier,
+      },
+    );
+
+    return {
+      items,
+      total,
+      maxPage: Math.ceil(total / limit),
+    };
+  },
+});
+
+const mutableCompetitorInput = z.object({
+  teamId: z.string().trim().min(1),
+  email: z.string().trim().min(1),
+  phone: z.string().trim().min(1),
+  namesText: z.string().trim().min(1),
+  tier: competitorTierEnum,
+  onlineRoundScore: z.number().int(),
+});
+
+export const createCompetitorAdmin = defineAction({
+  input: mutableCompetitorInput,
+  handler: async (input, ctx) => {
+    assertAdmin(ctx.locals.user);
+
+    const names = parseNames(input.namesText);
+    if (names.length === 0) {
+      throw new ActionError({
+        code: "BAD_REQUEST",
+        message: "กรุณากรอกชื่อสมาชิกอย่างน้อย 1 คน",
+      });
+    }
+
+    const competitor = await model.competition.createCompetitor(ctx.locals.db, {
+      ...input,
+      names,
+    });
+
+    return { competitor };
+  },
+});
+
+export const updateCompetitorAdmin = defineAction({
+  input: mutableCompetitorInput.extend({
+    id: z.string().trim().min(1),
+  }),
+  handler: async ({ id, ...input }, ctx) => {
+    assertAdmin(ctx.locals.user);
+
+    const names = parseNames(input.namesText);
+    if (names.length === 0) {
+      throw new ActionError({
+        code: "BAD_REQUEST",
+        message: "กรุณากรอกชื่อสมาชิกอย่างน้อย 1 คน",
+      });
+    }
+
+    const competitor = await model.competition.updateCompetitorById(
+      ctx.locals.db,
+      {
+        id,
+        ...input,
+        names,
+      },
+    );
+
+    if (!competitor) {
+      throw new ActionError({
+        code: "NOT_FOUND",
+        message: "ไม่พบข้อมูลทีมที่ต้องการแก้ไข",
+      });
+    }
+
+    return { competitor };
+  },
+});
+
+export const deleteCompetitorAdmin = defineAction({
+  input: z.object({
+    id: z.string().trim().min(1),
+  }),
+  handler: async ({ id }, ctx) => {
+    assertAdmin(ctx.locals.user);
+
+    const competitor = await model.competition.softDeleteCompetitorById(
+      ctx.locals.db,
+      id,
+    );
+
+    if (!competitor) {
+      throw new ActionError({
+        code: "NOT_FOUND",
+        message: "ไม่พบข้อมูลทีมที่ต้องการลบ",
+      });
+    }
+
+    return { id: competitor.id };
   },
 });

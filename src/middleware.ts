@@ -30,7 +30,7 @@ export const onRequest = defineMiddleware(async (context, next) => {
   const pathname = new URL(context.request.url).pathname;
 
   if (
-    pathname === "/admin" &&
+    pathname.startsWith("/admin") &&
     !hasOneOfRoleIn(context.locals.user, ["admin"])
   ) {
     return context.redirect("/");

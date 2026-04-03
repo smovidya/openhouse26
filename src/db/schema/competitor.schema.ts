@@ -1,6 +1,6 @@
 import { sqliteTable } from "drizzle-orm/sqlite-core";
 import * as t from "drizzle-orm/sqlite-core";
-import { id, timestamps } from "./helper";
+import { deletedAt, id, timestamps } from "./helper";
 
 export const competitors = sqliteTable("competitors", {
   ...id,
@@ -26,5 +26,6 @@ export const competitors = sqliteTable("competitors", {
     >(),
   // I ain't store ts as float
   onlineRoundScore: t.int("online_round_score"),
+  ...deletedAt,
   ...timestamps,
 });

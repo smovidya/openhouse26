@@ -29,6 +29,13 @@
       "when": 1775143470208,
       "tag": "0003_great_the_hunter",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "6",
+      "when": 1775208862284,
+      "tag": "0004_harsh_stone_men",
+      "breakpoints": true
     }
   ]
 }
